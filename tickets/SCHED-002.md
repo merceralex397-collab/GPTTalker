@@ -1,46 +1,48 @@
-    # SCHED-002: Distributed scheduler, node selection, and fallback
+# SCHED-002: Distributed scheduler, node selection, and fallback
 
-    ## Summary
+## Summary
 
-    Implement the distributed scheduler that considers task type, node health, service availability, and fallback rules.
+Implement the distributed scheduler that considers task type, node health, service availability, and fallback rules.
 
-    ## Wave
+## Wave
 
-    4
+4
 
-    ## Lane
+## Lane
 
-    scheduler
+scheduler
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: high
+- parallel_safe: false
+- overlap_risk: high
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SCHED-001, CORE-004, LLM-002
+SCHED-001, CORE-004, LLM-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Scheduler inputs are explicit
+None
+
+## Acceptance Criteria
+
+- [ ] Scheduler inputs are explicit
 - [ ] Node and backend health affect routing decisions
 - [ ] Fallback behavior is defined and bounded
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

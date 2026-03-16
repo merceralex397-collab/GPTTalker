@@ -1,46 +1,48 @@
-    # POLISH-002: Security regression tests and redaction hardening
+# POLISH-002: Security regression tests and redaction hardening
 
-    ## Summary
+## Summary
 
-    Harden the security and observability surfaces with targeted regression tests for path traversal, secret redaction, and fail-closed behavior.
+Harden the security and observability surfaces with targeted regression tests for path traversal, secret redaction, and fail-closed behavior.
 
-    ## Wave
+## Wave
 
-    6
+6
 
-    ## Lane
+## Lane
 
-    qa
+qa
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-005, OBS-001, POLISH-001
+CORE-005, OBS-001, POLISH-001
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Security regression suite covers path and target validation
+None
+
+## Acceptance Criteria
+
+- [ ] Security regression suite covers path and target validation
 - [ ] Log redaction behavior is tested
 - [ ] Fail-closed expectations are enforced under error conditions
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

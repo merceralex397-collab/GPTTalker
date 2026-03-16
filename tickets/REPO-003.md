@@ -1,46 +1,48 @@
-    # REPO-003: search_repo and git_status tools
+# REPO-003: search_repo and git_status tools
 
-    ## Summary
+## Summary
 
-    Implement text search and git status access through the node agent using bounded subprocess execution and structured result formatting.
+Implement text search and git status access through the node agent using bounded subprocess execution and structured result formatting.
 
-    ## Wave
+## Wave
 
-    2
+2
 
-    ## Lane
+## Lane
 
-    repo-inspection
+repo-inspection
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    REPO-002
+REPO-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Search uses bounded ripgrep execution
+None
+
+## Acceptance Criteria
+
+- [ ] Search uses bounded ripgrep execution
 - [ ] Git status is exposed read-only
 - [ ] Timeout and error handling are explicit
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

@@ -1,46 +1,48 @@
-    # CORE-001: Node registry and node health model
+# CORE-001: Node registry and node health model
 
-    ## Summary
+## Summary
 
-    Implement the hub-side node registry schema, CRUD path, and health metadata used to track managed machines.
+Implement the hub-side node registry schema, CRUD path, and health metadata used to track managed machines.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    registry
+registry
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-003, SETUP-004
+SETUP-003, SETUP-004
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Node registry schema is defined
+None
+
+## Acceptance Criteria
+
+- [ ] Node registry schema is defined
 - [ ] Health metadata model is explicit
 - [ ] Unknown nodes fail closed
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

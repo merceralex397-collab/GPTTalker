@@ -1,46 +1,48 @@
-    # EDGE-001: Cloudflare Tunnel integration and public-edge config
+# EDGE-001: Cloudflare Tunnel integration and public-edge config
 
-    ## Summary
+## Summary
 
-    Define and implement the public-edge path through Cloudflare Tunnel so ChatGPT can reach the hub over HTTPS without exposing inbound ports.
+Define and implement the public-edge path through Cloudflare Tunnel so ChatGPT can reach the hub over HTTPS without exposing inbound ports.
 
-    ## Wave
+## Wave
 
-    5
+5
 
-    ## Lane
+## Lane
 
-    edge
+edge
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-004, CORE-005
+SETUP-004, CORE-005
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Tunnel configuration owner is explicit
+None
+
+## Acceptance Criteria
+
+- [ ] Tunnel configuration owner is explicit
 - [ ] HTTPS public-edge boundary is documented in code and config
 - [ ] Security constraints remain aligned with the brief
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

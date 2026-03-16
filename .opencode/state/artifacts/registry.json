@@ -1,4 +1,173 @@
 {
   "version": 1,
-  "artifacts": []
+  "artifacts": [
+    {
+      "ticket_id": "SETUP-001",
+      "kind": "planning",
+      "path": ".opencode/state/plans/setup-001-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-001: Project skeleton and dependency baseline. Defines pyproject.toml structure, src/ directory layout for hub/node_agent/shared packages, pytest and ruff configuration, and validation steps.",
+      "created_at": "2026-03-16T12:30:11.220Z"
+    },
+    {
+      "ticket_id": "SETUP-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/setup-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation summary for SETUP-001: Created project skeleton with pyproject.toml, src/hub, src/node_agent, src/shared structure, pytest/ruff configs, and .gitignore.",
+      "created_at": "2026-03-16T12:43:25.908Z"
+    },
+    {
+      "ticket_id": "SETUP-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/setup-001-review-review.md",
+      "stage": "review",
+      "summary": "Code review for SETUP-001: Approved. All 25 planned files created, pyproject.toml properly configured, Python 3.11+ requirement met, code quality verified with modern type hints and proper docstrings.",
+      "created_at": "2026-03-16T12:45:53.487Z"
+    },
+    {
+      "ticket_id": "SETUP-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/setup-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for SETUP-001: All acceptance criteria met, validation commands passed, lint issues fixed.",
+      "created_at": "2026-03-16T12:46:14.015Z"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/setup-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+      "created_at": "2026-03-16T12:51:03.084Z"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "planning",
+      "path": ".opencode/state/plans/setup-002-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+      "created_at": "2026-03-16T12:53:16.115Z"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/setup-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SETUP-002: Created shared schemas, config loading, and structured logging. New files: schemas.py (ToolRequest/Response models), context.py (trace-ID propagation), middleware.py (FastAPI handlers). Modified: models.py (field validation), config.py (validation), logging.py (JSON output, redaction), exceptions.py (trace_id support), hub/config.py, node_agent/config.py. All validation tests pass.",
+      "created_at": "2026-03-16T13:04:57.935Z"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/setup-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for SETUP-002: Approved. All planned files created, type hints complete, docstrings present, trace-ID propagation works via contextvars, redaction logic handles nested structures, config validation comprehensive, middleware integration correct. Minor observation on trace context mutation pattern.",
+      "created_at": "2026-03-16T13:08:00.068Z"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/setup-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for SETUP-002: All acceptance criteria met - shared schemas, config loading, and structured logging all implemented correctly. Code inspection passed. Blocker noted: bash permission prevents runtime validation.",
+      "created_at": "2026-03-16T13:10:37.806Z"
+    },
+    {
+      "ticket_id": "SETUP-003",
+      "kind": "planning",
+      "path": ".opencode/state/plans/setup-003-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-003: Async SQLite persistence and migration baseline. Defines async connection management with aiosqlite, complete table schemas for nodes/repos/write_targets/llm_services/tasks/issues, reusable migration system with version tracking, and CRUD repository classes for each table.",
+      "created_at": "2026-03-16T13:14:35.499Z"
+    },
+    {
+      "ticket_id": "SETUP-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/setup-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SETUP-003: Created async SQLite persistence layer with aiosqlite, 7 runtime tables (nodes, repos, write_targets, llm_services, tasks, issues, schema_version), migration system with version tracking, and CRUD repository classes for each table. All validation tests passed.",
+      "created_at": "2026-03-16T13:21:39.905Z"
+    },
+    {
+      "ticket_id": "SETUP-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/setup-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for SETUP-003: Approved. Implementation matches plan, code quality is high with complete type hints and docstrings, table schemas correct with proper foreign keys and indexes, migration system is explicit and reusable, all 6 repository classes implemented with full CRUD. Minor observations noted: transaction() pattern and missing async context manager protocol - both are enhancement opportunities, not blockers.",
+      "created_at": "2026-03-16T13:32:37.063Z"
+    },
+    {
+      "ticket_id": "SETUP-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/setup-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for SETUP-003: All 3 acceptance criteria verified - aiosqlite usage, 7 runtime tables defined, migration system is explicit and reusable.",
+      "created_at": "2026-03-16T13:34:48.576Z"
+    },
+    {
+      "ticket_id": "SETUP-004",
+      "kind": "planning",
+      "path": ".opencode/state/plans/setup-004-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-004: FastAPI hub app shell and MCP transport baseline. Defines complete FastAPI app with lifespan, dependency injection for database/config/logging, MCP transport layer with tool handler primitives, tool routing registry, and MCP-facing HTTP endpoints.",
+      "created_at": "2026-03-16T13:37:38.327Z"
+    },
+    {
+      "ticket_id": "SETUP-004",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/setup-004-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SETUP-004: FastAPI hub app shell and MCP transport baseline. Created dependencies.py, lifespan.py, transport layer (base.py, mcp.py, __init__.py), tool_router.py, and completed main.py, mcp.py, routes.py, config.py. All lint checks pass.",
+      "created_at": "2026-03-16T13:49:13.395Z"
+    },
+    {
+      "ticket_id": "SETUP-004",
+      "kind": "review",
+      "path": ".opencode/state/reviews/setup-004-review-review.md",
+      "stage": "review",
+      "summary": "Code review for SETUP-004: Approved. Implementation matches plan - all 6 new files created, all 4 files modified as planned. Acceptance criteria satisfied: hub app entrypoint defined, MCP transport boundary explicit, startup path leaves room for policy/registry injection. Code quality high with complete type hints and docstrings.",
+      "created_at": "2026-03-16T13:51:48.447Z"
+    },
+    {
+      "ticket_id": "SETUP-004",
+      "kind": "qa",
+      "path": ".opencode/state/qa/setup-004-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for SETUP-004: All 3 acceptance criteria verified - hub app entrypoint, MCP transport boundary, and startup injection hooks all pass. Code quality confirmed via static analysis.",
+      "created_at": "2026-03-16T13:54:00.674Z"
+    },
+    {
+      "ticket_id": "SETUP-005",
+      "kind": "planning",
+      "path": ".opencode/state/plans/setup-005-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for SETUP-005: Test, lint, and local validation scaffold. Defines validation commands (Makefile, CLI entrypoints), test package layout (hub/node_agent/shared directories), pytest fixtures (async_db_session, test_client, mock registries), and documentation (docs/validation.md). All acceptance criteria addressed - no blockers.",
+      "created_at": "2026-03-16T13:57:21.755Z"
+    },
+    {
+      "ticket_id": "SETUP-005",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/setup-005-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SETUP-005: Created validation scaffold with Makefile, validation scripts (validate.py, run_tests.py, run_lint.py), test package organization (hub/node_agent/shared directories), extended conftest.py with fixtures, and docs/validation.md documentation.",
+      "created_at": "2026-03-16T14:03:28.530Z"
+    },
+    {
+      "ticket_id": "SETUP-005",
+      "kind": "review",
+      "path": ".opencode/state/reviews/setup-005-review-review.md",
+      "stage": "review",
+      "summary": "Code review for SETUP-005: Approved. Implementation matches the plan exactly - all validation commands wired, test package structure created with proper fixtures, Makefile targets functional, and documentation complete. All three acceptance criteria satisfied.",
+      "created_at": "2026-03-16T14:07:07.663Z"
+    },
+    {
+      "ticket_id": "SETUP-005",
+      "kind": "qa",
+      "path": ".opencode/state/qa/setup-005-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for SETUP-005: Test, lint, and local validation scaffold. All 3 acceptance criteria passed - validation commands wired, test package layout correct, ruff and pytest configured properly.",
+      "created_at": "2026-03-16T14:09:37.311Z"
+    }
+  ]
 }

@@ -1,46 +1,48 @@
-    # REPO-002: inspect_repo_tree and read_repo_file tools
+# REPO-002: inspect_repo_tree and read_repo_file tools
 
-    ## Summary
+## Summary
 
-    Implement bounded repo tree inspection and file reads through the node-agent path with strict repo and path validation.
+Implement bounded repo tree inspection and file reads through the node-agent path with strict repo and path validation.
 
-    ## Wave
+## Wave
 
-    2
+2
 
-    ## Lane
+## Lane
 
-    repo-inspection
+repo-inspection
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-004, CORE-005, CORE-006
+CORE-004, CORE-005, CORE-006
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Repo tree inspection is scoped to approved repos
+None
+
+## Acceptance Criteria
+
+- [ ] Repo tree inspection is scoped to approved repos
 - [ ] File reads reject traversal and unknown paths
 - [ ] Responses are structured for MCP use
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

@@ -1,46 +1,48 @@
-    # CORE-002: Repo, write-target, and LLM service registries
+# CORE-002: Repo, write-target, and LLM service registries
 
-    ## Summary
+## Summary
 
-    Define the structured registries for repos, markdown write targets, and LLM service aliases so later tools can validate every target explicitly.
+Define the structured registries for repos, markdown write targets, and LLM service aliases so later tools can validate every target explicitly.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    registry
+registry
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-003, SETUP-004
+SETUP-003, SETUP-004
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Repo registry model exists
+None
+
+## Acceptance Criteria
+
+- [ ] Repo registry model exists
 - [ ] Write-target registry model exists
 - [ ] LLM service alias model exists
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

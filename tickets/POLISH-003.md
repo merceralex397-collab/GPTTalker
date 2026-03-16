@@ -1,46 +1,48 @@
-    # POLISH-003: README, API docs, and handoff hardening
+# POLISH-003: README, API docs, and handoff hardening
 
-    ## Summary
+## Summary
 
-    Finalize repository-facing documentation, API references, and handoff surfaces so the finished project is easy to operate and resume.
+Finalize repository-facing documentation, API references, and handoff surfaces so the finished project is easy to operate and resume.
 
-    ## Wave
+## Wave
 
-    6
+6
 
-    ## Lane
+## Lane
 
-    docs
+docs
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    POLISH-001
+POLISH-001
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] README reflects the implemented system
+None
+
+## Acceptance Criteria
+
+- [ ] README reflects the implemented system
 - [ ] API and tool docs are aligned with reality
 - [ ] Handoff surfaces remain concise and current
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

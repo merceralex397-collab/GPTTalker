@@ -1,46 +1,48 @@
-    # CORE-005: Policy engine and normalized path validation
+# CORE-005: Policy engine and normalized path validation
 
-    ## Summary
+## Summary
 
-    Build the fail-closed policy engine for nodes, repos, write targets, service aliases, and normalized file paths.
+Build the fail-closed policy engine for nodes, repos, write targets, service aliases, and normalized file paths.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    security
+security
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-002, SETUP-004
+SETUP-002, SETUP-004
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Unknown targets are rejected explicitly
+None
+
+## Acceptance Criteria
+
+- [ ] Unknown targets are rejected explicitly
 - [ ] Path normalization rules are central and reusable
 - [ ] Write and read scopes are separated cleanly
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

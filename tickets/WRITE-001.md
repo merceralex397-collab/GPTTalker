@@ -1,46 +1,48 @@
-    # WRITE-001: write_markdown with atomic scoped writes
+# WRITE-001: write_markdown with atomic scoped writes
 
-    ## Summary
+## Summary
 
-    Implement the markdown delivery path with approved write targets, extension allowlists, content hashing, and atomic writes.
+Implement the markdown delivery path with approved write targets, extension allowlists, content hashing, and atomic writes.
 
-    ## Wave
+## Wave
 
-    2
+2
 
-    ## Lane
+## Lane
 
-    markdown
+markdown
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-002, CORE-004, CORE-005, CORE-006
+CORE-002, CORE-004, CORE-005, CORE-006
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Writes are restricted to approved targets
+None
+
+## Acceptance Criteria
+
+- [ ] Writes are restricted to approved targets
 - [ ] Atomic write behavior is explicit
 - [ ] Write responses include verification metadata
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

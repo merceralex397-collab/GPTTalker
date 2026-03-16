@@ -1,46 +1,51 @@
-    # SETUP-001: Project skeleton and dependency baseline
+# SETUP-001: Project skeleton and dependency baseline
 
-    ## Summary
+## Summary
 
-    Create the initial Python project skeleton, dependency set, and directory layout for hub, node-agent, and shared runtime code.
+Create the initial Python project skeleton, dependency set, and directory layout for hub, node-agent, and shared runtime code.
 
-    ## Wave
+## Wave
 
-    0
+0
 
-    ## Lane
+## Lane
 
-    repo-foundation
+repo-foundation
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: high
+- parallel_safe: false
+- overlap_risk: high
 
-    ## Stage
+## Stage
 
-    planning
+closeout
 
-    ## Status
+## Status
 
-    ready
+done
 
-    ## Depends On
+## Depends On
 
-    None
+None
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Python project metadata and dependency plan are defined
+None
+
+## Acceptance Criteria
+
+- [ ] Python project metadata and dependency plan are defined
 - [ ] Initial `src/hub`, `src/node_agent`, and `src/shared` structure is laid out
 - [ ] The ticket leaves the repo ready for domain-specific foundation work
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- planning: .opencode/state/plans/setup-001-planning-planning.md (planning) - Implementation plan for SETUP-001: Project skeleton and dependency baseline. Defines pyproject.toml structure, src/ directory layout for hub/node_agent/shared packages, pytest and ruff configuration, and validation steps.
+- implementation: .opencode/state/implementations/setup-001-implementation-implementation.md (implementation) - Implementation summary for SETUP-001: Created project skeleton with pyproject.toml, src/hub, src/node_agent, src/shared structure, pytest/ruff configs, and .gitignore.
+- review: .opencode/state/reviews/setup-001-review-review.md (review) - Code review for SETUP-001: Approved. All 25 planned files created, pyproject.toml properly configured, Python 3.11+ requirement met, code quality verified with modern type hints and proper docstrings.
+- qa: .opencode/state/qa/setup-001-qa-qa.md (qa) - QA verification for SETUP-001: All acceptance criteria met, validation commands passed, lint issues fixed.
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

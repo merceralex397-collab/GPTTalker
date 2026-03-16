@@ -1,46 +1,48 @@
-    # XREPO-001: Cross-repo search and global context query
+# XREPO-001: Cross-repo search and global context query
 
-    ## Summary
+## Summary
 
-    Implement global context and search flows that aggregate approved results across multiple indexed repos.
+Implement global context and search flows that aggregate approved results across multiple indexed repos.
 
-    ## Wave
+## Wave
 
-    4
+4
 
-    ## Lane
+## Lane
 
-    cross-repo
+cross-repo
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CTX-002, CTX-003
+CTX-002, CTX-003
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Cross-repo query path is defined
+None
+
+## Acceptance Criteria
+
+- [ ] Cross-repo query path is defined
 - [ ] Per-repo access controls still apply
 - [ ] Returned results keep repo-level provenance
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

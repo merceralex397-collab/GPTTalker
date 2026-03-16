@@ -1,46 +1,48 @@
-    # XREPO-003: Architecture map and project landscape outputs
+# XREPO-003: Architecture map and project landscape outputs
 
-    ## Summary
+## Summary
 
-    Expose higher-level architecture and landscape outputs that combine cross-repo context with relationship metadata.
+Expose higher-level architecture and landscape outputs that combine cross-repo context with relationship metadata.
 
-    ## Wave
+## Wave
 
-    4
+4
 
-    ## Lane
+## Lane
 
-    cross-repo
+cross-repo
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: medium
+- parallel_safe: false
+- overlap_risk: medium
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    XREPO-001, XREPO-002
+XREPO-001, XREPO-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Architecture map output shape is defined
+None
+
+## Acceptance Criteria
+
+- [ ] Architecture map output shape is defined
 - [ ] Landscape views cite source repos and metadata
 - [ ] Output stays bounded to approved repos
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

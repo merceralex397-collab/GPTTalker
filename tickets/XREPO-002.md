@@ -1,46 +1,48 @@
-    # XREPO-002: Repo relationships and landscape metadata
+# XREPO-002: Repo relationships and landscape metadata
 
-    ## Summary
+## Summary
 
-    Track repo-to-repo relationships and shared metadata needed for landscape views and architecture-level navigation.
+Track repo-to-repo relationships and shared metadata needed for landscape views and architecture-level navigation.
 
-    ## Wave
+## Wave
 
-    4
+4
 
-    ## Lane
+## Lane
 
-    cross-repo
+cross-repo
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-002, CTX-001
+CORE-002, CTX-001
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Relationship metadata model is explicit
+None
+
+## Acceptance Criteria
+
+- [ ] Relationship metadata model is explicit
 - [ ] Landscape metadata has a structured owner
 - [ ] Cross-repo views can cite their source records
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

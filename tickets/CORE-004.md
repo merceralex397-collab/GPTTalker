@@ -1,46 +1,48 @@
-    # CORE-004: Hub-to-node client, auth, and health polling
+# CORE-004: Hub-to-node client, auth, and health polling
 
-    ## Summary
+## Summary
 
-    Implement the authenticated hub-to-node HTTP client, timeout policy, and polling path used to reach node agents over Tailscale.
+Implement the authenticated hub-to-node HTTP client, timeout policy, and polling path used to reach node agents over Tailscale.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    node-connectivity
+node-connectivity
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: high
+- parallel_safe: false
+- overlap_risk: high
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-001, CORE-003
+CORE-001, CORE-003
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Hub-to-node auth model is enforced
+None
+
+## Acceptance Criteria
+
+- [ ] Hub-to-node auth model is enforced
 - [ ] HTTP client timeouts are explicit
 - [ ] Health polling integrates with the node registry
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

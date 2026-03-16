@@ -1,46 +1,48 @@
-    # CORE-006: MCP tool routing framework
+# CORE-006: MCP tool routing framework
 
-    ## Summary
+## Summary
 
-    Create the hub-side tool routing framework that maps exposed MCP tools to validated execution paths and shared response formatting.
+Create the hub-side tool routing framework that maps exposed MCP tools to validated execution paths and shared response formatting.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    hub-core
+hub-core
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: high
+- parallel_safe: false
+- overlap_risk: high
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-004, CORE-002, CORE-005
+SETUP-004, CORE-002, CORE-005
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Tool registration boundary is defined
+None
+
+## Acceptance Criteria
+
+- [ ] Tool registration boundary is defined
 - [ ] Routing integrates policy checks before execution
 - [ ] Shared error formatting follows the MCP-safe contract
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

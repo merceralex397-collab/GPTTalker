@@ -1,46 +1,48 @@
-    # CORE-003: Node agent service skeleton
+# CORE-003: Node agent service skeleton
 
-    ## Summary
+## Summary
 
-    Create the node-agent service shell with config loading, health endpoint shape, and bounded executor structure for local operations.
+Create the node-agent service shell with config loading, health endpoint shape, and bounded executor structure for local operations.
 
-    ## Wave
+## Wave
 
-    1
+1
 
-    ## Lane
+## Lane
 
-    node-agent
+node-agent
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    SETUP-001, SETUP-002
+SETUP-001, SETUP-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Node-agent package shape is defined
+None
+
+## Acceptance Criteria
+
+- [ ] Node-agent package shape is defined
 - [ ] Health endpoint contract is explicit
 - [ ] Executor boundary is separate from hub code
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

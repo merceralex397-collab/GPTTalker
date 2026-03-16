@@ -1,46 +1,48 @@
-    # POLISH-001: Contract tests for MCP tools and failure modes
+# POLISH-001: Contract tests for MCP tools and failure modes
 
-    ## Summary
+## Summary
 
-    Build the higher-level contract tests that prove the exposed GPTTalker tools behave correctly under expected and failure-path scenarios.
+Build the higher-level contract tests that prove the exposed GPTTalker tools behave correctly under expected and failure-path scenarios.
 
-    ## Wave
+## Wave
 
-    6
+6
 
-    ## Lane
+## Lane
 
-    qa
+qa
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: false
-    - overlap_risk: high
+- parallel_safe: false
+- overlap_risk: high
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    REPO-003, WRITE-001, LLM-002, CTX-003, OBS-002
+REPO-003, WRITE-001, LLM-002, CTX-003, OBS-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Tool contracts are covered by tests
+None
+
+## Acceptance Criteria
+
+- [ ] Tool contracts are covered by tests
 - [ ] Failure-mode tests are explicit
 - [ ] Validation remains aligned with the canonical brief
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

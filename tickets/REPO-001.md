@@ -1,46 +1,48 @@
-    # REPO-001: list_nodes and list_repos tools
+# REPO-001: list_nodes and list_repos tools
 
-    ## Summary
+## Summary
 
-    Implement the top-level discovery tools that expose registered nodes and their approved repos to ChatGPT.
+Implement the top-level discovery tools that expose registered nodes and their approved repos to ChatGPT.
 
-    ## Wave
+## Wave
 
-    2
+2
 
-    ## Lane
+## Lane
 
-    repo-inspection
+repo-inspection
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    CORE-001, CORE-004, CORE-006
+CORE-001, CORE-004, CORE-006
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Nodes list with health metadata is available
+None
+
+## Acceptance Criteria
+
+- [ ] Nodes list with health metadata is available
 - [ ] Repo discovery reflects approved registry state only
 - [ ] Unauthorized targets are excluded
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

@@ -1,46 +1,48 @@
-    # SCHED-001: Task classification and routing policy
+# SCHED-001: Task classification and routing policy
 
-    ## Summary
+## Summary
 
-    Define how GPTTalker classifies task types and selects between approved LLM and execution backends.
+Define how GPTTalker classifies task types and selects between approved LLM and execution backends.
 
-    ## Wave
+## Wave
 
-    4
+4
 
-    ## Lane
+## Lane
 
-    scheduler
+scheduler
 
-    ## Parallel Safety
+## Parallel Safety
 
-    - parallel_safe: true
-    - overlap_risk: low
+- parallel_safe: true
+- overlap_risk: low
 
-    ## Stage
+## Stage
 
-    planning
+planning
 
-    ## Status
+## Status
 
-    todo
+todo
 
-    ## Depends On
+## Depends On
 
-    LLM-001, CORE-002
+LLM-001, CORE-002
 
-    ## Acceptance Criteria
+## Decision Blockers
 
-    - [ ] Task classes are explicit
+None
+
+## Acceptance Criteria
+
+- [ ] Task classes are explicit
 - [ ] Routing policy uses registered backend metadata
 - [ ] Fallback expectations are defined
 
-    ## Decision Blockers
+## Artifacts
 
-    None
+- None yet
 
-    ## Artifacts
+## Notes
 
-    - None yet
 
-    ## Notes

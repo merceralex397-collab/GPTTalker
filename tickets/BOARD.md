@@ -2,11 +2,11 @@
 
 | Wave | ID | Title | Lane | Stage | Status | Parallel Safe | Overlap Risk | Depends On |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 | SETUP-001 | Project skeleton and dependency baseline | repo-foundation | planning | ready | no | high | - |
-| 0 | SETUP-002 | Shared schemas, config loading, and structured logging | shared-runtime | planning | todo | no | medium | SETUP-001 |
-| 0 | SETUP-003 | Async SQLite persistence and migration baseline | storage | planning | todo | no | medium | SETUP-001 |
-| 0 | SETUP-004 | FastAPI hub app shell and MCP transport baseline | hub-core | planning | todo | no | high | SETUP-001, SETUP-002 |
-| 0 | SETUP-005 | Test, lint, and local validation scaffold | qa | planning | todo | yes | low | SETUP-001 |
+| 0 | SETUP-001 | Project skeleton and dependency baseline | repo-foundation | closeout | done | no | high | - |
+| 0 | SETUP-002 | Shared schemas, config loading, and structured logging | shared-runtime | closeout | done | no | medium | SETUP-001 |
+| 0 | SETUP-003 | Async SQLite persistence and migration baseline | storage | closeout | done | no | medium | SETUP-001 |
+| 0 | SETUP-004 | FastAPI hub app shell and MCP transport baseline | hub-core | closeout | done | no | high | SETUP-001, SETUP-002 |
+| 0 | SETUP-005 | Test, lint, and local validation scaffold | qa | closeout | done | yes | low | SETUP-001 |
 | 1 | CORE-001 | Node registry and node health model | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
 | 1 | CORE-002 | Repo, write-target, and LLM service registries | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
 | 1 | CORE-003 | Node agent service skeleton | node-agent | planning | todo | yes | low | SETUP-001, SETUP-002 |
