@@ -40,7 +40,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 - **LLM runtimes**: OpenCode for coding-agent workflows; llama.cpp-class serving for local CPU inference; dedicated embedding service
 - **Deployment**: Hub on older laptop; main LLM on stronger machine; repos spread across multiple machines
 - **Security**: Default deny for unknown nodes/repos; HTTPS public edge; Tailscale internal; no secrets in logs or generated docs; Tailscale + app-level API keys for service auth
-- **Agent model**: All OpenCode agents use `minimax-coding-plan/minimax-m2.5`
+- **Agent model**: All OpenCode agents use `minimax-coding-plan/MiniMax-M2.5`
 - **Workflow**: local-git-capable, ticketed, deterministic
 - **Agent design**: autonomous with internal gates, no `ask`
 - **OpenCode layer**: commands for humans, tools/plugins for autonomy
@@ -65,9 +65,9 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 ## 6. Tooling and Model Constraints
 
 - **Provider**: `minimax-coding-plan`
-- **Planner/reviewer model**: `minimax-coding-plan/minimax-m2.5`
-- **Implementer model**: `minimax-coding-plan/minimax-m2.5`
-- **Utility/helper model**: `minimax-coding-plan/minimax-m2.5`
+- **Planner/reviewer model**: `minimax-coding-plan/MiniMax-M2.5`
+- **Implementer model**: `minimax-coding-plan/MiniMax-M2.5`
+- **Utility/helper model**: `minimax-coding-plan/MiniMax-M2.5`
 - **Runtime**: Python 3.11+ with FastAPI, uvicorn
 - **Hub host**: Older laptop (resource-constrained)
 - **Main LLM host**: Stronger machine (32GB CPU-only)
@@ -112,7 +112,7 @@ All blocking decisions have been resolved:
 | Vector DB | Qdrant | Robust filtering, durable search |
 | Structured DB | SQLite | Lightweight for hub laptop |
 | Scope | Combined V1+V2 | All features in single scope |
-| Agent model | minimax-coding-plan/minimax-m2.5 | User-specified for all agents |
+| Agent model | minimax-coding-plan/MiniMax-M2.5 | User-specified for all agents |
 | Internal connectivity | Tailscale | Hard-set from specs |
 | Auth model | Tailscale + app-level API keys | Balance of simplicity and security |
 | Repo discovery | Assisted (scan + manual approval) | Safe but convenient |

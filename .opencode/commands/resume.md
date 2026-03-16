@@ -1,7 +1,7 @@
 ---
 description: Resume the current GPTTalker autonomous cycle from the latest repo state
 agent: gpttalker-team-leader
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 ---
 
 Resume from `START-HERE.md`, `tickets/manifest.json`, `.opencode/state/workflow-state.json`, and `.opencode/state/context-snapshot.md` if it exists.

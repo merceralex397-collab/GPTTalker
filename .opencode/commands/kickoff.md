@@ -1,7 +1,7 @@
 ---
 description: Start the autonomous planning cycle for the current GPTTalker repo state
 agent: gpttalker-team-leader
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 ---
 
 Read the GPTTalker docs in this order:

@@ -1,6 +1,6 @@
 ---
 description: Hidden guarded ticket creator for migration follow-up work proven by backlog verification
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: subagent
 hidden: true
 temperature: 0.12

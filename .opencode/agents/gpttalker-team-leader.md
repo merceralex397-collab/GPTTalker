@@ -1,6 +1,6 @@
 ---
 description: Visible autonomous team leader for the GPTTalker ticket lifecycle
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: primary
 temperature: 0.2
 top_p: 0.7

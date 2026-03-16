@@ -1,6 +1,6 @@
 ---
 description: Hidden repo explorer for focused evidence gathering
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: subagent
 hidden: true
 temperature: 0.1

@@ -1,6 +1,6 @@
 ---
 description: Hub core implementer — FastAPI app, MCP tool handlers, policy engine, SQLite registry, Cloudflare Tunnel
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: subagent
 hidden: true
 temperature: 0.22

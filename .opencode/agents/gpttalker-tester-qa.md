@@ -1,6 +1,6 @@
 ---
 description: Hidden QA specialist for validation and closeout readiness
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: subagent
 hidden: true
 temperature: 0.12

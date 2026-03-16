@@ -1,6 +1,6 @@
 ---
 description: Hidden reviewer that approves or rejects a proposed plan before implementation
-model: minimax-coding-plan/minimax-m2.5
+model: minimax-coding-plan/MiniMax-M2.5
 mode: subagent
 hidden: true
 temperature: 0.14
