@@ -29,10 +29,16 @@ MIGRATIONS: dict[int, list[str]] = {
         CREATE_ISSUES_TABLE,
         *CREATE_INDEXES,
     ],
-    # Future migrations can be added here:
-    # 2: [
-    #     "ALTER TABLE nodes ADD COLUMN new_field TEXT;",
-    # ],
+    # Migration 2: Add health tracking columns to nodes table
+    2: [
+        "ALTER TABLE nodes ADD COLUMN health_status TEXT DEFAULT 'unknown';",
+        "ALTER TABLE nodes ADD COLUMN health_latency_ms INTEGER;",
+        "ALTER TABLE nodes ADD COLUMN health_error TEXT;",
+        "ALTER TABLE nodes ADD COLUMN health_check_count INTEGER DEFAULT 0;",
+        "ALTER TABLE nodes ADD COLUMN consecutive_failures INTEGER DEFAULT 0;",
+        "ALTER TABLE nodes ADD COLUMN last_health_check TEXT;",
+        "ALTER TABLE nodes ADD COLUMN last_health_attempt TEXT;",
+    ],
 }
 
 

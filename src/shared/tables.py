@@ -1,7 +1,7 @@
 """Table schema definitions for GPTTalker SQLite database."""
 
 # Schema version tracking
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 # Schema version table - tracks applied migrations
 CREATE_SCHEMA_VERSION_TABLE = """

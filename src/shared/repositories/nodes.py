@@ -7,6 +7,7 @@ from typing import Any
 from ..database import DatabaseManager
 from ..logging import get_logger
 from ..models import NodeInfo, NodeStatus
+from ..schemas import NodeHealthStatus
 
 logger = get_logger(__name__)
 
@@ -166,6 +167,150 @@ class NodeRepository:
             (datetime.utcnow().isoformat(), node_id),
         )
         return cursor.rowcount > 0
+
+    async def get_health(self, node_id: str) -> dict[str, Any] | None:
+        """Get health metadata for a node.
+
+        Args:
+            node_id: Unique node identifier.
+
+        Returns:
+            Dictionary with health metadata, or None if not found.
+        """
+        row = await self._db.fetchone(
+            """SELECT health_status, health_latency_ms, health_error,
+                      health_check_count, consecutive_failures,
+                      last_health_check, last_health_attempt
+               FROM nodes WHERE node_id = ?""",
+            (node_id,),
+        )
+        if not row:
+            return None
+
+        return {
+            "health_status": NodeHealthStatus(row["health_status"])
+            if row["health_status"]
+            else NodeHealthStatus.UNKNOWN,
+            "health_latency_ms": row["health_latency_ms"],
+            "health_error": row["health_error"],
+            "health_check_count": row["health_check_count"] or 0,
+            "consecutive_failures": row["consecutive_failures"] or 0,
+            "last_health_check": datetime.fromisoformat(row["last_health_check"])
+            if row["last_health_check"]
+            else None,
+            "last_health_attempt": datetime.fromisoformat(row["last_health_attempt"])
+            if row["last_health_attempt"]
+            else None,
+        }
+
+    async def update_health(
+        self,
+        node_id: str,
+        status: NodeHealthStatus,
+        latency_ms: int | None = None,
+        error: str | None = None,
+        check_count: int | None = None,
+        consecutive_failures: int | None = None,
+        last_check: datetime | None = None,
+        last_attempt: datetime | None = None,
+    ) -> bool:
+        """Update health metadata for a node.
+
+        Args:
+            node_id: Unique node identifier.
+            status: Health status value.
+            latency_ms: Response latency in milliseconds.
+            error: Error message if any.
+            check_count: Total health check count.
+            consecutive_failures: Number of consecutive failures.
+            last_check: Last successful health check time.
+            last_attempt: Last health check attempt time.
+
+        Returns:
+            True if updated, False if node not found.
+        """
+        # Get current values if not provided
+        if check_count is None or consecutive_failures is None:
+            current = await self.get_health(node_id)
+            if current:
+                check_count = (
+                    check_count if check_count is not None else current.get("health_check_count", 0)
+                )
+                consecutive_failures = (
+                    consecutive_failures
+                    if consecutive_failures is not None
+                    else current.get("consecutive_failures", 0)
+                )
+
+        await self._db.execute(
+            """UPDATE nodes SET
+               health_status = ?,
+               health_latency_ms = ?,
+               health_error = ?,
+               health_check_count = ?,
+               consecutive_failures = ?,
+               last_health_check = ?,
+               last_health_attempt = ?
+               WHERE node_id = ?""",
+            (
+                status.value,
+                latency_ms,
+                error,
+                check_count,
+                consecutive_failures,
+                last_check.isoformat() if last_check else None,
+                last_attempt.isoformat() if last_attempt else None,
+                node_id,
+            ),
+        )
+        logger.info(
+            "node_health_updated",
+            node_id=node_id,
+            status=status.value,
+            latency_ms=latency_ms,
+        )
+        return True
+
+    async def get_with_health(self, node_id: str) -> tuple[NodeInfo, dict[str, Any]] | None:
+        """Get node with current health metadata.
+
+        Args:
+            node_id: Unique node identifier.
+
+        Returns:
+            Tuple of (NodeInfo, health_dict) if found, None otherwise.
+        """
+        node = await self.get(node_id)
+        if not node:
+            return None
+
+        health = await self.get_health(node_id)
+        if not health:
+            health = {
+                "health_status": NodeHealthStatus.UNKNOWN,
+                "health_latency_ms": None,
+                "health_error": None,
+                "health_check_count": 0,
+                "consecutive_failures": 0,
+                "last_health_check": None,
+                "last_health_attempt": None,
+            }
+
+        return (node, health)
+
+    async def list_healthy_nodes(self) -> list[NodeInfo]:
+        """List nodes that are currently healthy or offline (not explicitly unhealthy).
+
+        Returns:
+            List of NodeInfo instances for healthy/offline nodes.
+        """
+        rows = await self._db.fetchall(
+            """SELECT * FROM nodes
+               WHERE health_status IN (?, ?)
+               ORDER BY created_at DESC""",
+            (NodeHealthStatus.HEALTHY.value, NodeHealthStatus.OFFLINE.value),
+        )
+        return [self._row_to_node(row) for row in rows]
 
     def _row_to_node(self, row) -> NodeInfo:
         """Convert database row to NodeInfo.

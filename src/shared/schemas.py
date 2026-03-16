@@ -64,6 +64,23 @@ class NodeHealthResponse(BaseModel):
     error: str | None = Field(None, description="Error message if unhealthy")
 
 
+class NodeHealthDetail(BaseModel):
+    """Detailed response model for node health with all metadata."""
+
+    node_id: str = Field(..., description="Node identifier")
+    name: str = Field(..., description="Node name")
+    hostname: str = Field(..., description="Node hostname")
+    health_status: NodeHealthStatus = Field(..., description="Current health status")
+    health_latency_ms: int | None = Field(None, description="Last health check latency")
+    health_error: str | None = Field(None, description="Last health check error")
+    health_check_count: int = Field(0, description="Total health checks performed")
+    consecutive_failures: int = Field(0, description="Consecutive health check failures")
+    last_health_check: datetime | None = Field(None, description="Last successful health check")
+    last_health_attempt: datetime | None = Field(None, description="Last health check attempt")
+    is_stale: bool = Field(False, description="Whether health data is stale")
+    should_retry: bool = Field(True, description="Whether health check should be retried")
+
+
 class FileEntry(BaseModel):
     """Single file or directory entry."""
 

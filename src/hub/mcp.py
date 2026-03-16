@@ -2,7 +2,8 @@
 
 from typing import Any
 
-from src.hub.tool_router import ToolRouter, get_global_registry
+from src.hub.tool_router import get_global_registry
+from src.hub.tool_routing import PolicyAwareToolRouter
 from src.hub.transport.mcp import (
     format_tool_list,
     format_tool_response,
@@ -16,14 +17,55 @@ logger = get_logger(__name__)
 class MCPProtocolHandler:
     """Handles MCP protocol communication between ChatGPT and the hub.
 
-    This is the baseline implementation that routes tool calls to
-    registered handlers. Future tickets will add policy validation
-    and more sophisticated routing logic.
+    This handler routes tool calls to registered handlers with integrated
+    policy validation via PolicyAwareToolRouter.
     """
 
-    def __init__(self):
-        """Initialize the MCP protocol handler."""
-        self._router = ToolRouter(get_global_registry())
+    def __init__(self, router: PolicyAwareToolRouter | None = None):
+        """Initialize the MCP protocol handler.
+
+        Args:
+            router: Optional PolicyAwareToolRouter. Creates one if not provided.
+        """
+        self._router = router
+
+    def _ensure_router(self) -> PolicyAwareToolRouter:
+        """Ensure router is initialized.
+
+        Returns:
+            PolicyAwareToolRouter instance.
+
+        Raises:
+            RuntimeError: If router is not set and cannot be created.
+        """
+        if self._router is None:
+            # Lazy initialization using dependency
+
+            # Create a simple synchronous version for basic usage
+            registry = get_global_registry()
+            # Note: In actual FastAPI usage, the router will be injected via DI
+            # This is a fallback for non-FastAPI usage
+            import asyncio
+
+            from src.hub.dependencies import get_policy_engine
+
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    # Can't synchronously get policy engine in async context
+                    raise RuntimeError(
+                        "PolicyAwareToolRouter not initialized. Use FastAPI dependency injection."
+                    )
+                policy_engine = loop.run_until_complete(get_policy_engine())
+                self._router = PolicyAwareToolRouter(
+                    registry=registry,
+                    policy_engine=policy_engine,
+                )
+            except RuntimeError as err:
+                raise RuntimeError(
+                    "PolicyAwareToolRouter not initialized. Use FastAPI dependency injection."
+                ) from err
+        return self._router
 
     async def handle_tool_call(
         self,
@@ -46,8 +88,11 @@ class MCPProtocolHandler:
 
         start_time = int(time.time() * 1000)
 
+        # Ensure router is available
+        router = self._ensure_router()
+
         # Check if tool is registered
-        if not self._router.registry.is_registered(tool_name):
+        if not router.registry.is_registered(tool_name):
             logger.warning(
                 "unknown_tool_requested",
                 tool_name=tool_name,
@@ -60,8 +105,8 @@ class MCPProtocolHandler:
                 error=f"Unknown tool: {tool_name}",
             )
 
-        # Route to handler
-        result = await self._router.route_tool(
+        # Route to handler with policy validation
+        result = await router.route_tool(
             tool_name=tool_name,
             parameters=parameters,
             trace_id=trace_id,
@@ -89,7 +134,8 @@ class MCPProtocolHandler:
         Returns:
             MCP-formatted tool list response.
         """
-        tools = self._router.registry.list_tools()
+        router = self._ensure_router()
+        tools = router.registry.list_tools()
         return format_tool_list(tools)
 
     async def handle_request(self, request_data: dict[str, Any]) -> dict[str, Any]:

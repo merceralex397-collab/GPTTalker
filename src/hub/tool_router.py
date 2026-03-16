@@ -1,10 +1,15 @@
 """Tool routing primitives for MCP tool handlers."""
 
+from __future__ import annotations
+
 from collections.abc import Callable, Coroutine
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from src.shared.logging import get_logger
+
+if TYPE_CHECKING:
+    from src.hub.tool_routing.requirements import PolicyRequirement
 
 logger = get_logger(__name__)
 
@@ -15,12 +20,22 @@ ToolHandler = Callable[..., Coroutine[Any, Any, dict[str, Any]]]
 
 @dataclass
 class ToolDefinition:
-    """Definition of an MCP tool."""
+    """Definition of an MCP tool.
+
+    Attributes:
+        name: Tool name.
+        description: Tool description.
+        handler: Async handler function.
+        parameters: JSON schema for tool parameters.
+        policy: Policy requirements for access control (CORE-006).
+        requires_policy_check: Legacy field for backward compatibility.
+    """
 
     name: str
     description: str
     handler: ToolHandler
     parameters: dict[str, Any] = field(default_factory=dict)
+    policy: PolicyRequirement | None = None  # Policy requirements (CORE-006)
     requires_policy_check: bool = True  # Default: require policy validation
 
 
@@ -116,6 +131,20 @@ class ToolRegistry:
             True if the tool is registered, False otherwise.
         """
         return tool_name in self._tools
+
+    def get_policy_requirements(self, tool_name: str) -> PolicyRequirement | None:
+        """Get policy requirements for a tool.
+
+        Args:
+            tool_name: Name of the tool.
+
+        Returns:
+            PolicyRequirement if defined, None otherwise.
+        """
+        definition = self._tools.get(tool_name)
+        if definition is None:
+            return None
+        return definition.policy
 
     @property
     def tool_count(self) -> int:

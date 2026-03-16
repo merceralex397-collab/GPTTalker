@@ -168,6 +168,198 @@
       "stage": "qa",
       "summary": "QA verification for SETUP-005: Test, lint, and local validation scaffold. All 3 acceptance criteria passed - validation commands wired, test package layout correct, ruff and pytest configured properly.",
       "created_at": "2026-03-16T14:09:37.311Z"
+    },
+    {
+      "ticket_id": "CORE-001",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-001-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-001: Node registry and node health model. Defines health metadata model (NodeHealth), health polling service (NodeHealthService), fail-closed policy engine (NodePolicy), database migration for health columns, and integration points with existing SQLite and FastAPI layers.",
+      "created_at": "2026-03-16T14:56:35.729Z"
+    },
+    {
+      "ticket_id": "CORE-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-001: Node registry and node health model. Created NodeHealth and NodeHealthService classes for health polling, NodePolicy for fail-closed access control, updated node repository with health methods, added migration v2 for health columns, and integrated DI providers.",
+      "created_at": "2026-03-16T15:06:16.568Z"
+    },
+    {
+      "ticket_id": "CORE-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-001-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CORE-001: Node registry and node health model. APPROVED with observations. All 3 acceptance criteria met. Medium severity issue: incorrect latency measurement in health check. Low severity: missing trace_id, unused NodeHealthDetail schema. Implementation is production-ready with proper fail-closed behavior.",
+      "created_at": "2026-03-16T15:08:39.468Z"
+    },
+    {
+      "ticket_id": "CORE-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-001: Node registry and node health model. All 3 acceptance criteria verified - node registry schema defined via migration v2, health metadata model explicit with NodeHealth/NodeHealthStatus/NodeHealthDetail, fail-closed behavior confirmed in NodePolicy.validate_node_access().",
+      "created_at": "2026-03-16T15:14:27.547Z"
+    },
+    {
+      "ticket_id": "CORE-002",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-002-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-002: Repo, write-target, and LLM service registries. Documents that tables/models/repositories already exist from SETUP-003, and defines the new work scope: DI providers for repositories in dependencies.py, and fail-closed policy classes (RepoPolicy, WriteTargetPolicy, LLMServicePolicy). Includes schema design, CRUD operations, implementation steps for 5 code files, validation plan, and integration points with later tickets.",
+      "created_at": "2026-03-16T15:19:49.438Z"
+    },
+    {
+      "ticket_id": "CORE-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CORE-002: APPROVED. All 3 acceptance criteria met (models already exist from SETUP-003). Policy classes are technically sound with proper async/await, fail-closed behavior, and structured logging. DI providers correctly integrate with existing dependencies.py pattern. No blockers or missing decisions.",
+      "created_at": "2026-03-16T15:22:09.273Z"
+    },
+    {
+      "ticket_id": "CORE-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-002: Created 3 policy classes (RepoPolicy, WriteTargetPolicy, LLMServicePolicy) for fail-closed validation, and added 6 DI providers in dependencies.py for repositories and policies.",
+      "created_at": "2026-03-16T15:26:22.254Z"
+    },
+    {
+      "ticket_id": "CORE-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-002: All 3 acceptance criteria verified - models exist in src/shared/models.py, DI providers added to dependencies.py, policy classes created and linting passes.",
+      "created_at": "2026-03-16T15:27:35.108Z"
+    },
+    {
+      "ticket_id": "CORE-003",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-003-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-003: Node agent service skeleton. Defines FastAPI app shell with lifespan management, health endpoint (/health) with explicit response schema, executor integration with bounded path validation, and logging integration using shared modules. Creates 6 new files (dependencies.py, lifespan.py, routes/*, models.py) and modifies 2 existing files (main.py, __init__.py). No blocking decisions remain.",
+      "created_at": "2026-03-16T15:44:45.842Z"
+    },
+    {
+      "ticket_id": "CORE-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-003: Created node agent service skeleton with FastAPI app, health endpoint, lifecycle management, DI providers, and operation stubs. All 6 new files and 2 modified files completed.",
+      "created_at": "2026-03-16T15:50:24.715Z"
+    },
+    {
+      "ticket_id": "CORE-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CORE-003: APPROVED FOR QA. Implementation matches plan, all 3 acceptance criteria satisfied. Medium issue: incorrect dependency injection type aliases. Low issues: duplicate HealthResponse model, redundant path field in WriteFileRequest. No blockers - can advance to QA.",
+      "created_at": "2026-03-16T15:52:03.902Z"
+    },
+    {
+      "ticket_id": "CORE-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-003: Node agent service skeleton. All 3 acceptance criteria verified via code inspection - package shape defined (10 files), health endpoint contract explicit, executor boundary separate from hub. Runtime validation skipped due to bash restriction.",
+      "created_at": "2026-03-16T15:54:04.405Z"
+    },
+    {
+      "ticket_id": "CORE-004",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-004-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-004: Hub-to-node client, auth, and health polling. Defines the HubNodeClient class, NodeAuthHandler for API key authentication, timeout configuration via HubConfig, HTTP client lifecycle in lifespan, and DI providers. Integrates with existing NodeHealthService. Addresses all 3 acceptance criteria: hub-to-node auth model enforced, explicit HTTP client timeouts, and health polling integration with node registry.",
+      "created_at": "2026-03-16T15:57:05.357Z"
+    },
+    {
+      "ticket_id": "CORE-004",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-004-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-004: Created hub-to-node HTTP client (HubNodeClient), authentication handler (NodeAuthHandler), updated config with timeout/pool settings, lifespan to initialize HTTP client, dependencies for DI, and integrated auth with node health service.",
+      "created_at": "2026-03-16T16:06:16.781Z"
+    },
+    {
+      "ticket_id": "CORE-004",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-004-review-review.md",
+      "stage": "review",
+      "summary": "Fix verification for CORE-004: All 3 claimed fixes confirmed - config attribute corrected, JSON error handling added, datetime deprecation resolved.",
+      "created_at": "2026-03-16T16:12:27.052Z"
+    },
+    {
+      "ticket_id": "CORE-004",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-004-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-004: All 3 acceptance criteria verified via code inspection. Hub-to-node auth model enforced (Bearer token), explicit HTTP client timeouts, and health polling integration with node registry confirmed.",
+      "created_at": "2026-03-16T16:14:04.262Z"
+    },
+    {
+      "ticket_id": "CORE-005",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-005-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-005: Policy engine and normalized path validation. Updated to include ValidationResult and PathValidationResult dataclass definitions with their required fields. Defines PathNormalizer utility, OperationScope/ValidationContext, PolicyEngine orchestration, and DI integration.",
+      "created_at": "2026-03-16T16:25:46.825Z"
+    },
+    {
+      "ticket_id": "CORE-005",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-005-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-005: Created PolicyEngine with path normalization utility (PathNormalizer), operation scope definitions (OperationScope, ValidationContext), and unified policy orchestration. Updated __init__.py exports and added DI provider in dependencies.py. All acceptance criteria met.",
+      "created_at": "2026-03-16T16:32:25.300Z"
+    },
+    {
+      "ticket_id": "CORE-005",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-005-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CORE-005: Policy engine and normalized path validation. APPROVED - all 3 acceptance criteria met (unknown target rejection, central path normalization, scope separation). Low-severity observations noted for scope naming and path check redundancy.",
+      "created_at": "2026-03-16T16:35:19.775Z"
+    },
+    {
+      "ticket_id": "CORE-005",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-005-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-005: All 3 acceptance criteria verified via code inspection - unknown targets rejected explicitly, path normalization centralized and reusable, read/write scopes cleanly separated.",
+      "created_at": "2026-03-16T16:37:36.543Z"
+    },
+    {
+      "ticket_id": "CORE-006",
+      "kind": "planning",
+      "path": ".opencode/state/plans/core-006-planning-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CORE-006: MCP tool routing framework. Defines policy-integrated tool routing with PolicyRequirement declarations, PolicyAwareToolRouter for policy validation before handler execution, and MCP-safe error formatting using JSON-RPC 2.0 error codes. Creates 4 new files and modifies 4 existing files.",
+      "created_at": "2026-03-16T16:41:10.399Z"
+    },
+    {
+      "ticket_id": "CORE-006",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/core-006-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CORE-006: Created MCP tool routing framework with PolicyAwareToolRouter, PolicyRequirement dataclass, MCP error formatting, and DI providers. Added policy field to ToolDefinition and updated MCPProtocolHandler to use policy-aware routing.",
+      "created_at": "2026-03-16T16:51:03.278Z"
+    },
+    {
+      "ticket_id": "CORE-006",
+      "kind": "review",
+      "path": ".opencode/state/reviews/core-006-review-review.md",
+      "stage": "review",
+      "summary": "Fix verification for CORE-006: Policy default now correctly returns READ_NODE_REQUIREMENT instead of None, enforcing fail-closed validation for all tools without explicit policy declarations.",
+      "created_at": "2026-03-16T16:58:50.919Z"
+    },
+    {
+      "ticket_id": "CORE-006",
+      "kind": "qa",
+      "path": ".opencode/state/qa/core-006-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CORE-006: All 3 acceptance criteria verified via code inspection - tool registration boundary defined, policy integration before execution confirmed, MCP-safe error formatting with JSON-RPC 2.0 codes implemented.",
+      "created_at": "2026-03-16T17:00:43.290Z"
     }
   ]
 }

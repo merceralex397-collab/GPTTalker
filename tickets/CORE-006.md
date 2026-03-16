@@ -19,11 +19,11 @@ hub-core
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- planning: .opencode/state/plans/core-006-planning-planning.md (planning) - Implementation plan for CORE-006: MCP tool routing framework. Defines policy-integrated tool routing with PolicyRequirement declarations, PolicyAwareToolRouter for policy validation before handler execution, and MCP-safe error formatting using JSON-RPC 2.0 error codes. Creates 4 new files and modifies 4 existing files.
+- implementation: .opencode/state/implementations/core-006-implementation-implementation.md (implementation) - Implementation of CORE-006: Created MCP tool routing framework with PolicyAwareToolRouter, PolicyRequirement dataclass, MCP error formatting, and DI providers. Added policy field to ToolDefinition and updated MCPProtocolHandler to use policy-aware routing.
+- review: .opencode/state/reviews/core-006-review-review.md (review) - Fix verification for CORE-006: Policy default now correctly returns READ_NODE_REQUIREMENT instead of None, enforcing fail-closed validation for all tools without explicit policy declarations.
+- qa: .opencode/state/qa/core-006-qa-qa.md (qa) - QA verification for CORE-006: All 3 acceptance criteria verified via code inspection - tool registration boundary defined, policy integration before execution confirmed, MCP-safe error formatting with JSON-RPC 2.0 codes implemented.
 
 ## Notes
 

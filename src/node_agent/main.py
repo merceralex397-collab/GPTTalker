@@ -1,33 +1,45 @@
 """Node agent service entrypoint."""
 
-import asyncio
+import uvicorn
+from fastapi import FastAPI
+
+from src.node_agent.lifespan import lifespan
+from src.node_agent.routes import health, operations
 
 
-async def main() -> None:
+def create_app() -> FastAPI:
+    """Create and configure the FastAPI application for the node agent.
+
+    Returns:
+        Configured FastAPI application instance.
     """
-    Main entrypoint for the node agent service.
+    app = FastAPI(
+        title="GPTTalker Node Agent",
+        description="Lightweight agent service for local repo operations",
+        version="1.0.0",
+        lifespan=lifespan,
+    )
 
-    This async function starts the node agent, registers handlers,
-    and begins listening for commands from the hub.
-    """
-    print("GPTTalker Node Agent starting...")
+    # Register routes
+    app.include_router(health.router, tags=["health"])
+    app.include_router(operations.router, tags=["operations"])
 
-    # TODO(CORE-003): Initialize config, logging, and health endpoint
-    # TODO(CORE-003): Set up Tailscale connectivity to hub
-    # TODO(CORE-003): Register bounded executor for local operations
+    return app
 
-    # Placeholder for running service
-    try:
-        while True:
-            await asyncio.sleep(1)
-    except asyncio.CancelledError:
-        print("Node Agent shutting down...")
+
+# Create app instance for uvicorn
+app = create_app()
 
 
 def run() -> None:
     """Run the node agent service."""
-    asyncio.run(main())
+    uvicorn.run(
+        "src.node_agent.main:app",
+        host="0.0.0.0",
+        port=8080,
+        reload=False,
+    )
 
 
-# TODO(CORE-003): Add health endpoint at /health
-# TODO(CORE-003): Add operation handlers: list_dir, read_file, search, git_status
+if __name__ == "__main__":
+    run()

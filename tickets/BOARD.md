@@ -7,12 +7,12 @@
 | 0 | SETUP-003 | Async SQLite persistence and migration baseline | storage | closeout | done | no | medium | SETUP-001 |
 | 0 | SETUP-004 | FastAPI hub app shell and MCP transport baseline | hub-core | closeout | done | no | high | SETUP-001, SETUP-002 |
 | 0 | SETUP-005 | Test, lint, and local validation scaffold | qa | closeout | done | yes | low | SETUP-001 |
-| 1 | CORE-001 | Node registry and node health model | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
-| 1 | CORE-002 | Repo, write-target, and LLM service registries | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
-| 1 | CORE-003 | Node agent service skeleton | node-agent | planning | todo | yes | low | SETUP-001, SETUP-002 |
-| 1 | CORE-004 | Hub-to-node client, auth, and health polling | node-connectivity | planning | todo | no | high | CORE-001, CORE-003 |
-| 1 | CORE-005 | Policy engine and normalized path validation | security | planning | todo | no | medium | SETUP-002, SETUP-004 |
-| 1 | CORE-006 | MCP tool routing framework | hub-core | planning | todo | no | high | SETUP-004, CORE-002, CORE-005 |
+| 1 | CORE-001 | Node registry and node health model | registry | closeout | done | no | medium | SETUP-003, SETUP-004 |
+| 1 | CORE-002 | Repo, write-target, and LLM service registries | registry | closeout | done | no | medium | SETUP-003, SETUP-004 |
+| 1 | CORE-003 | Node agent service skeleton | node-agent | closeout | done | yes | low | SETUP-001, SETUP-002 |
+| 1 | CORE-004 | Hub-to-node client, auth, and health polling | node-connectivity | closeout | done | no | high | CORE-001, CORE-003 |
+| 1 | CORE-005 | Policy engine and normalized path validation | security | closeout | done | no | medium | SETUP-002, SETUP-004 |
+| 1 | CORE-006 | MCP tool routing framework | hub-core | closeout | done | no | high | SETUP-004, CORE-002, CORE-005 |
 | 2 | REPO-001 | list_nodes and list_repos tools | repo-inspection | planning | todo | yes | low | CORE-001, CORE-004, CORE-006 |
 | 2 | REPO-002 | inspect_repo_tree and read_repo_file tools | repo-inspection | planning | todo | no | medium | CORE-004, CORE-005, CORE-006 |
 | 2 | REPO-003 | search_repo and git_status tools | repo-inspection | planning | todo | no | medium | REPO-002 |

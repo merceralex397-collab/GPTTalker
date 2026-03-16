@@ -29,13 +29,13 @@ The repo is operating with a ticketed OpenCode workflow.
 
 ## Current Ticket
 
-- ID: SETUP-005
-- Title: Test, lint, and local validation scaffold
-- Wave: 0
-- Lane: qa
+- ID: CORE-006
+- Title: MCP tool routing framework
+- Wave: 1
+- Lane: hub-core
 - Stage: closeout
 - Status: done
-- Parallel safe: yes
+- Parallel safe: no
 
 ## Validation Status
 
@@ -47,5 +47,5 @@ Update this section with project-specific validation results.
 
 ## Next Action
 
-Wave 0 complete! All 5 setup tickets done. Next: CORE tickets (CORE-001 through CORE-006) start with Node registry and health model
+Wave 1 complete! Next: REPO-001 (list_nodes and list_repos tools) in Wave 2
 <!-- SCAFFORGE:START_HERE_BLOCK END -->

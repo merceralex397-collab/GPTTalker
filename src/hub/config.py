@@ -33,6 +33,19 @@ class HubConfig(BaseSettings):
     # Node agent settings
     node_agent_timeout: int = Field(30, ge=1, description="Node agent request timeout in seconds")
 
+    # Node client settings (for hub-to-node communication)
+    node_client_timeout: float = Field(
+        30.0, ge=1.0, description="Default node request timeout in seconds"
+    )
+    node_client_connect_timeout: float = Field(
+        5.0, ge=0.1, description="Node connect timeout in seconds"
+    )
+    node_client_pool_max_connections: int = Field(
+        10, ge=1, description="Max connections per node pool"
+    )
+    node_client_pool_max_keepalive: int = Field(20, ge=1, description="Max keepalive connections")
+    node_client_api_key: str | None = Field(None, description="API key for node authentication")
+
     model_config = SettingsConfigDict(
         env_prefix="GPTTALKER_",
         extra="allow",

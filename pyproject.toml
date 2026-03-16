@@ -38,13 +38,14 @@ filterwarnings = ["ignore::DeprecationWarning"]
 target-version = "py311"
 line-length = 100
 select = ["E", "F", "W", "I", "N", "UP", "B", "C4"]
-ignore = ["E501"]
+ignore = ["E501", "B008"]  # B008: FastAPI Depends must be in function defaults
 
 [tool.ruff.isort]
 known-first-party = ["src"]
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["F401"]
+"**/dependencies.py" = ["B008"]  # FastAPI Depends must be in function defaults
 
 [tool.setuptools.packages.find]
 where = ["."]

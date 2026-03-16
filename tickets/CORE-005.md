@@ -19,11 +19,11 @@ security
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- planning: .opencode/state/plans/core-005-planning-planning.md (planning) - Implementation plan for CORE-005: Policy engine and normalized path validation. Updated to include ValidationResult and PathValidationResult dataclass definitions with their required fields. Defines PathNormalizer utility, OperationScope/ValidationContext, PolicyEngine orchestration, and DI integration.
+- implementation: .opencode/state/implementations/core-005-implementation-implementation.md (implementation) - Implementation of CORE-005: Created PolicyEngine with path normalization utility (PathNormalizer), operation scope definitions (OperationScope, ValidationContext), and unified policy orchestration. Updated __init__.py exports and added DI provider in dependencies.py. All acceptance criteria met.
+- review: .opencode/state/reviews/core-005-review-review.md (review) - Code review for CORE-005: Policy engine and normalized path validation. APPROVED - all 3 acceptance criteria met (unknown target rejection, central path normalization, scope separation). Low-severity observations noted for scope naming and path check redundancy.
+- qa: .opencode/state/qa/core-005-qa-qa.md (qa) - QA verification for CORE-005: All 3 acceptance criteria verified via code inspection - unknown targets rejected explicitly, path normalization centralized and reusable, read/write scopes cleanly separated.
 
 ## Notes
 
