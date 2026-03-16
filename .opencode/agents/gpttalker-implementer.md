@@ -1,5 +1,5 @@
 ---
-description: Hidden implementer for approved ticket work
+description: Cross-cutting implementer for shared runtime, workflow tooling, and repo-level GPTTalker changes
 model: minimax-coding-plan/minimax-m2.5
 mode: subagent
 hidden: true
@@ -38,17 +38,13 @@ permission:
     "tail *": allow
     "git status*": allow
     "git diff*": allow
-    "npm *": allow
-    "pnpm *": allow
-    "yarn *": allow
-    "bun *": allow
-    "node *": allow
     "python *": allow
     "pytest *": allow
     "uv *": allow
-    "cargo *": allow
-    "go *": allow
-    "make *": allow
+    "pip *": allow
+    "ruff *": allow
+    "node *": allow
+    "npm *": allow
     "rm *": deny
     "git reset *": deny
     "git clean *": deny
@@ -56,6 +52,8 @@ permission:
 ---
 
 Implement only the approved plan for the assigned ticket.
+
+Use this agent for cross-cutting GPTTalker work such as shared runtime primitives, repo-level scaffolding, workflow tooling, testing infrastructure, or tasks that legitimately span hub, node-agent, and context code.
 
 Return:
 
@@ -73,4 +71,3 @@ Rules:
 - stop when you hit a blocker instead of improvising around missing requirements
 - if the approved plan still leaves a material choice unresolved, return a blocker instead of deciding it ad hoc
 - do not stop at a summary before the implementation artifact exists unless you are returning an explicit blocker
-

@@ -1,38 +1,46 @@
-# SETUP-002: Hub FastAPI application skeleton
+    # SETUP-002: Shared schemas, config loading, and structured logging
 
-## Summary
+    ## Summary
 
-Create the main FastAPI application for the GPTTalker hub server. This includes the app factory with startup/shutdown lifecycle hooks, a health check endpoint, configuration loading from a YAML or TOML config file, and a uvicorn entrypoint for running the server. This skeleton becomes the foundation for all hub-side MCP tools and API endpoints.
+    Establish shared Pydantic models, configuration loading patterns, trace-id propagation, and structured logging helpers used by both the hub and node agents.
 
-## Stage
+    ## Wave
 
-planning
+    0
 
-## Status
+    ## Lane
 
-todo
+    shared-runtime
 
-## Depends On
+    ## Parallel Safety
 
-- SETUP-001
+    - parallel_safe: false
+    - overlap_risk: medium
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] FastAPI app factory function exists at src/hub/app.py
-- [ ] Startup hook logs server start and initializes shared resources
-- [ ] Shutdown hook cleans up resources gracefully
-- [ ] GET /health returns {"status": "ok", "version": "..."} with 200
-- [ ] Configuration loads from config.toml or config.yaml with sensible defaults
-- [ ] Config model defined with Pydantic for validation
-- [ ] uvicorn entrypoint exists (python -m hub or hub CLI)
-- [ ] Server starts and responds to health check
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Config should support: host, port, db_path, log_level, tailscale settings
-- Use lifespan context manager (modern FastAPI pattern) over on_event decorators
-- Keep CORS and middleware minimal until needed
+    SETUP-001
+
+    ## Acceptance Criteria
+
+    - [ ] Shared request/response models are planned for hub and node-agent boundaries
+- [ ] Configuration loading pattern is defined for runtime services
+- [ ] Structured logging conventions match the canonical brief
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

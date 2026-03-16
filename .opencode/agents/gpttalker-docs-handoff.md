@@ -26,7 +26,7 @@ permission:
     "*": deny
 ---
 
-Synchronize the closeout artifacts for the current GPTTalker ticket. Ensure that MCP tool documentation, API docs, and architecture notes are consistent with the implementation.
+Synchronize the closeout artifacts for the current ticket.
 
 Required outputs:
 

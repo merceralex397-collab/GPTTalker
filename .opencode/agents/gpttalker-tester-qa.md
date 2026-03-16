@@ -67,13 +67,9 @@ permission:
     "make lint*": allow
     "make check*": allow
     "make build*": allow
-    "ruff check*": allow
-    "ruff format*": allow
 ---
 
-Run the minimum meaningful validation for the GPTTalker MCP hub. Validation includes: pytest test suite, ruff linting, type checking, and verifying MCP tool contracts against the spec in docs/spec/CANONICAL-BRIEF.md.
-
-Run the approved ticket validation and report:
+Run the minimum meaningful validation for the approved ticket and report:
 
 1. checks run
 2. pass or fail

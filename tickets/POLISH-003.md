@@ -1,41 +1,46 @@
-# POLISH-003: API and MCP tool documentation
+    # POLISH-003: README, API docs, and handoff hardening
 
-## Summary
+    ## Summary
 
-Create complete documentation for all MCP tools, configuration options, and deployment procedures. Include a tool reference with input/output schemas, a configuration guide covering all config file options, and a deployment guide with step-by-step Tailscale + Cloudflare Tunnel setup instructions.
+    Finalize repository-facing documentation, API references, and handoff surfaces so the finished project is easy to operate and resume.
 
-## Stage
+    ## Wave
 
-planning
+    6
 
-## Status
+    ## Lane
 
-blocked
+    docs
 
-## Depends On
+    ## Parallel Safety
 
-- POLISH-002
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] MCP tool reference: every tool documented with description, inputs, outputs, examples
-- [ ] Tool reference includes error responses and edge cases
-- [ ] Configuration guide: all config file options with defaults and descriptions
-- [ ] Hub configuration reference (config.toml)
-- [ ] Node agent configuration reference (node-config.toml)
-- [ ] Deployment guide: prerequisites, installation, configuration, startup
-- [ ] Tailscale setup: network creation, node joining, IP assignment
-- [ ] Cloudflare Tunnel setup: tunnel creation, DNS, access policies
-- [ ] Troubleshooting section: common issues and solutions
-- [ ] Architecture overview with diagrams
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Documentation should be in docs/ directory as markdown files
-- Tool reference is the most important doc — ChatGPT users need to know what tools exist
-- Consider generating tool reference from MCP tool definitions (schema → docs)
-- Deployment guide should cover both single-machine dev and multi-machine production
+    POLISH-001
+
+    ## Acceptance Criteria
+
+    - [ ] README reflects the implemented system
+- [ ] API and tool docs are aligned with reality
+- [ ] Handoff surfaces remain concise and current
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

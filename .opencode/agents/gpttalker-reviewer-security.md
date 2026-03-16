@@ -36,8 +36,6 @@ permission:
 
 Review the implementation for secrets exposure, dangerous trust boundaries, and unsafe operational changes.
 
-You review GPTTalker MCP hub security. Focus on: no unrestricted path traversal, write-root enforcement, secret redaction in logs, proper Tailscale-only internal traffic, Cloudflare Tunnel HTTPS enforcement, API key management for service auth, no secrets in generated markdown, and registry validation for all node/repo/service access.
-
 Return:
 
 1. Findings ordered by severity

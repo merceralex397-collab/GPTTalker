@@ -1,126 +1,38 @@
-# GPTTalker — Ticket Board
+# Ticket Board
 
-> **Active ticket:** `SETUP-001`
-> **Total tickets:** 39 | **Todo:** 35 | **Blocked:** 4 | **Done:** 0
-
----
-
-## Wave 0: Foundation
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [SETUP-001](SETUP-001.md) | Project skeleton and dependencies | 🟡 todo | — |
-| [SETUP-002](SETUP-002.md) | Hub FastAPI application skeleton | 🟡 todo | SETUP-001 |
-| [SETUP-003](SETUP-003.md) | SQLite database layer | 🟡 todo | SETUP-001 |
-| [SETUP-004](SETUP-004.md) | Logging and error handling | 🟡 todo | SETUP-002 |
-| [SETUP-005](SETUP-005.md) | Test infrastructure | 🟡 todo | SETUP-001 |
-
-## Wave 1: Core Infrastructure
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [CORE-001](CORE-001.md) | Node registry and management | 🟡 todo | SETUP-003, SETUP-002 |
-| [CORE-002](CORE-002.md) | Node agent service skeleton | 🟡 todo | SETUP-001 |
-| [CORE-003](CORE-003.md) | Hub-to-node connectivity layer | 🟡 todo | CORE-001, CORE-002 |
-| [CORE-004](CORE-004.md) | Repo registry and validation | 🟡 todo | CORE-001, SETUP-003 |
-| [CORE-005](CORE-005.md) | Write-target registry | 🟡 todo | CORE-001, SETUP-003 |
-| [CORE-006](CORE-006.md) | LLM service registry | 🟡 todo | CORE-001, SETUP-003 |
-| [CORE-007](CORE-007.md) | MCP protocol layer | 🟡 todo | SETUP-002, SETUP-004 |
-
-## Wave 2: Repo Inspection
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [REPO-001](REPO-001.md) | inspect_repo_tree tool | 🟡 todo | CORE-003, CORE-004 |
-| [REPO-002](REPO-002.md) | read_repo_file tool | 🟡 todo | CORE-003, CORE-004 |
-| [REPO-003](REPO-003.md) | search_repo tool | 🟡 todo | CORE-003, CORE-004 |
-| [REPO-004](REPO-004.md) | git_status tool | 🟡 todo | CORE-003, CORE-004 |
-
-## Wave 3: Markdown Delivery
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [WRITE-001](WRITE-001.md) | write_markdown tool | 🟡 todo | CORE-003, CORE-005 |
-
-## Wave 4: LLM Bridge
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [LLM-001](LLM-001.md) | chat_llm tool | 🟡 todo | CORE-003, CORE-006 |
-| [LLM-002](LLM-002.md) | OpenCode adapter | 🟡 todo | LLM-001 |
-| [LLM-003](LLM-003.md) | General and helper model adapters | 🟡 todo | LLM-001 |
-| [LLM-004](LLM-004.md) | Embedding service adapter | 🟡 todo | LLM-001 |
-
-## Wave 5: Project Context
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [CTX-001](CTX-001.md) | Qdrant integration | 🟡 todo | CORE-006, LLM-004 |
-| [CTX-002](CTX-002.md) | index_repo tool | 🟡 todo | CTX-001, REPO-001, REPO-002 |
-| [CTX-003](CTX-003.md) | get_project_context tool | 🟡 todo | CTX-001, CTX-002 |
-| [CTX-004](CTX-004.md) | Issue tracking tools | 🟡 todo | CTX-001, SETUP-003 |
-| [CTX-005](CTX-005.md) | Context bundle generation | 🟡 todo | CTX-003 |
-
-## Wave 6: Cross-Repo Intelligence
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [XREPO-001](XREPO-001.md) | Global search | 🟡 todo | CTX-002 |
-| [XREPO-002](XREPO-002.md) | Repo relationships | 🟡 todo | CORE-004, SETUP-003 |
-| [XREPO-003](XREPO-003.md) | Project landscape and architecture maps | 🟡 todo | XREPO-001, XREPO-002 |
-
-## Wave 7: Distributed LLM Routing
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [SCHED-001](SCHED-001.md) | Task classification | 🟡 todo | CORE-006 |
-| [SCHED-002](SCHED-002.md) | Scheduler and routing engine | 🟡 todo | SCHED-001, CORE-006 |
-
-## Wave 8: Observability
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [OBS-001](OBS-001.md) | Task history system | 🟡 todo | SETUP-003, SETUP-004 |
-| [OBS-002](OBS-002.md) | History query tools | 🟡 todo | OBS-001 |
-| [OBS-003](OBS-003.md) | Issue timeline | 🟡 todo | CTX-004, OBS-001 |
-
-## Wave 9: Public Edge
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [EDGE-001](EDGE-001.md) | Cloudflare Tunnel integration | 🟡 todo | SETUP-002 |
-
-## Wave 10: Polish
-
-| ID | Title | Status | Depends On |
-|----|-------|--------|------------|
-| [POLISH-001](POLISH-001.md) | Error handling hardening | 🔴 blocked | CORE-007, REPO-001, LLM-001, CTX-003 |
-| [POLISH-002](POLISH-002.md) | End-to-end integration tests | 🔴 blocked | POLISH-001 |
-| [POLISH-003](POLISH-003.md) | API and MCP tool documentation | 🔴 blocked | POLISH-002 |
-| [POLISH-004](POLISH-004.md) | Scheduled indexing | 🔴 blocked | CTX-002 |
-
----
-
-## Dependency Graph (Critical Path)
-
-```
-SETUP-001 ──┬── SETUP-002 ──┬── SETUP-004 ── CORE-007
-            │               │
-            │               ├── CORE-001 ──┬── CORE-003 ──┬── REPO-001..004
-            │               │              │              ├── WRITE-001
-            │               │              │              └── LLM-001 ──┬── LLM-002..004
-            │               │              │                            └── CTX-001 ── CTX-002 ── CTX-003 ── CTX-005
-            │               │              ├── CORE-004
-            │               │              ├── CORE-005
-            │               │              └── CORE-006 ── SCHED-001 ── SCHED-002
-            │               │
-            │               └── EDGE-001
-            │
-            ├── SETUP-003 ──┘
-            ├── SETUP-005
-            └── CORE-002 ───┘
-```
-
-## Ready to Start (no unmet dependencies)
-
-- **SETUP-001**: Project skeleton and dependencies
+| Wave | ID | Title | Lane | Stage | Status | Parallel Safe | Overlap Risk | Depends On |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0 | SETUP-001 | Project skeleton and dependency baseline | repo-foundation | planning | ready | no | high | - |
+| 0 | SETUP-002 | Shared schemas, config loading, and structured logging | shared-runtime | planning | todo | no | medium | SETUP-001 |
+| 0 | SETUP-003 | Async SQLite persistence and migration baseline | storage | planning | todo | no | medium | SETUP-001 |
+| 0 | SETUP-004 | FastAPI hub app shell and MCP transport baseline | hub-core | planning | todo | no | high | SETUP-001, SETUP-002 |
+| 0 | SETUP-005 | Test, lint, and local validation scaffold | qa | planning | todo | yes | low | SETUP-001 |
+| 1 | CORE-001 | Node registry and node health model | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
+| 1 | CORE-002 | Repo, write-target, and LLM service registries | registry | planning | todo | no | medium | SETUP-003, SETUP-004 |
+| 1 | CORE-003 | Node agent service skeleton | node-agent | planning | todo | yes | low | SETUP-001, SETUP-002 |
+| 1 | CORE-004 | Hub-to-node client, auth, and health polling | node-connectivity | planning | todo | no | high | CORE-001, CORE-003 |
+| 1 | CORE-005 | Policy engine and normalized path validation | security | planning | todo | no | medium | SETUP-002, SETUP-004 |
+| 1 | CORE-006 | MCP tool routing framework | hub-core | planning | todo | no | high | SETUP-004, CORE-002, CORE-005 |
+| 2 | REPO-001 | list_nodes and list_repos tools | repo-inspection | planning | todo | yes | low | CORE-001, CORE-004, CORE-006 |
+| 2 | REPO-002 | inspect_repo_tree and read_repo_file tools | repo-inspection | planning | todo | no | medium | CORE-004, CORE-005, CORE-006 |
+| 2 | REPO-003 | search_repo and git_status tools | repo-inspection | planning | todo | no | medium | REPO-002 |
+| 2 | WRITE-001 | write_markdown with atomic scoped writes | markdown | planning | todo | yes | low | CORE-002, CORE-004, CORE-005, CORE-006 |
+| 2 | LLM-001 | chat_llm base routing and service registry integration | llm-routing | planning | todo | no | high | CORE-002, CORE-004, CORE-006 |
+| 3 | LLM-002 | OpenCode adapter and session-aware coding-agent routing | llm-routing | planning | todo | no | medium | LLM-001 |
+| 3 | LLM-003 | Helper-model and embedding-service adapters | llm-routing | planning | todo | yes | low | LLM-001 |
+| 3 | CTX-001 | Qdrant integration and context storage schema | context | planning | todo | no | high | SETUP-003, LLM-003 |
+| 3 | CTX-002 | index_repo pipeline and content-hash tracking | context | planning | todo | no | high | CTX-001, REPO-002 |
+| 3 | CTX-003 | get_project_context and known-issue records | context | planning | todo | no | medium | CTX-001, CTX-002 |
+| 3 | CTX-004 | Context bundles and recurring-issue workflows | context | planning | todo | yes | low | CTX-003 |
+| 4 | XREPO-001 | Cross-repo search and global context query | cross-repo | planning | todo | no | medium | CTX-002, CTX-003 |
+| 4 | XREPO-002 | Repo relationships and landscape metadata | cross-repo | planning | todo | yes | low | CORE-002, CTX-001 |
+| 4 | XREPO-003 | Architecture map and project landscape outputs | cross-repo | planning | todo | no | medium | XREPO-001, XREPO-002 |
+| 4 | SCHED-001 | Task classification and routing policy | scheduler | planning | todo | yes | low | LLM-001, CORE-002 |
+| 4 | SCHED-002 | Distributed scheduler, node selection, and fallback | scheduler | planning | todo | no | high | SCHED-001, CORE-004, LLM-002 |
+| 5 | OBS-001 | Task history, generated-doc log, and audit schema | observability | planning | todo | yes | low | SETUP-003, SETUP-002 |
+| 5 | OBS-002 | Task detail, doc history, and issue timeline tools | observability | planning | todo | no | medium | OBS-001, CTX-003 |
+| 5 | EDGE-001 | Cloudflare Tunnel integration and public-edge config | edge | planning | todo | yes | low | SETUP-004, CORE-005 |
+| 5 | EDGE-002 | Node registration bootstrap and operator config docs | edge | planning | todo | yes | low | CORE-001, CORE-003, EDGE-001 |
+| 6 | POLISH-001 | Contract tests for MCP tools and failure modes | qa | planning | todo | no | high | REPO-003, WRITE-001, LLM-002, CTX-003, OBS-002 |
+| 6 | POLISH-002 | Security regression tests and redaction hardening | qa | planning | todo | no | medium | CORE-005, OBS-001, POLISH-001 |
+| 6 | POLISH-003 | README, API docs, and handoff hardening | docs | planning | todo | yes | low | POLISH-001 |

@@ -1,26 +1,23 @@
 ---
 name: workflow-observability
-description: Inspect bootstrap provenance, invocation tracking, and workflow state to explain which repo-local agents, tools, plugins, and skills are actually being exercised in GPTTalker.
+description: Inspect GPTTalker’s bootstrap provenance, workflow state, invocation logs, and migration state when auditing repo health.
 ---
 
 # Workflow Observability
 
-Before auditing the setup, call `skill_ping` with `skill_id: "workflow-observability"` and `scope: "project"`.
+Before using this guidance, call `skill_ping` with `skill_id: "workflow-observability"` and `scope: "project"`.
 
-Read these in order:
+## Inspect these first
 
-1. `.opencode/meta/bootstrap-provenance.json`
-2. `.opencode/state/invocation-log.jsonl` if it exists
-3. `.opencode/state/last-ticket-event.json` if it exists
-4. `.opencode/state/workflow-state.json`
-5. `tickets/manifest.json`
+- `.opencode/meta/bootstrap-provenance.json`
+- `.opencode/state/workflow-state.json`
+- `.opencode/state/artifacts/registry.json`
+- `.opencode/state/invocation-log.jsonl` when it exists
+- `.opencode/state/last-ticket-event.json` when it exists
 
-Return these sections:
+## Use cases
 
-1. `Bootstrap`
-2. `Observed Usage`
-3. `Missing Or Never-Seen Surfaces`
-4. `Workflow Drift Risks`
-5. `Next Fix`
-
-If `.opencode/state/invocation-log.jsonl` does not exist yet, say `no invocation data yet` explicitly instead of implying the setup is healthy.
+- confirm process-version and retrofit history
+- determine whether post-migration verification is still active
+- identify unused or never-seen tools, agents, or skills
+- confirm the active ticket and most recent state transitions

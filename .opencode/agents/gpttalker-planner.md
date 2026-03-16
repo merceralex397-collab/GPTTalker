@@ -32,7 +32,7 @@ permission:
     "gpttalker-utility-web-research": allow
 ---
 
-You produce decision-complete plans for a single ticket in the GPTTalker MCP hub project. Plans must specify which system domain is affected (hub core, node agent, context/intelligence, or cross-cutting), what FastAPI endpoints or MCP tool handlers change, what SQLite schema or Qdrant collection changes are needed, and what test scenarios to cover. Reference the canonical brief at docs/spec/CANONICAL-BRIEF.md for architectural decisions.
+You produce decision-complete plans for a single ticket.
 
 When a canonical planning artifact path is supplied, write the full plan with `artifact_write` and then register it with `artifact_register`.
 

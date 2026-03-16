@@ -10,10 +10,11 @@ Use the project-local surfaces this way:
 
 Important workflow tools:
 
-- `ticket_lookup` resolves the active ticket and current workflow state
+- `ticket_lookup` resolves the active ticket, artifact summary, and process-verification state
 - `ticket_update` changes coarse queue state and workflow approval state
 - `artifact_write` writes the full body for a canonical stage artifact in the stage-specific directory for that stage
 - `artifact_register` records metadata for an artifact that was already written at the canonical path
+- `ticket_create` creates guarded follow-up tickets during a migration verification window and requires registered verifier proof
 - `context_snapshot` refreshes the compact restart surface
 - `handoff_publish` refreshes the top-level handoff
 - `skill_ping` records explicit local or global skill use in `.opencode/state/invocation-log.jsonl`
@@ -22,6 +23,6 @@ Tracking surfaces:
 
 - `tickets/manifest.json` stores queue state and registered artifact metadata for each ticket
 - `.opencode/state/artifacts/registry.json` stores the cross-ticket artifact registry
-- `.opencode/state/workflow-state.json` stores transient approval and current-stage state
+- `.opencode/state/workflow-state.json` stores transient approval, current-stage state, parallel mode, and process-version state
 - `.opencode/plugins/invocation-tracker.ts` logs chat, command, and tool execution events
-- `.opencode/meta/bootstrap-provenance.json` records how the OpenCode layer was generated or retrofitted
+- `.opencode/meta/bootstrap-provenance.json` records how the OpenCode layer was generated and later replaced or repaired

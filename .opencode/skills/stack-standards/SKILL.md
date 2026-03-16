@@ -1,83 +1,28 @@
 ---
 name: stack-standards
-description: Enforce GPTTalker's Python + FastAPI engineering standards. Use when planning or implementing work to ensure correct language features, framework patterns, validation, testing, and tooling conventions.
+description: Hold GPTTalker’s project-local standards for Python, FastAPI, SQLite, Qdrant, validation, and runtime safety.
 ---
 
-# Stack Standards — GPTTalker
+# Stack Standards
 
-## Language & Runtime
+Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
 
-- **Python 3.11+** — use modern syntax (match/case, `type` aliases, `ExceptionGroup` when appropriate)
-- **Full type hints everywhere** — all function signatures, return types, and variable annotations where non-obvious
-- No `Any` unless genuinely unavoidable; prefer `Union`, `TypeVar`, or protocol types
+Current scaffold mode: `Python + FastAPI`
 
-## Framework — FastAPI
+## Engineering rules
 
-- All endpoints are **async** (`async def`)
-- Use **Pydantic v2** models for all request bodies, response models, and internal data structures
-- Define response models explicitly on route decorators: `@router.post("/foo", response_model=FooResponse)`
-- Use `Depends()` for dependency injection (DB sessions, auth, registries)
-- Use `HTTPException` with appropriate status codes; never return bare dicts for errors
+- Python 3.11+ with explicit type hints
+- FastAPI async handlers only
+- Pydantic models for API boundaries
+- `aiosqlite` for async structured storage
+- `httpx.AsyncClient` with explicit timeouts for outbound HTTP
+- Qdrant for semantic project context
+- structured logging with redaction
+- fail closed on unknown nodes, repos, write targets, or model aliases
 
-## Database — SQLite via aiosqlite
+## Validation commands
 
-- All database access through **aiosqlite** (async)
-- Use parameterized queries exclusively — never string-interpolate SQL
-- Migrations managed explicitly (SQL files or a lightweight migration tool)
-- Connection pooling via a shared async context manager
-
-## HTTP Client — httpx
-
-- All outbound HTTP (hub-to-node, hub-to-LLM) uses **httpx.AsyncClient**
-- Set explicit timeouts on every request
-- Use connection pooling (shared client instances, not per-request)
-- Hub-to-node communication always goes over Tailscale addresses
-
-## Vector Store — qdrant-client
-
-- Use the async Qdrant client (`qdrant_client.async_qdrant_client`)
-- Collection naming: one collection per indexed repo, plus a global cross-repo collection
-- Always include metadata payloads (repo, file path, chunk index) with vectors
-
-## Logging — structlog
-
-- Use **structlog** for all logging
-- Bind trace IDs at request entry and propagate through the call chain
-- Log levels: `debug` for internal flow, `info` for operations, `warning` for recoverable issues, `error` for failures
-- Never log secrets, tokens, or full request bodies in production
-
-## Linting & Formatting
-
-- **ruff** is the single linter and formatter
-- Lint: `ruff check .`
-- Format: `ruff format .`
-- Fix auto-fixable issues: `ruff check . --fix`
-- All code must pass `ruff check` with zero errors before merge
-
-## Testing
-
-- **pytest** with **pytest-asyncio** for async test support
-- Run all tests: `pytest`
-- Stop on first failure: `pytest -x`
-- Test files live alongside source or in a `tests/` directory mirroring `src/`
-- Use `httpx.AsyncClient` with FastAPI's `TestClient` (via `ASGITransport`) for integration tests
-- Mock external services (Qdrant, node agents, LLMs) in unit tests
-
-## Package Management
-
-- **uv** preferred, **pip** as fallback
-- Dependencies declared in `pyproject.toml`
-- Lock file committed to repo
-
-## MCP Tool Handler Rules
-
-- All MCP tool handlers **validate inputs against registries** before executing
-- Unknown repo names, node IDs, or write targets → reject with a clear error, never guess
-- All tool calls **logged with trace IDs** via structlog
-- **Fail closed** on unknown targets — if a target cannot be resolved, return an error rather than attempting a fallback
-
-## Import Conventions
-
-- Standard library → third-party → local, separated by blank lines
-- Use absolute imports from package root (`from src.hub.registry import node_registry`)
-- No wildcard imports (`from x import *`)
+- `ruff check .`
+- `ruff format --check .`
+- `pytest`
+- additional ticket-specific validation may include `uv run pytest` or focused test modules

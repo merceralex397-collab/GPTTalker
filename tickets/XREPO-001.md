@@ -1,41 +1,46 @@
-# XREPO-001: Global search
+    # XREPO-001: Cross-repo search and global context query
 
-## Summary
+    ## Summary
 
-Implement cross-repository search tools that allow ChatGPT to search across all indexed repositories simultaneously. Provide search_across_repos for text/code search and search_global_context for semantic search across all Qdrant collections. Combine keyword and semantic results for comprehensive cross-project discovery.
+    Implement global context and search flows that aggregate approved results across multiple indexed repos.
 
-## Stage
+    ## Wave
 
-planning
+    4
 
-## Status
+    ## Lane
 
-todo
+    cross-repo
 
-## Depends On
+    ## Parallel Safety
 
-- CTX-002
+    - parallel_safe: false
+    - overlap_risk: medium
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] search_across_repos MCP tool: text search across multiple repos
-- [ ] search_global_context MCP tool: semantic search across all Qdrant collections
-- [ ] Cross-collection Qdrant queries with repo metadata in results
-- [ ] Combined keyword + semantic result ranking
-- [ ] Results grouped by repository with relevance scores
-- [ ] Configurable repo filter (search specific subset or all)
-- [ ] Result limit and pagination support
-- [ ] Response includes: results, repos_searched, total_matches
-- [ ] Performance: parallel queries across repos/collections
-- [ ] Unit tests with mocked multi-repo data
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- search_across_repos fans out to node agents for ripgrep (parallel)
-- search_global_context queries Qdrant global collection + per-repo collections
-- Consider capping concurrent node queries to prevent overwhelming the network
-- Results should clearly identify which repo each result comes from
+    CTX-002, CTX-003
+
+    ## Acceptance Criteria
+
+    - [ ] Cross-repo query path is defined
+- [ ] Per-repo access controls still apply
+- [ ] Returned results keep repo-level provenance
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

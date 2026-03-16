@@ -1,39 +1,46 @@
-# SETUP-005: Test infrastructure
+    # SETUP-005: Test, lint, and local validation scaffold
 
-## Summary
+    ## Summary
 
-Set up the testing infrastructure for GPTTalker with pytest, async test support, and standard fixtures. Configure ruff for linting and formatting. Provide reusable test fixtures for in-memory SQLite databases and FastAPI test clients so that all subsequent feature tickets can write tests efficiently.
+    Set up the repository validation baseline so future tickets can run pytest and ruff with predictable local conventions.
 
-## Stage
+    ## Wave
 
-planning
+    0
 
-## Status
+    ## Lane
 
-todo
+    qa
 
-## Depends On
+    ## Parallel Safety
 
-- SETUP-001
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] pytest.ini or pyproject.toml [tool.pytest] section configured
-- [ ] pytest-asyncio installed and configured for async test support
-- [ ] Fixture: in-memory SQLite database with schema applied
-- [ ] Fixture: FastAPI TestClient with app and database wired
-- [ ] Fixture: sample node, repo, and write-target data
-- [ ] ruff.toml or pyproject.toml [tool.ruff] section configured with sensible rules
-- [ ] `pytest` runs successfully with zero tests (no collection errors)
-- [ ] `ruff check src/` runs clean on skeleton code
-- [ ] CI-friendly: tests can run without external services
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Use anyio backend for pytest-asyncio to match FastAPI's async model
-- httpx.AsyncClient preferred over Starlette TestClient for async test support
-- Consider conftest.py hierarchy: root, hub, node_agent
+    SETUP-001
+
+    ## Acceptance Criteria
+
+    - [ ] Validation commands are documented and wired
+- [ ] Test package layout is planned
+- [ ] Ruff and pytest expectations match the brief
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

@@ -1,39 +1,46 @@
-# XREPO-002: Repo relationships
+    # XREPO-002: Repo relationships and landscape metadata
 
-## Summary
+    ## Summary
 
-Implement repository relationship tracking and the list_related_repos MCP tool. Allow registration of relationships between repositories (dependency, ownership, related, fork) and provide tools for ChatGPT to understand how projects connect to each other across the development environment.
+    Track repo-to-repo relationships and shared metadata needed for landscape views and architecture-level navigation.
 
-## Stage
+    ## Wave
 
-planning
+    4
 
-## Status
+    ## Lane
 
-todo
+    cross-repo
 
-## Depends On
+    ## Parallel Safety
 
-- CORE-004
-- SETUP-003
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] Repo relationship model: id, source_repo_id, target_repo_id, relationship_type, metadata, created_at
-- [ ] Relationship types: depends_on, dependency_of, related, fork_of, monorepo_member
-- [ ] Register relationship endpoint
-- [ ] list_related_repos MCP tool: given a repo alias, return related repos with relationship types
-- [ ] Bidirectional relationship queries (A depends on B → B is dependency of A)
-- [ ] Relationship metadata: version constraint, shared owner, etc.
-- [ ] Prevent duplicate relationships
-- [ ] Unit tests for relationship CRUD and queries
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Relationships can be manually registered or auto-detected from package files
-- Consider auto-detection: scan package.json, requirements.txt, go.mod for cross-repo deps
-- Bidirectional queries are important: "what depends on this repo?" and "what does this repo depend on?"
+    CORE-002, CTX-001
+
+    ## Acceptance Criteria
+
+    - [ ] Relationship metadata model is explicit
+- [ ] Landscape metadata has a structured owner
+- [ ] Cross-repo views can cite their source records
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

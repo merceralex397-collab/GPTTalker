@@ -19,3 +19,4 @@ Rules:
 - keep git operations aligned with the active ticket
 - treat destructive git operations as separately gated, not routine automation
 - do not treat git metadata as a substitute for ticket, workflow, or artifact state
+- preserve a dirty worktree unless the active ticket explicitly owns the cleanup

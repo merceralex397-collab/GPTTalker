@@ -1,41 +1,46 @@
-# EDGE-001: Cloudflare Tunnel integration
+    # EDGE-001: Cloudflare Tunnel integration and public-edge config
 
-## Summary
+    ## Summary
 
-Document and implement the Cloudflare Tunnel configuration for exposing the GPTTalker hub to the public internet securely. The hub runs on a private Tailscale network; Cloudflare Tunnel provides the public edge with HTTPS enforcement, DDoS protection, and access control. Include configuration guides, setup scripts, and the public/private separation architecture.
+    Define and implement the public-edge path through Cloudflare Tunnel so ChatGPT can reach the hub over HTTPS without exposing inbound ports.
 
-## Stage
+    ## Wave
 
-planning
+    5
 
-## Status
+    ## Lane
 
-todo
+    edge
 
-## Depends On
+    ## Parallel Safety
 
-- SETUP-002
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] Cloudflare Tunnel configuration template (cloudflared config)
-- [ ] Setup script or guide for tunnel installation and configuration
-- [ ] Hub origin binding: tunnel connects to localhost or Tailscale IP only
-- [ ] HTTPS enforcement: all public traffic over TLS
-- [ ] Public → private separation: only MCP endpoints exposed publicly
-- [ ] Internal admin/management endpoints not exposed through tunnel
-- [ ] Health check endpoint accessible through tunnel
-- [ ] Authentication recommendation: Cloudflare Access or API token validation
-- [ ] Deployment guide with step-by-step instructions
-- [ ] Network architecture diagram (text/mermaid format)
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Cloudflare Tunnel (cloudflared) creates an outbound-only connection — no inbound ports needed
-- Consider Cloudflare Access for additional authentication layer
-- Hub should bind to 127.0.0.1 or Tailscale IP — never 0.0.0.0 in production
-- MCP endpoint is the only thing that needs public exposure
+    SETUP-004, CORE-005
+
+    ## Acceptance Criteria
+
+    - [ ] Tunnel configuration owner is explicit
+- [ ] HTTPS public-edge boundary is documented in code and config
+- [ ] Security constraints remain aligned with the brief
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

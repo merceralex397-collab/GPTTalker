@@ -1,39 +1,46 @@
-# SCHED-001: Task classification
+    # SCHED-001: Task classification and routing policy
 
-## Summary
+    ## Summary
 
-Implement the task classification system that categorizes incoming LLM requests into routing classes. Define routing classes (quick_classification, summarization, embeddings, code_analysis, long_form_reasoning, coding_agent) and build a classifier that determines the appropriate class for each request, using rules or a helper model.
+    Define how GPTTalker classifies task types and selects between approved LLM and execution backends.
 
-## Stage
+    ## Wave
 
-planning
+    4
 
-## Status
+    ## Lane
 
-todo
+    scheduler
 
-## Depends On
+    ## Parallel Safety
 
-- CORE-006
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] Routing class enum: quick_classification, summarization, embeddings, code_analysis, long_form_reasoning, coding_agent
-- [ ] Rule-based classifier: classify by tool name, prompt length, explicit hints
-- [ ] Optional helper-model classifier: use a fast LLM for ambiguous cases
-- [ ] Classification metadata: class, confidence, reasoning
-- [ ] Explicit class override parameter (user can force a routing class)
-- [ ] Classification logging for analysis and tuning
-- [ ] Classifier is pluggable (swap rule-based for model-based without code changes)
-- [ ] Unit tests for each routing class with sample inputs
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Rule-based classifier should be the default — fast, predictable, no external dependency
-- Helper model classifier is optional enhancement for ambiguous cases
-- Classification drives routing decisions in SCHED-002
-- Consider adding confidence thresholds: high confidence → auto-route, low → ask user
+    LLM-001, CORE-002
+
+    ## Acceptance Criteria
+
+    - [ ] Task classes are explicit
+- [ ] Routing policy uses registered backend metadata
+- [ ] Fallback expectations are defined
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

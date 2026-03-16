@@ -10,8 +10,32 @@ This repo uses:
 Rules:
 
 - keep ticket `status` coarse: `todo`, `ready`, `in_progress`, `blocked`, `review`, `qa`, `done`
+- keep `wave`, `lane`, `parallel_safe`, and `overlap_risk` aligned with real ownership and concurrency boundaries
 - keep plan approval in `.opencode/state/workflow-state.json`
 - treat `tickets/BOARD.md` as a derived human board, not a second state machine
 - use registered artifacts for stage proof instead of inferring state from raw ticket text
 - keep artifact metadata on the owning ticket entry in `tickets/manifest.json`
+- keep `tickets/<id>.md` synchronized with manifest-backed ticket state; use Notes for durable human context
 - mirror artifact metadata into `.opencode/state/artifacts/registry.json`
+- use blocked status only for unresolved material choices or external blockers, not for dependency ordering alone
+
+Primary lanes in this backlog:
+
+- `repo-foundation`
+- `shared-runtime`
+- `storage`
+- `hub-core`
+- `registry`
+- `node-agent`
+- `node-connectivity`
+- `security`
+- `repo-inspection`
+- `markdown`
+- `llm-routing`
+- `context`
+- `cross-repo`
+- `scheduler`
+- `observability`
+- `edge`
+- `qa`
+- `docs`

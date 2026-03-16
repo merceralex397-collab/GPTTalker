@@ -1,43 +1,40 @@
 ---
 name: ticket-execution
-description: Follow GPTTalker's ticket lifecycle with domain-specific validation gates. Use when an agent is advancing a ticket through planning, review, implementation, QA, and closeout.
+description: Execute GPTTalker tickets through the required stage flow, artifact proofs, and implementer routing rules.
 ---
 
-# Ticket Execution — GPTTalker
+# Ticket Execution
 
-## Required Lifecycle Order
+Before using this guidance, call `skill_ping` with `skill_id: "ticket-execution"` and `scope: "project"`.
 
-1. **Ticket lookup** — read the ticket file and understand scope
-2. **Planning** — design the approach, identify affected modules
-3. **Plan review** — validate the plan covers edge cases and security
-4. **Implementation** — write the code
-5. **Code review** — review for correctness and standards compliance
-6. **Security review** — required for any change touching registries, routing, auth, or file writes
-7. **QA** — run tests and validate behavior
-8. **Handoff and closeout** — update ticket status, refresh handoff artifacts
+## Required stage order
 
-## GPTTalker-Specific Implementation Rules
+1. planning
+2. plan review
+3. implementation
+4. code review
+5. security review when relevant
+6. QA
+7. docs and handoff
+8. closeout
 
-### Specialized Implementers
+## Artifact expectations
 
-GPTTalker uses three specialized implementation domains. Route ticket work to the correct one:
+- planning artifact: `.opencode/state/plans/<ticket>-planning-plan.md`
+- implementation artifact: `.opencode/state/implementations/<ticket>-implementation-*.md`
+- review artifact: `.opencode/state/reviews/<ticket>-review-*.md`
+- QA artifact: `.opencode/state/qa/<ticket>-qa-*.md`
+- handoff artifact when requested: `.opencode/state/handoffs/<ticket>-handoff-*.md`
 
-| Domain | Scope | Key Paths |
-|---|---|---|
-| **Hub** | MCP tool handlers, registries, routing, policy engine | `src/hub/` |
-| **Node-agent** | Local operations, repo inspection, file delivery, local LLM | `src/node_agent/` |
-| **Context** | Qdrant integration, indexing pipeline, context bundles, search | `src/hub/context/` |
+## Implementer routing
 
-### Validation Gates Before Review
+- `repo-foundation`, `shared-runtime`, `storage`, `qa`, `docs`: `gpttalker-implementer`
+- `hub-core`, `registry`, `security`, `repo-inspection`, `markdown`, `edge`: `gpttalker-implementer-hub`
+- `node-agent`, `node-connectivity`: `gpttalker-implementer-node-agent`
+- `llm-routing`, `context`, `cross-repo`, `scheduler`, `observability`: `gpttalker-implementer-context`
 
-Every implementation must pass these checks before entering code review:
+## Verification notes
 
-1. **`pytest`** — all tests pass (zero failures)
-2. **`ruff check .`** — zero linting errors
-3. **MCP contract compliance** — if the ticket touches an MCP tool, verify the tool's request/response schema matches the contract defined in `docs/spec/CANONICAL-BRIEF.md`
-
-### Additional Rules
-
-- Changes to shared models (`src/shared/`) require testing from both hub and node-agent perspectives
-- Registry changes must include tests for the reject-unknown-target behavior
-- Any new MCP tool must be added to the tool registration surface and documented in the canonical brief
+- use `ticket_lookup` instead of reading status labels alone
+- use `ticket_update` for active-ticket and workflow changes
+- do not clear `pending_process_verification` unless `ticket_lookup.process_verification.affected_done_tickets` is empty

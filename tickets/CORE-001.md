@@ -1,39 +1,46 @@
-# CORE-001: Node registry and management
+    # CORE-001: Node registry and node health model
 
-## Summary
+    ## Summary
 
-Implement the node registry system that tracks all managed machines in the GPTTalker network. Provide CRUD operations for node registration (name, tailscale_ip, capabilities, status), a list_nodes MCP tool handler for ChatGPT to discover available machines, and a health check mechanism that periodically verifies node agent availability and updates status accordingly.
+    Implement the hub-side node registry schema, CRUD path, and health metadata used to track managed machines.
 
-## Stage
+    ## Wave
 
-planning
+    1
 
-## Status
+    ## Lane
 
-todo
+    registry
 
-## Depends On
+    ## Parallel Safety
 
-- SETUP-003
-- SETUP-002
+    - parallel_safe: false
+    - overlap_risk: medium
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] Node model defined with fields: id, name, tailscale_ip, capabilities (JSON), status, last_seen, created_at
-- [ ] Register node endpoint creates or updates node record
-- [ ] Unregister node endpoint soft-deletes node
-- [ ] list_nodes MCP tool returns all active nodes with status
-- [ ] Node health check pings node agent health endpoint
-- [ ] Status transitions: online → offline after missed health checks
-- [ ] Duplicate node name prevention
-- [ ] Unit tests for CRUD and health check logic
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Capabilities list examples: ["repo_host", "llm_host", "write_target"]
-- Health check interval should be configurable (default 60s)
-- Consider storing last_error for offline nodes to aid debugging
+    SETUP-003, SETUP-004
+
+    ## Acceptance Criteria
+
+    - [ ] Node registry schema is defined
+- [ ] Health metadata model is explicit
+- [ ] Unknown nodes fail closed
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

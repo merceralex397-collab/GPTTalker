@@ -1,37 +1,46 @@
-# SETUP-001: Project skeleton and dependencies
+    # SETUP-001: Project skeleton and dependency baseline
 
-## Summary
+    ## Summary
 
-Bootstrap the GPTTalker repository with a proper Python project structure using pyproject.toml for dependency management. Create the core package directories (src/hub/, src/node_agent/, src/shared/) with __init__.py files, establishing the monorepo layout that separates hub server, node agent, and shared utilities. Pin all key dependencies: FastAPI, uvicorn, aiosqlite, httpx, qdrant-client, pydantic, structlog, ruff, and pytest.
+    Create the initial Python project skeleton, dependency set, and directory layout for hub, node-agent, and shared runtime code.
 
-## Stage
+    ## Wave
 
-planning
+    0
 
-## Status
+    ## Lane
 
-todo
+    repo-foundation
 
-## Depends On
+    ## Parallel Safety
 
-- None
+    - parallel_safe: false
+    - overlap_risk: high
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] pyproject.toml exists with all required dependencies and correct Python version constraint (>=3.11)
-- [ ] src/hub/__init__.py exists
-- [ ] src/node_agent/__init__.py exists
-- [ ] src/shared/__init__.py exists
-- [ ] `pip install -e .` succeeds in a clean venv
-- [ ] ruff and pytest are available as dev dependencies
-- [ ] .gitignore covers Python, venv, __pycache__, .env
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    ready
 
-## Notes
+    ## Depends On
 
-- Use src layout (not flat) to keep hub and node_agent as separate importable packages
-- Consider adding optional dependency groups: [dev] for ruff/pytest, [node] for node-agent-only deps
-- structlog chosen over stdlib logging for structured JSON output
+    None
+
+    ## Acceptance Criteria
+
+    - [ ] Python project metadata and dependency plan are defined
+- [ ] Initial `src/hub`, `src/node_agent`, and `src/shared` structure is laid out
+- [ ] The ticket leaves the repo ready for domain-specific foundation work
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

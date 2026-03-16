@@ -35,8 +35,6 @@ permission:
 
 Review the implementation for correctness, regressions, and test gaps.
 
-You review GPTTalker MCP hub code. Focus on: correct MCP tool contract implementation, proper input validation against registered targets, fail-closed behavior, async/await correctness in FastAPI handlers, proper SQLite transaction handling, Qdrant client usage, and correct Tailscale network assumptions.
-
 Return:
 
 1. Findings ordered by severity

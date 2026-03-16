@@ -20,8 +20,6 @@ permission:
 
 Gather focused repository evidence only.
 
-Focus on the GPTTalker MCP hub codebase: hub server code in src/hub/, node agent code in src/node_agent/, shared utilities in src/shared/, specs in docs/spec/, and configuration files.
-
 Return:
 
 - relevant files

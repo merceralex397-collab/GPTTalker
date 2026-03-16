@@ -1,41 +1,46 @@
-# CORE-006: LLM service registry
+    # CORE-006: MCP tool routing framework
 
-## Summary
+    ## Summary
 
-Implement the LLM service registry that tracks all AI/ML services available across the GPTTalker network. Support multiple service kinds (coding_agent, general_llm, helper_llm, embedding_service) with per-service metadata including URL, capabilities, and authentication. This registry enables the hub to route AI requests to the appropriate backend.
+    Create the hub-side tool routing framework that maps exposed MCP tools to validated execution paths and shared response formatting.
 
-## Stage
+    ## Wave
 
-planning
+    1
 
-## Status
+    ## Lane
 
-todo
+    hub-core
 
-## Depends On
+    ## Parallel Safety
 
-- CORE-001
-- SETUP-003
+    - parallel_safe: false
+    - overlap_risk: high
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] LLMService model: id, node_id, alias (unique), kind, url, capabilities (JSON), auth_method, is_active, created_at
-- [ ] Service kinds enum: coding_agent, general_llm, helper_llm, embedding_service
-- [ ] Register LLM service with node ownership and URL validation
-- [ ] list_llm_services MCP tool with kind filter
-- [ ] Service health check via node agent
-- [ ] Auth method support: none, api_key, bearer_token
-- [ ] Auth credentials stored securely (not in plain text responses)
-- [ ] Unregister/deactivate service endpoint
-- [ ] Unit tests for CRUD and validation
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Auth credentials should be stored encrypted or in a separate secrets store
-- Capabilities examples: ["chat", "completion", "embedding", "code_edit"]
-- Service URL is relative to the node (node agent proxies requests)
-- Consider capability negotiation: hub queries what each service actually supports
+    SETUP-004, CORE-002, CORE-005
+
+    ## Acceptance Criteria
+
+    - [ ] Tool registration boundary is defined
+- [ ] Routing integrates policy checks before execution
+- [ ] Shared error formatting follows the MCP-safe contract
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

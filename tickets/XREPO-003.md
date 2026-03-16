@@ -1,41 +1,46 @@
-# XREPO-003: Project landscape and architecture maps
+    # XREPO-003: Architecture map and project landscape outputs
 
-## Summary
+    ## Summary
 
-Implement the get_project_landscape and get_architecture_map MCP tools that provide ChatGPT with high-level views of the entire development environment. The landscape tool shows all projects with summaries and relationships. The architecture map generates module/service/dependency graphs for individual or cross-repo systems.
+    Expose higher-level architecture and landscape outputs that combine cross-repo context with relationship metadata.
 
-## Stage
+    ## Wave
 
-planning
+    4
 
-## Status
+    ## Lane
 
-todo
+    cross-repo
 
-## Depends On
+    ## Parallel Safety
 
-- XREPO-001
-- XREPO-002
+    - parallel_safe: false
+    - overlap_risk: medium
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] get_project_landscape MCP tool: overview of all registered repos
-- [ ] Landscape includes: repo alias, node, language, summary, status, relationship count
-- [ ] get_architecture_map MCP tool: dependency/module graph for a repo or set of repos
-- [ ] Architecture map includes: modules, services, dependencies, entry points
-- [ ] Graph output in text format (mermaid-compatible or ASCII)
-- [ ] Cross-repo dependency visualization
-- [ ] Configurable detail level: summary, standard, detailed
-- [ ] Results sourced from Qdrant context + repo metadata + relationships
-- [ ] Unit tests with sample multi-repo data
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- Landscape is a "dashboard" view for ChatGPT to understand the full environment
-- Architecture map generation may use helper LLM for summarization
-- Mermaid format is useful as ChatGPT can render it in conversations
-- Consider caching landscape/architecture data with TTL
+    XREPO-001, XREPO-002
+
+    ## Acceptance Criteria
+
+    - [ ] Architecture map output shape is defined
+- [ ] Landscape views cite source repos and metadata
+- [ ] Output stays bounded to approved repos
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes

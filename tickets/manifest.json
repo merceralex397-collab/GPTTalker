@@ -1,359 +1,756 @@
 {
   "version": 2,
   "project": "GPTTalker",
-  "description": "Lightweight MCP hub for ChatGPT to interact with a multi-machine dev environment",
   "active_ticket": "SETUP-001",
   "tickets": [
     {
       "id": "SETUP-001",
-      "title": "Project skeleton and dependencies",
-      "stage": "planning",
-      "status": "todo",
+      "title": "Project skeleton and dependency baseline",
       "wave": 0,
+      "lane": "repo-foundation",
+      "parallel_safe": false,
+      "overlap_risk": "high",
+      "stage": "planning",
+      "status": "ready",
       "depends_on": [],
-      "file": "SETUP-001.md"
+      "summary": "Create the initial Python project skeleton, dependency set, and directory layout for hub, node-agent, and shared runtime code.",
+      "acceptance": [
+        "Python project metadata and dependency plan are defined",
+        "Initial `src/hub`, `src/node_agent`, and `src/shared` structure is laid out",
+        "The ticket leaves the repo ready for domain-specific foundation work"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SETUP-002",
-      "title": "Hub FastAPI application skeleton",
+      "title": "Shared schemas, config loading, and structured logging",
+      "wave": 0,
+      "lane": "shared-runtime",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 0,
-      "depends_on": ["SETUP-001"],
-      "file": "SETUP-002.md"
+      "depends_on": [
+        "SETUP-001"
+      ],
+      "summary": "Establish shared Pydantic models, configuration loading patterns, trace-id propagation, and structured logging helpers used by both the hub and node agents.",
+      "acceptance": [
+        "Shared request/response models are planned for hub and node-agent boundaries",
+        "Configuration loading pattern is defined for runtime services",
+        "Structured logging conventions match the canonical brief"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SETUP-003",
-      "title": "SQLite database layer",
+      "title": "Async SQLite persistence and migration baseline",
+      "wave": 0,
+      "lane": "storage",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 0,
-      "depends_on": ["SETUP-001"],
-      "file": "SETUP-003.md"
+      "depends_on": [
+        "SETUP-001"
+      ],
+      "summary": "Define the async SQLite layer, migration strategy, and shared persistence helpers for registries, history, and issue tracking.",
+      "acceptance": [
+        "SQLite access pattern uses `aiosqlite`",
+        "Initial runtime tables are identified",
+        "Migration approach is explicit and reusable"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SETUP-004",
-      "title": "Logging and error handling",
+      "title": "FastAPI hub app shell and MCP transport baseline",
+      "wave": 0,
+      "lane": "hub-core",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 0,
-      "depends_on": ["SETUP-002"],
-      "file": "SETUP-004.md"
+      "depends_on": [
+        "SETUP-001",
+        "SETUP-002"
+      ],
+      "summary": "Create the initial FastAPI application shell for the hub, including startup structure, dependency injection, and MCP-facing request routing primitives.",
+      "acceptance": [
+        "Hub app entrypoint and package shape are defined",
+        "MCP-facing transport boundary is explicit",
+        "Startup path leaves room for policy and registry injection"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SETUP-005",
-      "title": "Test infrastructure",
+      "title": "Test, lint, and local validation scaffold",
+      "wave": 0,
+      "lane": "qa",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 0,
-      "depends_on": ["SETUP-001"],
-      "file": "SETUP-005.md"
+      "depends_on": [
+        "SETUP-001"
+      ],
+      "summary": "Set up the repository validation baseline so future tickets can run pytest and ruff with predictable local conventions.",
+      "acceptance": [
+        "Validation commands are documented and wired",
+        "Test package layout is planned",
+        "Ruff and pytest expectations match the brief"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-001",
-      "title": "Node registry and management",
+      "title": "Node registry and node health model",
+      "wave": 1,
+      "lane": "registry",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["SETUP-003", "SETUP-002"],
-      "file": "CORE-001.md"
+      "depends_on": [
+        "SETUP-003",
+        "SETUP-004"
+      ],
+      "summary": "Implement the hub-side node registry schema, CRUD path, and health metadata used to track managed machines.",
+      "acceptance": [
+        "Node registry schema is defined",
+        "Health metadata model is explicit",
+        "Unknown nodes fail closed"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-002",
-      "title": "Node agent service skeleton",
+      "title": "Repo, write-target, and LLM service registries",
+      "wave": 1,
+      "lane": "registry",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["SETUP-001"],
-      "file": "CORE-002.md"
+      "depends_on": [
+        "SETUP-003",
+        "SETUP-004"
+      ],
+      "summary": "Define the structured registries for repos, markdown write targets, and LLM service aliases so later tools can validate every target explicitly.",
+      "acceptance": [
+        "Repo registry model exists",
+        "Write-target registry model exists",
+        "LLM service alias model exists"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-003",
-      "title": "Hub-to-node connectivity layer",
+      "title": "Node agent service skeleton",
+      "wave": 1,
+      "lane": "node-agent",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["CORE-001", "CORE-002"],
-      "file": "CORE-003.md"
+      "depends_on": [
+        "SETUP-001",
+        "SETUP-002"
+      ],
+      "summary": "Create the node-agent service shell with config loading, health endpoint shape, and bounded executor structure for local operations.",
+      "acceptance": [
+        "Node-agent package shape is defined",
+        "Health endpoint contract is explicit",
+        "Executor boundary is separate from hub code"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-004",
-      "title": "Repo registry and validation",
+      "title": "Hub-to-node client, auth, and health polling",
+      "wave": 1,
+      "lane": "node-connectivity",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["CORE-001", "SETUP-003"],
-      "file": "CORE-004.md"
+      "depends_on": [
+        "CORE-001",
+        "CORE-003"
+      ],
+      "summary": "Implement the authenticated hub-to-node HTTP client, timeout policy, and polling path used to reach node agents over Tailscale.",
+      "acceptance": [
+        "Hub-to-node auth model is enforced",
+        "HTTP client timeouts are explicit",
+        "Health polling integrates with the node registry"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-005",
-      "title": "Write-target registry",
+      "title": "Policy engine and normalized path validation",
+      "wave": 1,
+      "lane": "security",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["CORE-001", "SETUP-003"],
-      "file": "CORE-005.md"
+      "depends_on": [
+        "SETUP-002",
+        "SETUP-004"
+      ],
+      "summary": "Build the fail-closed policy engine for nodes, repos, write targets, service aliases, and normalized file paths.",
+      "acceptance": [
+        "Unknown targets are rejected explicitly",
+        "Path normalization rules are central and reusable",
+        "Write and read scopes are separated cleanly"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CORE-006",
-      "title": "LLM service registry",
+      "title": "MCP tool routing framework",
+      "wave": 1,
+      "lane": "hub-core",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 1,
-      "depends_on": ["CORE-001", "SETUP-003"],
-      "file": "CORE-006.md"
-    },
-    {
-      "id": "CORE-007",
-      "title": "MCP protocol layer",
-      "stage": "planning",
-      "status": "todo",
-      "wave": 1,
-      "depends_on": ["SETUP-002", "SETUP-004"],
-      "file": "CORE-007.md"
+      "depends_on": [
+        "SETUP-004",
+        "CORE-002",
+        "CORE-005"
+      ],
+      "summary": "Create the hub-side tool routing framework that maps exposed MCP tools to validated execution paths and shared response formatting.",
+      "acceptance": [
+        "Tool registration boundary is defined",
+        "Routing integrates policy checks before execution",
+        "Shared error formatting follows the MCP-safe contract"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "REPO-001",
-      "title": "inspect_repo_tree tool",
+      "title": "list_nodes and list_repos tools",
+      "wave": 2,
+      "lane": "repo-inspection",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 2,
-      "depends_on": ["CORE-003", "CORE-004"],
-      "file": "REPO-001.md"
+      "depends_on": [
+        "CORE-001",
+        "CORE-004",
+        "CORE-006"
+      ],
+      "summary": "Implement the top-level discovery tools that expose registered nodes and their approved repos to ChatGPT.",
+      "acceptance": [
+        "Nodes list with health metadata is available",
+        "Repo discovery reflects approved registry state only",
+        "Unauthorized targets are excluded"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "REPO-002",
-      "title": "read_repo_file tool",
+      "title": "inspect_repo_tree and read_repo_file tools",
+      "wave": 2,
+      "lane": "repo-inspection",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 2,
-      "depends_on": ["CORE-003", "CORE-004"],
-      "file": "REPO-002.md"
+      "depends_on": [
+        "CORE-004",
+        "CORE-005",
+        "CORE-006"
+      ],
+      "summary": "Implement bounded repo tree inspection and file reads through the node-agent path with strict repo and path validation.",
+      "acceptance": [
+        "Repo tree inspection is scoped to approved repos",
+        "File reads reject traversal and unknown paths",
+        "Responses are structured for MCP use"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "REPO-003",
-      "title": "search_repo tool",
+      "title": "search_repo and git_status tools",
+      "wave": 2,
+      "lane": "repo-inspection",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 2,
-      "depends_on": ["CORE-003", "CORE-004"],
-      "file": "REPO-003.md"
-    },
-    {
-      "id": "REPO-004",
-      "title": "git_status tool",
-      "stage": "planning",
-      "status": "todo",
-      "wave": 2,
-      "depends_on": ["CORE-003", "CORE-004"],
-      "file": "REPO-004.md"
+      "depends_on": [
+        "REPO-002"
+      ],
+      "summary": "Implement text search and git status access through the node agent using bounded subprocess execution and structured result formatting.",
+      "acceptance": [
+        "Search uses bounded ripgrep execution",
+        "Git status is exposed read-only",
+        "Timeout and error handling are explicit"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "WRITE-001",
-      "title": "write_markdown tool",
+      "title": "write_markdown with atomic scoped writes",
+      "wave": 2,
+      "lane": "markdown",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 3,
-      "depends_on": ["CORE-003", "CORE-005"],
-      "file": "WRITE-001.md"
+      "depends_on": [
+        "CORE-002",
+        "CORE-004",
+        "CORE-005",
+        "CORE-006"
+      ],
+      "summary": "Implement the markdown delivery path with approved write targets, extension allowlists, content hashing, and atomic writes.",
+      "acceptance": [
+        "Writes are restricted to approved targets",
+        "Atomic write behavior is explicit",
+        "Write responses include verification metadata"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "LLM-001",
-      "title": "chat_llm tool",
+      "title": "chat_llm base routing and service registry integration",
+      "wave": 2,
+      "lane": "llm-routing",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 4,
-      "depends_on": ["CORE-003", "CORE-006"],
-      "file": "LLM-001.md"
+      "depends_on": [
+        "CORE-002",
+        "CORE-004",
+        "CORE-006"
+      ],
+      "summary": "Implement the core `chat_llm` routing path so the hub can validate aliases and dispatch prompts to approved backends.",
+      "acceptance": [
+        "Service aliases are validated before use",
+        "Hub-to-service routing path is explicit",
+        "Structured latency and outcome metadata are planned"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "LLM-002",
-      "title": "OpenCode adapter",
+      "title": "OpenCode adapter and session-aware coding-agent routing",
+      "wave": 3,
+      "lane": "llm-routing",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 4,
-      "depends_on": ["LLM-001"],
-      "file": "LLM-002.md"
+      "depends_on": [
+        "LLM-001"
+      ],
+      "summary": "Add the OpenCode-specific adapter and session support for coding-agent workflows.",
+      "acceptance": [
+        "OpenCode backend routing is explicit",
+        "Session handling is planned",
+        "Coding-agent responses fit the shared tool contract"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "LLM-003",
-      "title": "General and helper model adapters",
+      "title": "Helper-model and embedding-service adapters",
+      "wave": 3,
+      "lane": "llm-routing",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 4,
-      "depends_on": ["LLM-001"],
-      "file": "LLM-003.md"
-    },
-    {
-      "id": "LLM-004",
-      "title": "Embedding service adapter",
-      "stage": "planning",
-      "status": "todo",
-      "wave": 4,
-      "depends_on": ["LLM-001"],
-      "file": "LLM-004.md"
+      "depends_on": [
+        "LLM-001"
+      ],
+      "summary": "Add adapter support for helper-class models and the dedicated embedding service used by the context pipeline.",
+      "acceptance": [
+        "Helper-model alias routing is defined",
+        "Embedding-service adapter contract is explicit",
+        "Timeout and failure behavior are planned"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CTX-001",
-      "title": "Qdrant integration",
+      "title": "Qdrant integration and context storage schema",
+      "wave": 3,
+      "lane": "context",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 5,
-      "depends_on": ["CORE-006", "LLM-004"],
-      "file": "CTX-001.md"
+      "depends_on": [
+        "SETUP-003",
+        "LLM-003"
+      ],
+      "summary": "Create the shared Qdrant integration, collection layout, and structured metadata schema for project context storage.",
+      "acceptance": [
+        "Qdrant client pattern is defined",
+        "Collection naming and payload schema are explicit",
+        "Structured metadata for indexed files and issues is planned"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CTX-002",
-      "title": "index_repo tool",
+      "title": "index_repo pipeline and content-hash tracking",
+      "wave": 3,
+      "lane": "context",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 5,
-      "depends_on": ["CTX-001", "REPO-001", "REPO-002"],
-      "file": "CTX-002.md"
+      "depends_on": [
+        "CTX-001",
+        "REPO-002"
+      ],
+      "summary": "Implement the indexing pipeline that reads repo content, generates embeddings, and keeps indexing idempotent with content hashes.",
+      "acceptance": [
+        "Indexing pipeline flow is explicit",
+        "Content-hash based reindex rules are defined",
+        "Deleted and changed files are handled deliberately"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CTX-003",
-      "title": "get_project_context tool",
+      "title": "get_project_context and known-issue records",
+      "wave": 3,
+      "lane": "context",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 5,
-      "depends_on": ["CTX-001", "CTX-002"],
-      "file": "CTX-003.md"
+      "depends_on": [
+        "CTX-001",
+        "CTX-002"
+      ],
+      "summary": "Implement semantic project context retrieval and structured known-issue management over the indexed repo state.",
+      "acceptance": [
+        "Context retrieval returns provenance metadata",
+        "Known-issue records have a structured schema",
+        "Repo access checks still apply to retrieved context"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "CTX-004",
-      "title": "Issue tracking tools",
+      "title": "Context bundles and recurring-issue workflows",
+      "wave": 3,
+      "lane": "context",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 5,
-      "depends_on": ["CTX-001", "SETUP-003"],
-      "file": "CTX-004.md"
-    },
-    {
-      "id": "CTX-005",
-      "title": "Context bundle generation",
-      "stage": "planning",
-      "status": "todo",
-      "wave": 5,
-      "depends_on": ["CTX-003"],
-      "file": "CTX-005.md"
+      "depends_on": [
+        "CTX-003"
+      ],
+      "summary": "Add higher-order context assembly such as task-oriented bundles and recurring-issue aggregation over existing context data.",
+      "acceptance": [
+        "Context bundle output shape is planned",
+        "Recurring-issue aggregation rules are defined",
+        "Bundle provenance is preserved"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "XREPO-001",
-      "title": "Global search",
+      "title": "Cross-repo search and global context query",
+      "wave": 4,
+      "lane": "cross-repo",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 6,
-      "depends_on": ["CTX-002"],
-      "file": "XREPO-001.md"
+      "depends_on": [
+        "CTX-002",
+        "CTX-003"
+      ],
+      "summary": "Implement global context and search flows that aggregate approved results across multiple indexed repos.",
+      "acceptance": [
+        "Cross-repo query path is defined",
+        "Per-repo access controls still apply",
+        "Returned results keep repo-level provenance"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "XREPO-002",
-      "title": "Repo relationships",
+      "title": "Repo relationships and landscape metadata",
+      "wave": 4,
+      "lane": "cross-repo",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 6,
-      "depends_on": ["CORE-004", "SETUP-003"],
-      "file": "XREPO-002.md"
+      "depends_on": [
+        "CORE-002",
+        "CTX-001"
+      ],
+      "summary": "Track repo-to-repo relationships and shared metadata needed for landscape views and architecture-level navigation.",
+      "acceptance": [
+        "Relationship metadata model is explicit",
+        "Landscape metadata has a structured owner",
+        "Cross-repo views can cite their source records"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "XREPO-003",
-      "title": "Project landscape and architecture maps",
+      "title": "Architecture map and project landscape outputs",
+      "wave": 4,
+      "lane": "cross-repo",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 6,
-      "depends_on": ["XREPO-001", "XREPO-002"],
-      "file": "XREPO-003.md"
+      "depends_on": [
+        "XREPO-001",
+        "XREPO-002"
+      ],
+      "summary": "Expose higher-level architecture and landscape outputs that combine cross-repo context with relationship metadata.",
+      "acceptance": [
+        "Architecture map output shape is defined",
+        "Landscape views cite source repos and metadata",
+        "Output stays bounded to approved repos"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SCHED-001",
-      "title": "Task classification",
+      "title": "Task classification and routing policy",
+      "wave": 4,
+      "lane": "scheduler",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 7,
-      "depends_on": ["CORE-006"],
-      "file": "SCHED-001.md"
+      "depends_on": [
+        "LLM-001",
+        "CORE-002"
+      ],
+      "summary": "Define how GPTTalker classifies task types and selects between approved LLM and execution backends.",
+      "acceptance": [
+        "Task classes are explicit",
+        "Routing policy uses registered backend metadata",
+        "Fallback expectations are defined"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "SCHED-002",
-      "title": "Scheduler and routing engine",
+      "title": "Distributed scheduler, node selection, and fallback",
+      "wave": 4,
+      "lane": "scheduler",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
       "status": "todo",
-      "wave": 7,
-      "depends_on": ["SCHED-001", "CORE-006"],
-      "file": "SCHED-002.md"
+      "depends_on": [
+        "SCHED-001",
+        "CORE-004",
+        "LLM-002"
+      ],
+      "summary": "Implement the distributed scheduler that considers task type, node health, service availability, and fallback rules.",
+      "acceptance": [
+        "Scheduler inputs are explicit",
+        "Node and backend health affect routing decisions",
+        "Fallback behavior is defined and bounded"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "OBS-001",
-      "title": "Task history system",
+      "title": "Task history, generated-doc log, and audit schema",
+      "wave": 5,
+      "lane": "observability",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 8,
-      "depends_on": ["SETUP-003", "SETUP-004"],
-      "file": "OBS-001.md"
+      "depends_on": [
+        "SETUP-003",
+        "SETUP-002"
+      ],
+      "summary": "Implement the structured task-history, generated-doc logging, and audit schema needed for full observability.",
+      "acceptance": [
+        "Task history schema is defined",
+        "Generated-doc history has an owner",
+        "Audit records include trace metadata"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "OBS-002",
-      "title": "History query tools",
+      "title": "Task detail, doc history, and issue timeline tools",
+      "wave": 5,
+      "lane": "observability",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
       "status": "todo",
-      "wave": 8,
-      "depends_on": ["OBS-001"],
-      "file": "OBS-002.md"
-    },
-    {
-      "id": "OBS-003",
-      "title": "Issue timeline",
-      "stage": "planning",
-      "status": "todo",
-      "wave": 8,
-      "depends_on": ["CTX-004", "OBS-001"],
-      "file": "OBS-003.md"
+      "depends_on": [
+        "OBS-001",
+        "CTX-003"
+      ],
+      "summary": "Expose observability-facing tools for task details, generated document history, and issue timelines.",
+      "acceptance": [
+        "Observability tool outputs are structured",
+        "Task-detail lookups cite persisted records",
+        "Issue timeline reads from the canonical history store"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "EDGE-001",
-      "title": "Cloudflare Tunnel integration",
+      "title": "Cloudflare Tunnel integration and public-edge config",
+      "wave": 5,
+      "lane": "edge",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
       "status": "todo",
-      "wave": 9,
-      "depends_on": ["SETUP-002"],
-      "file": "EDGE-001.md"
+      "depends_on": [
+        "SETUP-004",
+        "CORE-005"
+      ],
+      "summary": "Define and implement the public-edge path through Cloudflare Tunnel so ChatGPT can reach the hub over HTTPS without exposing inbound ports.",
+      "acceptance": [
+        "Tunnel configuration owner is explicit",
+        "HTTPS public-edge boundary is documented in code and config",
+        "Security constraints remain aligned with the brief"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "EDGE-002",
+      "title": "Node registration bootstrap and operator config docs",
+      "wave": 5,
+      "lane": "edge",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "CORE-001",
+        "CORE-003",
+        "EDGE-001"
+      ],
+      "summary": "Add the operator-facing bootstrap path for bringing nodes online, registering them, and documenting the edge and connectivity setup.",
+      "acceptance": [
+        "Node bootstrap flow is explicit",
+        "Operator config requirements are documented",
+        "Registration flow aligns with the node registry and public-edge setup"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "POLISH-001",
-      "title": "Error handling hardening",
+      "title": "Contract tests for MCP tools and failure modes",
+      "wave": 6,
+      "lane": "qa",
+      "parallel_safe": false,
+      "overlap_risk": "high",
       "stage": "planning",
-      "status": "blocked",
-      "wave": 10,
-      "depends_on": ["CORE-007", "REPO-001", "LLM-001", "CTX-003"],
-      "file": "POLISH-001.md"
+      "status": "todo",
+      "depends_on": [
+        "REPO-003",
+        "WRITE-001",
+        "LLM-002",
+        "CTX-003",
+        "OBS-002"
+      ],
+      "summary": "Build the higher-level contract tests that prove the exposed GPTTalker tools behave correctly under expected and failure-path scenarios.",
+      "acceptance": [
+        "Tool contracts are covered by tests",
+        "Failure-mode tests are explicit",
+        "Validation remains aligned with the canonical brief"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "POLISH-002",
-      "title": "End-to-end integration tests",
+      "title": "Security regression tests and redaction hardening",
+      "wave": 6,
+      "lane": "qa",
+      "parallel_safe": false,
+      "overlap_risk": "medium",
       "stage": "planning",
-      "status": "blocked",
-      "wave": 10,
-      "depends_on": ["POLISH-001"],
-      "file": "POLISH-002.md"
+      "status": "todo",
+      "depends_on": [
+        "CORE-005",
+        "OBS-001",
+        "POLISH-001"
+      ],
+      "summary": "Harden the security and observability surfaces with targeted regression tests for path traversal, secret redaction, and fail-closed behavior.",
+      "acceptance": [
+        "Security regression suite covers path and target validation",
+        "Log redaction behavior is tested",
+        "Fail-closed expectations are enforced under error conditions"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     },
     {
       "id": "POLISH-003",
-      "title": "API and MCP tool documentation",
+      "title": "README, API docs, and handoff hardening",
+      "wave": 6,
+      "lane": "docs",
+      "parallel_safe": true,
+      "overlap_risk": "low",
       "stage": "planning",
-      "status": "blocked",
-      "wave": 10,
-      "depends_on": ["POLISH-002"],
-      "file": "POLISH-003.md"
-    },
-    {
-      "id": "POLISH-004",
-      "title": "Scheduled indexing",
-      "stage": "planning",
-      "status": "blocked",
-      "wave": 10,
-      "depends_on": ["CTX-002"],
-      "file": "POLISH-004.md"
+      "status": "todo",
+      "depends_on": [
+        "POLISH-001"
+      ],
+      "summary": "Finalize repository-facing documentation, API references, and handoff surfaces so the finished project is easy to operate and resume.",
+      "acceptance": [
+        "README reflects the implemented system",
+        "API and tool docs are aligned with reality",
+        "Handoff surfaces remain concise and current"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     }
   ]
 }

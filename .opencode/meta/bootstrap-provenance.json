@@ -1,5 +1,5 @@
 {
-  "managed_repo": "C:\\Users\\PC\\.agents",
+  "managed_repo": "/home/a/.copilot",
   "template_commit": "unknown",
   "template_asset_root": "skills/repo-scaffold-factory/assets/project-template",
   "project_name": "GPTTalker",
@@ -13,11 +13,54 @@
     "utility": "minimax-coding-plan/minimax-m2.5"
   },
   "bootstrap_steps": [
-    "repo-scaffold-factory/render-full-scaffold"
+    "repo-scaffold-factory/render-full-scaffold",
+    "scaffold-kickoff/full-retrofit",
+    "opencode-team-bootstrap/customize-team",
+    "ticket-pack-builder/bootstrap",
+    "project-skill-bootstrap/foundation",
+    "project-skill-bootstrap/synthesis",
+    "handoff-brief/render-start-here"
   ],
   "tracking": {
     "invocation_log": ".opencode/state/invocation-log.jsonl",
     "skill_ping_tool": "skill_ping",
     "tracker_plugin": "invocation-tracker"
-  }
+  },
+  "workflow_contract": {
+    "process_version": 2,
+    "ticket_contract_version": 2,
+    "parallel_mode": "parallel-lanes",
+    "supports_manager_hierarchy": false,
+    "post_migration_verification": {
+      "enabled": true,
+      "backlog_verifier_agent": "gpttalker-backlog-verifier",
+      "ticket_creator_agent": "gpttalker-ticket-creator"
+    }
+  },
+  "managed_surfaces": {
+    "replace_on_retrofit": [
+      "README.md",
+      "AGENTS.md",
+      "START-HERE.md",
+      "docs/",
+      "tickets/",
+      "opencode.jsonc",
+      ".opencode/"
+    ],
+    "preserve_project_sources": [
+      "mcp_spec_pack/",
+      ".git/",
+      ".gitattributes"
+    ]
+  },
+  "repair_history": [
+    {
+      "timestamp": "2026-03-16T10:59:52.052Z",
+      "actor": "scaffold-kickoff",
+      "mode": "full-retrofit",
+      "summary": "User-directed maximum-aggression scaffold rewrite that replaced the generated repo layer while preserving mcp_spec_pack as reference-only source material.",
+      "managed_surface_replacement": true,
+      "verification_window_opened": false
+    }
+  ]
 }

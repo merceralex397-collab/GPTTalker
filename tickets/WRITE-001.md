@@ -1,43 +1,46 @@
-# WRITE-001: write_markdown tool
+    # WRITE-001: write_markdown with atomic scoped writes
 
-## Summary
+    ## Summary
 
-Implement the write_markdown MCP tool that allows ChatGPT to create or overwrite markdown files in approved write targets. Enforce the extension allowlist, perform atomic writes (temp file + rename) to prevent partial writes, log all write operations with content hashes, and support a no-overwrite safety mode.
+    Implement the markdown delivery path with approved write targets, extension allowlists, content hashing, and atomic writes.
 
-## Stage
+    ## Wave
 
-planning
+    2
 
-## Status
+    ## Lane
 
-todo
+    markdown
 
-## Depends On
+    ## Parallel Safety
 
-- CORE-003
-- CORE-005
+    - parallel_safe: true
+    - overlap_risk: low
 
-## Acceptance Criteria
+    ## Stage
 
-- [ ] write_markdown MCP tool accepts write target name, file path, and content
-- [ ] Extension allowlist enforced (reject non-allowed extensions)
-- [ ] Path validation: file must be within write target root, no traversal
-- [ ] Atomic writes: write to temp file, then rename to target path
-- [ ] Parent directories created automatically if needed
-- [ ] Content hash (SHA-256) computed and logged
-- [ ] Write operation logged in database (target, path, hash, timestamp, trace_id)
-- [ ] No-overwrite mode: refuse to overwrite existing files when flag set
-- [ ] Node agent performs the actual file write
-- [ ] Response includes: written path, content hash, bytes written
-- [ ] Unit tests for validation, atomic write, and no-overwrite logic
+    planning
 
-## Artifacts
+    ## Status
 
-- None yet
+    todo
 
-## Notes
+    ## Depends On
 
-- This is a security-critical path — defense in depth with checks at hub AND node agent
-- Atomic write prevents corruption if process dies mid-write
-- Content hash enables deduplication and audit trail
-- Consider triggering re-indexing after write (future CTX-002 integration)
+    CORE-002, CORE-004, CORE-005, CORE-006
+
+    ## Acceptance Criteria
+
+    - [ ] Writes are restricted to approved targets
+- [ ] Atomic write behavior is explicit
+- [ ] Write responses include verification metadata
+
+    ## Decision Blockers
+
+    None
+
+    ## Artifacts
+
+    - None yet
+
+    ## Notes
