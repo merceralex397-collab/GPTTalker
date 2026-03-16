@@ -1,0 +1,359 @@
+{
+  "version": 2,
+  "project": "GPTTalker",
+  "description": "Lightweight MCP hub for ChatGPT to interact with a multi-machine dev environment",
+  "active_ticket": "SETUP-001",
+  "tickets": [
+    {
+      "id": "SETUP-001",
+      "title": "Project skeleton and dependencies",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 0,
+      "depends_on": [],
+      "file": "SETUP-001.md"
+    },
+    {
+      "id": "SETUP-002",
+      "title": "Hub FastAPI application skeleton",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 0,
+      "depends_on": ["SETUP-001"],
+      "file": "SETUP-002.md"
+    },
+    {
+      "id": "SETUP-003",
+      "title": "SQLite database layer",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 0,
+      "depends_on": ["SETUP-001"],
+      "file": "SETUP-003.md"
+    },
+    {
+      "id": "SETUP-004",
+      "title": "Logging and error handling",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 0,
+      "depends_on": ["SETUP-002"],
+      "file": "SETUP-004.md"
+    },
+    {
+      "id": "SETUP-005",
+      "title": "Test infrastructure",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 0,
+      "depends_on": ["SETUP-001"],
+      "file": "SETUP-005.md"
+    },
+    {
+      "id": "CORE-001",
+      "title": "Node registry and management",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["SETUP-003", "SETUP-002"],
+      "file": "CORE-001.md"
+    },
+    {
+      "id": "CORE-002",
+      "title": "Node agent service skeleton",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["SETUP-001"],
+      "file": "CORE-002.md"
+    },
+    {
+      "id": "CORE-003",
+      "title": "Hub-to-node connectivity layer",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["CORE-001", "CORE-002"],
+      "file": "CORE-003.md"
+    },
+    {
+      "id": "CORE-004",
+      "title": "Repo registry and validation",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["CORE-001", "SETUP-003"],
+      "file": "CORE-004.md"
+    },
+    {
+      "id": "CORE-005",
+      "title": "Write-target registry",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["CORE-001", "SETUP-003"],
+      "file": "CORE-005.md"
+    },
+    {
+      "id": "CORE-006",
+      "title": "LLM service registry",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["CORE-001", "SETUP-003"],
+      "file": "CORE-006.md"
+    },
+    {
+      "id": "CORE-007",
+      "title": "MCP protocol layer",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 1,
+      "depends_on": ["SETUP-002", "SETUP-004"],
+      "file": "CORE-007.md"
+    },
+    {
+      "id": "REPO-001",
+      "title": "inspect_repo_tree tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 2,
+      "depends_on": ["CORE-003", "CORE-004"],
+      "file": "REPO-001.md"
+    },
+    {
+      "id": "REPO-002",
+      "title": "read_repo_file tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 2,
+      "depends_on": ["CORE-003", "CORE-004"],
+      "file": "REPO-002.md"
+    },
+    {
+      "id": "REPO-003",
+      "title": "search_repo tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 2,
+      "depends_on": ["CORE-003", "CORE-004"],
+      "file": "REPO-003.md"
+    },
+    {
+      "id": "REPO-004",
+      "title": "git_status tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 2,
+      "depends_on": ["CORE-003", "CORE-004"],
+      "file": "REPO-004.md"
+    },
+    {
+      "id": "WRITE-001",
+      "title": "write_markdown tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 3,
+      "depends_on": ["CORE-003", "CORE-005"],
+      "file": "WRITE-001.md"
+    },
+    {
+      "id": "LLM-001",
+      "title": "chat_llm tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 4,
+      "depends_on": ["CORE-003", "CORE-006"],
+      "file": "LLM-001.md"
+    },
+    {
+      "id": "LLM-002",
+      "title": "OpenCode adapter",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 4,
+      "depends_on": ["LLM-001"],
+      "file": "LLM-002.md"
+    },
+    {
+      "id": "LLM-003",
+      "title": "General and helper model adapters",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 4,
+      "depends_on": ["LLM-001"],
+      "file": "LLM-003.md"
+    },
+    {
+      "id": "LLM-004",
+      "title": "Embedding service adapter",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 4,
+      "depends_on": ["LLM-001"],
+      "file": "LLM-004.md"
+    },
+    {
+      "id": "CTX-001",
+      "title": "Qdrant integration",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 5,
+      "depends_on": ["CORE-006", "LLM-004"],
+      "file": "CTX-001.md"
+    },
+    {
+      "id": "CTX-002",
+      "title": "index_repo tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 5,
+      "depends_on": ["CTX-001", "REPO-001", "REPO-002"],
+      "file": "CTX-002.md"
+    },
+    {
+      "id": "CTX-003",
+      "title": "get_project_context tool",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 5,
+      "depends_on": ["CTX-001", "CTX-002"],
+      "file": "CTX-003.md"
+    },
+    {
+      "id": "CTX-004",
+      "title": "Issue tracking tools",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 5,
+      "depends_on": ["CTX-001", "SETUP-003"],
+      "file": "CTX-004.md"
+    },
+    {
+      "id": "CTX-005",
+      "title": "Context bundle generation",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 5,
+      "depends_on": ["CTX-003"],
+      "file": "CTX-005.md"
+    },
+    {
+      "id": "XREPO-001",
+      "title": "Global search",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 6,
+      "depends_on": ["CTX-002"],
+      "file": "XREPO-001.md"
+    },
+    {
+      "id": "XREPO-002",
+      "title": "Repo relationships",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 6,
+      "depends_on": ["CORE-004", "SETUP-003"],
+      "file": "XREPO-002.md"
+    },
+    {
+      "id": "XREPO-003",
+      "title": "Project landscape and architecture maps",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 6,
+      "depends_on": ["XREPO-001", "XREPO-002"],
+      "file": "XREPO-003.md"
+    },
+    {
+      "id": "SCHED-001",
+      "title": "Task classification",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 7,
+      "depends_on": ["CORE-006"],
+      "file": "SCHED-001.md"
+    },
+    {
+      "id": "SCHED-002",
+      "title": "Scheduler and routing engine",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 7,
+      "depends_on": ["SCHED-001", "CORE-006"],
+      "file": "SCHED-002.md"
+    },
+    {
+      "id": "OBS-001",
+      "title": "Task history system",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 8,
+      "depends_on": ["SETUP-003", "SETUP-004"],
+      "file": "OBS-001.md"
+    },
+    {
+      "id": "OBS-002",
+      "title": "History query tools",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 8,
+      "depends_on": ["OBS-001"],
+      "file": "OBS-002.md"
+    },
+    {
+      "id": "OBS-003",
+      "title": "Issue timeline",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 8,
+      "depends_on": ["CTX-004", "OBS-001"],
+      "file": "OBS-003.md"
+    },
+    {
+      "id": "EDGE-001",
+      "title": "Cloudflare Tunnel integration",
+      "stage": "planning",
+      "status": "todo",
+      "wave": 9,
+      "depends_on": ["SETUP-002"],
+      "file": "EDGE-001.md"
+    },
+    {
+      "id": "POLISH-001",
+      "title": "Error handling hardening",
+      "stage": "planning",
+      "status": "blocked",
+      "wave": 10,
+      "depends_on": ["CORE-007", "REPO-001", "LLM-001", "CTX-003"],
+      "file": "POLISH-001.md"
+    },
+    {
+      "id": "POLISH-002",
+      "title": "End-to-end integration tests",
+      "stage": "planning",
+      "status": "blocked",
+      "wave": 10,
+      "depends_on": ["POLISH-001"],
+      "file": "POLISH-002.md"
+    },
+    {
+      "id": "POLISH-003",
+      "title": "API and MCP tool documentation",
+      "stage": "planning",
+      "status": "blocked",
+      "wave": 10,
+      "depends_on": ["POLISH-002"],
+      "file": "POLISH-003.md"
+    },
+    {
+      "id": "POLISH-004",
+      "title": "Scheduled indexing",
+      "stage": "planning",
+      "status": "blocked",
+      "wave": 10,
+      "depends_on": ["CTX-002"],
+      "file": "POLISH-004.md"
+    }
+  ]
+}

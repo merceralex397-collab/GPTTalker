@@ -1,0 +1,23 @@
+{
+  "managed_repo": "C:\\Users\\PC\\.agents",
+  "template_commit": "unknown",
+  "template_asset_root": "skills/repo-scaffold-factory/assets/project-template",
+  "project_name": "GPTTalker",
+  "project_slug": "gpttalker",
+  "agent_prefix": "gpttalker",
+  "generation_scope": "full",
+  "runtime_models": {
+    "provider": "minimax-coding-plan",
+    "planner": "minimax-coding-plan/minimax-m2.5",
+    "implementer": "minimax-coding-plan/minimax-m2.5",
+    "utility": "minimax-coding-plan/minimax-m2.5"
+  },
+  "bootstrap_steps": [
+    "repo-scaffold-factory/render-full-scaffold"
+  ],
+  "tracking": {
+    "invocation_log": ".opencode/state/invocation-log.jsonl",
+    "skill_ping_tool": "skill_ping",
+    "tracker_plugin": "invocation-tracker"
+  }
+}
