@@ -1968,12 +1968,15 @@
       ],
       "summary": "EDGE-001 is marked done but only config fields exist. No runtime code starts, supervises, or manages cloudflared. docs/ops/cloudflare-tunnel.md falsely claims automatic startup. Implement or accurately document manual setup.",
       "acceptance": [
-        "Hub lifespan starts cloudflared when tunnel is enabled and token is set, OR docs accurately describe manual setup",
-        "No false automation claims in documentation"
+        "Hub lifespan starts cloudflared subprocess when tunnel is enabled and token env var is set",
+        "If cloudflared is already running as systemd service, hub detects this and skips subprocess management",
+        "Tunnel health is monitored with automatic restart on failure",
+        "Graceful shutdown terminates cloudflared subprocess if hub-managed",
+        "Tunnel and API tokens read from environment variables only \u2014 never hardcoded",
+        "docs/ops/cloudflare-tunnel.md accurately reflects implemented behavior",
+        "Structured logs redact tunnel tokens per security rules"
       ],
-      "decision_blockers": [
-        "Decide whether to implement automatic tunnel management or document manual setup"
-      ],
+      "decision_blockers": [],
       "artifacts": []
     },
     {
