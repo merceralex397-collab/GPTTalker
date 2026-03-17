@@ -1,45 +1,62 @@
 # GPTTalker
 
-GPTTalker is a **scaffolded implementation repo** for a lightweight MCP hub that lets ChatGPT safely interact with a multi-machine development environment.
-
-The repo currently contains the operating layer, canonical brief, ticket backlog, and project-local OpenCode team needed to build the system. It does **not** yet contain the runtime implementation under `src/`; the first execution wave in `tickets/manifest.json` is the handoff point for that work.
+GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a multi-machine development environment.
 
 ## Current status
 
-- Source material is preserved in `mcp_spec_pack/`
-- The repo has been fully re-scaffolded from the updated Scafforge templates
-- The OpenCode operating layer, backlog, local skills, and handoff surface were regenerated for GPTTalker
-- `SETUP-001` is the active ready ticket for implementation kickoff
+- All 32 tickets have been completed (waves 0-6)
+- The system is fully implemented with:
+  - FastAPI MCP hub with policy-controlled tools
+  - Node agent service for distributed execution
+  - SQLite registry and history storage
+  - Qdrant vector store for project context
+  - Cloudflare Tunnel integration for public HTTPS edge
+  - Security-focused fail-closed design
 
-## Planned system
+## Implemented Features
 
-The target system is a Python + FastAPI MCP hub that:
+### Core Infrastructure
+- Python + FastAPI MCP hub server
+- Node agent service with health endpoints
+- SQLite persistence with async aiosqlite
+- Qdrant integration for semantic search
 
-- exposes policy-controlled MCP tools to ChatGPT
-- routes repo inspection, markdown delivery, and LLM calls to approved nodes over Tailscale
-- stores structured registry and history state in SQLite
-- stores semantic project context in Qdrant
-- exposes a public HTTPS edge through Cloudflare Tunnel
-- keeps all access fail-closed with no unrestricted shell exposure
+### MCP Tools
+- Discovery: list_nodes, list_repos
+- Inspection: inspect_repo_tree, read_repo_file
+- Search: search_repo, git_status
+- Write: write_markdown (atomic, extension-validated)
+- LLM: chat_llm, chat_opencode, chat_embeddings
+- Context: index_repo, get_project_context, record_issue
+- Cross-repo: search_across_repos, get_project_landscape
+- Architecture: get_architecture_map, get_repo_architecture
+- Observability: get_task_details, list_generated_docs, get_issue_timeline
+
+### Security
+- Policy engine with fail-closed behavior
+- Path normalization and traversal prevention
+- Extension allowlists for write operations
+- Structured logging with secret redaction
 
 ## Repository layout
 
-- `mcp_spec_pack/` — immutable reference material that existed before repo generation
-- `docs/spec/CANONICAL-BRIEF.md` — normalized project source of truth
-- `docs/process/` — workflow, tooling, model, and agent-process docs for the generated operating layer
-- `tickets/` — machine-readable backlog, human board, and per-ticket detail files
-- `.opencode/` — project-local agents, tools, plugins, commands, skills, state, and provenance
-- `START-HERE.md` — restart surface for the next session or machine
+- `src/hub/` — FastAPI MCP hub implementation
+- `src/node_agent/` — Node agent service
+- `src/shared/` — Shared schemas, repositories, config
+- `docs/` — Operation and API documentation
+- `tests/` — Contract and security tests
+- `tickets/` — Completed ticket backlog
 
-## How to work in this repo
+## Getting Started
 
-1. Read `START-HERE.md`
-2. Read `AGENTS.md`
-3. Read `docs/spec/CANONICAL-BRIEF.md`
-4. Read `docs/process/workflow.md`
-5. Read `tickets/manifest.json`
-6. Start with the active ticket and follow the ticketed stage flow
+1. Read `START-HERE.md` for operational guidance
+2. Review `docs/ops/` for setup guides
+3. Configure environment variables for hub and nodes
 
-## Source material and truth
+## Testing
 
-The original source pack in `mcp_spec_pack/` is intentionally preserved and should remain untouched. If generated docs ever conflict with the preserved source pack, regenerate or repair the generated layer rather than editing the source pack.
+Run tests with:
+```bash
+pytest tests/
+ruff check src/
+```

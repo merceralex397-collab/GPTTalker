@@ -19,11 +19,11 @@ cross-repo
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/xrepo-001-planning-plan.md (planning) - Implementation plan for XREPO-001: Cross-repo search and global context query. Defines 3 new MCP tools (search_across_repos, list_related_repos, get_project_landscape), access control via RepoRepository, provenance preservation with repo_id/node_id in results, new files (cross_repo_service.py, cross_repo.py), and modifications to models.py and tools/__init__.py. All acceptance criteria addressed - no blockers.
+- implementation: .opencode/state/implementations/xrepo-001-implementation-implementation.md (implementation) - Implementation of XREPO-001: Cross-repo search and global context query. Created cross_repo_service.py and cross_repo.py, added models to models.py, registered 3 new MCP tools.
+- review: .opencode/state/reviews/xrepo-001-review-review.md (review) - Approved
+- qa: .opencode/state/qa/xrepo-001-qa-qa.md (qa) - Passed
 
 ## Notes
 

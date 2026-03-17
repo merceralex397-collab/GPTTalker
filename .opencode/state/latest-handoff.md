@@ -29,13 +29,13 @@ The repo is operating with a ticketed OpenCode workflow.
 
 ## Current Ticket
 
-- ID: CORE-006
-- Title: MCP tool routing framework
-- Wave: 1
-- Lane: hub-core
+- ID: EDGE-002
+- Title: Node registration bootstrap and operator config docs
+- Wave: 5
+- Lane: edge
 - Stage: closeout
 - Status: done
-- Parallel safe: no
+- Parallel safe: yes
 
 ## Validation Status
 
@@ -47,5 +47,5 @@ Update this section with project-specific validation results.
 
 ## Next Action
 
-Wave 1 complete! Next: REPO-001 (list_nodes and list_repos tools) in Wave 2
+Continue with remaining tickets: POLISH-001, POLISH-002, POLISH-003
 <!-- SCAFFORGE:START_HERE_BLOCK END -->

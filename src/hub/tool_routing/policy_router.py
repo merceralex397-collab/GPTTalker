@@ -4,7 +4,7 @@ This module provides the PolicyAwareToolRouter that integrates policy
 validation with tool execution, implementing fail-closed behavior.
 """
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from src.hub.policy.engine import PolicyEngine
 from src.hub.policy.scopes import OperationScope, ValidationContext
@@ -15,6 +15,25 @@ from src.hub.tool_routing.errors import (
 )
 from src.hub.tool_routing.requirements import PolicyRequirement
 from src.shared.logging import get_logger
+
+if TYPE_CHECKING:
+    from src.hub.policy.llm_service_policy import LLMServicePolicy
+    from src.hub.policy.write_target_policy import WriteTargetPolicy
+    from src.hub.services.aggregation_service import AggregationService
+    from src.hub.services.architecture_service import ArchitectureService
+    from src.hub.services.bundle_service import BundleService
+    from src.hub.services.embedding_client import EmbeddingServiceClient
+    from src.hub.services.indexing_pipeline import IndexingPipeline
+    from src.hub.services.llm_client import LLMServiceClient
+    from src.hub.services.node_client import HubNodeClient
+    from src.hub.services.opencode_adapter import OpenCodeAdapter
+    from src.hub.services.qdrant_client import QdrantClientWrapper
+    from src.shared.repositories.issues import IssueRepository
+    from src.shared.repositories.nodes import NodeRepository
+    from src.shared.repositories.repos import RepoRepository
+    from src.shared.repositories.tasks import TaskRepository
+    from src.shared.repositories.generated_docs import GeneratedDocsRepository
+    from src.shared.repositories.write_targets import WriteTargetRepository
 
 logger = get_logger(__name__)
 
@@ -32,15 +51,64 @@ class PolicyAwareToolRouter:
         self,
         registry: ToolRegistry,
         policy_engine: PolicyEngine,
+        node_repo: "NodeRepository | None" = None,
+        repo_repo: "RepoRepository | None" = None,
+        node_client: "HubNodeClient | None" = None,
+        write_target_repo: "WriteTargetRepository | None" = None,
+        write_target_policy: "WriteTargetPolicy | None" = None,
+        llm_service_policy: "LLMServicePolicy | None" = None,
+        llm_client: "LLMServiceClient | None" = None,
+        opencode_adapter: "OpenCodeAdapter | None" = None,
+        indexing_pipeline: "IndexingPipeline | None" = None,
+        qdrant_client: "QdrantClientWrapper | None" = None,
+        embedding_client: "EmbeddingServiceClient | None" = None,
+        issue_repo: "IssueRepository | None" = None,
+        bundle_service: "BundleService | None" = None,
+        aggregation_service: "AggregationService | None" = None,
+        architecture_service: "ArchitectureService | None" = None,
+        task_repo: "TaskRepository | None" = None,
+        doc_repo: "GeneratedDocsRepository | None" = None,
     ):
         """Initialize the policy-aware tool router.
 
         Args:
             registry: ToolRegistry instance for tool discovery.
             policy_engine: PolicyEngine instance for access validation.
+            node_repo: Optional NodeRepository for handler execution.
+            repo_repo: Optional RepoRepository for handler execution.
+            node_client: Optional HubNodeClient for node communication.
+            write_target_repo: Optional WriteTargetRepository for write target lookup.
+            write_target_policy: Optional WriteTargetPolicy for write access validation.
+            llm_service_policy: Optional LLMServicePolicy for LLM service validation.
+            llm_client: Optional LLMServiceClient for LLM service calls.
+            opencode_adapter: Optional OpenCodeAdapter for OpenCode-specific calls.
+            indexing_pipeline: Optional IndexingPipeline for repository indexing.
+            qdrant_client: Optional QdrantClientWrapper for vector search.
+            embedding_client: Optional EmbeddingServiceClient for embeddings.
+            issue_repo: Optional IssueRepository for issue storage.
+            bundle_service: Optional BundleService for context bundle operations.
+            aggregation_service: Optional AggregationService for recurring issue detection.
+            architecture_service: Optional ArchitectureService for architecture map generation.
         """
         self._registry = registry
         self._policy_engine = policy_engine
+        self._node_repo = node_repo
+        self._repo_repo = repo_repo
+        self._node_client = node_client
+        self._write_target_repo = write_target_repo
+        self._write_target_policy = write_target_policy
+        self._llm_service_policy = llm_service_policy
+        self._llm_client = llm_client
+        self._opencode_adapter = opencode_adapter
+        self._indexing_pipeline = indexing_pipeline
+        self._qdrant_client = qdrant_client
+        self._embedding_client = embedding_client
+        self._issue_repo = issue_repo
+        self._bundle_service = bundle_service
+        self._aggregation_service = aggregation_service
+        self._architecture_service = architecture_service
+        self._task_repo = task_repo
+        self._doc_repo = doc_repo
 
     @property
     def registry(self) -> ToolRegistry:
@@ -339,8 +407,98 @@ class PolicyAwareToolRouter:
         Returns:
             Tool execution result.
         """
+        import inspect
+
+        # Build execution kwargs - pass repositories if handler accepts them
+        exec_kwargs = dict(parameters)
+        if self._node_repo is not None:
+            # Check if handler signature accepts node_repo
+            sig = inspect.signature(handler)
+            if "node_repo" in sig.parameters:
+                exec_kwargs["node_repo"] = self._node_repo
+        if self._repo_repo is not None:
+            # Check if handler signature accepts repo_repo
+            sig = inspect.signature(handler)
+            if "repo_repo" in sig.parameters:
+                exec_kwargs["repo_repo"] = self._repo_repo
+        if self._node_client is not None:
+            # Check if handler signature accepts node_client
+            sig = inspect.signature(handler)
+            if "node_client" in sig.parameters:
+                exec_kwargs["node_client"] = self._node_client
+        if self._write_target_repo is not None:
+            # Check if handler signature accepts write_target_repo
+            sig = inspect.signature(handler)
+            if "write_target_repo" in sig.parameters:
+                exec_kwargs["write_target_repo"] = self._write_target_repo
+        if self._write_target_policy is not None:
+            # Check if handler signature accepts write_target_policy
+            sig = inspect.signature(handler)
+            if "write_target_policy" in sig.parameters:
+                exec_kwargs["write_target_policy"] = self._write_target_policy
+        if self._llm_service_policy is not None:
+            # Check if handler signature accepts llm_service_policy
+            sig = inspect.signature(handler)
+            if "llm_service_policy" in sig.parameters:
+                exec_kwargs["llm_service_policy"] = self._llm_service_policy
+        if self._llm_client is not None:
+            # Check if handler signature accepts llm_client
+            sig = inspect.signature(handler)
+            if "llm_client" in sig.parameters:
+                exec_kwargs["llm_client"] = self._llm_client
+        if self._opencode_adapter is not None:
+            # Check if handler signature accepts opencode_adapter
+            sig = inspect.signature(handler)
+            if "opencode_adapter" in sig.parameters:
+                exec_kwargs["opencode_adapter"] = self._opencode_adapter
+        if self._indexing_pipeline is not None:
+            # Check if handler signature accepts indexing_pipeline
+            sig = inspect.signature(handler)
+            if "indexing_pipeline" in sig.parameters:
+                exec_kwargs["indexing_pipeline"] = self._indexing_pipeline
+        if self._qdrant_client is not None:
+            # Check if handler signature accepts qdrant_client
+            sig = inspect.signature(handler)
+            if "qdrant_client" in sig.parameters:
+                exec_kwargs["qdrant_client"] = self._qdrant_client
+        if self._embedding_client is not None:
+            # Check if handler signature accepts embedding_client
+            sig = inspect.signature(handler)
+            if "embedding_client" in sig.parameters:
+                exec_kwargs["embedding_client"] = self._embedding_client
+        if self._issue_repo is not None:
+            # Check if handler signature accepts issue_repo
+            sig = inspect.signature(handler)
+            if "issue_repo" in sig.parameters:
+                exec_kwargs["issue_repo"] = self._issue_repo
+        if self._task_repo is not None:
+            # Check if handler signature accepts task_repo
+            sig = inspect.signature(handler)
+            if "task_repo" in sig.parameters:
+                exec_kwargs["task_repo"] = self._task_repo
+        if self._doc_repo is not None:
+            # Check if handler signature accepts doc_repo
+            sig = inspect.signature(handler)
+            if "doc_repo" in sig.parameters:
+                exec_kwargs["doc_repo"] = self._doc_repo
+        if self._bundle_service is not None:
+            # Check if handler signature accepts bundle_service
+            sig = inspect.signature(handler)
+            if "bundle_service" in sig.parameters:
+                exec_kwargs["bundle_service"] = self._bundle_service
+        if self._aggregation_service is not None:
+            # Check if handler signature accepts aggregation_service
+            sig = inspect.signature(handler)
+            if "aggregation_service" in sig.parameters:
+                exec_kwargs["aggregation_service"] = self._aggregation_service
+        if self._architecture_service is not None:
+            # Check if handler signature accepts architecture_service
+            sig = inspect.signature(handler)
+            if "architecture_service" in sig.parameters:
+                exec_kwargs["architecture_service"] = self._architecture_service
+
         try:
-            result = await handler(**parameters)
+            result = await handler(**exec_kwargs)
             logger.info("tool_execution_success", **log_context)
             return {
                 "success": True,

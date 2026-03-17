@@ -143,3 +143,119 @@ class GitStatusResponse(BaseModel):
     untracked: list[str] = Field(default_factory=list, description="Untracked files")
     ahead: int = Field(0, description="Number of commits ahead of remote")
     behind: int = Field(0, description="Number of commits behind remote")
+
+
+class NodeListResponse(BaseModel):
+    """Response model for list_nodes tool."""
+
+    nodes: list[dict[str, Any]] = Field(
+        default_factory=list, description="List of nodes with health metadata"
+    )
+    total: int = Field(0, description="Total number of nodes")
+
+
+class RepoListResponse(BaseModel):
+    """Response model for list_repos tool."""
+
+    repos: list[dict[str, Any]] = Field(
+        default_factory=list, description="List of approved repositories"
+    )
+    total: int = Field(0, description="Total number of repositories")
+    filtered_by_node: str | None = Field(None, description="Node ID if repos were filtered by node")
+
+
+class ChatLLMRequest(BaseModel):
+    """Request model for chat_llm tool."""
+
+    service_id: str | None = Field(None, description="LLM service identifier")
+    service_name: str | None = Field(
+        None, description="LLM service name (alternative to service_id)"
+    )
+    prompt: str = Field(..., description="Prompt to send to LLM")
+    max_tokens: int = Field(1000, description="Maximum tokens in response")
+    temperature: float = Field(0.7, description="Sampling temperature")
+    session_id: str | None = Field(
+        None, description="Optional session ID for conversation continuity"
+    )
+    system_prompt: str | None = Field(None, description="Optional system prompt")
+
+
+class ChatLLMResponse(BaseModel):
+    """Response model for chat_llm tool."""
+
+    success: bool = Field(..., description="Whether the request succeeded")
+    response: str | None = Field(None, description="LLM response text")
+    model: str | None = Field(None, description="Model that generated the response")
+    service_id: str = Field(..., description="Service ID that handled the request")
+    service_name: str | None = Field(None, description="Human-readable service name")
+    latency_ms: int = Field(..., description="Request latency in milliseconds")
+    tokens_used: int | None = Field(None, description="Total tokens used")
+    finish_reason: str | None = Field(None, description="Reason for completion")
+    error: str | None = Field(None, description="Error message if failed")
+
+
+# === Context and Issue Schemas ===)
+
+
+class GetProjectContextParams(BaseModel):
+    """Parameters for get_project_context tool."""
+
+    query: str = Field(..., description="Natural language search query")
+    repo_id: str | None = Field(None, description="Filter by specific repository")
+    node_id: str | None = Field(None, description="Filter by specific node")
+    limit: int = Field(10, description="Maximum results", ge=1, le=100)
+    score_threshold: float | None = Field(
+        None, description="Minimum similarity score", ge=0.0, le=1.0
+    )
+
+
+class ContextSearchResult(BaseModel):
+    """Single context search result with provenance."""
+
+    file_id: str = Field(..., description="Unique file identifier")
+    repo_id: str = Field(..., description="Repository identifier")
+    node_id: str = Field(..., description="Node hosting the repo")
+    path: str = Field(..., description="Absolute file path")
+    relative_path: str = Field(..., description="Path relative to repo root")
+    filename: str = Field(..., description="Filename without path")
+    extension: str = Field(..., description="File extension")
+    language: str | None = Field(None, description="Detected language")
+    content_hash: str = Field(..., description="SHA256 of content")
+    size_bytes: int = Field(..., description="File size in bytes")
+    line_count: int = Field(..., description="Number of lines")
+    indexed_at: datetime = Field(..., description="When file was indexed")
+    score: float = Field(..., description="Similarity score")
+    content_preview: str | None = Field(None, description="Content preview")
+
+
+class GetProjectContextResponse(BaseModel):
+    """Response for get_project_context tool."""
+
+    query: str = Field(..., description="Original search query")
+    results: list[ContextSearchResult] = Field(
+        default_factory=list, description="Search results with provenance"
+    )
+    total: int = Field(..., description="Total matches found")
+    repo_id: str | None = Field(None, description="Filter used")
+    latency_ms: int = Field(..., description="Search latency")
+
+
+class RecordIssueParams(BaseModel):
+    """Parameters for record_issue tool."""
+
+    repo_id: str = Field(..., description="Repository identifier")
+    title: str = Field(..., description="Issue title")
+    description: str = Field(..., description="Issue description")
+    status: str = Field("open", description="Issue status")
+    metadata: dict | None = Field(None, description="Additional metadata")
+
+
+class RecordIssueResponse(BaseModel):
+    """Response for record_issue tool."""
+
+    success: bool = Field(..., description="Whether the issue was created")
+    issue_id: str = Field(..., description="Created issue identifier")
+    repo_id: str = Field(..., description="Repository the issue belongs to")
+    title: str = Field(..., description="Issue title")
+    indexed: bool = Field(..., description="Whether issue was indexed in Qdrant")
+    error: str | None = Field(None, description="Error message if failed")

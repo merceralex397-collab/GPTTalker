@@ -3,10 +3,14 @@
 from .database import DatabaseManager
 from .logging import get_logger
 from .tables import (
+    CREATE_AUDIT_LOG_TABLE,
+    CREATE_GENERATED_DOCS_TABLE,
     CREATE_INDEXES,
     CREATE_ISSUES_TABLE,
     CREATE_LLM_SERVICES_TABLE,
     CREATE_NODES_TABLE,
+    CREATE_RELATIONSHIPS_TABLE,
+    CREATE_REPO_OWNERS_TABLE,
     CREATE_REPOS_TABLE,
     CREATE_SCHEMA_VERSION_TABLE,
     CREATE_TASKS_TABLE,
@@ -38,6 +42,25 @@ MIGRATIONS: dict[int, list[str]] = {
         "ALTER TABLE nodes ADD COLUMN consecutive_failures INTEGER DEFAULT 0;",
         "ALTER TABLE nodes ADD COLUMN last_health_check TEXT;",
         "ALTER TABLE nodes ADD COLUMN last_health_attempt TEXT;",
+    ],
+    # Migration 3: Add relationships and repo_owners tables
+    3: [
+        CREATE_RELATIONSHIPS_TABLE,
+        CREATE_REPO_OWNERS_TABLE,
+        "CREATE INDEX IF NOT EXISTS idx_relationships_source ON relationships(source_repo_id);",
+        "CREATE INDEX IF NOT EXISTS idx_relationships_target ON relationships(target_repo_id);",
+        "CREATE INDEX IF NOT EXISTS idx_relationships_type ON relationships(relationship_type);",
+    ],
+    # Migration 4: Add generated_docs and audit_log tables (OBS-001)
+    4: [
+        CREATE_GENERATED_DOCS_TABLE,
+        CREATE_AUDIT_LOG_TABLE,
+        "CREATE INDEX IF NOT EXISTS idx_audit_trace_id ON audit_log(trace_id);",
+        "CREATE INDEX IF NOT EXISTS idx_audit_event_type ON audit_log(event_type);",
+        "CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor);",
+        "CREATE INDEX IF NOT EXISTS idx_audit_created_at ON audit_log(created_at);",
+        "CREATE INDEX IF NOT EXISTS idx_generated_docs_trace_id ON generated_docs(trace_id);",
+        "CREATE INDEX IF NOT EXISTS idx_generated_docs_tool ON generated_docs(tool_name);",
     ],
 }
 

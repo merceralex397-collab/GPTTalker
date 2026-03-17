@@ -29,6 +29,14 @@ class HubConfig(BaseSettings):
     # Qdrant settings
     qdrant_host: str = Field("localhost", description="Qdrant server host")
     qdrant_port: int = Field(6333, ge=1, le=65535, description="Qdrant server port")
+    qdrant_grpc_port: int = Field(
+        6334, ge=1, le=65535, description="Qdrant gRPC port for faster operations"
+    )
+    qdrant_timeout: float = Field(30.0, ge=0.1, description="Qdrant request timeout in seconds")
+    qdrant_prefetch: int = Field(100, ge=1, description="Default prefetch count for searches")
+    qdrant_collection_retain_seconds: int = Field(
+        7776000, ge=1, description="Default TTL for indexed vectors (90 days)"
+    )
 
     # Node agent settings
     node_agent_timeout: int = Field(30, ge=1, description="Node agent request timeout in seconds")
@@ -45,6 +53,30 @@ class HubConfig(BaseSettings):
     )
     node_client_pool_max_keepalive: int = Field(20, ge=1, description="Max keepalive connections")
     node_client_api_key: str | None = Field(None, description="API key for node authentication")
+
+    # LLM client settings
+    llm_client_timeout: float = Field(
+        120.0, ge=1.0, description="Default timeout for LLM service calls in seconds"
+    )
+
+    # Embedding client settings
+    embedding_client_timeout: float = Field(
+        30.0, ge=1.0, description="Default timeout for embedding service calls in seconds"
+    )
+
+    # Cloudflare Tunnel settings
+    cloudflare_tunnel_token: str | None = Field(
+        None, description="Cloudflare Tunnel token for authentication"
+    )
+    cloudflare_tunnel_hostname: str | None = Field(
+        None, description="Public hostname for Cloudflare Tunnel (e.g., myhub.example.com)"
+    )
+    cloudflare_tunnel_url: str = Field(
+        "http://localhost:8000", description="Local hub URL that tunnel forwards to"
+    )
+    cloudflare_tunnel_enabled: bool = Field(
+        False, description="Enable Cloudflare Tunnel integration"
+    )
 
     model_config = SettingsConfigDict(
         env_prefix="GPTTALKER_",

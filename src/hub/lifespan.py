@@ -6,6 +6,8 @@ import httpx
 from fastapi import FastAPI
 
 from src.hub.config import get_hub_config
+from src.hub.services.embedding_client import EmbeddingServiceClient
+from src.hub.services.qdrant_client import create_qdrant_client, get_qdrant_client
 from src.shared.database import initialize_database
 from src.shared.logging import get_logger, setup_logging
 
@@ -62,6 +64,36 @@ async def lifespan(app: FastAPI):
         max_connections=config.node_client_pool_max_connections,
     )
 
+    # Step 5: Initialize embedding client
+    app.state.embedding_client = EmbeddingServiceClient(
+        http_client=app.state.http_client,
+        default_timeout=config.embedding_client_timeout,
+    )
+
+    logger.info(
+        "embedding_client_initialized",
+        timeout=config.embedding_client_timeout,
+    )
+
+    # Step 6: Initialize Qdrant client (fail-open: log warning but continue if unavailable)
+    try:
+        app.state.qdrant_client = await create_qdrant_client(config)
+        logger.info(
+            "qdrant_client_initialized",
+            host=config.qdrant_host,
+            port=config.qdrant_port,
+        )
+    except Exception as e:
+        # Fail-open: log warning but allow hub to start
+        logger.warning(
+            "qdrant_client_init_failed_continuing",
+            error=str(e),
+            host=config.qdrant_host,
+            port=config.qdrant_port,
+        )
+        # Create uninitialized client for graceful degradation
+        app.state.qdrant_client = get_qdrant_client(config)
+
     logger.info("hub_ready", db_path=config.database_url)
 
     # Yield control to the application
@@ -70,6 +102,14 @@ async def lifespan(app: FastAPI):
     # --- Shutdown phase ---
 
     logger.info("hub_shutting_down")
+
+    # Close Qdrant client
+    if app.state.qdrant_client is not None:
+        try:
+            await app.state.qdrant_client.close()
+            logger.info("qdrant_client_closed")
+        except Exception as e:
+            logger.warning("qdrant_client_close_error", error=str(e))
 
     # Close HTTP client
     if app.state.http_client is not None:

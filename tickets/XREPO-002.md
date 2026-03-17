@@ -19,11 +19,11 @@ cross-repo
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/xrepo-002-planning-plan.md (planning) - Implementation plan for XREPO-002: Repo relationships and landscape metadata. Defines explicit relationship metadata model (RepoRelationship, RelationshipType, RepoOwner), structured landscape ownership (LandscapeMetadata with owner/maintainers), and citable source records (LandscapeSource). Creates new relationship service, repository, MCP tools, and extends existing cross-repo service with owner and citation data.
+- implementation: .opencode/state/implementations/xrepo-002-implementation-implementation.md (implementation) - Implementation of XREPO-002: Created relationship repository, relationship service, and MCP tool handlers. Added relationship and owner models to models.py, updated tables.py and migrations.py for new schema v3, extended cross_repo_service.py with owner metadata and source citations.
+- review: .opencode/state/reviews/xrepo-002-review-review.md (review) - Approved
+- qa: .opencode/state/qa/xrepo-002-qa-qa.md (qa) - Passed
 
 ## Notes
 

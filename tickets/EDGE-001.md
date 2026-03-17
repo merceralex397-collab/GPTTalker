@@ -19,11 +19,11 @@ edge
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,9 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/edge-001-planning-plan.md (planning) - Planning for EDGE-001: Cloudflare Tunnel integration and public-edge config. Defines tunnel configuration, documentation, and integration approach.
+- implementation: .opencode/state/implementations/edge-001-implementation-implementation.md (implementation) - Implementation of EDGE-001: Cloudflare Tunnel integration and public-edge config. Added tunnel config to HubConfig, created docs/ops/cloudflare-tunnel.md documentation.
+- qa: .opencode/state/qa/edge-001-qa-qa.md (qa) - QA verification for EDGE-001: Cloudflare Tunnel integration and public-edge config. All 3 acceptance criteria verified.
 
 ## Notes
 

@@ -19,11 +19,11 @@ scheduler
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/sched-002-planning-plan.md (planning) - Planning artifact for SCHED-002: Distributed scheduler, node selection, and fallback. Defines SchedulerInput model with all decision factors, DistributedScheduler class extending TaskRoutingPolicy with node-level awareness, health-aware filtering, latency-aware selection, and bounded fallback behavior.
+- implementation: .opencode/state/implementations/sched-002-implementation-implementation.md (implementation) - Implementation of SCHED-002: Created distributed scheduler with node-aware service selection, health filtering, latency-aware selection, and bounded fallback chain. Added SchedulerInput, SchedulerResult, NodeHealthInfo, and ServiceNodePair models to models.py. Created DistributedScheduler class in new distributed_scheduler.py file. Updated dependencies.py with DI provider. Integrated distributed scheduler into llm.py, opencode.py, and embedding.py tools.
+- review: .opencode/state/reviews/sched-002-review-review.md (review) - Approved
+- qa: .opencode/state/qa/sched-002-qa-qa.md (qa) - Passed
 
 ## Notes
 

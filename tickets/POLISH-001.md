@@ -19,11 +19,11 @@ qa
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,9 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/polish-001-planning-plan.md (planning) - Planning for POLISH-001: Contract tests for MCP tools and failure modes. Defines test categories for discovery, inspection, search, write, LLM, context tools, and failure mode tests.
+- implementation: .opencode/state/implementations/polish-001-implementation-implementation.md (implementation) - Implementation of POLISH-001: Created tests/hub/test_contracts.py with 25+ test cases covering discovery, inspection, search, write, LLM tools, and failure modes.
+- qa: .opencode/state/qa/polish-001-qa-qa.md (qa) - QA verification for POLISH-001: Contract tests for MCP tools and failure modes. All 3 acceptance criteria verified.
 
 ## Notes
 

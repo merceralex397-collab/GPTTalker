@@ -19,11 +19,11 @@ edge
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/edge-002-planning-plan.md (planning) - Planning for EDGE-002: Node registration bootstrap and operator config docs. Defines node setup guide, registration flow, and configuration reference.
+- review: .opencode/state/reviews/edge-002-review-review.md (review) - Code review for EDGE-002: Node registration bootstrap and operator config docs. APPROVED - all acceptance criteria satisfied.
+- qa: .opencode/state/qa/edge-002-qa-qa.md (qa) - QA verification for EDGE-002: Node registration bootstrap and operator config docs. All 3 acceptance criteria verified via code inspection.
+- implementation: .opencode/state/implementations/edge-002-implementation-implementation.md (implementation) - Implementation of EDGE-002: Created node-setup.md and node-registration.md documentation files covering installation, configuration, registration flow, and troubleshooting.
 
 ## Notes
 

@@ -360,6 +360,694 @@
       "stage": "qa",
       "summary": "QA verification for CORE-006: All 3 acceptance criteria verified via code inspection - tool registration boundary defined, policy integration before execution confirmed, MCP-safe error formatting with JSON-RPC 2.0 codes implemented.",
       "created_at": "2026-03-16T17:00:43.290Z"
+    },
+    {
+      "ticket_id": "REPO-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/repo-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for REPO-001: list_nodes and list_repos tools. Defines two MCP discovery tools - list_nodes returns registered nodes with health metadata, list_repos returns approved repos optionally filtered by node_id. Creates 2 new files (tools/__init__.py, tools/discovery.py), modifies 2 existing files (schemas.py, main.py). Integrates with existing NodeRepository, RepoRepository, and PolicyAwareToolRouter. Uses NO_POLICY_REQUIREMENT for list_nodes and READ_NODE_REQUIREMENT for list_repos.",
+      "created_at": "2026-03-16T20:07:11.031Z"
+    },
+    {
+      "ticket_id": "REPO-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/repo-001-review-review.md",
+      "stage": "review",
+      "summary": "Plan review for REPO-001: APPROVED. All 3 acceptance criteria verified - nodes list with health metadata, repo discovery from registry only, unauthorized targets excluded via policy. Integration points confirmed against existing codebase.",
+      "created_at": "2026-03-16T20:09:07.730Z"
+    },
+    {
+      "ticket_id": "REPO-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/repo-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Fixed REPO-001 implementation: Fixed non-functional handlers and added DI integration. Updated discovery.py handlers to use actual implementations, modified PolicyAwareToolRouter to inject repositories, and updated dependencies.py to provide repositories to the router.",
+      "created_at": "2026-03-16T20:24:22.548Z"
+    },
+    {
+      "ticket_id": "REPO-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/repo-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REPO-001: All 3 acceptance criteria verified - nodes list with health metadata, repo discovery from registry only, and unauthorized targets excluded via READ_NODE_REQUIREMENT policy.",
+      "created_at": "2026-03-16T20:27:23.510Z"
+    },
+    {
+      "ticket_id": "REPO-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/repo-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for REPO-002: inspect_repo_tree and read_repo_file tools. Defines hub-side handlers, node-agent implementations, policy integration with PathNormalizer, MCP request/response schemas, and validation approach. Creates 1 new file (src/hub/tools/inspection.py), modifies 4 existing files, and includes unit and integration tests.",
+      "created_at": "2026-03-16T20:48:58.114Z"
+    },
+    {
+      "ticket_id": "REPO-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/repo-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of REPO-002: inspect_repo_tree and read_repo_file tools. Created hub-side handlers, added node client methods, implemented node agent executor, and registered both MCP tools.",
+      "created_at": "2026-03-16T20:56:37.668Z"
+    },
+    {
+      "ticket_id": "REPO-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/repo-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for REPO-002: inspect_repo_tree and read_repo_file tools. APPROVED - all acceptance criteria met: repo tree inspection scoped to approved repos, file reads reject traversal via PathNormalizer + node-agent path validation, responses structured for MCP use. One low-severity observation: duplicate read_file method in node_client.py should be removed.",
+      "created_at": "2026-03-16T20:59:56.000Z"
+    },
+    {
+      "ticket_id": "REPO-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/repo-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REPO-002: inspect_repo_tree and read_repo_file tools. All 3 acceptance criteria verified via code inspection - repo scoping to approved repos, path traversal rejection at hub and node-agent layers, and MCP-structured responses.",
+      "created_at": "2026-03-16T21:02:30.674Z"
+    },
+    {
+      "ticket_id": "REPO-003",
+      "kind": "plan",
+      "path": ".opencode/state/plans/repo-003-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for REPO-003: search_repo and git_status tools. Defines bounded ripgrep search, read-only git status, hub handlers (search.py, git_operations.py), node-agent executor methods, HTTP endpoints, policy integration with READ_REPO_REQUIREMENT, explicit timeout handling (60s search, 30s git), new files to create, existing files to modify, and validation plan.",
+      "created_at": "2026-03-16T21:18:43.458Z"
+    },
+    {
+      "ticket_id": "REPO-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/repo-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of REPO-003: search_repo and git_status tools. Created hub-side handlers (search.py, git_operations.py), node-agent executor methods (search_files, git_status), and updated operations endpoints with bounded ripgrep execution and read-only git status access.",
+      "created_at": "2026-03-16T21:25:39.025Z"
+    },
+    {
+      "ticket_id": "REPO-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/repo-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for REPO-003: search_repo and git_status tools. APPROVED - all acceptance criteria met: bounded ripgrep with path validation, read-only git operations, explicit timeout handling, READ_REPO_REQUIREMENT policy integration.",
+      "created_at": "2026-03-16T21:27:11.783Z"
+    },
+    {
+      "ticket_id": "REPO-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/repo-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REPO-003: search_repo and git_status tools. All 3 acceptance criteria verified via code inspection - bounded ripgrep with path validation, read-only git commands, explicit timeout handling.",
+      "created_at": "2026-03-16T21:29:22.516Z"
+    },
+    {
+      "ticket_id": "WRITE-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/write-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for WRITE-001: write_markdown with atomic scoped writes. Defines hub-side handler, node-agent atomic write implementation with SHA256 verification, policy integration using WRITE_REQUIREMENT, extension allowlist enforcement, and tool registration. Creates 1 new file (markdown.py), modifies 4 existing files (executor.py, operations.py, tools/__init__.py, dependencies.py). All acceptance criteria addressed - no blockers.",
+      "created_at": "2026-03-16T21:33:41.965Z"
+    },
+    {
+      "ticket_id": "WRITE-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/write-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of WRITE-001: write_markdown with atomic scoped writes. Created markdown.py hub handler, updated node_client.py to use correct endpoint, implemented atomic write in executor.py with SHA256 verification, updated operations.py endpoint, registered write_markdown tool, added write_target dependencies to policy_router and dependencies.py.",
+      "created_at": "2026-03-16T21:41:07.471Z"
+    },
+    {
+      "ticket_id": "WRITE-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/write-001-review-review.md",
+      "stage": "review",
+      "summary": "Code review for WRITE-001: write_markdown with atomic scoped writes. APPROVED - all 3 acceptance criteria met (write target restriction, atomic write with temp+rename, SHA256 verification in response). WRITE_REQUIREMENT policy correctly applied with proper DI integration.",
+      "created_at": "2026-03-16T21:42:44.453Z"
+    },
+    {
+      "ticket_id": "WRITE-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/write-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for WRITE-001: All 3 acceptance criteria verified - write target restriction via WriteTargetPolicy + extension allowlist + path boundary, atomic write via temp+rename, SHA256 verification metadata in response.",
+      "created_at": "2026-03-16T21:44:24.528Z"
+    },
+    {
+      "ticket_id": "LLM-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/llm-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for LLM-001: chat_llm base routing and service registry integration. Defines service validation via LLMServicePolicy, explicit routing path for local vs remote services, structured latency/outcome metadata, new files (llm.py, llm_client.py), and modifications to schemas, tools/__init__.py, dependencies.py, and policy_router.py.",
+      "created_at": "2026-03-16T21:48:38.742Z"
+    },
+    {
+      "ticket_id": "LLM-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/llm-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of LLM-001: chat_llm base routing and service registry integration. Created llm.py handler, llm_client.py for HTTP calls, added schemas, registered tool, and integrated with policy router.",
+      "created_at": "2026-03-16T21:53:13.425Z"
+    },
+    {
+      "ticket_id": "LLM-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/llm-001-review-review.md",
+      "stage": "review",
+      "summary": "Code review for LLM-001: chat_llm base routing and service registry integration. APPROVED - all 3 acceptance criteria satisfied: service validation via LLMServicePolicy, explicit HTTP routing through LLMServiceClient, structured latency and outcome metadata in responses.",
+      "created_at": "2026-03-16T21:55:10.271Z"
+    },
+    {
+      "ticket_id": "LLM-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/llm-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for LLM-001: All 3 acceptance criteria verified - service alias validation via LLMServicePolicy, explicit HTTP routing through LLMServiceClient, and structured latency/outcome metadata in all responses.",
+      "created_at": "2026-03-16T21:56:43.020Z"
+    },
+    {
+      "ticket_id": "LLM-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/llm-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for LLM-002: OpenCode adapter and session-aware coding-agent routing. Defines OpenCode-specific adapter approach with session store for conversation history, working directory context, and MCP-compatible response formatting. Creates 3 new service files and 1 new tool file, modifies dependencies and tool registration.",
+      "created_at": "2026-03-16T21:59:32.622Z"
+    },
+    {
+      "ticket_id": "LLM-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/llm-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of LLM-002: Created SessionStore for conversation history, OpenCodeAdapter for OpenCode-specific HTTP calls with session support, and chat_opencode tool handler. Updated dependencies and policy router for DI integration.",
+      "created_at": "2026-03-16T22:06:24.990Z"
+    },
+    {
+      "ticket_id": "LLM-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/llm-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for LLM-002: OpenCode adapter and session-aware coding-agent routing. APPROVED - all 3 acceptance criteria satisfied: explicit OpenCode routing via OpenCodeAdapter, session handling via SessionStore with full CRUD, MCP-compatible response format.",
+      "created_at": "2026-03-16T22:08:03.853Z"
+    },
+    {
+      "ticket_id": "LLM-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/llm-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for LLM-002: OpenCode adapter and session-aware coding-agent routing. All 3 acceptance criteria verified - explicit OpenCode routing, complete session handling with CRUD, and MCP-compatible responses.",
+      "created_at": "2026-03-16T22:09:32.411Z"
+    },
+    {
+      "ticket_id": "LLM-003",
+      "kind": "plan",
+      "path": ".opencode/state/plans/llm-003-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for LLM-003: Helper-model and embedding-service adapters. Defines helper-model routing via LLMServiceClient.chat_helper(), embedding adapter via new EmbeddingServiceClient class, and timeout/failure handling patterns.",
+      "created_at": "2026-03-16T22:13:17.989Z"
+    },
+    {
+      "ticket_id": "LLM-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/llm-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of LLM-003: Created EmbeddingServiceClient, chat_embeddings handler, added chat_helper() to LLMServiceClient, registered tool, added DI providers and config.",
+      "created_at": "2026-03-16T22:19:12.337Z"
+    },
+    {
+      "ticket_id": "LLM-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/llm-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for LLM-003: Helper-model and embedding-service adapters. APPROVED - all 3 acceptance criteria satisfied (helper-model routing defined, embedding adapter contract explicit, timeout/failure behavior planned). Code quality high with complete type hints, docstrings, structured logging, and error handling. One low-severity observation: chat_helper() method exists but not exposed as standalone MCP tool.",
+      "created_at": "2026-03-16T22:21:41.800Z"
+    },
+    {
+      "ticket_id": "LLM-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/llm-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for LLM-003: Helper-model and embedding-service adapters. All 3 acceptance criteria verified via code inspection - helper-model routing via chat_helper() method and HELPER service type, embedding adapter contract explicit with embed()/embed_batch() methods and registered MCP tool, timeout and failure behavior planned with 30s embedding timeout, 60s helper timeout, and structured error handling.",
+      "created_at": "2026-03-16T22:23:51.600Z"
+    },
+    {
+      "ticket_id": "CTX-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/ctx-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CTX-001: Qdrant integration and context storage schema. Defines Qdrant client pattern, collection naming convention (gpttalker_files, gpttalker_issues, gpttalker_summaries), payload schemas for indexed files and issues, new files to create (qdrant_client.py, context_collections.py), existing files to modify (config.py, dependencies.py, lifespan.py, models.py), implementation steps, validation plan, and integration points with LLM-003 embedding service and SETUP-003 SQLite.",
+      "created_at": "2026-03-16T22:27:45.259Z"
+    },
+    {
+      "ticket_id": "CTX-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/ctx-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CTX-001: Qdrant integration and context storage schema. Created qdrant_client.py with QdrantClientWrapper, context_collections.py with collection definitions, added payload models to models.py, updated config.py with Qdrant settings, dependencies.py with DI provider, and lifespan.py with lifecycle management. All acceptance criteria met.",
+      "created_at": "2026-03-16T22:36:03.797Z"
+    },
+    {
+      "ticket_id": "CTX-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/ctx-001-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CTX-001: Qdrant integration and context storage schema. APPROVED - all 3 acceptance criteria satisfied: Qdrant client pattern defined (async wrapper, factory, health check), collection naming explicit (gpttalker_files/issues/summaries with HNSW config), structured metadata for files and issues planned (FileIndexPayload, IssueIndexPayload models with comprehensive fields). Code quality high with complete type hints, docstrings, structured logging, and DI integration.",
+      "created_at": "2026-03-16T22:38:23.293Z"
+    },
+    {
+      "ticket_id": "CTX-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/ctx-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CTX-001: Qdrant integration and context storage schema. All 3 acceptance criteria verified - Qdrant client pattern defined, collection naming explicit with HNSW config, structured metadata models (FileIndexPayload, IssueIndexPayload) complete.",
+      "created_at": "2026-03-16T22:39:39.094Z"
+    },
+    {
+      "ticket_id": "CTX-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/ctx-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init → Discovery → Hash Check → Embed & Upsert → Cleanup → Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
+      "created_at": "2026-03-16T22:44:00.693Z"
+    },
+    {
+      "ticket_id": "CTX-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/ctx-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CTX-002: index_repo pipeline and content-hash tracking. Created indexing_pipeline.py with full pipeline implementation, indexing.py MCP tool handler, added scroll_files and get_file methods to qdrant_client.py, added generate_file_id and compute_content_hash helpers to models.py, added DI provider for IndexingPipeline, and registered index_repo tool with READ_REPO_REQUIREMENT policy.",
+      "created_at": "2026-03-16T22:53:43.418Z"
+    },
+    {
+      "ticket_id": "CTX-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/ctx-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CTX-002: index_repo pipeline and content-hash tracking. APPROVED - all 3 acceptance criteria met: 6-stage pipeline explicit, SHA256 content-hash tracking implemented with skip/update/delete rules, deleted and changed files handled deliberately. Code quality high with complete type hints, docstrings, structured logging. Low severity observations noted: previous_hash not preserved for audit, retry logic not implemented.",
+      "created_at": "2026-03-16T22:56:22.249Z"
+    },
+    {
+      "ticket_id": "CTX-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/ctx-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CTX-002: index_repo pipeline and content-hash tracking. All 3 acceptance criteria verified - 6-stage pipeline explicit, SHA256 content-hash tracking with skip/update/delete rules, deleted and changed files handled deliberately.",
+      "created_at": "2026-03-16T22:58:19.659Z"
+    },
+    {
+      "ticket_id": "CTX-003",
+      "kind": "plan",
+      "path": ".opencode/state/plans/ctx-003-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CTX-003: get_project_context and known-issue records. Defines semantic search over indexed files with provenance metadata, structured issue schema using existing IssueRecord/IssueIndexPayload models, and READ_REPO_REQUIREMENT policy integration. Creates new context.py tool handler file, adds schemas to schemas.py, registers both tools, and adds DI provider for IssueRepository.",
+      "created_at": "2026-03-16T23:02:52.071Z"
+    },
+    {
+      "ticket_id": "CTX-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/ctx-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for CTX-003: get_project_context and known-issue records. Decision: NEEDS_FIXES - Medium severity security issue found where global search (no repo_id) bypasses repo-level access control, returning results from all indexed repos regardless of user permissions.",
+      "created_at": "2026-03-16T23:14:49.051Z"
+    },
+    {
+      "ticket_id": "CTX-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/ctx-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CTX-003 with security fix: get_project_context and known-issue records. Added access control for global search (repo_id=None) by filtering results to only accessible repos from RepoRepository.",
+      "created_at": "2026-03-16T23:18:18.734Z"
+    },
+    {
+      "ticket_id": "CTX-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/ctx-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CTX-003: get_project_context and known-issue records. All 3 acceptance criteria verified - provenance metadata complete, structured issue schema with IssueIndexPayload model, and repo access control implemented for global search.",
+      "created_at": "2026-03-16T23:19:49.628Z"
+    },
+    {
+      "ticket_id": "CTX-004",
+      "kind": "plan",
+      "path": ".opencode/state/plans/ctx-004-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for CTX-004: Context bundles and recurring-issue workflows. Defines context bundle approach (task/review/research bundles with structured output), recurring-issue aggregation rules (exact title, semantic, tag-based), and provenance preservation (BundleSource model tracking source type, IDs, repo, node, timestamps, relevance). Creates 4 new files (bundles.py, recurring.py, bundle_service.py, aggregation_service.py) and modifies 4 existing files (models.py, qdrant_client.py, tools/__init__.py, dependencies.py). All acceptance criteria addressed - no blockers.",
+      "created_at": "2026-03-16T23:22:31.760Z"
+    },
+    {
+      "ticket_id": "CTX-004",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/ctx-004-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of CTX-004: Context bundles and recurring-issue workflows. Created bundle_service.py with task/review/research bundle assembly, aggregation_service.py with exact_title/semantic/tag aggregation, bundles.py and recurring.py MCP handlers. Added BundleSource/ContextBundlePayload models to models.py, Qdrant bundle methods, tool registrations, and DI providers. All acceptance criteria met.",
+      "created_at": "2026-03-16T23:30:46.927Z"
+    },
+    {
+      "ticket_id": "CTX-004",
+      "kind": "qa",
+      "path": ".opencode/state/qa/ctx-004-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for CTX-004: Context bundles and recurring-issue workflows. All 3 acceptance criteria verified via code inspection - bundle output shape complete, aggregation rules defined (exact_title, semantic, tag), provenance preserved via BundleSource model. Integration with Qdrant, embedding service, policy engine confirmed.",
+      "created_at": "2026-03-16T23:31:20.931Z"
+    },
+    {
+      "ticket_id": "XREPO-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/xrepo-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for XREPO-001: Cross-repo search and global context query. Defines 3 new MCP tools (search_across_repos, list_related_repos, get_project_landscape), access control via RepoRepository, provenance preservation with repo_id/node_id in results, new files (cross_repo_service.py, cross_repo.py), and modifications to models.py and tools/__init__.py. All acceptance criteria addressed - no blockers.",
+      "created_at": "2026-03-16T23:37:00.018Z"
+    },
+    {
+      "ticket_id": "XREPO-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/xrepo-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of XREPO-001: Cross-repo search and global context query. Created cross_repo_service.py and cross_repo.py, added models to models.py, registered 3 new MCP tools.",
+      "created_at": "2026-03-16T23:41:42.337Z"
+    },
+    {
+      "ticket_id": "XREPO-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/xrepo-001-review-review.md",
+      "stage": "review",
+      "summary": "Approved",
+      "created_at": "2026-03-17T01:04:24.318Z"
+    },
+    {
+      "ticket_id": "XREPO-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/xrepo-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "Passed",
+      "created_at": "2026-03-17T01:04:58.803Z"
+    },
+    {
+      "ticket_id": "XREPO-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/xrepo-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for XREPO-002: Repo relationships and landscape metadata. Defines explicit relationship metadata model (RepoRelationship, RelationshipType, RepoOwner), structured landscape ownership (LandscapeMetadata with owner/maintainers), and citable source records (LandscapeSource). Creates new relationship service, repository, MCP tools, and extends existing cross-repo service with owner and citation data.",
+      "created_at": "2026-03-17T01:08:28.863Z"
+    },
+    {
+      "ticket_id": "XREPO-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/xrepo-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of XREPO-002: Created relationship repository, relationship service, and MCP tool handlers. Added relationship and owner models to models.py, updated tables.py and migrations.py for new schema v3, extended cross_repo_service.py with owner metadata and source citations.",
+      "created_at": "2026-03-17T01:17:48.611Z"
+    },
+    {
+      "ticket_id": "XREPO-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/xrepo-002-review-review.md",
+      "stage": "review",
+      "summary": "Approved",
+      "created_at": "2026-03-17T01:18:45.329Z"
+    },
+    {
+      "ticket_id": "XREPO-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/xrepo-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "Passed",
+      "created_at": "2026-03-17T01:19:20.093Z"
+    },
+    {
+      "ticket_id": "XREPO-003",
+      "kind": "plan",
+      "path": ".opencode/state/plans/xrepo-003-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for XREPO-003: Architecture map and project landscape outputs. Defines architecture data models (ArchitectureNode, ArchitectureEdge, ArchitectureMap), ArchitectureService implementation, MCP tool handlers (get_architecture_map, get_repo_architecture), tool registration, DI provider, and validation plan. All acceptance criteria addressed: architecture map output shape defined with nodes/edges/language_summary/landscape_metadata, landscape views cite source repos via LandscapeSource citations, output bounded to approved repos via RepoRepository access control.",
+      "created_at": "2026-03-17T01:22:07.690Z"
+    },
+    {
+      "ticket_id": "XREPO-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/xrepo-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of XREPO-003: Architecture map and project landscape outputs. Created ArchitectureService, MCP tool handlers, registered tools, added DI provider, and integrated with PolicyAwareToolRouter. All acceptance criteria verified.",
+      "created_at": "2026-03-17T01:30:06.588Z"
+    },
+    {
+      "ticket_id": "XREPO-003",
+      "kind": "review",
+      "path": ".opencode/state/reviews/xrepo-003-review-review.md",
+      "stage": "review",
+      "summary": "Code review for XREPO-003: Architecture map and project landscape outputs. APPROVED - all acceptance criteria met.",
+      "created_at": "2026-03-17T01:31:07.552Z"
+    },
+    {
+      "ticket_id": "XREPO-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/xrepo-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for XREPO-003: Architecture map and project landscape outputs. All 3 acceptance criteria verified via code inspection - architecture map output shape defined, landscape views cite source repos, output bounded to approved repos.",
+      "created_at": "2026-03-17T01:31:41.906Z"
+    },
+    {
+      "ticket_id": "SCHED-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/sched-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for SCHED-001: Task classification and routing policy. Defines TaskClass enum with 6 categories (coding, chat, embedding, summarize, reasoning, search), ServiceCapabilities model for backend metadata, TaskRoutingPolicy class for service selection with fallback chain, and fallback expectations for failure scenarios.",
+      "created_at": "2026-03-17T01:37:11.385Z"
+    },
+    {
+      "ticket_id": "SCHED-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/sched-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SCHED-001: Task classification and routing policy. Created task_routing_policy.py with TaskRoutingPolicy class, TASK_CLASS_MAPPING, and fallback behavior. Added TaskClass, TaskClassification, ServiceCapabilities models to models.py. Updated llm.py, opencode.py, embedding.py with task routing support and fallback chain. Added DI provider in dependencies.py.",
+      "created_at": "2026-03-17T01:46:07.239Z"
+    },
+    {
+      "ticket_id": "SCHED-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/sched-001-review-review.md",
+      "stage": "review",
+      "summary": "Approved",
+      "created_at": "2026-03-17T01:46:59.923Z"
+    },
+    {
+      "ticket_id": "SCHED-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/sched-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "Passed",
+      "created_at": "2026-03-17T01:47:33.297Z"
+    },
+    {
+      "ticket_id": "SCHED-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/sched-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for SCHED-002: Distributed scheduler, node selection, and fallback. Defines SchedulerInput model with all decision factors, DistributedScheduler class extending TaskRoutingPolicy with node-level awareness, health-aware filtering, latency-aware selection, and bounded fallback behavior.",
+      "created_at": "2026-03-17T01:51:49.020Z"
+    },
+    {
+      "ticket_id": "SCHED-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/sched-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of SCHED-002: Created distributed scheduler with node-aware service selection, health filtering, latency-aware selection, and bounded fallback chain. Added SchedulerInput, SchedulerResult, NodeHealthInfo, and ServiceNodePair models to models.py. Created DistributedScheduler class in new distributed_scheduler.py file. Updated dependencies.py with DI provider. Integrated distributed scheduler into llm.py, opencode.py, and embedding.py tools.",
+      "created_at": "2026-03-17T01:59:05.894Z"
+    },
+    {
+      "ticket_id": "SCHED-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/sched-002-review-review.md",
+      "stage": "review",
+      "summary": "Approved",
+      "created_at": "2026-03-17T02:00:00.942Z"
+    },
+    {
+      "ticket_id": "SCHED-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/sched-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "Passed",
+      "created_at": "2026-03-17T02:00:59.031Z"
+    },
+    {
+      "ticket_id": "OBS-001",
+      "kind": "planning",
+      "path": ".opencode/state/plans/obs-001-planning-planning.md",
+      "stage": "planning",
+      "summary": "Planning artifact for OBS-001: Task history, generated-doc log, and audit schema. Defines new models (GeneratedDocRecord, DocOwner, AuditRecord, AuditEventType), new SQLite tables (generated_docs, audit_log), new repositories, migration v4, and DI integration. Addresses all 3 acceptance criteria: task history schema (existing TaskRecord confirmed), generated-doc history with owner tracking, audit records with trace metadata.",
+      "created_at": "2026-03-17T02:04:22.885Z"
+    },
+    {
+      "ticket_id": "OBS-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/obs-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of OBS-001: Task history, generated-doc log, and audit schema. Created generated_docs.py and audit_log.py repositories, added DocOwner, GeneratedDocRecord, AuditEventType, and AuditRecord models to models.py, added new table definitions to tables.py, added migration v4, updated repositories __init__.py, and added DI providers in dependencies.py.",
+      "created_at": "2026-03-17T02:10:01.187Z"
+    },
+    {
+      "ticket_id": "OBS-001",
+      "kind": "review",
+      "path": ".opencode/state/reviews/obs-001-review-review.md",
+      "stage": "review",
+      "summary": "Approved",
+      "created_at": "2026-03-17T02:10:49.487Z"
+    },
+    {
+      "ticket_id": "OBS-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/obs-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for OBS-001: Task history, generated-doc log, and audit schema. All 3 acceptance criteria verified via code inspection.",
+      "created_at": "2026-03-17T02:12:00.295Z"
+    },
+    {
+      "ticket_id": "OBS-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/obs-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for OBS-002: Task detail, doc history, and issue timeline tools. Defines 3 new MCP tools (get_task_details, list_generated_docs, get_issue_timeline), existing repositories to use, and implementation approach.",
+      "created_at": "2026-03-17T02:12:34.808Z"
+    },
+    {
+      "ticket_id": "OBS-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/obs-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of OBS-002: Task detail, doc history, and issue timeline tools. Created observability.py with three MCP handlers, updated dependencies.py and policy_router.py for DI, registered tools in __init__.py.",
+      "created_at": "2026-03-17T02:25:38.345Z"
+    },
+    {
+      "ticket_id": "OBS-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/obs-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for OBS-002: Task detail, doc history, and issue timeline tools. All 3 acceptance criteria verified via code inspection.",
+      "created_at": "2026-03-17T02:28:47.277Z"
+    },
+    {
+      "ticket_id": "EDGE-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/edge-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for EDGE-001: Cloudflare Tunnel integration and public-edge config. Defines tunnel configuration, documentation, and integration approach.",
+      "created_at": "2026-03-17T02:29:25.814Z"
+    },
+    {
+      "ticket_id": "EDGE-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/edge-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-001: Cloudflare Tunnel integration and public-edge config. Added tunnel config to HubConfig, created docs/ops/cloudflare-tunnel.md documentation.",
+      "created_at": "2026-03-17T02:32:17.721Z"
+    },
+    {
+      "ticket_id": "EDGE-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/edge-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EDGE-001: Cloudflare Tunnel integration and public-edge config. All 3 acceptance criteria verified.",
+      "created_at": "2026-03-17T02:32:53.685Z"
+    },
+    {
+      "ticket_id": "EDGE-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/edge-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for EDGE-002: Node registration bootstrap and operator config docs. Defines node setup guide, registration flow, and configuration reference.",
+      "created_at": "2026-03-17T02:33:54.007Z"
+    },
+    {
+      "ticket_id": "EDGE-002",
+      "kind": "review",
+      "path": ".opencode/state/reviews/edge-002-review-review.md",
+      "stage": "review",
+      "summary": "Code review for EDGE-002: Node registration bootstrap and operator config docs. APPROVED - all acceptance criteria satisfied.",
+      "created_at": "2026-03-17T02:36:52.232Z"
+    },
+    {
+      "ticket_id": "EDGE-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/edge-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EDGE-002: Node registration bootstrap and operator config docs. All 3 acceptance criteria verified via code inspection.",
+      "created_at": "2026-03-17T02:37:27.828Z"
+    },
+    {
+      "ticket_id": "EDGE-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/edge-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-002: Created node-setup.md and node-registration.md documentation files covering installation, configuration, registration flow, and troubleshooting.",
+      "created_at": "2026-03-17T02:38:53.590Z"
+    },
+    {
+      "ticket_id": "POLISH-001",
+      "kind": "plan",
+      "path": ".opencode/state/plans/polish-001-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for POLISH-001: Contract tests for MCP tools and failure modes. Defines test categories for discovery, inspection, search, write, LLM, context tools, and failure mode tests.",
+      "created_at": "2026-03-17T02:40:21.169Z"
+    },
+    {
+      "ticket_id": "POLISH-001",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/polish-001-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of POLISH-001: Created tests/hub/test_contracts.py with 25+ test cases covering discovery, inspection, search, write, LLM tools, and failure modes.",
+      "created_at": "2026-03-17T02:45:07.135Z"
+    },
+    {
+      "ticket_id": "POLISH-001",
+      "kind": "qa",
+      "path": ".opencode/state/qa/polish-001-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for POLISH-001: Contract tests for MCP tools and failure modes. All 3 acceptance criteria verified.",
+      "created_at": "2026-03-17T02:45:50.049Z"
+    },
+    {
+      "ticket_id": "POLISH-002",
+      "kind": "plan",
+      "path": ".opencode/state/plans/polish-002-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for POLISH-002: Security regression tests and redaction hardening. Defines path traversal tests, target validation, redaction tests, and fail-closed behavior tests.",
+      "created_at": "2026-03-17T02:46:37.880Z"
+    },
+    {
+      "ticket_id": "POLISH-002",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/polish-002-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of POLISH-002: Created tests/hub/test_security.py with 23+ security regression tests covering path traversal, target validation, redaction, and fail-closed behavior.",
+      "created_at": "2026-03-17T02:50:23.306Z"
+    },
+    {
+      "ticket_id": "POLISH-002",
+      "kind": "qa",
+      "path": ".opencode/state/qa/polish-002-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for POLISH-002: Security regression tests and redaction hardening. All 3 acceptance criteria verified.",
+      "created_at": "2026-03-17T02:51:00.565Z"
+    },
+    {
+      "ticket_id": "POLISH-003",
+      "kind": "plan",
+      "path": ".opencode/state/plans/polish-003-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for POLISH-003: README, API docs, and handoff hardening. Defines updates needed for README, API reference, and START-HERE.md.",
+      "created_at": "2026-03-17T02:51:56.196Z"
+    },
+    {
+      "ticket_id": "POLISH-003",
+      "kind": "implementation",
+      "path": ".opencode/state/implementations/polish-003-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of POLISH-003: Updated README.md and START-HERE.md to reflect the completed project with all 32 tickets done.",
+      "created_at": "2026-03-17T02:54:52.852Z"
+    },
+    {
+      "ticket_id": "POLISH-003",
+      "kind": "qa",
+      "path": ".opencode/state/qa/polish-003-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for POLISH-003: README, API docs, and handoff hardening. All 3 acceptance criteria verified.",
+      "created_at": "2026-03-17T02:55:41.312Z"
     }
   ]
 }

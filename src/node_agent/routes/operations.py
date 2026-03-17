@@ -1,15 +1,15 @@
 """Operation handlers for node agent.
 
-These are placeholder routes that return 501 Not Implemented.
-Actual implementations will be added in later tickets:
-- REPO-002: list_directory, read_file
-- REPO-003: search_files, git_status
-- WRITE-001: write_file
+These endpoints provide bounded file operations:
+- list_directory: Lists directory contents with metadata
+- read_file: Reads file contents with offset/limit support
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel
 
+from src.node_agent.dependencies import ExecutorDep
+from src.node_agent.executor import OperationExecutor
 from src.shared.logging import get_logger
 
 logger = get_logger(__name__)
@@ -26,7 +26,7 @@ class OperationRequest(BaseModel):
 class ListDirRequest(OperationRequest):
     """Request to list directory contents."""
 
-    pass
+    max_entries: int = 100
 
 
 class ReadFileRequest(OperationRequest):
@@ -42,12 +42,15 @@ class SearchRequest(BaseModel):
     directory: str
     pattern: str
     include_patterns: list[str] | None = None
+    max_results: int = 1000
+    timeout: int = 60
 
 
-class GitStatusRequest(OperationRequest):
+class GitStatusRequest(BaseModel):
     """Request to get git status."""
 
-    pass
+    path: str
+    timeout: int = 30
 
 
 class WriteFileRequest(BaseModel):
@@ -66,55 +69,312 @@ class OperationResponse(BaseModel):
 
 
 @router.post("/operations/list-dir", response_model=OperationResponse)
-async def list_dir(request: ListDirRequest) -> OperationResponse:
-    """List directory contents.
+async def list_dir(
+    request: ListDirRequest,
+    executor: OperationExecutor = ExecutorDep,
+) -> OperationResponse:
+    """List directory contents with metadata.
 
-    This endpoint is not yet implemented.
-    Will be implemented in REPO-002.
+    Returns file and directory entries including:
+    - name: Entry name
+    - path: Full path
+    - is_dir: Whether entry is a directory
+    - size: File size in bytes (None for directories)
+    - modified: Last modified timestamp (ISO format)
     """
-    logger.warning("list_dir_not_implemented", path=request.path)
-    raise HTTPException(status_code=501, detail="list_dir not yet implemented - see REPO-002")
+    try:
+        # Validate max_entries
+        max_entries = request.max_entries
+        if max_entries < 1:
+            max_entries = 1
+        elif max_entries > 500:
+            max_entries = 500
+
+        entries = await executor.list_directory(request.path, max_entries)
+
+        logger.info(
+            "list_dir_success",
+            path=request.path,
+            entry_count=len(entries),
+        )
+
+        return OperationResponse(
+            success=True,
+            message=f"Listed {len(entries)} entries",
+            data={
+                "entries": entries,
+                "total": len(entries),
+                "path": request.path,
+            },
+        )
+    except PermissionError as e:
+        logger.warning("list_dir_permission_denied", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except ValueError as e:
+        logger.warning("list_dir_invalid_path", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except Exception as e:
+        logger.error("list_dir_error", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
 
 
 @router.post("/operations/read-file", response_model=OperationResponse)
-async def read_file(request: ReadFileRequest) -> OperationResponse:
-    """Read file contents.
+async def read_file(
+    request: ReadFileRequest,
+    executor: OperationExecutor = ExecutorDep,
+) -> OperationResponse:
+    """Read file contents with offset and limit support.
 
-    This endpoint is not yet implemented.
-    Will be implemented in REPO-002.
+    Returns:
+    - content: File content as string
+    - size_bytes: Total file size
+    - bytes_read: Number of bytes actually read
+    - offset: Starting offset
+    - truncated: Whether there's more content
     """
-    logger.warning("read_file_not_implemented", path=request.path)
-    raise HTTPException(status_code=501, detail="read_file not yet implemented - see REPO-002")
+    try:
+        # Validate offset
+        offset = request.offset
+        if offset < 0:
+            offset = 0
+
+        result = await executor.read_file(request.path, offset, request.limit)
+
+        logger.info(
+            "read_file_success",
+            path=request.path,
+            bytes_read=result["bytes_read"],
+            offset=offset,
+        )
+
+        return OperationResponse(
+            success=True,
+            message=f"Read {result['bytes_read']} bytes",
+            data=result,
+        )
+    except PermissionError as e:
+        logger.warning("read_file_permission_denied", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except ValueError as e:
+        logger.warning("read_file_invalid_path", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except Exception as e:
+        logger.error("read_file_error", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
 
 
 @router.post("/operations/search", response_model=OperationResponse)
-async def search(request: SearchRequest) -> OperationResponse:
+async def search(
+    request: SearchRequest,
+    executor: OperationExecutor = ExecutorDep,
+) -> OperationResponse:
     """Search for pattern in files.
 
-    This endpoint is not yet implemented.
-    Will be implemented in REPO-003.
+    Uses ripgrep for efficient text search with file pattern filtering.
+    Returns structured results with file, line number, and match content.
     """
-    logger.warning("search_not_implemented", directory=request.directory, pattern=request.pattern)
-    raise HTTPException(status_code=501, detail="search not yet implemented - see REPO-003")
+    try:
+        # Validate inputs
+        max_results = request.max_results
+        if max_results < 1:
+            max_results = 1
+        elif max_results > 1000:
+            max_results = 1000
+
+        timeout = request.timeout
+        if timeout < 1:
+            timeout = 1
+        elif timeout > 120:
+            timeout = 120
+
+        result = await executor.search_files(
+            directory=request.directory,
+            pattern=request.pattern,
+            include_patterns=request.include_patterns,
+            max_results=max_results,
+            timeout=timeout,
+        )
+
+        match_count = result.get("match_count", 0)
+
+        logger.info(
+            "search_success",
+            directory=request.directory,
+            pattern=request.pattern,
+            match_count=match_count,
+            files_searched=result.get("files_searched", 0),
+        )
+
+        return OperationResponse(
+            success=True,
+            message=f"Found {match_count} matches",
+            data=result,
+        )
+    except PermissionError as e:
+        logger.warning("search_permission_denied", directory=request.directory, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except ValueError as e:
+        logger.warning("search_invalid_params", directory=request.directory, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except Exception as e:
+        logger.error("search_error", directory=request.directory, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
 
 
 @router.post("/operations/git-status", response_model=OperationResponse)
-async def git_status(request: GitStatusRequest) -> OperationResponse:
+async def git_status(
+    request: GitStatusRequest,
+    executor: OperationExecutor = ExecutorDep,
+) -> OperationResponse:
     """Get git status for a repository.
 
-    This endpoint is not yet implemented.
-    Will be implemented in REPO-003.
+    Returns branch, clean/dirty status, staged/modified/untracked files,
+    and ahead/behind count relative to remote.
     """
-    logger.warning("git_status_not_implemented", repo_path=request.path)
-    raise HTTPException(status_code=501, detail="git_status not yet implemented - see REPO-003")
+    try:
+        # Validate timeout
+        timeout = request.timeout
+        if timeout < 1:
+            timeout = 1
+        elif timeout > 60:
+            timeout = 60
+
+        result = await executor.git_status(
+            repo_path=request.path,
+            timeout=timeout,
+        )
+
+        logger.info(
+            "git_status_success",
+            path=request.path,
+            branch=result.get("branch", "unknown"),
+            is_clean=result.get("is_clean", False),
+        )
+
+        return OperationResponse(
+            success=True,
+            message="Git status retrieved",
+            data=result,
+        )
+    except PermissionError as e:
+        logger.warning("git_status_permission_denied", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except ValueError as e:
+        logger.warning("git_status_invalid_params", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except Exception as e:
+        logger.error("git_status_error", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
 
 
 @router.post("/operations/write-file", response_model=OperationResponse)
-async def write_file(request: WriteFileRequest) -> OperationResponse:
-    """Write content to a file.
+async def write_file(
+    request: WriteFileRequest,
+    executor: OperationExecutor = ExecutorDep,
+) -> OperationResponse:
+    """Write content to a file with atomic write and verification.
 
-    This endpoint is not yet implemented.
-    Will be implemented in WRITE-001.
+    This endpoint:
+    1. Validates the path is within allowed boundaries
+    2. Writes content to a temporary file
+    3. Computes SHA256 hash of the content
+    4. Atomically moves the temp file to the target path
+    5. Returns verification metadata including the hash
+
+    Returns:
+    - path: The written file path
+    - bytes_written: Number of bytes written
+    - sha256_hash: SHA256 hash of the content
+    - verified: Whether verification passed
     """
-    logger.warning("write_file_not_implemented", path=request.path)
-    raise HTTPException(status_code=501, detail="write_file not yet implemented - see WRITE-001")
+    try:
+        result = await executor.write_file(request.path, request.content)
+
+        logger.info(
+            "write_file_success",
+            path=request.path,
+            bytes_written=result.get("bytes_written", 0),
+            sha256_hash=result.get("sha256_hash", ""),
+        )
+
+        return OperationResponse(
+            success=True,
+            message=f"Wrote {result.get('bytes_written', 0)} bytes with SHA256 verification",
+            data=result,
+        )
+    except PermissionError as e:
+        logger.warning("write_file_permission_denied", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except ValueError as e:
+        logger.warning("write_file_invalid_path", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except OSError as e:
+        logger.error("write_file_error", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )
+    except Exception as e:
+        logger.error("write_file_error", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
+        )

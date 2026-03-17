@@ -1,7 +1,7 @@
 """Table schema definitions for GPTTalker SQLite database."""
 
 # Schema version tracking
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 4
 
 # Schema version table - tracks applied migrations
 CREATE_SCHEMA_VERSION_TABLE = """
@@ -98,6 +98,73 @@ CREATE TABLE IF NOT EXISTS issues (
 );
 """
 
+# Relationships table - explicit repo relationships
+CREATE_RELATIONSHIPS_TABLE = """
+CREATE TABLE IF NOT EXISTS relationships (
+    relationship_id TEXT PRIMARY KEY,
+    source_repo_id TEXT NOT NULL,
+    target_repo_id TEXT NOT NULL,
+    relationship_type TEXT NOT NULL,
+    description TEXT,
+    confidence REAL DEFAULT 1.0,
+    bidirectional INTEGER DEFAULT 0,
+    created_at TEXT NOT NULL,
+    created_by TEXT NOT NULL,
+    source_record TEXT,
+    metadata TEXT DEFAULT '{}',
+    FOREIGN KEY (source_repo_id) REFERENCES repos(repo_id) ON DELETE CASCADE,
+    FOREIGN KEY (target_repo_id) REFERENCES repos(repo_id) ON DELETE CASCADE
+);
+"""
+
+# Repo owners table - structured ownership
+CREATE_REPO_OWNERS_TABLE = """
+CREATE TABLE IF NOT EXISTS repo_owners (
+    repo_id TEXT PRIMARY KEY,
+    owner_id TEXT NOT NULL,
+    name TEXT NOT NULL,
+    email TEXT,
+    role TEXT DEFAULT 'maintainer',
+    added_at TEXT NOT NULL,
+    metadata TEXT DEFAULT '{}',
+    FOREIGN KEY (repo_id) REFERENCES repos(repo_id) ON DELETE CASCADE
+);
+"""
+
+# Generated docs table - track generated/delivered documents
+CREATE_GENERATED_DOCS_TABLE = """
+CREATE TABLE IF NOT EXISTS generated_docs (
+    doc_id TEXT PRIMARY KEY,
+    trace_id TEXT,
+    tool_name TEXT NOT NULL,
+    caller TEXT NOT NULL,
+    target_path TEXT NOT NULL,
+    content_hash TEXT NOT NULL,
+    size_bytes INTEGER NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    metadata TEXT DEFAULT '{}'
+);
+"""
+
+# Audit log table - full audit trail with trace context
+CREATE_AUDIT_LOG_TABLE = """
+CREATE TABLE IF NOT EXISTS audit_log (
+    audit_id TEXT PRIMARY KEY,
+    trace_id TEXT,
+    event_type TEXT NOT NULL,
+    actor TEXT NOT NULL,
+    target_type TEXT NOT NULL,
+    target_id TEXT,
+    action TEXT NOT NULL,
+    outcome TEXT NOT NULL,
+    duration_ms INTEGER,
+    error TEXT,
+    trace_context TEXT DEFAULT '{}',
+    metadata TEXT DEFAULT '{}',
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+"""
+
 # Indexes for performance
 CREATE_INDEXES = [
     "CREATE INDEX IF NOT EXISTS idx_repos_node_id ON repos(node_id);",
@@ -106,6 +173,17 @@ CREATE_INDEXES = [
     "CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON tasks(created_at);",
     "CREATE INDEX IF NOT EXISTS idx_issues_repo_id ON issues(repo_id);",
     "CREATE INDEX IF NOT EXISTS idx_issues_status ON issues(status);",
+    # Relationship indexes
+    "CREATE INDEX IF NOT EXISTS idx_relationships_source ON relationships(source_repo_id);",
+    "CREATE INDEX IF NOT EXISTS idx_relationships_target ON relationships(target_repo_id);",
+    "CREATE INDEX IF NOT EXISTS idx_relationships_type ON relationships(relationship_type);",
+    # Audit and generated docs indexes
+    "CREATE INDEX IF NOT EXISTS idx_audit_trace_id ON audit_log(trace_id);",
+    "CREATE INDEX IF NOT EXISTS idx_audit_event_type ON audit_log(event_type);",
+    "CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor);",
+    "CREATE INDEX IF NOT EXISTS idx_audit_created_at ON audit_log(created_at);",
+    "CREATE INDEX IF NOT EXISTS idx_generated_docs_trace_id ON generated_docs(trace_id);",
+    "CREATE INDEX IF NOT EXISTS idx_generated_docs_tool ON generated_docs(tool_name);",
 ]
 
 # All tables list for reference

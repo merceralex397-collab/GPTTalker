@@ -1,6 +1,5 @@
 """Hub-to-node HTTP client for communicating with node agents."""
 
-from datetime import datetime, timezone
 from typing import Any
 
 import httpx
@@ -209,7 +208,7 @@ class HubNodeClient:
         path: str,
         content: str,
     ) -> dict[str, Any]:
-        """Write a file to a node.
+        """Write a file to a node with atomic write and verification.
 
         Args:
             node: The target node.
@@ -217,11 +216,11 @@ class HubNodeClient:
             content: File content to write.
 
         Returns:
-            Dictionary with success status or error.
+            Dictionary with success status, verification metadata, or error.
         """
         response = await self.post(
             node,
-            "/files/write",
+            "/operations/write-file",
             json={"path": path, "content": content},
             timeout=30.0,
         )
@@ -237,29 +236,109 @@ class HubNodeClient:
     async def search(
         self,
         node: NodeInfo,
-        query: str,
-        path: str | None = None,
+        directory: str,
+        pattern: str,
+        include_patterns: list[str] | None = None,
+        max_results: int = 1000,
+        timeout: int = 60,
     ) -> dict[str, Any]:
-        """Search within a node's repos.
+        """Search for pattern in files on a node using ripgrep.
 
         Args:
-            node: The target node.
-            query: Search query string.
-            path: Optional path to limit search.
+            node: Target node information.
+            directory: Directory to search in.
+            pattern: Regex pattern to search for.
+            include_patterns: File patterns to include (e.g., ["*.py"]).
+            max_results: Maximum matches to return.
 
         Returns:
-            Dictionary with search results or error.
+            Search results dictionary.
         """
-        params = {"query": query}
-        if path:
-            params["path"] = path
+        params = {
+            "directory": directory,
+            "pattern": pattern,
+            "include_patterns": include_patterns,
+            "max_results": max_results,
+            "timeout": timeout,
+        }
 
-        response = await self.get(node, "/search", params=params, timeout=60.0)
+        response = await self.post(
+            node,
+            "/operations/search",
+            json=params,
+            timeout=float(timeout),
+        )
 
         if response.status_code == 200:
-            return response.json()
+            data = response.json()
+            if data.get("success"):
+                return data.get("data", {})
+            return {"success": False, "error": data.get("message", "Unknown error")}
+
+        return {"success": False, "error": f"Search failed: HTTP {response.status_code}"}
+
+    async def git_status(
+        self,
+        node: NodeInfo,
+        repo_path: str,
+        timeout: int = 30,
+    ) -> dict[str, Any]:
+        """Get git status for a repository on a node.
+
+        Args:
+            node: Target node information.
+            repo_path: Path to the git repository.
+
+        Returns:
+            Git status dictionary.
+        """
+        params = {"path": repo_path, "timeout": timeout}
+
+        response = await self.post(
+            node,
+            "/operations/git-status",
+            json=params,
+            timeout=float(timeout),
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("success"):
+                return data.get("data", {})
+            return {"success": False, "error": data.get("message", "Unknown error")}
+
+        return {"success": False, "error": f"Git status failed: HTTP {response.status_code}"}
+
+    async def list_directory(
+        self,
+        node: NodeInfo,
+        path: str,
+        max_entries: int = 100,
+    ) -> dict[str, Any]:
+        """List directory on a node.
+
+        Args:
+            node: Target node.
+            path: Directory path to list.
+            max_entries: Maximum entries to return.
+
+        Returns:
+            Directory listing or error.
+        """
+        params = {
+            "path": path,
+            "max_entries": max_entries,
+        }
+
+        response = await self.post(node, "/operations/list-dir", json=params, timeout=30.0)
+
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("success"):
+                return data.get("data", {})
+            return {"success": False, "error": data.get("message", "Unknown error")}
 
         return {
             "success": False,
-            "error": f"Search failed: HTTP {response.status_code}",
+            "error": f"Failed to list directory: HTTP {response.status_code}",
         }

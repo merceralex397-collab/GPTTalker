@@ -1,7 +1,7 @@
 """Dependency injection providers for the GPTTalker hub."""
 
 from collections.abc import AsyncGenerator
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import aiosqlite
 import httpx
@@ -12,18 +12,44 @@ from src.hub.policy.engine import PolicyEngine
 from src.hub.policy.llm_service_policy import LLMServicePolicy
 from src.hub.policy.node_policy import NodePolicy
 from src.hub.policy.repo_policy import RepoPolicy
+from src.hub.policy.task_routing_policy import TaskRoutingPolicy
 from src.hub.policy.write_target_policy import WriteTargetPolicy
 from src.hub.services.auth import NodeAuthHandler
+from src.hub.services.embedding_client import EmbeddingServiceClient
+from src.hub.services.indexing_pipeline import IndexingPipeline
+from src.hub.services.llm_client import LLMServiceClient
 from src.hub.services.node_client import HubNodeClient
 from src.hub.services.node_health import NodeHealthService
+from src.hub.services.opencode_adapter import OpenCodeAdapter
+from src.hub.services.qdrant_client import (
+    QdrantClientWrapper,
+)
+from src.hub.services.qdrant_client import (
+    get_qdrant_client as get_qdrant,
+)
+from src.hub.services.session_store import SessionStore
 from src.hub.tool_router import ToolRegistry
 from src.hub.tool_routing import PolicyAwareToolRouter
 from src.shared.database import DatabaseManager
 from src.shared.logging import get_logger
+from src.shared.models import TaskClass
+from src.shared.repositories.audit_log import AuditLogRepository
+from src.shared.repositories.generated_docs import GeneratedDocsRepository
+from src.shared.repositories.issues import IssueRepository
 from src.shared.repositories.llm_services import LLMServiceRepository
 from src.shared.repositories.nodes import NodeRepository
+from src.shared.repositories.relationships import RelationshipRepository, RepoOwnerRepository
 from src.shared.repositories.repos import RepoRepository
+from src.shared.repositories.tasks import TaskRepository
 from src.shared.repositories.write_targets import WriteTargetRepository
+
+if TYPE_CHECKING:
+    from src.hub.services.aggregation_service import AggregationService
+    from src.hub.services.architecture_service import ArchitectureService
+    from src.hub.services.bundle_service import BundleService
+    from src.hub.services.cross_repo_service import CrossRepoService
+    from src.hub.services.indexing_pipeline import IndexingPipeline
+    from src.hub.services.relationship_service import RelationshipService
 
 # Logger instance for this module
 logger = get_logger(__name__)
@@ -259,6 +285,96 @@ async def get_llm_service_repository(request: Request) -> LLMServiceRepository:
     return LLMServiceRepository(db_manager)
 
 
+async def get_issue_repository(request: Request) -> IssueRepository:
+    """Get issue repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        IssueRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return IssueRepository(db_manager)
+
+
+async def get_relationship_repository(request: Request) -> RelationshipRepository:
+    """Get relationship repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        RelationshipRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return RelationshipRepository(db_manager)
+
+
+async def get_owner_repository(request: Request) -> RepoOwnerRepository:
+    """Get repo owner repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        RepoOwnerRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return RepoOwnerRepository(db_manager)
+
+
+async def get_generated_docs_repository(request: Request) -> GeneratedDocsRepository:
+    """Get generated docs repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        GeneratedDocsRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return GeneratedDocsRepository(db_manager)
+
+
+async def get_audit_log_repository(request: Request) -> AuditLogRepository:
+    """Get audit log repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        AuditLogRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return AuditLogRepository(db_manager)
+
+
+async def get_task_repository(request: Request) -> TaskRepository:
+    """Get task repository from app state.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        TaskRepository instance.
+    """
+    db_manager: DatabaseManager | None = request.app.state.db_manager
+    if db_manager is None:
+        raise RuntimeError("Database not initialized. Ensure lifespan has run.")
+    return TaskRepository(db_manager)
+
+
 async def get_repo_policy(
     repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
 ) -> RepoPolicy:
@@ -299,6 +415,52 @@ async def get_llm_service_policy(
         LLMServicePolicy instance.
     """
     return LLMServicePolicy(llm_repo)
+
+
+async def get_llm_service_client(request: Request) -> LLMServiceClient:
+    """Get LLM service HTTP client.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        LLMServiceClient instance.
+    """
+    http_client: httpx.AsyncClient | None = request.app.state.http_client
+    if http_client is None:
+        raise RuntimeError("HTTP client not initialized. Ensure lifespan has run.")
+
+    config: HubConfig | None = request.app.state.config
+    if config is None:
+        raise RuntimeError("Config not initialized. Ensure lifespan has run.")
+
+    return LLMServiceClient(
+        http_client=http_client,
+        default_timeout=config.llm_client_timeout,
+    )
+
+
+async def get_embedding_service_client(request: Request) -> EmbeddingServiceClient:
+    """Get embedding service HTTP client.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        EmbeddingServiceClient instance.
+    """
+    http_client: httpx.AsyncClient | None = request.app.state.http_client
+    if http_client is None:
+        raise RuntimeError("HTTP client not initialized. Ensure lifespan has run.")
+
+    config: HubConfig | None = request.app.state.config
+    if config is None:
+        raise RuntimeError("Config not initialized. Ensure lifespan has run.")
+
+    return EmbeddingServiceClient(
+        http_client=http_client,
+        default_timeout=config.embedding_client_timeout,
+    )
 
 
 async def get_policy_engine(
@@ -342,8 +504,21 @@ def get_tool_registry() -> ToolRegistry:
 
 
 async def get_policy_aware_router(
+    request: Request,
     registry: ToolRegistry = Depends(get_tool_registry),  # noqa: B008
     policy_engine: PolicyEngine = Depends(get_policy_engine),  # noqa: B008
+    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
+    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+    node_client: HubNodeClient = Depends(get_node_client),  # noqa: B008
+    write_target_repo: WriteTargetRepository = Depends(get_write_target_repository),  # noqa: B008
+    write_target_policy: WriteTargetPolicy = Depends(get_write_target_policy),  # noqa: B008
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    llm_client: LLMServiceClient = Depends(get_llm_service_client),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant),  # noqa: B008
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
+    issue_repo: IssueRepository = Depends(get_issue_repository),  # noqa: B008
+    task_repo: TaskRepository = Depends(get_task_repository),  # noqa: B008
+    doc_repo: GeneratedDocsRepository = Depends(get_generated_docs_repository),  # noqa: B008
 ) -> PolicyAwareToolRouter:
     """Get the policy-aware tool router.
 
@@ -352,10 +527,432 @@ async def get_policy_aware_router(
     pass before handlers are invoked.
 
     Args:
+        request: The current FastAPI request.
         registry: ToolRegistry instance.
         policy_engine: PolicyEngine instance.
+        node_repo: NodeRepository for handler execution.
+        repo_repo: RepoRepository for handler execution.
+        node_client: HubNodeClient for node communication.
+        write_target_repo: WriteTargetRepository for write target lookup.
+        write_target_policy: WriteTargetPolicy for write access validation.
+        llm_service_policy: LLMServicePolicy for LLM service validation.
+        llm_client: LLMServiceClient for LLM service calls.
+        qdrant_client: QdrantClientWrapper for vector search.
+        embedding_client: EmbeddingServiceClient for embeddings.
+        issue_repo: IssueRepository for issue storage.
+        task_repo: TaskRepository for task history storage.
+        doc_repo: GeneratedDocsRepository for generated doc history storage.
 
     Returns:
         PolicyAwareToolRouter instance.
     """
-    return PolicyAwareToolRouter(registry=registry, policy_engine=policy_engine)
+    # Import here to avoid circular dependency
+    from src.hub.services.aggregation_service import AggregationService
+    from src.hub.services.architecture_service import ArchitectureService
+    from src.hub.services.bundle_service import BundleService
+    from src.hub.services.indexing_pipeline import IndexingPipeline
+
+    indexing_pipeline: IndexingPipeline | None = None
+    bundle_service: BundleService | None = None
+    aggregation_service: AggregationService | None = None
+    architecture_service: ArchitectureService | None = None
+
+    try:
+        indexing_pipeline = await get_indexing_pipeline(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    try:
+        bundle_service = await get_bundle_service(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    try:
+        aggregation_service = await get_aggregation_service(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    try:
+        architecture_service = await get_architecture_service(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    # Get task and doc repositories for observability tools
+    task_repo_instance: TaskRepository | None = None
+    doc_repo_instance: GeneratedDocsRepository | None = None
+
+    try:
+        task_repo_instance = await get_task_repository(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    try:
+        doc_repo_instance = await get_generated_docs_repository(request)
+    except Exception:
+        pass  # Gracefully handle if dependencies aren't ready
+
+    # Get http_client from app state for OpenCode adapter
+    http_client: httpx.AsyncClient | None = request.app.state.http_client
+    config: HubConfig | None = request.app.state.config
+
+    # Get or create session store
+    session_store = get_session_store()
+
+    # Create OpenCode adapter if http client available
+    opencode_adapter: OpenCodeAdapter | None = None
+    if http_client is not None and config is not None:
+        opencode_adapter = OpenCodeAdapter(
+            http_client=http_client,
+            session_store=session_store,
+            default_timeout=config.llm_client_timeout,
+        )
+
+    return PolicyAwareToolRouter(
+        registry=registry,
+        policy_engine=policy_engine,
+        node_repo=node_repo,
+        repo_repo=repo_repo,
+        node_client=node_client,
+        write_target_repo=write_target_repo,
+        write_target_policy=write_target_policy,
+        llm_service_policy=llm_service_policy,
+        llm_client=llm_client,
+        opencode_adapter=opencode_adapter,
+        indexing_pipeline=indexing_pipeline,
+        qdrant_client=qdrant_client,
+        embedding_client=embedding_client,
+        issue_repo=issue_repo,
+        bundle_service=bundle_service,
+        aggregation_service=aggregation_service,
+        architecture_service=architecture_service,
+        task_repo=task_repo_instance,
+        doc_repo=doc_repo_instance,
+    )
+
+
+# Session and OpenCode adapter providers
+
+# Global session store instance
+_session_store: SessionStore | None = None
+
+
+def get_session_store() -> SessionStore:
+    """Get or create the global session store.
+
+    Returns:
+        SessionStore instance.
+    """
+    global _session_store
+    if _session_store is None:
+        _session_store = SessionStore(max_history=50)
+    return _session_store
+
+
+async def get_opencode_adapter(
+    request: Request,
+    session_store: SessionStore = None,  # type: ignore[assignment]
+) -> OpenCodeAdapter:
+    """Get OpenCode adapter instance.
+
+    Args:
+        request: The current FastAPI request.
+        session_store: SessionStore instance (injected).
+
+    Returns:
+        OpenCodeAdapter instance.
+    """
+    http_client: httpx.AsyncClient | None = request.app.state.http_client
+    if http_client is None:
+        raise RuntimeError("HTTP client not initialized. Ensure lifespan has run.")
+
+    config: HubConfig | None = request.app.state.config
+    if config is None:
+        raise RuntimeError("Config not initialized. Ensure lifespan has run.")
+
+    if session_store is None:
+        session_store = get_session_store()
+
+    return OpenCodeAdapter(
+        http_client=http_client,
+        session_store=session_store,
+        default_timeout=config.llm_client_timeout,
+    )
+
+
+async def get_qdrant_client(request: Request) -> QdrantClientWrapper:
+    """Get Qdrant client from app state.
+
+    This dependency provides the Qdrant client wrapper for vector
+    storage and semantic search operations.
+
+    Args:
+        request: The current FastAPI request.
+
+    Returns:
+        QdrantClientWrapper instance.
+
+    Raises:
+        RuntimeError: If Qdrant client is not initialized.
+    """
+    qdrant_client: QdrantClientWrapper | None = request.app.state.qdrant_client
+    if qdrant_client is None:
+        # Return a non-initialized client for graceful degradation
+        config: HubConfig | None = request.app.state.config
+        if config is None:
+            raise RuntimeError("Config not initialized. Ensure lifespan has run.")
+        return get_qdrant(config)
+    return qdrant_client
+
+
+async def get_indexing_pipeline(
+    request: Request,
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+) -> "IndexingPipeline":
+    """Get indexing pipeline instance.
+
+    Args:
+        request: The current FastAPI request.
+        qdrant_client: Qdrant client wrapper.
+        embedding_client: Embedding service client.
+        llm_service_policy: LLM service policy.
+
+    Returns:
+        Initialized IndexingPipeline.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.indexing_pipeline import IndexingPipeline
+
+    # Get embedding service from registry
+    embedding_service = await llm_policy.get_service("embedding")
+    if not embedding_service:
+        raise RuntimeError("Embedding service not configured")
+
+    return IndexingPipeline(
+        qdrant_client=qdrant_client,
+        embedding_client=embedding_client,
+        embedding_service=embedding_service,
+    )
+
+
+async def get_bundle_service(
+    request: Request,
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+) -> "BundleService":
+    """Get bundle service instance.
+
+    Args:
+        request: The current FastAPI request.
+        qdrant_client: Qdrant client wrapper.
+        embedding_client: Embedding service client.
+        llm_service_policy: LLM service policy.
+
+    Returns:
+        Initialized BundleService.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.bundle_service import BundleService
+
+    # Get embedding service from registry
+    embedding_service = await llm_policy.get_service("embedding")
+    if not embedding_service:
+        raise RuntimeError("Embedding service not configured")
+
+    return BundleService(
+        qdrant_client=qdrant_client,
+        embedding_client=embedding_client,
+        embedding_service_id=embedding_service.service_id,
+    )
+
+
+async def get_aggregation_service(
+    request: Request,
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+) -> "AggregationService":
+    """Get aggregation service instance.
+
+    Args:
+        request: The current FastAPI request.
+        qdrant_client: Qdrant client wrapper.
+
+    Returns:
+        Initialized AggregationService.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.aggregation_service import AggregationService
+
+    return AggregationService(qdrant_client=qdrant_client)
+
+
+async def get_cross_repo_service(
+    request: Request,
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
+) -> "CrossRepoService":
+    """Get cross-repo service instance.
+
+    Args:
+        request: The current FastAPI request.
+        qdrant_client: Qdrant client wrapper.
+        embedding_client: Embedding service client.
+        llm_policy: LLM service policy.
+        repo_repo: RepoRepository instance.
+        relationship_repo: RelationshipRepository instance.
+        owner_repo: RepoOwnerRepository instance.
+
+    Returns:
+        Initialized CrossRepoService.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.cross_repo_service import CrossRepoService
+
+    return CrossRepoService(
+        qdrant_client=qdrant_client,
+        embedding_client=embedding_client,
+        llm_service_policy=llm_policy,
+        repo_repo=repo_repo,
+        relationship_repo=relationship_repo,
+        owner_repo=owner_repo,
+    )
+
+
+async def get_relationship_service(
+    request: Request,
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
+    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+) -> RelationshipService:
+    """Get relationship service instance.
+
+    Args:
+        request: The current FastAPI request.
+        relationship_repo: RelationshipRepository instance.
+        owner_repo: RepoOwnerRepository instance.
+        repo_repo: RepoRepository instance.
+
+    Returns:
+        Initialized RelationshipService.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.relationship_service import RelationshipService
+
+    return RelationshipService(
+        relationship_repo=relationship_repo,
+        owner_repo=owner_repo,
+        repo_repo=repo_repo,
+    )
+
+
+async def get_architecture_service(
+    request: Request,
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
+) -> ArchitectureService:
+    """Get architecture service instance.
+
+    Args:
+        request: The current FastAPI request.
+        qdrant_client: Qdrant client wrapper.
+        repo_repo: RepoRepository instance.
+        relationship_repo: RelationshipRepository instance.
+        owner_repo: RepoOwnerRepository instance.
+
+    Returns:
+        Initialized ArchitectureService.
+    """
+    # Import here to avoid circular imports
+    from src.hub.services.architecture_service import ArchitectureService
+
+    return ArchitectureService(
+        qdrant_client=qdrant_client,
+        repo_repo=repo_repo,
+        relationship_repo=relationship_repo,
+        owner_repo=owner_repo,
+    )
+
+
+# === Task Routing Providers (SCHED-001) ===
+
+
+async def get_task_routing_policy(
+    task_class: TaskClass | None = None,
+    preferred_service_id: str | None = None,
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+) -> TaskRoutingPolicy:
+    """Get task routing policy instance.
+
+    Args:
+        task_class: The task classification for routing (defaults to CHAT).
+        preferred_service_id: Optional specific service to prefer.
+        llm_service_policy: LLMServicePolicy for service validation.
+
+    Returns:
+        Initialized TaskRoutingPolicy.
+    """
+    # Default to CHAT if not specified
+    if task_class is None:
+        task_class = TaskClass.CHAT
+
+    return TaskRoutingPolicy(
+        llm_service_policy=llm_service_policy,
+        task_class=task_class,
+        preferred_service_id=preferred_service_id,
+    )
+
+
+# === Distributed Scheduler Provider (SCHED-002) ===
+
+from src.hub.policy.distributed_scheduler import DistributedScheduler
+
+
+async def get_distributed_scheduler(
+    task_class: TaskClass | None = None,
+    preferred_service_id: str | None = None,
+    node_health_service: NodeHealthService = Depends(get_node_health_service),  # noqa: B008
+    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    llm_service_repo: LLMServiceRepository = Depends(get_llm_service_repository),  # noqa: B008
+) -> DistributedScheduler:
+    """Get distributed scheduler instance.
+
+    This scheduler extends TaskRoutingPolicy with node-level awareness,
+    considering health, latency, and node capabilities during selection.
+
+    Args:
+        task_class: The task classification for routing (defaults to CHAT).
+        preferred_service_id: Optional specific service to prefer.
+        node_health_service: Health polling service.
+        node_repo: Node repository.
+        llm_service_policy: LLM service policy.
+        llm_service_repo: LLM service repository.
+
+    Returns:
+        Initialized DistributedScheduler.
+    """
+    # Default to CHAT if not specified
+    if task_class is None:
+        task_class = TaskClass.CHAT
+
+    # Create task routing policy
+    task_routing_policy = TaskRoutingPolicy(
+        llm_service_policy=llm_service_policy,
+        task_class=task_class,
+        preferred_service_id=preferred_service_id,
+    )
+
+    return DistributedScheduler(
+        task_routing_policy=task_routing_policy,
+        node_health_service=node_health_service,
+        node_repository=node_repo,
+        llm_service_policy=llm_service_policy,
+        llm_service_repo=llm_service_repo,
+    )

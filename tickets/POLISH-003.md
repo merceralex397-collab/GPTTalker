@@ -19,11 +19,11 @@ docs
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,9 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/polish-003-planning-plan.md (planning) - Planning for POLISH-003: README, API docs, and handoff hardening. Defines updates needed for README, API reference, and START-HERE.md.
+- implementation: .opencode/state/implementations/polish-003-implementation-implementation.md (implementation) - Implementation of POLISH-003: Updated README.md and START-HERE.md to reflect the completed project with all 32 tickets done.
+- qa: .opencode/state/qa/polish-003-qa-qa.md (qa) - QA verification for POLISH-003: README, API docs, and handoff hardening. All 3 acceptance criteria verified.
 
 ## Notes
 

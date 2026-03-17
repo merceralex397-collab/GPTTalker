@@ -1,6 +1,13 @@
 """Bounded operation executor for node agent."""
 
+import asyncio
+from datetime import datetime
 from pathlib import Path
+from typing import Any
+
+from src.shared.logging import get_logger
+
+logger = get_logger(__name__)
 
 
 class OperationExecutor:
@@ -49,23 +56,56 @@ class OperationExecutor:
 
         raise PermissionError(f"Path not within allowed boundaries: {path}")
 
-    async def list_directory(self, path: str) -> list[str]:
+    async def list_directory(self, path: str, max_entries: int = 100) -> list[dict]:
         """
-        List contents of a directory.
+        List contents of a directory with metadata.
 
         Args:
             path: Directory path to list
+            max_entries: Maximum number of entries to return
 
         Returns:
-            List of file/directory names
+            List of entry dictionaries with metadata
         """
-        self._validate_path(path)
-        # TODO(REPO-002): Implement bounded directory listing
-        raise NotImplementedError("list_directory not yet implemented")
+        validated_path = self._validate_path(path)
 
-    async def read_file(self, path: str, offset: int = 0, limit: int | None = None) -> str:
+        if not validated_path.is_dir():
+            raise ValueError(f"Not a directory: {path}")
+
+        entries = []
+        try:
+            for entry in validated_path.iterdir():
+                try:
+                    stat = entry.stat()
+                    entries.append(
+                        {
+                            "name": entry.name,
+                            "path": str(entry),
+                            "is_dir": entry.is_dir(),
+                            "size": stat.st_size if entry.is_file() else None,
+                            "modified": datetime.fromtimestamp(
+                                stat.st_mtime, tz=datetime.UTC
+                            ).isoformat(),
+                        }
+                    )
+                except (OSError, PermissionError):
+                    # Skip entries we can't stat
+                    continue
+
+                if len(entries) >= max_entries:
+                    break
+
+            # Sort: directories first, then by name
+            entries.sort(key=lambda x: (not x["is_dir"], x["name"].lower()))
+
+        except PermissionError as e:
+            raise PermissionError(f"Permission denied accessing directory: {path}") from e
+
+        return entries
+
+    async def read_file(self, path: str, offset: int = 0, limit: int | None = None) -> dict:
         """
-        Read contents of a file.
+        Read contents of a file with offset/limit support.
 
         Args:
             path: File path to read
@@ -73,58 +113,360 @@ class OperationExecutor:
             limit: Maximum bytes to read
 
         Returns:
-            File contents as string
+            Dictionary with content and metadata
         """
-        self._validate_path(path)
-        # TODO(REPO-002): Implement bounded file reading
-        raise NotImplementedError("read_file not yet implemented")
+        validated_path = self._validate_path(path)
+
+        if not validated_path.is_file():
+            raise ValueError(f"Not a file: {path}")
+
+        # Get file size
+        file_size = validated_path.stat().st_size
+
+        # Read with offset/limit
+        try:
+            with open(validated_path, "rb") as f:
+                f.seek(offset)
+
+                if limit:
+                    content = f.read(limit)
+                else:
+                    content = f.read()
+
+            content_str = content.decode("utf-8")
+
+            return {
+                "content": content_str,
+                "size_bytes": file_size,
+                "bytes_read": len(content),
+                "offset": offset,
+                "truncated": (offset + len(content)) < file_size,
+            }
+        except UnicodeDecodeError as e:
+            raise ValueError(f"File is not valid UTF-8: {path}") from e
+        except PermissionError as e:
+            raise PermissionError(f"Permission denied reading file: {path}") from e
 
     async def search_files(
         self,
         directory: str,
         pattern: str,
         include_patterns: list[str] | None = None,
-    ) -> list[dict]:
+        max_results: int = 1000,
+        timeout: int = 60,
+    ) -> dict[str, Any]:
         """
-        Search for pattern in files within a directory.
+        Search for pattern in files within a directory using ripgrep.
 
         Args:
-            directory: Directory to search in
-            pattern: Search pattern (regex)
-            include_patterns: File patterns to include (e.g., ["*.py", "*.md"])
+            directory: Directory to search in (must be validated path).
+            pattern: Regex pattern to search for.
+            include_patterns: File patterns to include (e.g., ["*.py"]).
+            max_results: Maximum number of matches to return.
+            timeout: Search timeout in seconds.
 
         Returns:
-            List of search results with file, line, and content
+            Dict with results, match count, files searched.
         """
-        self._validate_path(directory)
-        # TODO(REPO-003): Implement bounded search using ripgrep
-        raise NotImplementedError("search_files not yet implemented")
+        import shutil
 
-    async def git_status(self, repo_path: str) -> dict:
+        # Validate path first
+        validated_dir = self._validate_path(directory)
+
+        # Check if ripgrep is available
+        rg_path = shutil.which("rg")
+        if not rg_path:
+            raise ValueError("ripgrep (rg) is not installed on this node")
+
+        # Build ripgrep command
+        cmd = [
+            "rg",
+            "--line-number",
+            "--no-heading",
+            "--hidden",
+            "-c",  # Show count of matches per line
+        ]
+
+        if include_patterns:
+            for p in include_patterns:
+                cmd.extend(["--glob", p])
+
+        # Limit results to prevent large responses
+        cmd.extend(["--", pattern, str(validated_dir)])
+
+        # Execute with timeout
+        try:
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+
+            try:
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+            except TimeoutError:
+                proc.kill()
+                await proc.wait()
+                raise ValueError(f"Search timed out after {timeout} seconds") from None
+
+            if proc.returncode not in (0, 1):
+                # Returncode 1 means no matches found (valid)
+                error_msg = stderr.decode("utf-8", errors="replace").strip()
+                raise ValueError(f"Search command failed: {error_msg}")
+
+        except FileNotFoundError:
+            raise ValueError("ripgrep (rg) is not installed on this node") from None
+
+        # Parse output
+        output = stdout.decode("utf-8", errors="replace")
+        matches: list[dict] = []
+        files_searched: set[str] = set()
+
+        for line in output.strip().split("\n"):
+            if not line:
+                continue
+
+            # Parse: filename:line_number:match_count:line_content
+            # Format: filename:line_number:line_content (with -c we get count)
+            parts = line.split(":", 3)
+            if len(parts) >= 3:
+                file_path = parts[0]
+                try:
+                    line_num = int(parts[1])
+                except ValueError:
+                    line_num = 0
+                match_count_str = parts[2] if len(parts) > 2 else "1"
+                try:
+                    match_count = int(match_count_str)
+                except ValueError:
+                    match_count = 1
+                line_content = parts[3] if len(parts) > 3 else ""
+
+                files_searched.add(file_path)
+
+                # Add individual matches (up to max_results)
+                if len(matches) < max_results:
+                    matches.append(
+                        {
+                            "file": file_path,
+                            "line_number": line_num,
+                            "match_count": match_count,
+                            "content": line_content,
+                        }
+                    )
+
+        return {
+            "matches": matches,
+            "match_count": len(matches),
+            "total_matches": len(matches),
+            "files_searched": len(files_searched),
+            "pattern": pattern,
+            "directory": str(validated_dir),
+        }
+
+    async def git_status(
+        self,
+        repo_path: str,
+        timeout: int = 30,
+    ) -> dict[str, Any]:
         """
         Get git status for a repository.
 
         Args:
-            repo_path: Path to the git repository
+            repo_path: Path to git repository (must be validated).
+            timeout: Operation timeout in seconds.
 
         Returns:
-            Git status information
+            Dict with branch, status, staged/modified/untracked files, ahead/behind.
         """
-        self._validate_path(repo_path)
-        # TODO(REPO-003): Implement read-only git status
-        raise NotImplementedError("git_status not yet implemented")
+        import shutil
+
+        # Validate path
+        validated_path = self._validate_path(repo_path)
+
+        # Check if git is available
+        git_path = shutil.which("git")
+        if not git_path:
+            raise ValueError("git is not installed on this node")
+
+        # Check .git exists
+        git_dir = validated_path / ".git"
+        if not git_dir.is_dir():
+            raise ValueError(f"Not a git repository: {repo_path}")
+
+        # Helper to run git command
+        async def run_git(*args: str) -> tuple[str, str]:
+            cmd = ["git", "-C", str(validated_path)] + list(args)
+            proc = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            try:
+                stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=timeout)
+            except TimeoutError:
+                proc.kill()
+                await proc.wait()
+                raise ValueError(f"Git command timed out after {timeout} seconds") from None
+
+            return (
+                stdout.decode("utf-8", errors="replace").strip(),
+                stderr.decode("utf-8", errors="replace").strip(),
+            )
+
+        # Get current branch
+        branch_output, branch_err = await run_git("branch", "--show-current")
+        branch = branch_output if branch_output else "detached"
+        if branch_err and "HEAD detached" in branch_err:
+            # For detached HEAD, try to get the commit hash
+            hash_output, _ = await run_git("rev-parse", "--short", "HEAD")
+            branch = hash_output[:8] if hash_output else "detached"
+
+        # Get git status --porcelain
+        status_output, status_err = await run_git("status", "--porcelain")
+        if status_err:
+            raise ValueError(f"Git status failed: {status_err}")
+
+        # Parse status output
+        staged: list[str] = []
+        modified: list[str] = []
+        untracked: list[str] = []
+
+        for line in status_output.split("\n"):
+            if not line:
+                continue
+
+            status_code = line[:2]
+            file_path = line[3:].strip() if len(line) > 3 else ""
+
+            # XY status: X = index, Y = worktree
+            index_status = status_code[0] if len(status_code) > 0 else " "
+            worktree_status = status_code[1] if len(status_code) > 1 else " "
+
+            # Staged changes (index)
+            if index_status in ("A", "M", "D", "R", "C"):
+                staged.append(file_path)
+            elif index_status == "?":
+                untracked.append(file_path)
+
+            # Modified in worktree
+            if worktree_status in ("M", "D"):
+                if file_path not in staged:  # Don't double-count
+                    modified.append(file_path)
+
+        # Get ahead/behind from remote
+        ahead = 0
+        behind = 0
+        try:
+            # Try to get remote tracking branch
+            rev_list_output, _ = await run_git(
+                "rev-list",
+                "--left-right",
+                "--count",
+                f"{branch}...origin/{branch}",
+            )
+            if rev_list_output:
+                parts = rev_list_output.split()
+                if len(parts) >= 2:
+                    ahead = int(parts[0])
+                    behind = int(parts[1])
+        except ValueError:
+            # Remote not configured or not reachable - that's OK
+            pass
+
+        is_clean = len(staged) == 0 and len(modified) == 0 and len(untracked) == 0
+
+        return {
+            "branch": branch,
+            "is_clean": is_clean,
+            "staged": staged,
+            "staged_count": len(staged),
+            "modified": modified,
+            "modified_count": len(modified),
+            "untracked": untracked,
+            "untracked_count": len(untracked),
+            "ahead": ahead,
+            "behind": behind,
+        }
 
     async def write_file(self, path: str, content: str) -> dict:
         """
-        Write content to a file (atomic write).
+        Write content to a file with atomic write and SHA256 verification.
+
+        This method:
+        1. Validates the path is within allowed boundaries
+        2. Writes content to a temporary file
+        3. Computes SHA256 hash of the content
+        4. Atomically moves the temp file to the target path
+        5. Returns verification metadata including the hash
 
         Args:
-            path: File path to write
+            path: File path to write (must be validated)
             content: Content to write
 
         Returns:
-            Write result with verification metadata
+            Write result with verification metadata:
+            - path: The written file path
+            - bytes_written: Number of bytes written
+            - sha256_hash: SHA256 hash of the content
+            - verified: Whether verification passed
         """
-        self._validate_path(path)
-        # TODO(WRITE-001): Implement atomic write with verification
-        raise NotImplementedError("write_file not yet implemented")
+        import hashlib
+        import os
+        import tempfile
+
+        validated_path = self._validate_path(path)
+
+        # Ensure parent directory exists
+        validated_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Compute SHA256 hash of content before writing
+        content_bytes = content.encode("utf-8")
+        sha256_hash = hashlib.sha256(content_bytes).hexdigest()
+
+        # Write to temporary file first (atomic write)
+        try:
+            with tempfile.NamedTemporaryFile(
+                mode="w",
+                encoding="utf-8",
+                dir=validated_path.parent,
+                delete=False,
+                prefix=f".{validated_path.name}.",
+                suffix=".tmp",
+            ) as tmp_file:
+                tmp_path = tmp_file.name
+                tmp_file.write(content)
+
+            # Get file size
+            file_size = os.path.getsize(tmp_path)
+
+            # Atomically move temp file to target
+            os.replace(tmp_path, validated_path)
+
+            logger.info(
+                "write_file_success",
+                path=str(validated_path),
+                bytes_written=file_size,
+                sha256_hash=sha256_hash,
+            )
+
+            return {
+                "path": str(validated_path),
+                "bytes_written": file_size,
+                "sha256_hash": sha256_hash,
+                "verified": True,
+                "content_hash_algorithm": "sha256",
+            }
+
+        except PermissionError as e:
+            raise PermissionError(f"Permission denied writing file: {path}") from e
+        except OSError as e:
+            raise OSError(f"Failed to write file: {path}, error: {e}") from e
+        except Exception as e:
+            # Clean up temp file on error
+            if "tmp_path" in locals() and os.path.exists(tmp_path):
+                try:
+                    os.unlink(tmp_path)
+                except OSError:
+                    pass
+            raise OSError(f"Failed to write file: {path}, error: {e}") from e

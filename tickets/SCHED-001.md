@@ -19,11 +19,11 @@ scheduler
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Depends On
 
@@ -41,7 +41,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/sched-001-planning-plan.md (planning) - Planning artifact for SCHED-001: Task classification and routing policy. Defines TaskClass enum with 6 categories (coding, chat, embedding, summarize, reasoning, search), ServiceCapabilities model for backend metadata, TaskRoutingPolicy class for service selection with fallback chain, and fallback expectations for failure scenarios.
+- implementation: .opencode/state/implementations/sched-001-implementation-implementation.md (implementation) - Implementation of SCHED-001: Task classification and routing policy. Created task_routing_policy.py with TaskRoutingPolicy class, TASK_CLASS_MAPPING, and fallback behavior. Added TaskClass, TaskClassification, ServiceCapabilities models to models.py. Updated llm.py, opencode.py, embedding.py with task routing support and fallback chain. Added DI provider in dependencies.py.
+- review: .opencode/state/reviews/sched-001-review-review.md (review) - Approved
+- qa: .opencode/state/qa/sched-001-qa-qa.md (qa) - Passed
 
 ## Notes
 
