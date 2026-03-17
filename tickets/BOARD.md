@@ -36,3 +36,20 @@
 | 6 | POLISH-001 | Contract tests for MCP tools and failure modes | qa | closeout | done | no | high | REPO-003, WRITE-001, LLM-002, CTX-003, OBS-002 |
 | 6 | POLISH-002 | Security regression tests and redaction hardening | qa | closeout | done | no | medium | CORE-005, OBS-001, POLISH-001 |
 | 6 | POLISH-003 | README, API docs, and handoff hardening | docs | closeout | done | yes | low | POLISH-001 |
+| **7** | **FIX-001** | **Fix walrus operator syntax error in opencode.py** | **bugfix** | **planning** | **todo** | **no** | **high** | **-** |
+| **7** | **FIX-002** | **Fix Depends[] type subscript error in node agent** | **bugfix** | **planning** | **todo** | **yes** | **medium** | **-** |
+| **7** | **FIX-003** | **Fix hub MCP router async wiring and circular import** | **bugfix** | **planning** | **todo** | **no** | **high** | **FIX-001** |
+| **7** | **FIX-004** | **Fix SQLite write persistence and uncommitted transactions** | **bugfix** | **planning** | **todo** | **yes** | **medium** | **-** |
+| **7** | **FIX-005** | **Fix structured logger TypeError and HubConfig attribute error** | **bugfix** | **planning** | **todo** | **yes** | **medium** | **-** |
+| **7** | **FIX-006** | **Register read_repo_file tool and close tool surface gaps** | **bugfix** | **planning** | **todo** | **yes** | **low** | **FIX-001, FIX-003** |
+| **7** | **FIX-007** | **Fix ripgrep search parser and implement search modes** | **bugfix** | **planning** | **todo** | **yes** | **low** | **FIX-002** |
+| **7** | **FIX-008** | **Add recent_commits to git_status output** | **bugfix** | **planning** | **todo** | **yes** | **low** | **FIX-002** |
+| **7** | **FIX-009** | **Align write_markdown interface with spec contract** | **bugfix** | **planning** | **todo** | **yes** | **low** | **FIX-003** |
+| **7** | **FIX-010** | **Implement missing observability tools and audit persistence** | **bugfix** | **planning** | **todo** | **yes** | **low** | **FIX-003, FIX-004** |
+| **8** | **FIX-011** | **Complete aggregation service methods** | **completion** | **planning** | **todo** | **yes** | **low** | **FIX-004, FIX-010** |
+| **8** | **FIX-012** | **Complete cross-repo landscape with real metrics** | **completion** | **planning** | **todo** | **yes** | **low** | **FIX-004** |
+| **8** | **FIX-013** | **Implement Cloudflare Tunnel runtime management** | **completion** | **planning** | **todo** | **yes** | **low** | **FIX-003** |
+| **8** | **FIX-014** | **Replace placeholder tests with real implementations** | **hardening** | **planning** | **todo** | **yes** | **low** | **FIX-001, FIX-002, FIX-003** |
+| **8** | **FIX-015** | **Fix Task UUID handling and CLI entrypoint packaging** | **hardening** | **planning** | **todo** | **yes** | **low** | **-** |
+| **8** | **FIX-016** | **Security hardening — path validation and config safety** | **hardening** | **planning** | **todo** | **yes** | **low** | **FIX-002** |
+| **8** | **FIX-017** | **Clean up duplicate endpoints, response models, and artifact registry** | **hardening** | **planning** | **todo** | **yes** | **low** | **FIX-003** |

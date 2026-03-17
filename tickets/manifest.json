@@ -1,7 +1,7 @@
 {
   "version": 2,
   "project": "GPTTalker",
-  "active_ticket": "POLISH-003",
+  "active_ticket": "FIX-001",
   "tickets": [
     {
       "id": "SETUP-001",
@@ -75,14 +75,14 @@
           "kind": "plan",
           "path": ".opencode/state/plans/setup-002-planning-plan.md",
           "stage": "planning",
-          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub\u2194node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
           "created_at": "2026-03-16T12:51:03.084Z"
         },
         {
           "kind": "planning",
           "path": ".opencode/state/plans/setup-002-planning-planning.md",
           "stage": "planning",
-          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub\u2194node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
           "created_at": "2026-03-16T12:53:16.115Z"
         },
         {
@@ -1001,7 +1001,7 @@
           "kind": "plan",
           "path": ".opencode/state/plans/ctx-002-planning-plan.md",
           "stage": "planning",
-          "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init → Discovery → Hash Check → Embed & Upsert → Cleanup → Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
+          "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init \u2192 Discovery \u2192 Hash Check \u2192 Embed & Upsert \u2192 Cleanup \u2192 Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
           "created_at": "2026-03-16T22:44:00.693Z"
         },
         {
@@ -1702,6 +1702,367 @@
           "created_at": "2026-03-17T02:55:41.312Z"
         }
       ]
+    },
+    {
+      "id": "FIX-001",
+      "title": "Fix walrus operator syntax error in opencode.py",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": false,
+      "overlap_risk": "high",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "The walrus operator on line 399 of src/hub/tools/opencode.py uses an invalid form that causes SyntaxError, blocking hub startup through the register_all_tools() import chain.",
+      "acceptance": [
+        "python3 -m py_compile src/hub/tools/opencode.py succeeds",
+        "Hub startup completes without SyntaxError",
+        "The walrus operator logic preserves fallback behavior"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-002",
+      "title": "Fix Depends[] type subscript error in node agent",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "medium",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "src/node_agent/dependencies.py uses ConfigDep = Depends[NodeAgentConfig] and ExecutorDep = Depends[OperationExecutor]. Depends is a function, not a generic type, raising TypeError at import time.",
+      "acceptance": [
+        "python3 -c 'from src.node_agent.dependencies import *' succeeds",
+        "Node agent routes using ExecutorDep/ConfigDep work correctly with FastAPI DI",
+        "No TypeError at import time"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-003",
+      "title": "Fix hub MCP router async wiring and circular import",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": false,
+      "overlap_risk": "high",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-001"
+      ],
+      "summary": "Three related hub wiring issues: (1) MCPProtocolHandler._ensure_router() fails in async context, (2) circular import between main.py and routes.py, (3) duplicate /health endpoints.",
+      "acceptance": [
+        "MCP endpoints respond correctly in async FastAPI context",
+        "No circular import between main.py and routes.py",
+        "Single /health endpoint definition",
+        "python3 -c 'from src.hub.main import app' succeeds"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-004",
+      "title": "Fix SQLite write persistence and uncommitted transactions",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "medium",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "DatabaseManager.execute()/executemany() never commit. Migrations and repositories perform DDL/DML outside transaction() context manager, causing silent data loss on connection close.",
+      "acceptance": [
+        "All DDL operations persist across connection close/reopen",
+        "All DML operations persist correctly",
+        "Migrations remain durable after application",
+        "Test verifies write-close-reopen-read roundtrip"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-005",
+      "title": "Fix structured logger TypeError and HubConfig attribute error",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "medium",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "Two bugs: (1) Modules call logger.info(..., key=value) but standard Logger raises TypeError on extra kwargs. (2) Hub lifespan references config.database_path but HubConfig only defines database_url.",
+      "acceptance": [
+        "Structured logging calls with extra kwargs do not raise TypeError",
+        "Hub startup completes without AttributeError on database_path",
+        "Log output includes structured fields (tool_name, trace_id, etc.)"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-006",
+      "title": "Register read_repo_file tool and close tool surface gaps",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-001",
+        "FIX-003"
+      ],
+      "summary": "read_repo_file_handler is imported in src/hub/tools/__init__.py but no ToolDefinition registration exists. The handler at src/hub/tools/inspection.py:162 is fully implemented. Add the missing registration.",
+      "acceptance": [
+        "read_repo_file appears in the tool registry",
+        "read_repo_file can be called through MCP endpoint",
+        "File content is returned with metadata (encoding, size_bytes, truncated)"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-007",
+      "title": "Fix ripgrep search parser and implement search modes",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-002"
+      ],
+      "summary": "Two search defects: (1) Ripgrep command uses -c (count) flag but parser expects line-content format, causing zero matches. (2) search_repo has no mode parameter; spec requires text/path/symbol modes.",
+      "acceptance": [
+        "Search for a known symbol returns non-zero matches",
+        "Parser correctly extracts file path, line number, and match content",
+        "search_repo accepts mode parameter with text, path, and symbol options"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-008",
+      "title": "Add recent_commits to git_status output",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-002"
+      ],
+      "summary": "git_status returns branch, clean/dirty, staged/modified/untracked, and ahead/behind but omits recent commits. Add a recent_commits field with last N commits including hash, author, date, and message.",
+      "acceptance": [
+        "git_status response includes recent_commits array",
+        "Each commit entry has hash, author, date, and message fields",
+        "Default returns last 10 commits"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-009",
+      "title": "Align write_markdown interface with spec contract",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-003"
+      ],
+      "summary": "write_markdown uses node_id/repo_id/path/content but spec requires node/write_target/relative_path/content/mode. The mode parameter (create_or_overwrite) is missing. Align parameter names and add mode.",
+      "acceptance": [
+        "write_markdown accepts mode parameter with create_or_overwrite and no_overwrite options",
+        "Parameter names align with spec: write_target instead of repo_id",
+        "Existing atomic write and SHA256 verification logic is preserved"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-010",
+      "title": "Implement missing observability tools and audit persistence",
+      "wave": 7,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-003",
+        "FIX-004"
+      ],
+      "summary": "Three observability gaps: (1) list_known_issues not implemented or registered. (2) list_task_history not implemented or registered. (3) Tool-call metadata not persisted to SQLite tasks table during handle_tool_call.",
+      "acceptance": [
+        "list_known_issues tool is registered and returns issues from SQLite/Qdrant",
+        "list_task_history tool is registered and returns task audit log from SQLite",
+        "Every tool call persists trace_id, tool_name, caller, outcome, duration_ms to tasks table"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-011",
+      "title": "Complete aggregation service methods",
+      "wave": 8,
+      "lane": "completion",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-004",
+        "FIX-010"
+      ],
+      "summary": "All three aggregation methods in src/hub/services/aggregation_service.py are stubs returning empty results with 'requires IssueRepository integration' notes. Implement real aggregation using IssueRepository and Qdrant.",
+      "acceptance": [
+        "aggregate_by_title groups issues by exact title match from IssueRepository",
+        "aggregate_by_similarity uses Qdrant semantic search to cluster related issues",
+        "aggregate_by_tag groups issues by metadata tag keys",
+        "No placeholder comments or empty aggregation returns remain"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-012",
+      "title": "Complete cross-repo landscape with real metrics",
+      "wave": 8,
+      "lane": "completion",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-004"
+      ],
+      "summary": "src/hub/services/cross_repo_service.py has hardcoded zeros for file_count, issue_count, and empty languages list. Replace with real queries to Qdrant and IssueRepository.",
+      "acceptance": [
+        "file_count reflects actual indexed file count from Qdrant",
+        "issue_count reflects actual issue count from IssueRepository",
+        "languages are detected from indexed file extensions",
+        "Relationship finder uses Qdrant similarity for related repo discovery"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-013",
+      "title": "Implement Cloudflare Tunnel runtime management",
+      "wave": 8,
+      "lane": "completion",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-003"
+      ],
+      "summary": "EDGE-001 is marked done but only config fields exist. No runtime code starts, supervises, or manages cloudflared. docs/ops/cloudflare-tunnel.md falsely claims automatic startup. Implement or accurately document manual setup.",
+      "acceptance": [
+        "Hub lifespan starts cloudflared when tunnel is enabled and token is set, OR docs accurately describe manual setup",
+        "No false automation claims in documentation"
+      ],
+      "decision_blockers": [
+        "Decide whether to implement automatic tunnel management or document manual setup"
+      ],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-014",
+      "title": "Replace placeholder tests with real implementations",
+      "wave": 8,
+      "lane": "hardening",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-001",
+        "FIX-002",
+        "FIX-003"
+      ],
+      "summary": "Four test files contain only assert True, pass, and TODO comments: test_routing.py, test_transport.py, test_executor.py, test_logging.py. Replace with real tests covering happy-path and error-path.",
+      "acceptance": [
+        "test_routing.py tests tool registration and routing",
+        "test_transport.py tests MCP request/response handling",
+        "test_executor.py tests bounded subprocess execution and path validation",
+        "test_logging.py tests trace-ID propagation and secret redaction",
+        "No assert True or pass-only tests remain"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-015",
+      "title": "Fix Task UUID handling and CLI entrypoint packaging",
+      "wave": 8,
+      "lane": "hardening",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "Two issues: (1) TaskRepository.create accepts UUID|str but _row_to_task always parses as UUID, crashing on string IDs. (2) Console scripts point to scripts.* but package discovery only includes src*.",
+      "acceptance": [
+        "TaskRepository handles both UUID and string task_ids without crashing",
+        "CLI entrypoints work after pip install",
+        "Package discovery includes scripts/ or entrypoints reference src/"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-016",
+      "title": "Security hardening - path validation and config safety",
+      "wave": 8,
+      "lane": "hardening",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-002"
+      ],
+      "summary": "Two security issues: (1) _validate_path accepts absolute paths instead of rejecting them as required. (2) HubConfig and NodeAgentConfig use extra='allow' which hides typos; change to extra='ignore'.",
+      "acceptance": [
+        "Absolute user-supplied paths are rejected before resolution",
+        "Path traversal with .. is rejected",
+        "Pydantic settings use extra='ignore' in both configs",
+        "Unknown environment variables are silently ignored"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
+    },
+    {
+      "id": "FIX-017",
+      "title": "Clean up duplicate endpoints, response models, and artifact registry",
+      "wave": 8,
+      "lane": "hardening",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "FIX-003"
+      ],
+      "summary": "Three cleanup items: (1) Duplicate /health endpoint in main.py and routes.py. (2) health_check returns raw dict instead of HealthResponse Pydantic model. (3) Duplicate SETUP-002 artifact in registry.json.",
+      "acceptance": [
+        "Single /health endpoint in routes.py",
+        "Health endpoint returns HealthResponse Pydantic model",
+        "No duplicate artifact entries in registry.json",
+        "Consistent kind field values across all artifact entries"
+      ],
+      "decision_blockers": [],
+      "artifacts": []
     }
   ]
 }
