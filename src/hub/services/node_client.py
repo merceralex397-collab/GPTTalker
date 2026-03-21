@@ -207,6 +207,7 @@ class HubNodeClient:
         node: NodeInfo,
         path: str,
         content: str,
+        mode: str = "create_or_overwrite",
     ) -> dict[str, Any]:
         """Write a file to a node with atomic write and verification.
 
@@ -214,6 +215,7 @@ class HubNodeClient:
             node: The target node.
             path: Path to the file to write.
             content: File content to write.
+            mode: Write mode - "create_or_overwrite" (default) or "no_overwrite".
 
         Returns:
             Dictionary with success status, verification metadata, or error.
@@ -221,7 +223,7 @@ class HubNodeClient:
         response = await self.post(
             node,
             "/operations/write-file",
-            json={"path": path, "content": content},
+            json={"path": path, "content": content, "mode": mode},
             timeout=30.0,
         )
 
@@ -241,6 +243,7 @@ class HubNodeClient:
         include_patterns: list[str] | None = None,
         max_results: int = 1000,
         timeout: int = 60,
+        mode: str = "text",
     ) -> dict[str, Any]:
         """Search for pattern in files on a node using ripgrep.
 
@@ -250,6 +253,8 @@ class HubNodeClient:
             pattern: Regex pattern to search for.
             include_patterns: File patterns to include (e.g., ["*.py"]).
             max_results: Maximum matches to return.
+            timeout: Search timeout in seconds.
+            mode: Search mode - "text", "path", or "symbol".
 
         Returns:
             Search results dictionary.
@@ -260,6 +265,7 @@ class HubNodeClient:
             "include_patterns": include_patterns,
             "max_results": max_results,
             "timeout": timeout,
+            "mode": mode,
         }
 
         response = await self.post(

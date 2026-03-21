@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/core-001-implementation-implementation.md (implementation) - Implementation of CORE-001: Node registry and node health model. Created NodeHealth and NodeHealthService classes for health polling, NodePolicy for fail-closed access control, updated node repository with health methods, added migration v2 for health columns, and integrated DI providers.
 - review: .opencode/state/reviews/core-001-review-review.md (review) - Code review for CORE-001: Node registry and node health model. APPROVED with observations. All 3 acceptance criteria met. Medium severity issue: incorrect latency measurement in health check. Low severity: missing trace_id, unused NodeHealthDetail schema. Implementation is production-ready with proper fail-closed behavior.
 - qa: .opencode/state/qa/core-001-qa-qa.md (qa) - QA verification for CORE-001: Node registry and node health model. All 3 acceptance criteria verified - node registry schema defined via migration v2, health metadata model explicit with NodeHealth/NodeHealthStatus/NodeHealthDetail, fail-closed behavior confirmed in NodePolicy.validate_node_access().
+- backlog-verification: .opencode/state/reviews/core-001-review-backlog-verification.md (review) - Backlog verification for CORE-001: PASS
 
 ## Notes
 

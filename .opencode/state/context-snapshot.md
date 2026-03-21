@@ -6,33 +6,34 @@ GPTTalker
 
 ## Active Ticket
 
-- ID: EDGE-002
-- Title: Node registration bootstrap and operator config docs
+- ID: FIX-015
+- Title: Fix Task UUID handling and CLI entrypoint packaging
 - Stage: closeout
 - Status: done
-- Approved plan: yes
+- Approved plan for this ticket: yes
 
 ## Process State
 
-- process_version: 2
+- process_version: 4
 - pending_process_verification: false
 - parallel_mode: parallel-lanes
-- process_changed_at: 2026-03-16T10:59:52.052Z
-- process_note: Full retrofit rewrite from updated Scafforge templates using mcp_spec_pack as the preserved reference source.
+- process_changed_at: 2026-03-20T15:39:45Z
+- process_note: Deterministic managed-surface replacement approved by user after clean audit to refresh scaffold-managed repo structure.
 
 ## Ticket Summary
 
-Add the operator-facing bootstrap path for bringing nodes online, registering them, and documenting the edge and connectivity setup.
+Two issues: (1) TaskRepository.create accepts UUID|str but _row_to_task always parses as UUID, crashing on string IDs. (2) Console scripts point to scripts.* but package discovery only includes src*.
 
 ## Recent Artifacts
 
-- plan: .opencode/state/plans/edge-002-planning-plan.md (planning)
-- implementation: .opencode/state/implementations/edge-002-implementation-implementation.md (implementation)
-- review: .opencode/state/reviews/edge-002-review-review.md (review)
-- qa: .opencode/state/qa/edge-002-qa-qa.md (qa)
+- plan: .opencode/state/plans/fix-015-planning-plan.md (planning)
+- review: .opencode/state/reviews/fix-015-review-review.md (review)
+- implementation: .opencode/state/implementations/fix-015-implementation-implementation.md (implementation)
+- qa: .opencode/state/qa/fix-015-qa-qa.md (qa)
+- smoke-test: .opencode/state/smoke-tests/fix-015-smoke-test-smoke-test.md (smoke-test)
 ## Note
 
-Completed EDGE-002: Node registration bootstrap and operator config docs
+Regenerated to reflect current active ticket after state review
 
 ## Next Useful Step
 

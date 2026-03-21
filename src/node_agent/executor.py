@@ -32,14 +32,25 @@ class OperationExecutor:
         Validate that a path is within allowed boundaries.
 
         Args:
-            path: Path to validate
+            path: Path to validate (must be relative, not absolute)
 
         Returns:
             Resolved absolute path
 
         Raises:
+            PermissionError: If path is absolute or contains traversal
             PermissionError: If path is not within allowed boundaries
         """
+        # Step 1: Reject absolute paths
+        if path.startswith("/") or (len(path) > 1 and path[1] == ":"):
+            raise PermissionError(f"Absolute paths are not allowed: {path}")
+
+        # Step 2: Explicitly reject path traversal before any resolution
+        path_parts = path.replace("\\", "/").split("/")
+        if ".." in path_parts:
+            raise PermissionError(f"Path traversal is not allowed: {path}")
+
+        # Step 3: Continue with existing resolution logic
         resolved = Path(path).resolve()
 
         # If no allowed paths specified, deny all
@@ -154,6 +165,7 @@ class OperationExecutor:
         include_patterns: list[str] | None = None,
         max_results: int = 1000,
         timeout: int = 60,
+        mode: str = "text",
     ) -> dict[str, Any]:
         """
         Search for pattern in files within a directory using ripgrep.
@@ -164,6 +176,7 @@ class OperationExecutor:
             include_patterns: File patterns to include (e.g., ["*.py"]).
             max_results: Maximum number of matches to return.
             timeout: Search timeout in seconds.
+            mode: Search mode - "text", "path", or "symbol".
 
         Returns:
             Dict with results, match count, files searched.
@@ -178,14 +191,26 @@ class OperationExecutor:
         if not rg_path:
             raise ValueError("ripgrep (rg) is not installed on this node")
 
-        # Build ripgrep command
+        # Validate mode
+        valid_modes = ["text", "path", "symbol"]
+        if mode not in valid_modes:
+            mode = "text"
+
+        # Build ripgrep command based on mode
         cmd = [
             "rg",
             "--line-number",
             "--no-heading",
             "--hidden",
-            "-c",  # Show count of matches per line
         ]
+
+        # Mode-specific ripgrep options
+        if mode == "path":
+            # Search in file paths only
+            cmd.extend(["--files-with-matches"])
+        elif mode == "symbol":
+            # Search for whole-word matches (identifier search)
+            cmd.extend(["--word-regexp"])
 
         if include_patterns:
             for p in include_patterns:
@@ -226,21 +251,16 @@ class OperationExecutor:
             if not line:
                 continue
 
-            # Parse: filename:line_number:match_count:line_content
-            # Format: filename:line_number:line_content (with -c we get count)
-            parts = line.split(":", 3)
-            if len(parts) >= 3:
+            # Parse: filename:line_number:line_content
+            # Use split(":", 2) to handle paths that might contain ":"
+            parts = line.split(":", 2)
+            if len(parts) >= 2:
                 file_path = parts[0]
                 try:
                     line_num = int(parts[1])
                 except ValueError:
                     line_num = 0
-                match_count_str = parts[2] if len(parts) > 2 else "1"
-                try:
-                    match_count = int(match_count_str)
-                except ValueError:
-                    match_count = 1
-                line_content = parts[3] if len(parts) > 3 else ""
+                line_content = parts[2] if len(parts) > 2 else ""
 
                 files_searched.add(file_path)
 
@@ -250,7 +270,7 @@ class OperationExecutor:
                         {
                             "file": file_path,
                             "line_number": line_num,
-                            "match_count": match_count,
+                            "match_count": 1,
                             "content": line_content,
                         }
                     )
@@ -261,6 +281,7 @@ class OperationExecutor:
             "total_matches": len(matches),
             "files_searched": len(files_searched),
             "pattern": pattern,
+            "mode": mode,
             "directory": str(validated_dir),
         }
 
@@ -374,6 +395,31 @@ class OperationExecutor:
             # Remote not configured or not reachable - that's OK
             pass
 
+        # Get recent commits (last 10)
+        recent_commits: list[dict[str, str]] = []
+        try:
+            log_output, _ = await run_git(
+                "log",
+                "-10",
+                "--pretty=format:%H|%an|%aI|%s",
+            )
+            if log_output:
+                for line in log_output.split("\n"):
+                    if line:
+                        parts = line.split("|", 3)
+                        if len(parts) >= 4:
+                            recent_commits.append(
+                                {
+                                    "hash": parts[0][:8],
+                                    "author": parts[1],
+                                    "date": parts[2],
+                                    "message": parts[3],
+                                }
+                            )
+        except Exception:
+            # Failed to get recent commits - that's OK, leave empty
+            pass
+
         is_clean = len(staged) == 0 and len(modified) == 0 and len(untracked) == 0
 
         return {
@@ -387,22 +433,25 @@ class OperationExecutor:
             "untracked_count": len(untracked),
             "ahead": ahead,
             "behind": behind,
+            "recent_commits": recent_commits,
         }
 
-    async def write_file(self, path: str, content: str) -> dict:
+    async def write_file(self, path: str, content: str, mode: str = "create_or_overwrite") -> dict:
         """
         Write content to a file with atomic write and SHA256 verification.
 
         This method:
         1. Validates the path is within allowed boundaries
-        2. Writes content to a temporary file
-        3. Computes SHA256 hash of the content
-        4. Atomically moves the temp file to the target path
-        5. Returns verification metadata including the hash
+        2. In no_overwrite mode, checks if file already exists
+        3. Writes content to a temporary file
+        4. Computes SHA256 hash of the content
+        5. Atomically moves the temp file to the target path
+        6. Returns verification metadata including the hash and created flag
 
         Args:
             path: File path to write (must be validated)
             content: Content to write
+            mode: Write mode - "create_or_overwrite" (default) or "no_overwrite"
 
         Returns:
             Write result with verification metadata:
@@ -410,12 +459,20 @@ class OperationExecutor:
             - bytes_written: Number of bytes written
             - sha256_hash: SHA256 hash of the content
             - verified: Whether verification passed
+            - created: Whether the file was newly created
         """
         import hashlib
         import os
         import tempfile
 
         validated_path = self._validate_path(path)
+
+        # Check if file exists for no_overwrite mode
+        file_existed = validated_path.exists()
+        if mode == "no_overwrite" and file_existed:
+            raise FileExistsError(
+                f"File already exists: {path}. Use mode='create_or_overwrite' to overwrite."
+            )
 
         # Ensure parent directory exists
         validated_path.parent.mkdir(parents=True, exist_ok=True)
@@ -456,8 +513,11 @@ class OperationExecutor:
                 "sha256_hash": sha256_hash,
                 "verified": True,
                 "content_hash_algorithm": "sha256",
+                "created": not file_existed,
             }
 
+        except FileExistsError:
+            raise
         except PermissionError as e:
             raise PermissionError(f"Permission denied writing file: {path}") from e
         except OSError as e:

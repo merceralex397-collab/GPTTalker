@@ -8,18 +8,12 @@
   "generation_scope": "full",
   "runtime_models": {
     "provider": "minimax-coding-plan",
-    "planner": "minimax-coding-plan/minimax-m2.5",
-    "implementer": "minimax-coding-plan/minimax-m2.5",
-    "utility": "minimax-coding-plan/minimax-m2.5"
+    "planner": "minimax-coding-plan/MiniMax-M2.5",
+    "implementer": "minimax-coding-plan/MiniMax-M2.5",
+    "utility": "minimax-coding-plan/MiniMax-M2.5"
   },
   "bootstrap_steps": [
-    "repo-scaffold-factory/render-full-scaffold",
-    "scaffold-kickoff/full-retrofit",
-    "opencode-team-bootstrap/customize-team",
-    "ticket-pack-builder/bootstrap",
-    "project-skill-bootstrap/foundation",
-    "project-skill-bootstrap/synthesis",
-    "handoff-brief/render-start-here"
+    "repo-scaffold-factory/render-full-scaffold"
   ],
   "tracking": {
     "invocation_log": ".opencode/state/invocation-log.jsonl",
@@ -27,10 +21,13 @@
     "tracker_plugin": "invocation-tracker"
   },
   "workflow_contract": {
-    "process_version": 2,
+    "process_version": 4,
     "ticket_contract_version": 2,
     "parallel_mode": "parallel-lanes",
-    "supports_manager_hierarchy": false,
+    "manager_hierarchy": {
+      "first_class_scaffold_profile": false,
+      "advanced_customization_allowed": true
+    },
     "post_migration_verification": {
       "enabled": true,
       "backlog_verifier_agent": "gpttalker-backlog-verifier",
@@ -39,18 +36,32 @@
   },
   "managed_surfaces": {
     "replace_on_retrofit": [
-      "README.md",
-      "AGENTS.md",
-      "START-HERE.md",
-      "docs/",
-      "tickets/",
       "opencode.jsonc",
-      ".opencode/"
+      ".opencode/tools",
+      ".opencode/plugins",
+      ".opencode/commands",
+      "scaffold-managed .opencode/skills",
+      "docs/process/workflow.md",
+      "docs/process/tooling.md",
+      "docs/process/model-matrix.md",
+      "docs/process/git-capability.md",
+      "START-HERE.md managed block"
+    ],
+    "project_specific_follow_up": [
+      ".opencode/agents",
+      "docs/process/agent-catalog.md"
     ],
     "preserve_project_sources": [
-      "mcp_spec_pack/",
-      ".git/",
-      ".gitattributes"
+      "docs/spec/CANONICAL-BRIEF.md",
+      "tickets/manifest.json",
+      "tickets/*.md",
+      ".opencode/state/artifacts",
+      ".opencode/state/plans",
+      ".opencode/state/implementations",
+      ".opencode/state/reviews",
+      ".opencode/state/qa",
+      ".opencode/state/smoke-tests",
+      ".opencode/state/handoffs"
     ]
   },
   "repair_history": [
@@ -61,6 +72,27 @@
       "summary": "User-directed maximum-aggression scaffold rewrite that replaced the generated repo layer while preserving mcp_spec_pack as reference-only source material.",
       "managed_surface_replacement": true,
       "verification_window_opened": false
+    },
+    {
+      "repaired_at": "2026-03-20T15:39:45Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Deterministic managed-surface replacement approved by user after clean audit to refresh scaffold-managed repo structure.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
     }
   ]
 }

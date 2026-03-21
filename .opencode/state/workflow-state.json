@@ -1,11 +1,67 @@
 {
-  "active_ticket": "POLISH-003",
+  "active_ticket": "FIX-015",
   "stage": "closeout",
   "status": "done",
   "approved_plan": true,
-  "process_version": 2,
-  "process_last_changed_at": "2026-03-16T10:59:52.052Z",
-  "process_last_change_summary": "Full retrofit rewrite from updated Scafforge templates using mcp_spec_pack as the preserved reference source.",
+  "ticket_state": {
+    "POLISH-003": {
+      "approved_plan": true
+    },
+    "FIX-001": {
+      "approved_plan": true
+    },
+    "FIX-002": {
+      "approved_plan": true
+    },
+    "FIX-003": {
+      "approved_plan": true
+    },
+    "FIX-004": {
+      "approved_plan": true
+    },
+    "FIX-005": {
+      "approved_plan": true
+    },
+    "FIX-006": {
+      "approved_plan": true
+    },
+    "FIX-007": {
+      "approved_plan": true
+    },
+    "FIX-008": {
+      "approved_plan": true
+    },
+    "FIX-009": {
+      "approved_plan": true
+    },
+    "FIX-010": {
+      "approved_plan": true
+    },
+    "FIX-011": {
+      "approved_plan": true
+    },
+    "FIX-012": {
+      "approved_plan": true
+    },
+    "FIX-013": {
+      "approved_plan": true
+    },
+    "FIX-014": {
+      "approved_plan": true
+    },
+    "FIX-015": {
+      "approved_plan": true
+    },
+    "FIX-016": {
+      "approved_plan": true
+    },
+    "FIX-017": {
+      "approved_plan": true
+    }
+  },
+  "process_version": 4,
+  "process_last_changed_at": "2026-03-20T15:39:45Z",
+  "process_last_change_summary": "Deterministic managed-surface replacement approved by user after clean audit to refresh scaffold-managed repo structure.",
   "pending_process_verification": false,
   "parallel_mode": "parallel-lanes"
 }

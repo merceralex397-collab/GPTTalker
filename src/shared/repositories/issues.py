@@ -208,6 +208,21 @@ class IssueRepository:
         )
         return {row["status"]: row["count"] for row in rows}
 
+    async def count_by_repo(self, repo_id: str) -> int:
+        """Get count of issues for a specific repository.
+
+        Args:
+            repo_id: Repository identifier to count issues for.
+
+        Returns:
+            Number of issues for the specified repository.
+        """
+        row = await self._db.fetchone(
+            "SELECT COUNT(*) as count FROM issues WHERE repo_id = ?",
+            (repo_id,),
+        )
+        return row["count"] if row else 0
+
     async def list_recurring(self, min_count: int = 2) -> list[dict[str, Any]]:
         """Find issues that appear to be recurring based on title similarity.
 

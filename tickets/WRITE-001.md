@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/write-001-implementation-implementation.md (implementation) - Implementation of WRITE-001: write_markdown with atomic scoped writes. Created markdown.py hub handler, updated node_client.py to use correct endpoint, implemented atomic write in executor.py with SHA256 verification, updated operations.py endpoint, registered write_markdown tool, added write_target dependencies to policy_router and dependencies.py.
 - review: .opencode/state/reviews/write-001-review-review.md (review) - Code review for WRITE-001: write_markdown with atomic scoped writes. APPROVED - all 3 acceptance criteria met (write target restriction, atomic write with temp+rename, SHA256 verification in response). WRITE_REQUIREMENT policy correctly applied with proper DI integration.
 - qa: .opencode/state/qa/write-001-qa-qa.md (qa) - QA verification for WRITE-001: All 3 acceptance criteria verified - write target restriction via WriteTargetPolicy + extension allowlist + path boundary, atomic write via temp+rename, SHA256 verification metadata in response.
+- backlog-verification: .opencode/state/reviews/write-001-review-backlog-verification.md (review) - Backlog verification for WRITE-001: PASS
 
 ## Notes
 

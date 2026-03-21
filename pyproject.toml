@@ -49,4 +49,4 @@ known-first-party = ["src"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["src*"]
+include = ["src*", "scripts*"]

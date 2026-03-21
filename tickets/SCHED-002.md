@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/sched-002-implementation-implementation.md (implementation) - Implementation of SCHED-002: Created distributed scheduler with node-aware service selection, health filtering, latency-aware selection, and bounded fallback chain. Added SchedulerInput, SchedulerResult, NodeHealthInfo, and ServiceNodePair models to models.py. Created DistributedScheduler class in new distributed_scheduler.py file. Updated dependencies.py with DI provider. Integrated distributed scheduler into llm.py, opencode.py, and embedding.py tools.
 - review: .opencode/state/reviews/sched-002-review-review.md (review) - Approved
 - qa: .opencode/state/qa/sched-002-qa-qa.md (qa) - Passed
+- backlog-verification: .opencode/state/reviews/sched-002-review-backlog-verification.md (review) - Backlog verification for SCHED-002: PASS
 
 ## Notes
 

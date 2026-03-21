@@ -212,8 +212,16 @@ class TaskRepository:
         """
         metadata = json.loads(row["metadata"]) if row["metadata"] else {}
 
+        # Handle both UUID and string task_ids
+        task_id_value = row["task_id"]
+        try:
+            task_id = UUID(task_id_value)
+        except ValueError:
+            # Not a valid UUID, use as string
+            task_id = task_id_value
+
         return TaskRecord(
-            task_id=UUID(row["task_id"]),
+            task_id=task_id,
             trace_id=row["trace_id"],
             tool_name=row["tool_name"],
             caller=row["caller"],

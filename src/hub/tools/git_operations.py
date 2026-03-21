@@ -145,6 +145,7 @@ async def git_status_handler(
             "untracked_count": untracked_count,
             "ahead": result.get("ahead", 0),
             "behind": result.get("behind", 0),
+            "recent_commits": result.get("recent_commits", []),
         }
     else:
         error_msg = result.get("error", "Unknown error")

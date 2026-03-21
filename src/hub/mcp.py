@@ -1,6 +1,7 @@
 """MCP protocol handling for the hub."""
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
+from uuid import uuid4
 
 from src.hub.tool_router import get_global_registry
 from src.hub.tool_routing import PolicyAwareToolRouter
@@ -10,6 +11,10 @@ from src.hub.transport.mcp import (
     parse_tool_call,
 )
 from src.shared.logging import get_logger
+from src.shared.models import TaskOutcome
+
+if TYPE_CHECKING:
+    from src.shared.database import DatabaseManager
 
 logger = get_logger(__name__)
 
@@ -29,8 +34,8 @@ class MCPProtocolHandler:
         """
         self._router = router
 
-    def _ensure_router(self) -> PolicyAwareToolRouter:
-        """Ensure router is initialized.
+    async def _ensure_router(self) -> PolicyAwareToolRouter:
+        """Ensure router is initialized (async).
 
         Returns:
             PolicyAwareToolRouter instance.
@@ -39,32 +44,17 @@ class MCPProtocolHandler:
             RuntimeError: If router is not set and cannot be created.
         """
         if self._router is None:
-            # Lazy initialization using dependency
-
-            # Create a simple synchronous version for basic usage
+            # Lazy initialization - create router with dependencies
             registry = get_global_registry()
-            # Note: In actual FastAPI usage, the router will be injected via DI
-            # This is a fallback for non-FastAPI usage
-            import asyncio
 
             from src.hub.dependencies import get_policy_engine
 
-            try:
-                loop = asyncio.get_event_loop()
-                if loop.is_running():
-                    # Can't synchronously get policy engine in async context
-                    raise RuntimeError(
-                        "PolicyAwareToolRouter not initialized. Use FastAPI dependency injection."
-                    )
-                policy_engine = loop.run_until_complete(get_policy_engine())
-                self._router = PolicyAwareToolRouter(
-                    registry=registry,
-                    policy_engine=policy_engine,
-                )
-            except RuntimeError as err:
-                raise RuntimeError(
-                    "PolicyAwareToolRouter not initialized. Use FastAPI dependency injection."
-                ) from err
+            # Use await to get policy engine in async context
+            policy_engine = await get_policy_engine()
+            self._router = PolicyAwareToolRouter(
+                registry=registry,
+                policy_engine=policy_engine,
+            )
         return self._router
 
     async def handle_tool_call(
@@ -72,6 +62,7 @@ class MCPProtocolHandler:
         tool_name: str,
         parameters: dict,
         trace_id: str | None = None,
+        db_manager: "DatabaseManager | None" = None,
     ) -> dict[str, Any]:
         """
         Handle an MCP tool call from ChatGPT.
@@ -80,6 +71,7 @@ class MCPProtocolHandler:
             tool_name: Name of the tool to invoke
             parameters: Parameters for the tool
             trace_id: Optional trace ID for request correlation
+            db_manager: Optional DatabaseManager for task persistence
 
         Returns:
             Tool response in MCP format
@@ -88,8 +80,12 @@ class MCPProtocolHandler:
 
         start_time = int(time.time() * 1000)
 
+        # Generate trace_id if not provided
+        if trace_id is None:
+            trace_id = str(uuid4())
+
         # Ensure router is available
-        router = self._ensure_router()
+        router = await self._ensure_router()
 
         # Check if tool is registered
         if not router.registry.is_registered(tool_name):
@@ -114,6 +110,35 @@ class MCPProtocolHandler:
 
         duration_ms = int(time.time() * 1000) - start_time
 
+        # Persist task to database if db_manager is available
+        if db_manager is not None:
+            try:
+                from src.shared.repositories.tasks import TaskRepository
+
+                task_repo = TaskRepository(db_manager)
+                # Determine success from nested result structure
+                is_success = result.get("success", False)
+                outcome = TaskOutcome.SUCCESS if is_success else TaskOutcome.ERROR
+                error_msg = result.get("error") if not is_success else None
+
+                await task_repo.create(
+                    task_id=uuid4(),
+                    tool_name=tool_name,
+                    caller="mcp",
+                    outcome=outcome,
+                    duration_ms=duration_ms,
+                    trace_id=trace_id,
+                    error=error_msg,
+                )
+            except Exception as e:
+                # Log but don't fail the tool call if task persistence fails
+                logger.warning(
+                    "task_persistence_failed",
+                    tool_name=tool_name,
+                    trace_id=trace_id,
+                    error=str(e),
+                )
+
         if result.get("success"):
             return format_tool_response(
                 result=result.get("result"),
@@ -134,7 +159,7 @@ class MCPProtocolHandler:
         Returns:
             MCP-formatted tool list response.
         """
-        router = self._ensure_router()
+        router = await self._ensure_router()
         tools = router.registry.list_tools()
         return format_tool_list(tools)
 

@@ -113,6 +113,49 @@ def register_inspection_tools(registry: ToolRegistry) -> None:
         )
     )
 
+    # Register read_repo_file tool
+    # Policy: READ_REPO_REQUIREMENT - requires valid node + repo access
+    registry.register(
+        ToolDefinition(
+            name="read_repo_file",
+            description="Read file contents from an approved repository. "
+            "Returns file content with metadata including encoding, size_bytes, and truncated flag. "
+            "Supports offset and limit for reading file segments. Requires node_id, repo_id, and file_path for access control.",
+            handler=read_repo_file_handler,
+            parameters={
+                "type": "object",
+                "properties": {
+                    "node_id": {
+                        "type": "string",
+                        "description": "Node identifier (required)",
+                    },
+                    "repo_id": {
+                        "type": "string",
+                        "description": "Repository identifier (required)",
+                    },
+                    "file_path": {
+                        "type": "string",
+                        "description": "File path relative to repo root (required)",
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "description": "Byte offset to start reading from",
+                        "default": 0,
+                        "minimum": 0,
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum bytes to read (None for entire file)",
+                        "default": None,
+                        "minimum": 1,
+                    },
+                },
+                "required": ["node_id", "repo_id", "file_path"],
+            },
+            policy=READ_REPO_REQUIREMENT,
+        )
+    )
+
 
 def register_observability_tools(registry: ToolRegistry) -> None:
     """Register observability tools with the tool registry.
@@ -124,6 +167,8 @@ def register_observability_tools(registry: ToolRegistry) -> None:
     from src.hub.tools.observability import (
         get_issue_timeline_handler,
         get_task_details_handler,
+        list_known_issues_handler,
+        list_task_history_handler,
         list_generated_docs_handler,
     )
 
@@ -221,6 +266,84 @@ def register_observability_tools(registry: ToolRegistry) -> None:
         )
     )
 
+    # Register list_known_issues tool
+    # Policy: NO_POLICY_REQUIREMENT - observability read tool
+    registry.register(
+        ToolDefinition(
+            name="list_known_issues",
+            description="List known issues with optional filtering. "
+            "Returns issue records from the issue tracking system, "
+            "including title, description, status, and timestamps. "
+            "Can filter by repo_id and/or status.",
+            handler=list_known_issues_handler,
+            parameters={
+                "type": "object",
+                "properties": {
+                    "repo_id": {
+                        "type": "string",
+                        "description": "Filter by specific repository ID",
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Filter by issue status",
+                        "enum": ["open", "in_progress", "resolved", "wontfix"],
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of issues to return",
+                        "default": 50,
+                        "minimum": 1,
+                        "maximum": 200,
+                    },
+                },
+                "required": [],
+            },
+            policy=NO_POLICY_REQUIREMENT,
+        )
+    )
+
+    # Register list_task_history tool
+    # Policy: NO_POLICY_REQUIREMENT - observability read tool
+    registry.register(
+        ToolDefinition(
+            name="list_task_history",
+            description="List task history with optional filtering. "
+            "Returns records of all tool executions including tool name, "
+            "outcome, duration, and timestamps. "
+            "Can filter by outcome, tool_name, and time window.",
+            handler=list_task_history_handler,
+            parameters={
+                "type": "object",
+                "properties": {
+                    "outcome": {
+                        "type": "string",
+                        "description": "Filter by task outcome",
+                        "enum": ["success", "error"],
+                    },
+                    "tool_name": {
+                        "type": "string",
+                        "description": "Filter by specific tool name",
+                    },
+                    "hours": {
+                        "type": "integer",
+                        "description": "Filter by time window (last N hours)",
+                        "minimum": 1,
+                        "maximum": 8760,
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "description": "Maximum number of records to return",
+                        "default": 100,
+                        "minimum": 1,
+                        "maximum": 500,
+                    },
+                },
+                "required": [],
+            },
+            policy=NO_POLICY_REQUIREMENT,
+        )
+    )
+
 
 def register_search_tools(registry: ToolRegistry) -> None:
     """Register search and git operation tools with the tool registry.
@@ -279,6 +402,12 @@ def register_search_tools(registry: ToolRegistry) -> None:
                         "description": "Search timeout in seconds",
                         "default": 60,
                         "maximum": 120,
+                    },
+                    "mode": {
+                        "type": "string",
+                        "description": "Search mode: text (content), path (filenames), symbol (identifiers)",
+                        "default": "text",
+                        "enum": ["text", "path", "symbol"],
                     },
                 },
                 "required": ["node_id", "repo_id", "pattern"],
@@ -339,20 +468,21 @@ def register_markdown_tools(registry: ToolRegistry) -> None:
             description="Write markdown content to an approved write target. "
             "Validates that the target path is registered and the file extension is allowed. "
             "Writes atomically with SHA256 verification. "
-            "Requires node_id, repo_id, path, and content parameters.",
+            "Requires node, write_target, relative_path, and content parameters. "
+            "Use mode='no_overwrite' to fail if the file already exists.",
             handler=write_markdown_handler,
             parameters={
                 "type": "object",
                 "properties": {
-                    "node_id": {
+                    "node": {
                         "type": "string",
                         "description": "Node identifier (required)",
                     },
-                    "repo_id": {
+                    "write_target": {
                         "type": "string",
-                        "description": "Repository identifier (required)",
+                        "description": "Write target identifier (required)",
                     },
-                    "path": {
+                    "relative_path": {
                         "type": "string",
                         "description": "File path relative to write target root (required)",
                     },
@@ -360,8 +490,14 @@ def register_markdown_tools(registry: ToolRegistry) -> None:
                         "type": "string",
                         "description": "Markdown content to write (required)",
                     },
+                    "mode": {
+                        "type": "string",
+                        "description": "Write mode: 'create_or_overwrite' (default) or 'no_overwrite'",
+                        "enum": ["create_or_overwrite", "no_overwrite"],
+                        "default": "create_or_overwrite",
+                    },
                 },
-                "required": ["node_id", "repo_id", "path", "content"],
+                "required": ["node", "write_target", "relative_path", "content"],
             },
             policy=WRITE_REQUIREMENT,
         )

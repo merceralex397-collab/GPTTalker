@@ -118,11 +118,15 @@ Copy the generated token. You will need it for the hub configuration.
 
 Set the following environment variables on the machine running your GPTTalker hub:
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `GPTTALKER_CLOUDFLARE_TUNNEL_ENABLED` | Enable Cloudflare Tunnel integration | `true` |
-| `GPTTALKER_CLOUDFLARE_TUNNEL_TOKEN` | Token from Step 5 | `eyJh...` |
-| `GPTTALKER_CLOUDFLARE_TUNNEL_HOSTNAME` | Public hostname for the hub | `gpttalker.yourdomain.com` |
+| Variable | Description | Default | Required |
+|----------|-------------|---------|----------|
+| `GPTTALKER_CLOUDFLARE_TUNNEL_ENABLED` | Enable Cloudflare Tunnel integration | `false` | Yes (to enable) |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_TOKEN` | Token from Step 5 | - | Yes |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_HOSTNAME` | Public hostname for the hub | - | No (informational) |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_URL` | Local URL tunnel forwards to | `http://localhost:8000` | No |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_HEALTH_CHECK_INTERVAL` | Health check interval (seconds) | `30` | No |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_RESTART_DELAY` | Delay before restart (seconds) | `5` | No |
+| `GPTTALKER_CLOUDFLARE_TUNNEL_MAX_RESTARTS` | Max restart attempts | `5` | No |
 
 **Example (.env file):**
 
@@ -131,6 +135,24 @@ GPTTALKER_CLOUDFLARE_TUNNEL_ENABLED=true
 GPTTALKER_CLOUDFLARE_TUNNEL_TOKEN=eyJhciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 GPTTALKER_CLOUDFLARE_TUNNEL_HOSTNAME=gpttalker.yourdomain.com
 ```
+
+### Automatic Startup Behavior
+
+When `GPTTALKER_CLOUDFLARE_TUNNEL_ENABLED=true` and `GPTTALKER_CLOUDFLARE_TUNNEL_TOKEN` is set, the hub will automatically:
+
+1. **Start cloudflared** as a subprocess on hub startup (if not already running)
+2. **Monitor tunnel health** in the background at the configured interval
+3. **Auto-restart** on failure up to the configured max restarts
+4. **Gracefully shutdown** the tunnel when the hub stops
+
+### External Tunnel Detection
+
+The hub detects if cloudflared is already managed externally:
+
+- **Systemd service**: If `systemctl is-active cloudflared` returns "active", the hub skips subprocess management
+- **Running process**: If `pgrep -x cloudflared` finds a process, the hub skips subprocess management
+
+This allows you to run cloudflared as a systemd service while still enabling tunnel health monitoring.
 
 ### Running the Hub with Tunnel
 
@@ -145,6 +167,28 @@ cloudflared tunnel run gpttalker-hub
 # Verify HTTPS access
 curl -I https://gpttalker.yourdomain.com/health
 ```
+
+### Tunnel Health
+
+You can check tunnel health via the hub's internal state:
+
+```python
+from src.hub.services.tunnel_manager import TunnelManager
+from src.hub.config import get_hub_config
+
+config = get_hub_config()
+manager = TunnelManager(config)
+health = await manager.health_check()
+print(health)
+```
+
+The health check returns:
+- `enabled`: Whether tunnel is enabled in config
+- `running`: Whether tunnel is currently active
+- `status`: One of: `disabled`, `external`, `healthy`, `not_running`, `crashed`
+- `managed_by`: `external` if systemd/process detected
+- `pid`: Process ID (if hub-managed)
+- `restart_count`: Number of restarts attempted
 
 ## Security Considerations
 
@@ -204,6 +248,28 @@ ss -tlnp | grep 8000
 - Cloudflare provides certificates automatically; no manual TLS setup needed
 - If using a custom certificate, verify it is valid and not expired
 - Ensure the hostname matches your certificate's Common Name or Subject Alternative Name
+
+### Tunnel Manager Issues
+
+#### Tunnel not starting
+
+- Verify `GPTTALKER_CLOUDFLARE_TUNNEL_ENABLED=true` is set
+- Verify `GPTTALKER_CLOUDFLARE_TUNNEL_TOKEN` is set and valid
+- Check hub logs for `cloudflare_tunnel_start_failed` errors
+- Ensure cloudflared is installed: `cloudflared --version`
+
+#### Too many restarts
+
+- Check logs for `cloudflare_tunnel_max_restarts_exceeded`
+- Verify network connectivity to Cloudflare
+- Check if firewall is blocking outbound connections
+- Consider running cloudflared as a systemd service instead
+
+#### External vs managed conflict
+
+- If running cloudflared manually, either stop it or let hub manage it
+- If using systemd, hub will detect and skip management
+- Check logs for `cloudflare_tunnel_external_detected`
 
 ## Next Steps
 

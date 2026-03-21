@@ -105,14 +105,16 @@ async def run_migrations(db: DatabaseManager) -> None:
 
         logger.info("applying_migration", version=version)
 
-        for statement in MIGRATIONS[version]:
-            await db.execute(statement)
+        # Wrap each migration version in a transaction for atomicity
+        async with db.transaction() as conn:
+            for statement in MIGRATIONS[version]:
+                await conn.execute(statement)
 
-        # Record migration
-        await db.execute(
-            "INSERT INTO schema_version (version) VALUES (?)",
-            (version,),
-        )
+            # Record migration
+            await conn.execute(
+                "INSERT INTO schema_version (version) VALUES (?)",
+                (version,),
+            )
 
         logger.info("migration_applied", version=version)
 

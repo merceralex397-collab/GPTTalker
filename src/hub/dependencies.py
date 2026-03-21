@@ -771,12 +771,14 @@ async def get_bundle_service(
 async def get_aggregation_service(
     request: Request,
     qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
+    issue_repo: "IssueRepository" = Depends(get_issue_repository),  # noqa: B008
 ) -> "AggregationService":
     """Get aggregation service instance.
 
     Args:
         request: The current FastAPI request.
         qdrant_client: Qdrant client wrapper.
+        issue_repo: Issue repository for SQLite-backed issue data.
 
     Returns:
         Initialized AggregationService.
@@ -784,7 +786,7 @@ async def get_aggregation_service(
     # Import here to avoid circular imports
     from src.hub.services.aggregation_service import AggregationService
 
-    return AggregationService(qdrant_client=qdrant_client)
+    return AggregationService(qdrant_client=qdrant_client, issue_repo=issue_repo)
 
 
 async def get_cross_repo_service(
@@ -795,6 +797,7 @@ async def get_cross_repo_service(
     repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
     relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
     owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
+    issue_repo: IssueRepository = Depends(get_issue_repository),  # noqa: B008
 ) -> "CrossRepoService":
     """Get cross-repo service instance.
 
@@ -806,6 +809,7 @@ async def get_cross_repo_service(
         repo_repo: RepoRepository instance.
         relationship_repo: RelationshipRepository instance.
         owner_repo: RepoOwnerRepository instance.
+        issue_repo: IssueRepository instance for issue count queries.
 
     Returns:
         Initialized CrossRepoService.
@@ -820,6 +824,7 @@ async def get_cross_repo_service(
         repo_repo=repo_repo,
         relationship_repo=relationship_repo,
         owner_repo=owner_repo,
+        issue_repo=issue_repo,
     )
 
 

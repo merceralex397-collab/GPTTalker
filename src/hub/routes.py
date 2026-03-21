@@ -3,11 +3,11 @@
 import time
 from typing import Any
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
 from src.hub.dependencies import check_database_health
-from src.hub.main import mcp_handler
+from src.hub.handlers import mcp_handler
 
 router = APIRouter()
 
@@ -41,22 +41,6 @@ class HealthResponse(BaseModel):
     database: dict[str, Any] | None = None
 
 
-# --- Health Endpoints ---
-
-
-@router.get("/health")
-async def health_check(request: Request):
-    """Health check endpoint with database connectivity verification."""
-    # Check database via dependency
-    db_health = await check_database_health(request)
-
-    return {
-        "status": "healthy",
-        "service": "gpttalker-hub",
-        "database": db_health,
-    }
-
-
 # --- MCP Tool Endpoints ---
 
 
@@ -71,7 +55,7 @@ async def list_tools():
 
 
 @router.post("/mcp/v1/tools/call")
-async def call_tool(request: MCPToolCallRequest):
+async def call_tool(request: MCPToolCallRequest, req: Request):
     """Execute an MCP tool call.
 
     Routes the tool call to the appropriate registered handler,
@@ -79,17 +63,24 @@ async def call_tool(request: MCPToolCallRequest):
 
     Args:
         request: Tool call request with tool_name, parameters, and optional trace_id.
+        req: FastAPI Request object to access app state for db_manager.
 
     Returns:
         Tool execution result with success status, data, and duration.
     """
     start_time = int(time.time() * 1000)
 
+    # Get db_manager from app state if available
+    db_manager = None
+    if hasattr(req.app.state, "db_manager"):
+        db_manager = req.app.state.db_manager
+
     try:
         result = await mcp_handler.handle_tool_call(
             tool_name=request.tool_name,
             parameters=request.parameters,
             trace_id=request.trace_id,
+            db_manager=db_manager,
         )
 
         # Extract success from result
@@ -122,6 +113,22 @@ async def mcp_health():
         "service": "gpttalker-mcp",
         "version": "1.0",
     }
+
+
+# --- Health Endpoint ---
+
+
+@router.get("/health", response_model=HealthResponse)
+async def health_check(db_health: dict[str, Any] = Depends(check_database_health)):
+    """Health check endpoint for the hub service.
+
+    Returns basic health status including database connectivity.
+    """
+    return HealthResponse(
+        status="healthy",
+        service="gpttalker-hub",
+        database=db_health,
+    )
 
 
 # --- Future Tool Endpoints (Commented for Reference) ---

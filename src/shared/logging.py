@@ -188,16 +188,16 @@ def setup_logging(
     root_logger.addHandler(handler)
 
 
-def get_logger(name: str) -> logging.Logger:
-    """Get a logger for the given name.
+def get_logger(name: str) -> "StructuredLogger":
+    """Get a structured logger for the given name.
 
     Args:
         name: Logger name (typically __name__).
 
     Returns:
-        Configured logger instance.
+        Configured StructuredLogger instance.
     """
-    return logging.getLogger(name)
+    return StructuredLogger(name)
 
 
 class StructuredLogger:

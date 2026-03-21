@@ -4,6 +4,7 @@ import {
   getTicket,
   hasArtifact,
   hasReviewArtifact,
+  isPlanApprovedForTicket,
   latestArtifact,
   latestReviewArtifact,
   loadManifest,
@@ -22,27 +23,40 @@ export default tool({
     const manifest = await loadManifest()
     const workflow = await loadWorkflowState()
     const ticket = getTicket(manifest, args.ticket_id)
+    const resolvedWorkflow = args.ticket_id
+      ? {
+          ...workflow,
+          active_ticket: ticket.id,
+          stage: ticket.stage,
+          status: ticket.status,
+          approved_plan: isPlanApprovedForTicket(workflow, ticket.id),
+        }
+      : workflow
     const latestPlan = latestArtifact(ticket, { stage: "planning" }) || null
     const latestImplementation = latestArtifact(ticket, { stage: "implementation" }) || null
     const latestReview = latestReviewArtifact(ticket) || null
     const latestBacklogVerification = latestArtifact(ticket, { stage: "review", kind: "backlog-verification" }) || null
     const latestQa = latestArtifact(ticket, { stage: "qa" }) || null
+    const latestSmokeTest = latestArtifact(ticket, { stage: "smoke-test" }) || null
 
     const artifactSummary = {
       has_plan: hasArtifact(ticket, { stage: "planning" }),
       has_implementation: hasArtifact(ticket, { stage: "implementation" }),
       has_review: hasReviewArtifact(ticket),
       has_qa: hasArtifact(ticket, { stage: "qa" }),
+      has_smoke_test: hasArtifact(ticket, { stage: "smoke-test" }),
       latest_plan: latestPlan,
       latest_implementation: latestImplementation,
       latest_review: latestReview,
       latest_backlog_verification: latestBacklogVerification,
       latest_qa: latestQa,
+      latest_smoke_test: latestSmokeTest,
     }
     const affectedDoneTickets = ticketsNeedingProcessVerification(manifest, workflow).map((item) => ({
       id: item.id,
       title: item.title,
       latest_qa: latestArtifact(item, { stage: "qa" }) || null,
+      latest_smoke_test: latestArtifact(item, { stage: "smoke-test" }) || null,
       latest_backlog_verification: latestArtifact(item, { stage: "review", kind: "backlog-verification" }) || null,
     }))
     const artifactBodies = args.include_artifact_contents
@@ -62,6 +76,9 @@ export default tool({
           latest_qa: latestQa
             ? { ...latestQa, content: await readFile(latestQa.path, "utf-8").catch(() => null) }
             : null,
+          latest_smoke_test: latestSmokeTest
+            ? { ...latestSmokeTest, content: await readFile(latestSmokeTest.path, "utf-8").catch(() => null) }
+            : null,
         }
       : undefined
 
@@ -69,7 +86,7 @@ export default tool({
       {
         project: manifest.project,
         active_ticket: manifest.active_ticket,
-        workflow,
+        workflow: resolvedWorkflow,
         ticket,
         artifact_summary: artifactSummary,
         artifact_bodies: artifactBodies,

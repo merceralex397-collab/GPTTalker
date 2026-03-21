@@ -45,6 +45,7 @@ None
 - review: .opencode/state/reviews/core-002-review-review.md (review) - Code review for CORE-002: APPROVED. All 3 acceptance criteria met (models already exist from SETUP-003). Policy classes are technically sound with proper async/await, fail-closed behavior, and structured logging. DI providers correctly integrate with existing dependencies.py pattern. No blockers or missing decisions.
 - implementation: .opencode/state/implementations/core-002-implementation-implementation.md (implementation) - Implementation of CORE-002: Created 3 policy classes (RepoPolicy, WriteTargetPolicy, LLMServicePolicy) for fail-closed validation, and added 6 DI providers in dependencies.py for repositories and policies.
 - qa: .opencode/state/qa/core-002-qa-qa.md (qa) - QA verification for CORE-002: All 3 acceptance criteria verified - models exist in src/shared/models.py, DI providers added to dependencies.py, policy classes created and linting passes.
+- backlog-verification: .opencode/state/reviews/core-002-review-backlog-verification.md (review) - Backlog verification for CORE-002: PASS
 
 ## Notes
 

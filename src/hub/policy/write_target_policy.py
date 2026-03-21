@@ -74,6 +74,17 @@ class WriteTargetPolicy:
         """
         return await self._repo.list_by_repo(repo_id)
 
+    async def get(self, target_id: str) -> WriteTargetInfo | None:
+        """Get a write target by ID.
+
+        Args:
+            target_id: Unique target identifier.
+
+        Returns:
+            WriteTargetInfo if found, None otherwise.
+        """
+        return await self._repo.get(target_id)
+
     def validate_extension(self, extension: str, allowed: list[str]) -> bool:
         """Validate a file extension against an allowlist.
 

@@ -809,6 +809,109 @@ class QdrantClientWrapper:
             )
             return False
 
+    # === Aggregation Operations ===
+
+    async def count_files_by_repo(self, repo_id: str) -> int:
+        """Count indexed files for a specific repository.
+
+        Args:
+            repo_id: Repository ID to count files for.
+
+        Returns:
+            Number of indexed files for the repository.
+        """
+        try:
+            # Use scroll to count all files for the repo
+            count = 0
+            offset = None
+
+            while True:
+                result = self.client.scroll(
+                    collection_name=COLLECTION_FILES,
+                    scroll_filter=Filter(
+                        must=[
+                            FieldCondition(
+                                key="repo_id",
+                                match=Match(value=repo_id),
+                            )
+                        ]
+                    ),
+                    limit=1000,
+                    offset=offset,
+                    with_payload=False,  # Don't need payload for counting
+                )
+
+                records, next_offset = result
+                count += len(list(records))
+
+                if next_offset is None:
+                    break
+
+                offset = next_offset
+
+            return count
+
+        except Exception as e:
+            logger.error(
+                "qdrant_count_files_by_repo_failed",
+                repo_id=repo_id,
+                error=str(e),
+            )
+            return 0
+
+    async def get_unique_languages(self, repo_id: str) -> list[str]:
+        """Get unique programming languages detected from indexed file extensions.
+
+        Args:
+            repo_id: Repository ID to get languages for.
+
+        Returns:
+            List of unique language identifiers found in indexed files.
+        """
+        try:
+            # Scroll through files and collect unique languages from payload
+            languages: set[str] = set()
+            offset = None
+
+            while True:
+                result = self.client.scroll(
+                    collection_name=COLLECTION_FILES,
+                    scroll_filter=Filter(
+                        must=[
+                            FieldCondition(
+                                key="repo_id",
+                                match=Match(value=repo_id),
+                            )
+                        ]
+                    ),
+                    limit=1000,
+                    offset=offset,
+                    with_payload=WithPayloadInterface(True),
+                )
+
+                records, next_offset = result
+
+                for record in records:
+                    payload = record.payload or {}
+                    lang = payload.get("language")
+                    if lang:
+                        languages.add(lang)
+
+                if next_offset is None:
+                    break
+
+                offset = next_offset
+
+            return sorted(list(languages))
+
+        except Exception as e:
+            logger.error(
+                "qdrant_get_unique_languages_failed",
+                repo_id=repo_id,
+                error=str(e),
+            )
+            return []
+
     # === Collection Info ===
 
     async def get_collection_info(self, collection_name: str) -> dict[str, Any]:

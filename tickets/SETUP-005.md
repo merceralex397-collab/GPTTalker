@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/setup-005-implementation-implementation.md (implementation) - Implementation of SETUP-005: Created validation scaffold with Makefile, validation scripts (validate.py, run_tests.py, run_lint.py), test package organization (hub/node_agent/shared directories), extended conftest.py with fixtures, and docs/validation.md documentation.
 - review: .opencode/state/reviews/setup-005-review-review.md (review) - Code review for SETUP-005: Approved. Implementation matches the plan exactly - all validation commands wired, test package structure created with proper fixtures, Makefile targets functional, and documentation complete. All three acceptance criteria satisfied.
 - qa: .opencode/state/qa/setup-005-qa-qa.md (qa) - QA verification for SETUP-005: Test, lint, and local validation scaffold. All 3 acceptance criteria passed - validation commands wired, test package layout correct, ruff and pytest configured properly.
+- backlog-verification: .opencode/state/reviews/setup-005-review-backlog-verification.md (review) - Backlog verification for SETUP-005: PASS
 
 ## Notes
 

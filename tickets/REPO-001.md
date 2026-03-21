@@ -45,6 +45,7 @@ None
 - review: .opencode/state/reviews/repo-001-review-review.md (review) - Plan review for REPO-001: APPROVED. All 3 acceptance criteria verified - nodes list with health metadata, repo discovery from registry only, unauthorized targets excluded via policy. Integration points confirmed against existing codebase.
 - implementation: .opencode/state/implementations/repo-001-implementation-implementation.md (implementation) - Fixed REPO-001 implementation: Fixed non-functional handlers and added DI integration. Updated discovery.py handlers to use actual implementations, modified PolicyAwareToolRouter to inject repositories, and updated dependencies.py to provide repositories to the router.
 - qa: .opencode/state/qa/repo-001-qa-qa.md (qa) - QA verification for REPO-001: All 3 acceptance criteria verified - nodes list with health metadata, repo discovery from registry only, and unauthorized targets excluded via READ_NODE_REQUIREMENT policy.
+- backlog-verification: .opencode/state/reviews/repo-001-review-backlog-verification.md (review) - Backlog verification for REPO-001: PASS
 
 ## Notes
 

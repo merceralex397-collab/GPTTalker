@@ -209,6 +209,219 @@ async def list_generated_docs_impl(
     }
 
 
+async def list_known_issues_handler(
+    repo_id: str | None = None,
+    status: str | None = None,
+    limit: int = 50,
+    issue_repo: "IssueRepository | None" = None,
+) -> dict[str, Any]:
+    """List known issues with optional filtering.
+
+    This tool provides access to issue records for audit and tracking purposes.
+    Can filter by repo_id, status, or both.
+
+    Args:
+        repo_id: Optional repository ID to filter issues.
+        status: Optional issue status to filter by (open, in_progress, resolved, wontfix).
+        limit: Maximum number of issues to return (default 50).
+        issue_repo: IssueRepository injected by the router.
+
+    Returns:
+        Dictionary with list of issues.
+    """
+    if issue_repo is None:
+        return {"error": "IssueRepository not available"}
+
+    return await list_known_issues_impl(issue_repo, repo_id, status, limit)
+
+
+async def list_known_issues_impl(
+    issue_repo: "IssueRepository",
+    repo_id: str | None = None,
+    status: str | None = None,
+    limit: int = 50,
+) -> dict[str, Any]:
+    """Internal implementation for list_known_issues.
+
+    Args:
+        issue_repo: IssueRepository instance.
+        repo_id: Optional repository ID to filter issues.
+        status: Optional issue status to filter by.
+        limit: Maximum number of issues to return.
+
+    Returns:
+        Issues list response.
+    """
+    from src.shared.models import IssueStatus
+
+    start = int(time.time() * 1000)
+
+    # Apply filters
+    if repo_id and status:
+        issues = await issue_repo.list_by_repo(repo_id, limit)
+        issues = [i for i in issues if i.status.value == status]
+    elif repo_id:
+        issues = await issue_repo.list_by_repo(repo_id, limit)
+    elif status:
+        try:
+            issue_status = IssueStatus(status)
+            issues = await issue_repo.list_by_status(issue_status, limit)
+        except ValueError:
+            return {
+                "error": f"Invalid status: {status}. Valid values: open, in_progress, resolved, wontfix"
+            }
+    else:
+        issues = await issue_repo.list_all(limit)
+
+    duration = int(time.time() * 1000) - start
+
+    issues_data = []
+    for issue in issues:
+        issues_data.append(
+            {
+                "issue_id": str(issue.issue_id),
+                "repo_id": issue.repo_id,
+                "title": issue.title,
+                "description": issue.description,
+                "status": issue.status.value,
+                "created_at": issue.created_at.isoformat(),
+                "updated_at": issue.updated_at.isoformat() if issue.updated_at else None,
+                "metadata": issue.metadata,
+            }
+        )
+
+    logger.info(
+        "list_known_issues_executed",
+        total=len(issues_data),
+        repo_id=repo_id,
+        status=status,
+        duration_ms=duration,
+    )
+
+    return {
+        "issues": issues_data,
+        "total": len(issues_data),
+        "filters": {
+            "repo_id": repo_id,
+            "status": status,
+        },
+    }
+
+
+async def list_task_history_handler(
+    outcome: str | None = None,
+    tool_name: str | None = None,
+    hours: int | None = None,
+    limit: int = 100,
+    task_repo: "TaskRepository | None" = None,
+) -> dict[str, Any]:
+    """List task history with optional filtering.
+
+    This tool provides access to task history records for debugging
+    and audit purposes. Can filter by outcome, tool_name, and time window.
+
+    Args:
+        outcome: Optional task outcome to filter by (success, error).
+        tool_name: Optional tool name to filter by.
+        hours: Optional number of hours to look back (e.g., 24 for last 24 hours).
+        limit: Maximum number of records to return (default 100).
+        task_repo: TaskRepository injected by the router.
+
+    Returns:
+        Dictionary with list of task records.
+    """
+    if task_repo is None:
+        return {"error": "TaskRepository not available"}
+
+    return await list_task_history_impl(task_repo, outcome, tool_name, hours, limit)
+
+
+async def list_task_history_impl(
+    task_repo: "TaskRepository",
+    outcome: str | None = None,
+    tool_name: str | None = None,
+    hours: int | None = None,
+    limit: int = 100,
+) -> dict[str, Any]:
+    """Internal implementation for list_task_history.
+
+    Args:
+        task_repo: TaskRepository instance.
+        outcome: Optional task outcome to filter by.
+        tool_name: Optional tool name to filter by.
+        hours: Optional number of hours to look back.
+        limit: Maximum number of records to return.
+
+    Returns:
+        Task history list response.
+    """
+    from src.shared.models import TaskOutcome
+
+    start = int(time.time() * 1000)
+
+    # Apply filters
+    if outcome and tool_name:
+        # Get all for tool, then filter by outcome
+        tasks = await task_repo.list_by_tool(tool_name, limit)
+        try:
+            outcome_enum = TaskOutcome(outcome)
+            tasks = [t for t in tasks if t.outcome == outcome_enum]
+        except ValueError:
+            return {"error": f"Invalid outcome: {outcome}. Valid values: success, error"}
+    elif outcome:
+        try:
+            outcome_enum = TaskOutcome(outcome)
+            tasks = await task_repo.list_by_outcome(outcome_enum, limit)
+        except ValueError:
+            return {"error": f"Invalid outcome: {outcome}. Valid values: success, error"}
+    elif tool_name:
+        tasks = await task_repo.list_by_tool(tool_name, limit)
+    elif hours:
+        tasks = await task_repo.list_recent(hours, limit)
+    else:
+        tasks = await task_repo.list_all(limit)
+
+    duration = int(time.time() * 1000) - start
+
+    tasks_data = []
+    for task in tasks:
+        tasks_data.append(
+            {
+                "task_id": str(task.task_id),
+                "trace_id": task.trace_id,
+                "tool_name": task.tool_name,
+                "caller": task.caller,
+                "target_node": task.target_node,
+                "target_repo": task.target_repo,
+                "outcome": task.outcome.value,
+                "duration_ms": task.duration_ms,
+                "started_at": task.started_at.isoformat() if task.started_at else None,
+                "created_at": task.created_at.isoformat(),
+                "error": task.error,
+                "metadata": task.metadata,
+            }
+        )
+
+    logger.info(
+        "list_task_history_executed",
+        total=len(tasks_data),
+        outcome=outcome,
+        tool_name=tool_name,
+        hours=hours,
+        duration_ms=duration,
+    )
+
+    return {
+        "tasks": tasks_data,
+        "total": len(tasks_data),
+        "filters": {
+            "outcome": outcome,
+            "tool_name": tool_name,
+            "hours": hours,
+        },
+    }
+
+
 async def get_issue_timeline_handler(
     repo_id: str | None = None,
     issue_id: str | None = None,

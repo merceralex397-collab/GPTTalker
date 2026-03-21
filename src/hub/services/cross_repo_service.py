@@ -20,6 +20,7 @@ from src.shared.repositories.repos import RepoRepository
 
 if TYPE_CHECKING:
     from src.hub.policy.llm_service_policy import LLMServicePolicy
+    from src.shared.repositories.issues import IssueRepository
 
 logger = get_logger(__name__)
 
@@ -40,6 +41,7 @@ class CrossRepoService:
         repo_repo: RepoRepository,
         relationship_repo: "Any" = None,
         owner_repo: "Any" = None,
+        issue_repo: "IssueRepository | None" = None,
     ) -> None:
         """Initialize the cross-repo service.
 
@@ -50,6 +52,7 @@ class CrossRepoService:
             repo_repo: Repository for repo access validation.
             relationship_repo: Optional relationship repository for explicit relationships.
             owner_repo: Optional owner repository for owner metadata.
+            issue_repo: Optional issue repository for issue count queries.
         """
         self.qdrant_client = qdrant_client
         self.embedding_client = embedding_client
@@ -57,6 +60,7 @@ class CrossRepoService:
         self.repo_repo = repo_repo
         self.relationship_repo = relationship_repo
         self.owner_repo = owner_repo
+        self.issue_repo = issue_repo
 
     async def search_across_repos(
         self,
@@ -191,12 +195,35 @@ class CrossRepoService:
         for repo_id in search_repo_ids:
             repo = accessible_repo_map.get(repo_id)
             if repo:
+                # Get real file count from Qdrant
+                file_count = 0
+                try:
+                    file_count = await self.qdrant_client.count_files_by_repo(repo_id)
+                except Exception as e:
+                    logger.warning(
+                        "cross_repo_search_file_count_failed",
+                        repo_id=repo_id,
+                        error=str(e),
+                    )
+
+                # Get real issue count from IssueRepository
+                issue_count = 0
+                if self.issue_repo:
+                    try:
+                        issue_count = await self.issue_repo.count_by_repo(repo_id)
+                    except Exception as e:
+                        logger.warning(
+                            "cross_repo_search_issue_count_failed",
+                            repo_id=repo_id,
+                            error=str(e),
+                        )
+
                 repo_metadata.append(
                     RepoMetadata(
                         repo_id=repo.repo_id,
                         node_id=repo.node_id,
-                        file_count=0,  # Would need separate query to get counts
-                        issue_count=0,
+                        file_count=file_count,
+                        issue_count=issue_count,
                     )
                 )
 
@@ -379,24 +406,39 @@ class CrossRepoService:
         sources: list[LandscapeSource] = []
 
         for repo in repos:
-            # Get file count from Qdrant (simplified - just indicate accessible)
+            # Get real file count from Qdrant
             file_count = 0
             try:
-                # Scroll to check if repo has indexed files
-                await self.qdrant_client.scroll_files(
+                file_count = await self.qdrant_client.count_files_by_repo(repo.repo_id)
+            except Exception as e:
+                logger.warning(
+                    "get_project_landscape_file_count_failed",
                     repo_id=repo.repo_id,
-                    limit=1,
+                    error=str(e),
                 )
-                # If we get here, the repo is accessible
-                # Note: file_count would require a separate count query
-            except Exception:
-                pass
 
-            # Get issue count
+            # Get real issue count from IssueRepository
             issue_count = 0
+            if self.issue_repo:
+                try:
+                    issue_count = await self.issue_repo.count_by_repo(repo.repo_id)
+                except Exception as e:
+                    logger.warning(
+                        "get_project_landscape_issue_count_failed",
+                        repo_id=repo.repo_id,
+                        error=str(e),
+                    )
 
-            # Get languages from file search
+            # Get languages from Qdrant
             languages: list[str] = []
+            try:
+                languages = await self.qdrant_client.get_unique_languages(repo.repo_id)
+            except Exception as e:
+                logger.warning(
+                    "get_project_landscape_languages_failed",
+                    repo_id=repo.repo_id,
+                    error=str(e),
+                )
 
             # Get owner for this repo
             owner = owners_map.get(repo.repo_id)

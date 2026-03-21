@@ -38,9 +38,3 @@ def get_executor(app: FastAPI) -> OperationExecutor:
     if not hasattr(app.state, "executor") or app.state.executor is None:
         raise RuntimeError("Operation executor not initialized")
     return app.state.executor
-
-
-# Type alias for dependency functions that return config
-ConfigDep = Depends[NodeAgentConfig]
-# Type alias for dependency functions that return executor
-ExecutorDep = Depends[OperationExecutor]

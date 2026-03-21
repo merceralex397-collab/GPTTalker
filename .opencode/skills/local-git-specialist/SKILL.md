@@ -1,15 +1,21 @@
 ---
 name: local-git-specialist
-description: Apply GPTTalker’s local git hygiene rules for diff inspection, commit preparation, and safe non-destructive history use.
+description: Follow the repo's local-git-only workflow safely. Use when an OpenCode agent needs to inspect history, create local commits, or reason about diff state without assuming GitHub access.
 ---
 
 # Local Git Specialist
 
-Before using this guidance, call `skill_ping` with `skill_id: "local-git-specialist"` and `scope: "project"`.
+Before using local git workflow guidance, call `skill_ping` with `skill_id: "local-git-specialist"` and `scope: "project"`.
 
-## Rules
+Use this lane when:
 
-- local git only; do not assume remote push, PR creation, or merge automation
-- inspect `git status` and `git diff` before and after ticket work
-- never use destructive cleanup commands unless explicitly approved by the user
-- keep commits aligned with a single ticket when possible
+- checking local status or diff state
+- preparing a local commit
+- verifying what changed for the current ticket
+
+Rules:
+
+- treat git work as local read/write unless the repo explicitly enables more
+- do not assume GitHub APIs, PR automation, or remote pushes are available
+- keep commit scope aligned with the active ticket
+- use git state as supporting evidence, not as a substitute for ticket, workflow-state, or artifact updates

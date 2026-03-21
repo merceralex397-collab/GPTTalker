@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src.hub.config import get_hub_config
 from src.hub.lifespan import lifespan
-from src.hub.mcp import MCPProtocolHandler
 from src.hub.routes import router
 from src.hub.tool_router import get_global_registry
 from src.shared.logging import get_logger
@@ -63,31 +62,3 @@ async def register_tools():
     registry = get_global_registry()
     register_all_tools(registry)
     logger.info("tools_registered", tool_count=registry.tool_count)
-
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint for the hub service.
-
-    Returns basic health status including database connectivity.
-    """
-    # Get db health from dependency
-    db_health = {"status": "unknown", "connected": False}
-
-    # Try to get database state from app
-    if hasattr(app.state, "db_manager") and app.state.db_manager is not None:
-        try:
-            await app.state.db_manager.connection.execute("SELECT 1")
-            db_health = {"status": "healthy", "connected": True}
-        except Exception as e:
-            db_health = {"status": "unhealthy", "connected": False, "error": str(e)}
-
-    return {
-        "status": "healthy",
-        "service": "gpttalker-hub",
-        "database": db_health,
-    }
-
-
-# Initialize MCP handler (will be used by routes)
-mcp_handler = MCPProtocolHandler()

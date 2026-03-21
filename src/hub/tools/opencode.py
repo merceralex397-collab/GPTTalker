@@ -396,25 +396,25 @@ async def chat_opencode_with_distributed_scheduler(
         )
 
         # Try fallback chain if enabled
-        if scheduler_input.allow_fallback and schedule_result := getattr(
-            distributed_scheduler, "_last_result", None
-        ):
-            return await _opencode_try_fallback_chain(
-                fallback_chain=schedule_result.fallback_chain,
-                prompt=prompt,
-                session_id=session_id,
-                working_dir=working_dir,
-                system_prompt=system_prompt,
-                max_tokens=max_tokens,
-                temperature=temperature,
-                include_history=include_history,
-                opencode_adapter=opencode_adapter,
-                start_time=start_time,
-                task_class=scheduler_input.task_class,
-                attempted_services=attempted_services,
-                attempted_nodes=attempted_nodes,
-                errors=errors,
-            )
+        if scheduler_input.allow_fallback:
+            schedule_result = getattr(distributed_scheduler, "_last_result", None)
+            if schedule_result:
+                return await _opencode_try_fallback_chain(
+                    fallback_chain=schedule_result.fallback_chain,
+                    prompt=prompt,
+                    session_id=session_id,
+                    working_dir=working_dir,
+                    system_prompt=system_prompt,
+                    max_tokens=max_tokens,
+                    temperature=temperature,
+                    include_history=include_history,
+                    opencode_adapter=opencode_adapter,
+                    start_time=start_time,
+                    task_class=scheduler_input.task_class,
+                    attempted_services=attempted_services,
+                    attempted_nodes=attempted_nodes,
+                    errors=errors,
+                )
 
         return {
             "success": False,

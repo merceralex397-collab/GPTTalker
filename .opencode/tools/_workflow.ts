@@ -44,11 +44,16 @@ export type WorkflowState = {
   stage: string
   status: string
   approved_plan: boolean
+  ticket_state: Record<string, TicketWorkflowState>
   process_version: number
   process_last_changed_at: string | null
   process_last_change_summary: string | null
   pending_process_verification: boolean
   parallel_mode: ParallelMode
+}
+
+export type TicketWorkflowState = {
+  approved_plan: boolean
 }
 
 export type ArtifactRegistry = {
@@ -80,6 +85,7 @@ export const COARSE_STATUSES = new Set([
   "blocked",
   "review",
   "qa",
+  "smoke_test",
   "done",
 ])
 
@@ -89,6 +95,15 @@ export const START_HERE_MANAGED_START = "<!-- SCAFFORGE:START_HERE_BLOCK START -
 export const START_HERE_MANAGED_END = "<!-- SCAFFORGE:START_HERE_BLOCK END -->"
 export const DEFAULT_OVERLAP_RISK: OverlapRisk = "high"
 export const DEFAULT_PARALLEL_MODE: ParallelMode = "parallel-lanes"
+export const MIN_EXECUTION_ARTIFACT_BYTES = 200
+
+const EXECUTION_EVIDENCE_PATTERNS = [
+  /```(?:bash|sh|shell|console|text)?[\s\S]*?(?:npm|pnpm|yarn|bun|pytest|cargo|go test|go vet|python(?:3)? -m|node(?:\s|$)|tsc(?:\s|$)|make(?:\s|$)|exit code|passed|failed)/i,
+  /(?:^|\n)(?:\$ |>|command: ).*(?:npm|pnpm|yarn|bun|pytest|cargo|go test|go vet|python(?:3)? -m|node|tsc|make)/i,
+  /\b(?:exit[_ -]?code|pass(?:ed)?|fail(?:ed)?|ok)\b/i,
+]
+
+const INSPECTION_ONLY_PATTERNS = [/code inspection/i, /inspection only/i]
 
 const TICKET_DEFAULTS = {
   wave: 0,
@@ -166,6 +181,7 @@ export function artifactStageDirectory(stage: string): string {
   if (bucket === "planning") return ".opencode/state/plans"
   if (bucket === "implementation") return ".opencode/state/implementations"
   if (bucket === "qa") return ".opencode/state/qa"
+  if (bucket === "smoke-test") return ".opencode/state/smoke-tests"
   if (bucket === "handoff") return ".opencode/state/handoffs"
   if (bucket === "review" || LEGACY_REVIEW_STAGES.has(stage)) return ".opencode/state/reviews"
   return ".opencode/state/artifacts"
@@ -272,6 +288,31 @@ function normalizeParallelMode(value: unknown): ParallelMode {
   return value === "parallel-lanes" || value === "sequential" ? value : DEFAULT_PARALLEL_MODE
 }
 
+function normalizeTicketWorkflowState(value: unknown): TicketWorkflowState {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return { approved_plan: false }
+  }
+  const state = value as Record<string, unknown>
+  return {
+    approved_plan: typeof state.approved_plan === "boolean" ? state.approved_plan : false,
+  }
+}
+
+function normalizeTicketStateMap(value: unknown): Record<string, TicketWorkflowState> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return {}
+  }
+  const map = value as Record<string, unknown>
+  const normalized: Record<string, TicketWorkflowState> = {}
+  for (const [ticketId, rawState] of Object.entries(map)) {
+    if (!isValidTicketId(ticketId)) {
+      continue
+    }
+    normalized[ticketId] = normalizeTicketWorkflowState(rawState)
+  }
+  return normalized
+}
+
 function normalizeArtifact(value: unknown, index: number): Artifact {
   const artifact = expectObject(value, `ticket.artifacts[${index}]`)
   const kind = expectNonEmptyString(artifact, "kind", `ticket.artifacts[${index}]`)
@@ -374,9 +415,10 @@ export async function loadWorkflowState(root = rootPath()): Promise<WorkflowStat
   const fallback: WorkflowState = {
     active_ticket: "UNKNOWN",
     stage: "planning",
-    status: "ready",
+    status: "todo",
     approved_plan: false,
-    process_version: 2,
+    ticket_state: {},
+    process_version: 4,
     process_last_changed_at: null,
     process_last_change_summary: null,
     pending_process_verification: false,
@@ -388,13 +430,20 @@ export async function loadWorkflowState(root = rootPath()): Promise<WorkflowStat
   }
 
   const state = loaded as Record<string, unknown>
+  const activeTicket = typeof state.active_ticket === "string" && state.active_ticket.trim() ? state.active_ticket.trim() : fallback.active_ticket
+  const ticketState = normalizeTicketStateMap(state.ticket_state)
+  const legacyApprovedPlan = typeof state.approved_plan === "boolean" ? state.approved_plan : fallback.approved_plan
+  if (isValidTicketId(activeTicket) && !ticketState[activeTicket]) {
+    ticketState[activeTicket] = { approved_plan: legacyApprovedPlan }
+  }
   const hasProcessVersion = typeof state.process_version === "number" && Number.isInteger(state.process_version) && state.process_version > 0
   const processLastChangeSummary = normalizeNullableString(state.process_last_change_summary)
   return {
-    active_ticket: typeof state.active_ticket === "string" && state.active_ticket.trim() ? state.active_ticket.trim() : fallback.active_ticket,
+    active_ticket: activeTicket,
     stage: typeof state.stage === "string" && state.stage.trim() ? state.stage.trim() : fallback.stage,
     status: typeof state.status === "string" && state.status.trim() ? state.status.trim() : fallback.status,
-    approved_plan: typeof state.approved_plan === "boolean" ? state.approved_plan : fallback.approved_plan,
+    approved_plan: ticketState[activeTicket]?.approved_plan ?? legacyApprovedPlan,
+    ticket_state: ticketState,
     process_version:
       hasProcessVersion ? (state.process_version as number) : fallback.process_version,
     process_last_changed_at: normalizeNullableString(state.process_last_changed_at),
@@ -419,6 +468,25 @@ export function getTicket(manifest: Manifest, ticketId?: string): Ticket {
     throw new Error(`Ticket not found: ${resolvedId}`)
   }
   return ticket
+}
+
+export function isPlanApprovedForTicket(workflow: WorkflowState, ticketId: string): boolean {
+  return workflow.ticket_state[ticketId]?.approved_plan ?? false
+}
+
+export function setPlanApprovedForTicket(workflow: WorkflowState, ticketId: string, approved: boolean): void {
+  workflow.ticket_state[ticketId] = { approved_plan: approved }
+}
+
+export function syncWorkflowSelection(workflow: WorkflowState, manifest: Manifest): void {
+  const activeTicket = getTicket(manifest, manifest.active_ticket)
+  if (!workflow.ticket_state[activeTicket.id]) {
+    workflow.ticket_state[activeTicket.id] = { approved_plan: false }
+  }
+  workflow.active_ticket = activeTicket.id
+  workflow.stage = activeTicket.stage
+  workflow.status = activeTicket.status
+  workflow.approved_plan = isPlanApprovedForTicket(workflow, activeTicket.id)
 }
 
 export function latestArtifact(ticket: Ticket, options: { kind?: string; stage?: string }): Artifact | undefined {
@@ -447,14 +515,81 @@ export function hasReviewArtifact(ticket: Ticket): boolean {
   return latestReviewArtifact(ticket) !== undefined
 }
 
+export async function readArtifactContent(artifact: Artifact | undefined, root = rootPath()): Promise<string> {
+  if (!artifact) {
+    return ""
+  }
+  return readText(join(root, normalizeRepoPath(artifact.path)))
+}
+
+function artifactByteLength(content: string): number {
+  return Buffer.byteLength(content, "utf8")
+}
+
+function hasExecutionEvidence(content: string): boolean {
+  return EXECUTION_EVIDENCE_PATTERNS.some((pattern) => pattern.test(content))
+}
+
+function claimsInspectionOnly(content: string): boolean {
+  return INSPECTION_ONLY_PATTERNS.some((pattern) => pattern.test(content))
+}
+
+export async function validateImplementationArtifactEvidence(ticket: Ticket, root = rootPath()): Promise<string | null> {
+  const artifact = latestArtifact(ticket, { stage: "implementation" })
+  if (!artifact) {
+    return "Cannot move to review before an implementation artifact exists."
+  }
+  const content = await readArtifactContent(artifact, root)
+  if (!hasExecutionEvidence(content)) {
+    return "Implementation artifact must include compile, syntax, or import-check command output before review."
+  }
+  return null
+}
+
+export async function validateQaArtifactEvidence(ticket: Ticket, root = rootPath()): Promise<string | null> {
+  const artifact = latestArtifact(ticket, { stage: "qa" })
+  if (!artifact) {
+    return "Cannot move to smoke_test before a QA artifact exists."
+  }
+  const content = await readArtifactContent(artifact, root)
+  if (artifactByteLength(content) < MIN_EXECUTION_ARTIFACT_BYTES) {
+    return `QA artifact must be at least ${MIN_EXECUTION_ARTIFACT_BYTES} bytes before the smoke-test stage.`
+  }
+  if (claimsInspectionOnly(content) && !hasExecutionEvidence(content)) {
+    return "QA artifact that claims validation only via code inspection is insufficient."
+  }
+  if (!hasExecutionEvidence(content)) {
+    return "QA artifact must include raw command output before the smoke-test stage."
+  }
+  return null
+}
+
+export async function validateSmokeTestArtifactEvidence(ticket: Ticket, root = rootPath()): Promise<string | null> {
+  const artifact = latestArtifact(ticket, { stage: "smoke-test" })
+  if (!artifact) {
+    return "Cannot move to done before a smoke-test artifact exists."
+  }
+  const content = await readArtifactContent(artifact, root)
+  if (artifactByteLength(content) < MIN_EXECUTION_ARTIFACT_BYTES) {
+    return `Smoke-test artifact must be at least ${MIN_EXECUTION_ARTIFACT_BYTES} bytes before closeout.`
+  }
+  if (!hasExecutionEvidence(content)) {
+    return "Smoke-test artifact must include raw command output before closeout."
+  }
+  if (!/^Overall Result:\s*PASS$/m.test(content)) {
+    return "Smoke-test artifact must record an explicit PASS result before closeout."
+  }
+  return null
+}
+
 export function ticketNeedsProcessVerification(ticket: Ticket, workflow: WorkflowState): boolean {
   if (ticket.status !== "done") {
     return false
   }
 
   const processChangedAt = workflow.process_last_changed_at
-  const latestQaArtifact = latestArtifact(ticket, { stage: "qa" })
-  if (processChangedAt && latestQaArtifact && latestQaArtifact.created_at >= processChangedAt) {
+  const latestExecutionArtifact = latestArtifact(ticket, { stage: "smoke-test" }) || latestArtifact(ticket, { stage: "qa" })
+  if (processChangedAt && latestExecutionArtifact && latestExecutionArtifact.created_at >= processChangedAt) {
     return false
   }
 
@@ -549,7 +684,7 @@ export function renderContextSnapshot(manifest: Manifest, workflow: WorkflowStat
 
   const noteBlock = note ? `\n## Note\n\n${note}\n` : ""
 
-  return `# Context Snapshot\n\n## Project\n\n${manifest.project}\n\n## Active Ticket\n\n- ID: ${ticket.id}\n- Title: ${ticket.title}\n- Stage: ${ticket.stage}\n- Status: ${ticket.status}\n- Approved plan: ${workflow.approved_plan ? "yes" : "no"}\n\n## Process State\n\n- process_version: ${workflow.process_version}\n- pending_process_verification: ${workflow.pending_process_verification ? "true" : "false"}\n- parallel_mode: ${workflow.parallel_mode}\n- process_changed_at: ${workflow.process_last_changed_at || "Not yet recorded."}\n- process_note: ${workflow.process_last_change_summary || "No recorded process change summary."}\n\n## Ticket Summary\n\n${ticket.summary}\n\n## Recent Artifacts\n\n${artifactLines}${noteBlock}\n## Next Useful Step\n\nUse the team leader or the next required specialist for the current stage.\n`
+  return `# Context Snapshot\n\n## Project\n\n${manifest.project}\n\n## Active Ticket\n\n- ID: ${ticket.id}\n- Title: ${ticket.title}\n- Stage: ${ticket.stage}\n- Status: ${ticket.status}\n- Approved plan for this ticket: ${workflow.approved_plan ? "yes" : "no"}\n\n## Process State\n\n- process_version: ${workflow.process_version}\n- pending_process_verification: ${workflow.pending_process_verification ? "true" : "false"}\n- parallel_mode: ${workflow.parallel_mode}\n- process_changed_at: ${workflow.process_last_changed_at || "Not yet recorded."}\n- process_note: ${workflow.process_last_change_summary || "No recorded process change summary."}\n\n## Ticket Summary\n\n${ticket.summary}\n\n## Recent Artifacts\n\n${artifactLines}${noteBlock}\n## Next Useful Step\n\nUse the team leader or the next required specialist for the current stage.\n`
 }
 
 export function renderStartHere(manifest: Manifest, workflow: WorkflowState, options: StartHereOptions = {}): string {

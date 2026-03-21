@@ -5,10 +5,10 @@ These endpoints provide bounded file operations:
 - read_file: Reads file contents with offset/limit support
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from src.node_agent.dependencies import ExecutorDep
+from src.node_agent.dependencies import get_executor
 from src.node_agent.executor import OperationExecutor
 from src.shared.logging import get_logger
 
@@ -58,6 +58,7 @@ class WriteFileRequest(BaseModel):
 
     path: str
     content: str
+    mode: str = "create_or_overwrite"
 
 
 class OperationResponse(BaseModel):
@@ -71,7 +72,7 @@ class OperationResponse(BaseModel):
 @router.post("/operations/list-dir", response_model=OperationResponse)
 async def list_dir(
     request: ListDirRequest,
-    executor: OperationExecutor = ExecutorDep,
+    executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """List directory contents with metadata.
 
@@ -133,7 +134,7 @@ async def list_dir(
 @router.post("/operations/read-file", response_model=OperationResponse)
 async def read_file(
     request: ReadFileRequest,
-    executor: OperationExecutor = ExecutorDep,
+    executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Read file contents with offset and limit support.
 
@@ -190,7 +191,7 @@ async def read_file(
 @router.post("/operations/search", response_model=OperationResponse)
 async def search(
     request: SearchRequest,
-    executor: OperationExecutor = ExecutorDep,
+    executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Search for pattern in files.
 
@@ -211,12 +212,17 @@ async def search(
         elif timeout > 120:
             timeout = 120
 
+        # Validate mode
+        valid_modes = ["text", "path", "symbol"]
+        mode = request.mode if request.mode in valid_modes else "text"
+
         result = await executor.search_files(
             directory=request.directory,
             pattern=request.pattern,
             include_patterns=request.include_patterns,
             max_results=max_results,
             timeout=timeout,
+            mode=mode,
         )
 
         match_count = result.get("match_count", 0)
@@ -225,6 +231,7 @@ async def search(
             "search_success",
             directory=request.directory,
             pattern=request.pattern,
+            mode=mode,
             match_count=match_count,
             files_searched=result.get("files_searched", 0),
         )
@@ -260,7 +267,7 @@ async def search(
 @router.post("/operations/git-status", response_model=OperationResponse)
 async def git_status(
     request: GitStatusRequest,
-    executor: OperationExecutor = ExecutorDep,
+    executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Get git status for a repository.
 
@@ -318,7 +325,7 @@ async def git_status(
 @router.post("/operations/write-file", response_model=OperationResponse)
 async def write_file(
     request: WriteFileRequest,
-    executor: OperationExecutor = ExecutorDep,
+    executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Write content to a file with atomic write and verification.
 
@@ -336,19 +343,27 @@ async def write_file(
     - verified: Whether verification passed
     """
     try:
-        result = await executor.write_file(request.path, request.content)
+        result = await executor.write_file(request.path, request.content, request.mode)
 
         logger.info(
             "write_file_success",
             path=request.path,
             bytes_written=result.get("bytes_written", 0),
             sha256_hash=result.get("sha256_hash", ""),
+            created=result.get("created", False),
         )
 
         return OperationResponse(
             success=True,
             message=f"Wrote {result.get('bytes_written', 0)} bytes with SHA256 verification",
             data=result,
+        )
+    except FileExistsError as e:
+        logger.warning("write_file_already_exists", path=request.path, error=str(e))
+        return OperationResponse(
+            success=False,
+            message=str(e),
+            data=None,
         )
     except PermissionError as e:
         logger.warning("write_file_permission_denied", path=request.path, error=str(e))

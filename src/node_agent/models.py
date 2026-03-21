@@ -47,6 +47,9 @@ class SearchRequest(BaseModel):
     include_patterns: list[str] | None = Field(
         None, description="File patterns to include (e.g., ['*.py', '*.md'])"
     )
+    mode: str = Field("text", description="Search mode: text, path, or symbol")
+    max_results: int = Field(1000, ge=1, le=1000, description="Maximum matches to return")
+    timeout: int = Field(60, ge=1, le=120, description="Search timeout in seconds")
 
 
 class GitStatusRequest(OperationRequest):

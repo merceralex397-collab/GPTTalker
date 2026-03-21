@@ -1,22 +1,15 @@
 ---
 name: docs-and-handoff
-description: Keep GPTTalker’s README, process docs, ticket views, and START-HERE surface aligned with canonical state.
+description: Maintain START-HERE, context snapshots, and closeout artifacts for this repo. Use when a ticket changes state, a session is ending, or autonomous work needs a concise human and agent resume surface.
 ---
 
-# Docs and Handoff
+# Docs And Handoff
 
-Before using this guidance, call `skill_ping` with `skill_id: "docs-and-handoff"` and `scope: "project"`.
+Before refreshing handoff artifacts, call `skill_ping` with `skill_id: "docs-and-handoff"` and `scope: "project"`.
 
-## Primary surfaces
+Keep these artifacts fresh:
 
-- `README.md` for project overview and honest repo state
-- `docs/process/` for workflow, tooling, models, and agent catalog
-- `tickets/BOARD.md` as the derived human view
-- `START-HERE.md` as the restart surface
-
-## Rules
-
-- regenerate derived views from canonical state instead of hand-waving their contents
-- keep `START-HERE.md` concise and specific
-- preserve `mcp_spec_pack/` exactly as reference material
-- when the repo state changes materially, update handoff and provenance together
+- `START-HERE.md`
+- `.opencode/state/context-snapshot.md`
+- `tickets/BOARD.md`
+- `tickets/manifest.json`

@@ -77,10 +77,19 @@ class HubConfig(BaseSettings):
     cloudflare_tunnel_enabled: bool = Field(
         False, description="Enable Cloudflare Tunnel integration"
     )
+    cloudflare_tunnel_health_check_interval: int = Field(
+        30, ge=5, description="Health check interval in seconds"
+    )
+    cloudflare_tunnel_restart_delay: int = Field(
+        5, ge=1, description="Delay in seconds before restarting tunnel after failure"
+    )
+    cloudflare_tunnel_max_restarts: int = Field(
+        5, ge=0, description="Maximum number of restart attempts before giving up"
+    )
 
     model_config = SettingsConfigDict(
         env_prefix="GPTTALKER_",
-        extra="allow",
+        extra="ignore",
         case_sensitive=False,
     )
 
@@ -123,6 +132,24 @@ class HubConfig(BaseSettings):
         if format_lower not in valid_formats:
             raise ValueError(f"log_format must be one of {valid_formats}, got {v}")
         return format_lower
+
+    @property
+    def database_path(self) -> str:
+        """Derive database file path from database_url.
+
+        For SQLite URLs (sqlite://... or sqlite+aiosqlite://...), extracts
+        the file path. For other databases, returns the full URL.
+
+        Returns:
+            Database file path or full URL.
+        """
+        url = self.database_url
+        # Handle sqlite and sqlite+aiosqlite prefixes
+        for prefix in ("sqlite+aiosqlite:///", "sqlite:///"):
+            if url.startswith(prefix):
+                return url[len(prefix) :]
+        # For non-SQLite databases, return the URL as-is
+        return url
 
 
 def get_hub_config() -> HubConfig:

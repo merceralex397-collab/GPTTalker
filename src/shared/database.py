@@ -37,6 +37,9 @@ class DatabaseManager:
 
         self._connection = await aiosqlite.connect(self._db_path)
         self._connection.row_factory = aiosqlite.Row
+        # Set isolation_level to '' (empty string) to disable autocommit
+        # This requires explicit BEGIN/COMMIT/ROLLBACK for transactions
+        self._connection.isolation_level = ""
 
         logger.info("database_initialized", db_path=str(self._db_path))
 
@@ -66,23 +69,24 @@ class DatabaseManager:
         """Context manager for database transactions.
 
         Yields:
-            A cursor that can be used to execute queries within a transaction.
+            A connection that can be used to execute queries within a transaction.
 
         Example:
-            async with db.transaction() as cursor:
-                await cursor.execute("INSERT INTO ...", ...)
-                await cursor.execute("UPDATE ...", ...)
+            async with db.transaction() as conn:
+                await conn.execute("INSERT INTO ...", ...)
+                await conn.execute("UPDATE ...", ...)
         """
-        async with self.connection.execute("BEGIN") as cursor:
-            try:
-                yield cursor
-                await cursor.execute("COMMIT")
-            except Exception:
-                await cursor.execute("ROLLBACK")
-                raise
+        # Begin explicit transaction
+        await self.connection.execute("BEGIN")
+        try:
+            yield self.connection
+            await self.connection.execute("COMMIT")
+        except Exception:
+            await self.connection.execute("ROLLBACK")
+            raise
 
     async def execute(self, query: str, parameters: tuple = ()) -> aiosqlite.Cursor:
-        """Execute a query and return cursor.
+        """Execute a query, commit, and return cursor.
 
         Args:
             query: SQL query string.
@@ -91,10 +95,12 @@ class DatabaseManager:
         Returns:
             Cursor object with query results.
         """
-        return await self.connection.execute(query, parameters)
+        cursor = await self.connection.execute(query, parameters)
+        await self.connection.commit()
+        return cursor
 
     async def executemany(self, query: str, parameters: list) -> aiosqlite.Cursor:
-        """Execute a query with multiple parameter sets.
+        """Execute a query with multiple parameter sets, commit, and return cursor.
 
         Args:
             query: SQL query string.
@@ -103,7 +109,9 @@ class DatabaseManager:
         Returns:
             Cursor object with query results.
         """
-        return await self.connection.executemany(query, parameters)
+        cursor = await self.connection.executemany(query, parameters)
+        await self.connection.commit()
+        return cursor
 
     async def fetchone(self, query: str, parameters: tuple = ()) -> aiosqlite.Row | None:
         """Execute query and fetch one result.

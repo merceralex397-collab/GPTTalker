@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/core-003-implementation-implementation.md (implementation) - Implementation of CORE-003: Created node agent service skeleton with FastAPI app, health endpoint, lifecycle management, DI providers, and operation stubs. All 6 new files and 2 modified files completed.
 - review: .opencode/state/reviews/core-003-review-review.md (review) - Code review for CORE-003: APPROVED FOR QA. Implementation matches plan, all 3 acceptance criteria satisfied. Medium issue: incorrect dependency injection type aliases. Low issues: duplicate HealthResponse model, redundant path field in WriteFileRequest. No blockers - can advance to QA.
 - qa: .opencode/state/qa/core-003-qa-qa.md (qa) - QA verification for CORE-003: Node agent service skeleton. All 3 acceptance criteria verified via code inspection - package shape defined (10 files), health endpoint contract explicit, executor boundary separate from hub. Runtime validation skipped due to bash restriction.
+- backlog-verification: .opencode/state/reviews/core-003-review-backlog-verification.md (review) - Backlog verification for CORE-003: PASS
 
 ## Notes
 

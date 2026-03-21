@@ -11,11 +11,11 @@ The repo is operating with a ticketed OpenCode workflow.
 
 ## Process Contract
 
-- process_version: 2
+- process_version: 4
 - parallel_mode: parallel-lanes
 - pending_process_verification: false
-- process_changed_at: 2026-03-16T10:59:52.052Z
-- process_note: Full retrofit rewrite from updated Scafforge templates using mcp_spec_pack as the preserved reference source.
+- process_changed_at: 2026-03-20T15:39:45Z
+- process_note: Deterministic managed-surface replacement approved by user after clean audit to refresh scaffold-managed repo structure.
 - process_state: No pending process-change verification.
 
 ## Read In This Order
@@ -29,10 +29,10 @@ The repo is operating with a ticketed OpenCode workflow.
 
 ## Current Ticket
 
-- ID: EDGE-002
-- Title: Node registration bootstrap and operator config docs
-- Wave: 5
-- Lane: edge
+- ID: FIX-015
+- Title: Fix Task UUID handling and CLI entrypoint packaging
+- Wave: 8
+- Lane: hardening
 - Stage: closeout
 - Status: done
 - Parallel safe: yes
@@ -47,5 +47,5 @@ Update this section with project-specific validation results.
 
 ## Next Action
 
-Continue with remaining tickets: POLISH-001, POLISH-002, POLISH-003
+All tickets completed - GPTTalker wave 8 fully implemented
 <!-- SCAFFORGE:START_HERE_BLOCK END -->

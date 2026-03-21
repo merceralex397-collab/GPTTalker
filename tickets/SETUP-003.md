@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/setup-003-implementation-implementation.md (implementation) - Implementation of SETUP-003: Created async SQLite persistence layer with aiosqlite, 7 runtime tables (nodes, repos, write_targets, llm_services, tasks, issues, schema_version), migration system with version tracking, and CRUD repository classes for each table. All validation tests passed.
 - review: .opencode/state/reviews/setup-003-review-review.md (review) - Code review for SETUP-003: Approved. Implementation matches plan, code quality is high with complete type hints and docstrings, table schemas correct with proper foreign keys and indexes, migration system is explicit and reusable, all 6 repository classes implemented with full CRUD. Minor observations noted: transaction() pattern and missing async context manager protocol - both are enhancement opportunities, not blockers.
 - qa: .opencode/state/qa/setup-003-qa-qa.md (qa) - QA verification for SETUP-003: All 3 acceptance criteria verified - aiosqlite usage, 7 runtime tables defined, migration system is explicit and reusable.
+- backlog-verification: .opencode/state/reviews/setup-003-review-backlog-verification.md (review) - Backlog verification for SETUP-003: PASS
 
 ## Notes
 

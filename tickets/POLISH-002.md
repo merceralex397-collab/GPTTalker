@@ -44,6 +44,7 @@ None
 - plan: .opencode/state/plans/polish-002-planning-plan.md (planning) - Planning for POLISH-002: Security regression tests and redaction hardening. Defines path traversal tests, target validation, redaction tests, and fail-closed behavior tests.
 - implementation: .opencode/state/implementations/polish-002-implementation-implementation.md (implementation) - Implementation of POLISH-002: Created tests/hub/test_security.py with 23+ security regression tests covering path traversal, target validation, redaction, and fail-closed behavior.
 - qa: .opencode/state/qa/polish-002-qa-qa.md (qa) - QA verification for POLISH-002: Security regression tests and redaction hardening. All 3 acceptance criteria verified.
+- backlog-verification: .opencode/state/reviews/polish-002-review-backlog-verification.md (review) - Backlog verification for POLISH-002: PASS
 
 ## Notes
 

@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/xrepo-003-implementation-implementation.md (implementation) - Implementation of XREPO-003: Architecture map and project landscape outputs. Created ArchitectureService, MCP tool handlers, registered tools, added DI provider, and integrated with PolicyAwareToolRouter. All acceptance criteria verified.
 - review: .opencode/state/reviews/xrepo-003-review-review.md (review) - Code review for XREPO-003: Architecture map and project landscape outputs. APPROVED - all acceptance criteria met.
 - qa: .opencode/state/qa/xrepo-003-qa-qa.md (qa) - QA verification for XREPO-003: Architecture map and project landscape outputs. All 3 acceptance criteria verified via code inspection - architecture map output shape defined, landscape views cite source repos, output bounded to approved repos.
+- backlog-verification: .opencode/state/reviews/xrepo-003-review-backlog-verification.md (review) - Backlog verification for XREPO-003: PASS
 
 ## Notes
 

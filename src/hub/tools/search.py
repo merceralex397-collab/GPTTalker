@@ -24,6 +24,7 @@ async def search_repo_handler(
     include_patterns: list[str] | None = None,
     max_results: int = 1000,
     timeout: int = 60,
+    mode: str = "text",
     node_client: "HubNodeClient | None" = None,
     node_repo: "NodeRepository | None" = None,
     repo_repo: "RepoRepository | None" = None,
@@ -45,6 +46,7 @@ async def search_repo_handler(
         include_patterns: File patterns to include (e.g., ["*.py", "*.md"]).
         max_results: Maximum matches to return (default: 1000).
         timeout: Search timeout in seconds (default: 60).
+        mode: Search mode - "text" for content, "path" for filenames, "symbol" for identifiers (default: text).
         node_client: HubNodeClient for node communication.
         node_repo: NodeRepository for node lookup.
         repo_repo: RepoRepository for repo lookup.
@@ -57,6 +59,11 @@ async def search_repo_handler(
     # Validate inputs
     if not pattern:
         return {"success": False, "error": "Search pattern is required"}
+
+    # Validate mode parameter
+    valid_modes = ["text", "path", "symbol"]
+    if mode not in valid_modes:
+        return {"success": False, "error": f"Invalid mode: {mode}. Must be one of: {valid_modes}"}
 
     if max_results > 1000:
         max_results = 1000
@@ -134,6 +141,7 @@ async def search_repo_handler(
             include_patterns=include_patterns,
             max_results=max_results,
             timeout=timeout,
+            mode=mode,
         )
     except Exception as e:
         logger.error(
@@ -168,6 +176,7 @@ async def search_repo_handler(
             "node_id": node_id,
             "path": path or "",
             "pattern": pattern,
+            "mode": mode,
             "matches": matches,
             "match_count": match_count,
             "files_searched": files_searched,

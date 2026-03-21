@@ -1,21 +1,21 @@
 ---
 name: research-delegation
-description: Gather GPTTalker evidence through read-only utility agents and preserve findings without mutating repo-tracked files.
+description: Use read-only delegation and persistent artifacts for research-heavy work. Use when an OpenCode agent needs background investigation, reference gathering, or comparative analysis without mutating the repo.
 ---
 
 # Research Delegation
 
-Before using this guidance, call `skill_ping` with `skill_id: "research-delegation"` and `scope: "project"`.
+Before delegating, call `skill_ping` with `skill_id: "research-delegation"` and `scope: "project"`.
 
-## Preferred lanes
+Use this lane when:
 
-- `utility-explore` for repo evidence gathering
-- `utility-web-research` for external docs
-- `utility-github-research` for GitHub references and prior art
-- `utility-summarize` for large-output compression
+- the task is exploratory or comparative
+- the result should survive compaction
+- the delegate does not need to mutate repo files
 
-## Rules
+Rules:
 
-- keep delegated work read-only unless the stage explicitly writes an artifact
-- cite `mcp_spec_pack/` when the research output relies on preserved source material
-- persist durable findings as artifacts, not ad hoc ticket edits
+- keep delegated research read-only
+- persist useful findings into canonical artifacts or context snapshots before relying on them later
+- convert unresolved research outcomes into blockers or follow-up tickets instead of pretending they are settled facts
+- do not use research delegation as a loophole for write-capable background implementation

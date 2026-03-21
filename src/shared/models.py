@@ -135,7 +135,7 @@ class LLMServiceInfo(BaseModel):
 class TaskRecord(BaseModel):
     """Record of a completed task."""
 
-    task_id: UUID = Field(..., description="Unique task identifier")
+    task_id: UUID | str = Field(..., description="Unique task identifier (UUID or string)")
     trace_id: str | None = Field(None, description="Trace ID for request tracking")
     tool_name: str = Field(..., description="Name of tool that was called")
     caller: str = Field(..., description="Caller identifier")

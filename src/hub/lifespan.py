@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from src.hub.config import get_hub_config
 from src.hub.services.embedding_client import EmbeddingServiceClient
 from src.hub.services.qdrant_client import create_qdrant_client, get_qdrant_client
+from src.hub.services.tunnel_manager import TunnelManager
 from src.shared.database import initialize_database
 from src.shared.logging import get_logger, setup_logging
 
@@ -96,12 +97,39 @@ async def lifespan(app: FastAPI):
 
     logger.info("hub_ready", db_path=config.database_url)
 
+    # Step 7: Initialize Cloudflare Tunnel manager
+    # Initialize to None first to ensure attribute exists for shutdown check
+    app.state.tunnel_manager: TunnelManager | None = None
+
+    tunnel_manager = TunnelManager(config)
+    app.state.tunnel_manager = tunnel_manager
+
+    # Start tunnel if enabled
+    tunnel_started = await tunnel_manager.start()
+    if tunnel_started:
+        logger.info(
+            "cloudflare_tunnel_integration_ready",
+            enabled=config.cloudflare_tunnel_enabled,
+            external=tunnel_manager._is_external
+            if hasattr(tunnel_manager, "_is_external")
+            else False,
+        )
+    else:
+        logger.info(
+            "cloudflare_tunnel_not_started",
+            reason="disabled" if not config.cloudflare_tunnel_enabled else "no_token",
+        )
+
     # Yield control to the application
     yield
 
     # --- Shutdown phase ---
 
     logger.info("hub_shutting_down")
+
+    # Stop tunnel manager (graceful shutdown)
+    if app.state.tunnel_manager is not None:
+        await app.state.tunnel_manager.stop()
 
     # Close Qdrant client
     if app.state.qdrant_client is not None:

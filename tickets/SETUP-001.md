@@ -45,6 +45,7 @@ None
 - implementation: .opencode/state/implementations/setup-001-implementation-implementation.md (implementation) - Implementation summary for SETUP-001: Created project skeleton with pyproject.toml, src/hub, src/node_agent, src/shared structure, pytest/ruff configs, and .gitignore.
 - review: .opencode/state/reviews/setup-001-review-review.md (review) - Code review for SETUP-001: Approved. All 25 planned files created, pyproject.toml properly configured, Python 3.11+ requirement met, code quality verified with modern type hints and proper docstrings.
 - qa: .opencode/state/qa/setup-001-qa-qa.md (qa) - QA verification for SETUP-001: All acceptance criteria met, validation commands passed, lint issues fixed.
+- backlog-verification: .opencode/state/reviews/setup-001-review-backlog-verification.md (review) - Backlog verification for SETUP-001: PASS
 
 ## Notes
 

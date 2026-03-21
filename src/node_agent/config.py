@@ -34,7 +34,7 @@ class NodeAgentConfig(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_prefix="GPTTALKER_NODE_",
-        extra="allow",
+        extra="ignore",
         case_sensitive=False,
     )
 
