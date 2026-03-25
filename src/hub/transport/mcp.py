@@ -134,11 +134,19 @@ def format_tool_response(
             "message": error,
         }
     else:
-        response["result"] = {
-            "success": True,
-            "data": result,
-            "duration_ms": duration_ms,
-        }
+        # If result already has a "data" key, use it directly to avoid double-wrapping
+        if isinstance(result, dict) and "data" in result:
+            response["result"] = {
+                "success": result.get("success", True),
+                "data": result["data"],
+                "duration_ms": duration_ms,
+            }
+        else:
+            response["result"] = {
+                "success": True,
+                "data": result,
+                "duration_ms": duration_ms,
+            }
 
     if trace_id:
         response["trace_id"] = trace_id

@@ -23,7 +23,7 @@
   "workflow_contract": {
     "process_version": 5,
     "ticket_contract_version": 3,
-    "parallel_mode": "parallel-lanes",
+    "parallel_mode": "sequential",
     "manager_hierarchy": {
       "first_class_scaffold_profile": false,
       "advanced_customization_allowed": true
@@ -48,6 +48,7 @@
       "START-HERE.md managed block"
     ],
     "project_specific_follow_up": [
+      ".opencode/skills",
       ".opencode/agents",
       "docs/process/agent-catalog.md"
     ],
@@ -141,6 +142,85 @@
         "EXEC-001 remains a source-layer remediation ticket",
         "EXEC-002 remains a source-layer remediation ticket",
         "Repo remains intentionally pinned to MiniMax-M2.7 pending an explicit human model decision"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-25T16:42:22Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Diagnosis-backed Scafforge repair after 2026-03-25 audit packs: refreshed managed workflow surfaces for uv-aware smoke testing, handoff evidence guards, explicit plan_review handling, and post-repair verification gating.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-25T21:17:48Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Diagnosis-backed deterministic Scafforge workflow repair for lifecycle validation, artifact ownership, and transition-guidance hardening after 2026-03-25 audit pack.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-25T21:21:00Z",
+      "repair_kind": "repo-local-managed-surface-follow-up",
+      "summary": "Completed the post-refresh follow-up required by the audit: restored project-specific stack standards, hardened the team-leader lifecycle contract, and resynced the managed START-HERE block to current manifest/workflow state.",
+      "replaced_surfaces": [
+        ".opencode/skills/stack-standards/SKILL.md",
+        ".opencode/agents/gpttalker-team-leader.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        "pending_process_verification remains true until backlog reverification clears affected historical done tickets"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-25T22:19:11Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Diagnosis-backed Scafforge workflow repair for closed-ticket reverification, contradiction-stop guidance, and transcript-aware lifecycle hardening after diagnosis/20260325-221327.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
       ]
     }
   ]

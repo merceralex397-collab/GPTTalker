@@ -7,34 +7,54 @@ description: Hold the project-local standards for languages, frameworks, validat
 
 Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
 
-Current stack: `Python 3.11+ + FastAPI + SQLite + Qdrant`
+Current stack:
 
-Language and framework rules:
+- Python 3.11+
+- FastAPI for the hub and node-agent HTTP surfaces
+- SQLite via `aiosqlite` for structured runtime state
+- Qdrant for semantic project context
+- `httpx` for outbound hub and node-agent HTTP
+- `uv` for environment and dependency management
 
-- use Python 3.11+ syntax and full type hints on public functions, return values, and non-obvious variables
-- use `str | None` instead of `Optional[str]`
-- FastAPI endpoints must be `async def`
-- request and response payloads must use Pydantic models
-- dependency injection should use `fastapi.Depends`
-- in dependency helpers, use `request: Request` and read shared state from `request.app.state`; do not inject `app: FastAPI` directly
+Core coding rules:
 
-Storage and networking rules:
-
-- use `aiosqlite` for structured runtime state; do not call synchronous sqlite APIs from async paths
-- use Qdrant for semantic context storage
-- use async `httpx` with explicit timeouts for outbound hub or node-agent calls
+- use type hints on function signatures, return values, and non-obvious variables
+- prefer `str | None` over `Optional[str]`
+- use Pydantic models for API request and response schemas
+- keep FastAPI endpoints `async`
+- use `fastapi.Depends` for dependency injection
+- never call synchronous sqlite APIs from async code paths
+- use explicit timeouts on every `httpx` call
 - treat Tailscale as the internal transport boundary
-
-Validation rules:
-
-- run `ruff check .` for linting
-- run `pytest tests/ --collect-only -q --tb=no` before treating Python QA evidence as credible
-- run `pytest tests/ -q --tb=no` for the full suite when the ticket changes executable Python behavior
-- every MCP tool handler should keep one happy-path and one error-path test
-
-Implementation rules:
-
-- use structured logging, not `print()`
+- use structured logging, never bare `print()`
 - redact secrets, tokens, passwords, and raw file contents from logs
-- log tool calls with `trace_id`, `tool_name`, `target_node`, `target_repo`, `caller`, `outcome`, and `duration_ms`
 - fail closed on unknown nodes, repos, write targets, and service aliases
+
+Repo-sensitive areas:
+
+- workflow and ticketing surfaces under `.opencode/`, `docs/process/`, `START-HERE.md`, and `tickets/`
+- hub policy and path-validation code under `src/hub/policy/`
+- repo inspection and markdown-delivery tools under `src/hub/tools/`
+- node-agent bounded execution under `src/node_agent/`
+- shared logging, schemas, and repository helpers under `src/shared/`
+
+Validation commands:
+
+- install or refresh the environment with `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`
+- run the full suite with `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=short`
+- run focused pytest targets when a ticket scopes them explicitly
+- lint with `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .`
+- format with `UV_CACHE_DIR=/tmp/uv-cache uv run ruff format .`
+
+Testing rules:
+
+- every MCP tool handler must keep at least one happy-path and one error-path test
+- QA and implementation artifacts must include raw command output, not code-inspection-only claims
+- if git-based tests or temporary repos require identity, configure git first rather than treating the failure as a product defect
+- if a command cannot run because `uv`, `pytest`, `rg`, git identity, or another executable is missing, return a blocker instead of inventing workflow workarounds
+
+Execution guidance:
+
+- do not widen path or write-target trust boundaries to satisfy tests
+- preserve repo-specific model pinning to `MiniMax-M2.7` unless the human explicitly changes it
+- keep workflow repairs separate from source-layer bug fixes; route product defects into tickets rather than hiding them inside managed-surface edits

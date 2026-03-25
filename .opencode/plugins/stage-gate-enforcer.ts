@@ -11,6 +11,8 @@ import {
   loadManifest,
   loadWorkflowState,
   requireBootstrapReady,
+  resolveRequestedTicketProgress,
+  validateLifecycleStageStatus,
   validateImplementationArtifactEvidence,
   validateQaArtifactEvidence,
   validateSmokeTestArtifactEvidence,
@@ -18,6 +20,7 @@ import {
 
 const SAFE_BASH = /^(pwd|ls|find|rg|grep|cat|head|tail|git status|git diff|git log)\b/i
 const LEASED_ARTIFACT_STAGES = new Set(["implementation", "bootstrap", "handoff"])
+const RESERVED_ARTIFACT_STAGES = new Set(["smoke-test"])
 
 function extractFilePath(args: Record<string, unknown>): string {
   const pathValue = args.filePath || args.path || args.target
@@ -49,7 +52,7 @@ async function ensureWriteLease(pathValue?: string) {
   }
 }
 
-async function ensureTargetTicketWriteLease(ticketId: string) {
+async function ensureTicketMutationLease(ticketId: string) {
   const workflow = await loadWorkflowState()
   if (!hasWriteLeaseForTicket(workflow, ticketId)) {
     throw new Error(`Ticket ${ticketId} must hold an active write lease before this mutation can proceed.`)
@@ -115,7 +118,7 @@ export const StageGateEnforcer: Plugin = async () => {
         if (sourceMode === "process_verification" && !workflow.pending_process_verification) {
           throw new Error("process_verification follow-up creation is only available while pending_process_verification is true.")
         }
-        await ensureTargetTicketWriteLease(sourceTicketId || workflow.active_ticket)
+        await ensureTicketMutationLease(sourceTicketId || workflow.active_ticket)
         if (sourceMode === "post_completion_issue") {
           if (!sourceTicketId) throw new Error("post_completion_issue ticket creation requires source_ticket_id.")
           if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
@@ -131,7 +134,7 @@ export const StageGateEnforcer: Plugin = async () => {
       if (input.tool === "ticket_reopen") {
         const manifest = await loadManifest()
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
-        await ensureTargetTicketWriteLease(ticketId)
+        await ensureTicketMutationLease(ticketId)
         const ticket = getTicket(manifest, ticketId)
         if (ticket.status !== "done" && ticket.resolution_state !== "done") {
           throw new Error(`Ticket ${ticket.id} must already be done before ticket_reopen can resume it.`)
@@ -147,7 +150,7 @@ export const StageGateEnforcer: Plugin = async () => {
         if (!sourceTicketId) {
           throw new Error("issue_intake requires source_ticket_id.")
         }
-        await ensureTargetTicketWriteLease(sourceTicketId)
+        await ensureTicketMutationLease(sourceTicketId)
         if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
           throw new Error("issue_intake requires evidence_artifact_path.")
         }
@@ -160,7 +163,10 @@ export const StageGateEnforcer: Plugin = async () => {
       if (input.tool === "ticket_reverify") {
         const manifest = await loadManifest()
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
-        await ensureTargetTicketWriteLease(ticketId)
+        const ticket = getTicket(manifest, ticketId)
+        if (ticket.status !== "done") {
+          throw new Error(`Ticket ${ticket.id} must already be done before ticket_reverify can restore trust.`)
+        }
         if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
           throw new Error("ticket_reverify requires evidence_artifact_path.")
         }
@@ -171,8 +177,12 @@ export const StageGateEnforcer: Plugin = async () => {
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
         const ticket = getTicket(manifest, ticketId)
         const stage = typeof output.args.stage === "string" ? output.args.stage : ""
+        if (RESERVED_ARTIFACT_STAGES.has(stage)) {
+          const owner = stage === "smoke-test" ? "smoke_test" : "handoff_publish"
+          throw new Error(`Use ${owner} to create ${stage} artifacts. Generic artifact_register is not allowed for that stage.`)
+        }
 
-        await ensureTargetTicketWriteLease(ticketId)
+        await ensureTicketMutationLease(ticketId)
         if (LEASED_ARTIFACT_STAGES.has(stage)) {
           const artifactPath = typeof output.args.path === "string" ? output.args.path : ""
           await ensureWriteLease(artifactPath || undefined)
@@ -185,51 +195,81 @@ export const StageGateEnforcer: Plugin = async () => {
         }
       }
 
+      if (input.tool === "artifact_write") {
+        const manifest = await loadManifest()
+        const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
+        const stage = typeof output.args.stage === "string" ? output.args.stage : ""
+        const artifactPath = typeof output.args.path === "string" ? output.args.path : ""
+        if (RESERVED_ARTIFACT_STAGES.has(stage)) {
+          const owner = stage === "smoke-test" ? "smoke_test" : "handoff_publish"
+          throw new Error(`Use ${owner} to create ${stage} artifacts. Generic artifact_write is not allowed for that stage.`)
+        }
+        await ensureTicketMutationLease(ticketId)
+        if (artifactPath) {
+          await ensureWriteLease(artifactPath)
+        }
+      }
+
       if (input.tool === "ticket_update") {
         const manifest = await loadManifest()
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
-        await ensureTargetTicketWriteLease(ticketId)
+        await ensureTicketMutationLease(ticketId)
         const ticket = getTicket(manifest, ticketId)
-        const nextStatus = typeof output.args.status === "string" ? output.args.status : ""
+        const requested = resolveRequestedTicketProgress(ticket, {
+          stage: typeof output.args.stage === "string" ? output.args.stage : undefined,
+          status: typeof output.args.status === "string" ? output.args.status : undefined,
+        })
+        const lifecycleBlocker = validateLifecycleStageStatus(requested.stage, requested.status)
+        if (lifecycleBlocker) {
+          throw new Error(lifecycleBlocker)
+        }
         const approving = typeof output.args.approved_plan === "boolean" ? output.args.approved_plan : undefined
 
         if (approving && !hasArtifact(ticket, { stage: "planning" })) {
           throw new Error("Planning artifact required before marking the workflow as approved.")
         }
 
-        if (nextStatus === "in_progress" && !isPlanApprovedForTicket(workflow, ticket.id) && approving !== true) {
+        if (requested.stage === "implementation" && approving === true && !isPlanApprovedForTicket(workflow, ticket.id)) {
+          throw new Error(`Approve ${ticket.id} while it remains in plan_review first, then move it to implementation in a separate ticket_update call.`)
+        }
+
+        if (requested.stage === "implementation" && !isPlanApprovedForTicket(workflow, ticket.id)) {
           throw new Error(`Approved plan required before moving ${ticket.id} to in_progress.`)
         }
 
-        if (nextStatus === "review") {
+        if (requested.stage === "implementation" && ticket.stage !== "plan_review") {
+          throw new Error(`Cannot move ${ticket.id} to implementation before it passes through plan_review.`)
+        }
+
+        if (requested.stage === "review") {
           const implementationBlocker = await validateImplementationArtifactEvidence(ticket)
           if (implementationBlocker) throw new Error(implementationBlocker)
         }
 
-        if (nextStatus === "qa" && !hasReviewArtifact(ticket)) {
+        if (requested.stage === "qa" && !hasReviewArtifact(ticket)) {
           throw new Error("Cannot move to qa before at least one review artifact exists.")
         }
 
-        if (nextStatus === "smoke_test") {
+        if (requested.stage === "smoke-test") {
           const qaBlocker = await validateQaArtifactEvidence(ticket)
           if (qaBlocker) throw new Error(qaBlocker)
           await ensureBootstrapReadyForValidation()
         }
 
-        if (nextStatus === "done") {
+        if (requested.stage === "closeout") {
           const smokeTestBlocker = await validateSmokeTestArtifactEvidence(ticket)
           if (smokeTestBlocker) throw new Error(smokeTestBlocker)
           await ensureBootstrapReadyForValidation()
         }
 
-        if (getTicketWorkflowState(workflow, ticket.id).needs_reverification && nextStatus === "done" && ticket.resolution_state !== "reopened") {
+        if (getTicketWorkflowState(workflow, ticket.id).needs_reverification && requested.status === "done" && ticket.resolution_state !== "reopened") {
           throw new Error(`Ticket ${ticket.id} still needs reverification and cannot be closed from a non-reopened state.`)
         }
       }
 
       if (input.tool === "handoff_publish") {
         const manifest = await loadManifest()
-        await ensureTargetTicketWriteLease(workflow.active_ticket)
+        await ensureTicketMutationLease(workflow.active_ticket)
         await ensureBootstrapReadyForValidation()
         const activeTicket = getTicket(manifest, workflow.active_ticket)
         if (activeTicket.resolution_state === "reopened") {

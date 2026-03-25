@@ -4,8 +4,11 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 
 ## Current status
 
-- All 32 tickets have been completed (waves 0-6)
-- The system is fully implemented with:
+- The managed workflow layer was repaired on March 25, 2026 to restore closed-ticket reverification and contradiction-stop behavior.
+- The runtime environment is bootstrapped with `uv`, the dev dependencies are installed, and repo-managed validation commands execute.
+- Historical done tickets still require backlog reverification before `pending_process_verification` can be cleared.
+- Wave 10 remediation tickets `EXEC-007` through `EXEC-011` now track the remaining 13 failing tests plus repo-wide lint debt.
+- The system includes:
   - FastAPI MCP hub with policy-controlled tools
   - Node agent service for distributed execution
   - SQLite registry and history storage
@@ -50,13 +53,14 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 ## Getting Started
 
 1. Read `START-HERE.md` for operational guidance
-2. Review `docs/ops/` for setup guides
-3. Configure environment variables for hub and nodes
+2. Review `docs/process/workflow.md` and `tickets/BOARD.md`
+3. Run `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`
+4. Configure environment variables for hub and nodes
 
 ## Testing
 
 Run tests with:
 ```bash
-pytest tests/
-ruff check src/
+UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=short
+UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .
 ```

@@ -1,8 +1,8 @@
 {
-  "active_ticket": "EXEC-001",
-  "stage": "smoke_test",
-  "status": "smoke_test",
-  "approved_plan": true,
+  "active_ticket": "EXEC-007",
+  "stage": "planning",
+  "status": "todo",
+  "approved_plan": false,
   "ticket_state": {
     "SETUP-001": {
       "approved_plan": true,
@@ -265,33 +265,81 @@
       "needs_reverification": false
     },
     "EXEC-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-004": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-005": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-006": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-007": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-008": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-009": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-010": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-011": {
       "approved_plan": false,
       "reopen_count": 0,
       "needs_reverification": false
     }
   },
   "process_version": 5,
-  "process_last_changed_at": "2026-03-25T12:00:00Z",
-  "process_last_change_summary": "Applied the diagnosis-backed repo-local workflow repair: made bootstrap uv-aware, restored missing model-profile guidance, removed baseline skill placeholder text, and tightened Python import and pytest collection proof requirements without changing source-layer EXEC ticket scope.",
+  "process_last_changed_at": "2026-03-25T22:19:11Z",
+  "process_last_change_summary": "Diagnosis-backed Scafforge workflow repair for closed-ticket reverification, contradiction-stop guidance, and transcript-aware lifecycle hardening after diagnosis/20260325-221327.",
   "pending_process_verification": true,
-  "parallel_mode": "parallel-lanes",
+  "parallel_mode": "sequential",
   "bootstrap": {
-    "status": "ready",
-    "last_verified_at": "2026-03-25T12:05:00.000Z",
+    "status": "failed",
+    "last_verified_at": "2026-03-25T23:02:26.471Z",
     "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
-    "proof_artifact": ".opencode/state/artifacts/history/exec-001/bootstrap/2026-03-25T12-05-00-000Z-environment-bootstrap.md"
+    "proof_artifact": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-25T23-02-26-471Z-environment-bootstrap.md"
   },
   "lane_leases": [
     {
-      "ticket_id": "EXEC-001",
+      "ticket_id": "EXEC-007",
       "lane": "bugfix",
       "owner_agent": "gpttalker-team-leader",
-      "write_lock": true,
-      "claimed_at": "2026-03-25T04:01:31.741Z",
+      "write_lock": false,
+      "claimed_at": "2026-03-25T23:00:24.084Z",
       "allowed_paths": [
-        "src/node_agent/dependencies.py"
+        ".opencode/state/plans/",
+        "src/hub/tools/discovery.py",
+        "src/hub/tools/inspection.py",
+        "tests/hub/test_contracts.py"
       ]
     }
   ],
-  "state_revision": 30
+  "state_revision": 122
 }

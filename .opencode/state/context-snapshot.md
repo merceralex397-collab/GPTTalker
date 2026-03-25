@@ -6,13 +6,13 @@ GPTTalker
 
 ## Active Ticket
 
-- ID: EXEC-001
-- Title: Fix node-agent FastAPI dependency injection import failure
-- Stage: smoke_test
-- Status: smoke_test
+- ID: EXEC-007
+- Title: Restore discovery and inspection contract behavior in hub tools
+- Stage: planning
+- Status: todo
 - Resolution: open
 - Verification: suspect
-- Approved plan: yes
+- Approved plan: no
 - Needs reverification: no
 
 ## Bootstrap
@@ -25,20 +25,18 @@ GPTTalker
 
 - process_version: 5
 - pending_process_verification: true
-- parallel_mode: parallel-lanes
-- state_revision: 30
+- parallel_mode: sequential
+- state_revision: 113
 
 ## Lane Leases
 
-- EXEC-001: gpttalker-team-leader (bugfix)
+- No active lane leases
 
 ## Recent Artifacts
 
-- review: .opencode/state/artifacts/history/exec-001/review/2026-03-25T03-57-37-327Z-review.md (review) - Code review for EXEC-001: APPROVED. All acceptance criteria verified - get_config/get_executor use request: Request pattern, app state accessed via request.app.state, no changes to executor path validation, all 3 validation commands passed.
-- qa: .opencode/state/artifacts/history/exec-001/qa/2026-03-25T03-59-39-479Z-qa.md (qa) - QA verification for EXEC-001: All 4 acceptance criteria PASSED. Import test exits 0, pytest collection passes with 126 tests, _validate_path trust boundary unchanged, Request pattern correctly implemented.
-- smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T04-00-18-894Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T04-01-16-155Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test for EXEC-001: PASS. Node-agent import succeeds (exit 0), pytest collection passes (126 tests), ruff passes. Note: default smoke-test tool uses system python which lacks pytest; corrected commands use repo venv as required by EXEC-001 acceptance criteria.
-- smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T04-04-07-243Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- diagnosis: diagnosis/20260325-221327/04-live-repo-repair-plan.md - Repair basis for the March 25, 2026 workflow refresh and follow-up routing.
+- bootstrap: .opencode/state/artifacts/history/exec-001/bootstrap/2026-03-25T12-05-00-000Z-environment-bootstrap.md - Latest recorded bootstrap proof for the repo-managed environment.
+- smoke-test: .opencode/state/artifacts/history/exec-006/smoke-test/2026-03-25T19-01-32-778Z-smoke-test.md - Latest historical smoke-test artifact on the previously active ticket before Wave 10 remediation opened.
 ## Note
 
-EXEC-001 CLOSE: implementation, code review, and QA all PASSED. Smoke-test blocked by tool/env mismatch: smoke_test tool uses system python3 (no pytest module) while EXEC-001 acceptance criteria require .venv/bin/pytest. Correct PASS evidence is recorded in canonical artifact at .opencode/state/smoke-tests/exec-001-smoke-test-smoke-test.md and in history artifact at 2026-03-25T04-01-16-155Z. All 4 acceptance criteria verified. EXEC-002 (pytest collection) is now unblocked as dependency EXEC-001 is complete. 17 suspect done tickets (FIX-001-017) still need backlog verification.
+EXEC-007 is now the active planning ticket. The workflow deadlock is repaired, bootstrap is ready, pending_process_verification remains true, and the remaining 13 test failures plus repo-wide lint debt are explicitly routed into EXEC-007 through EXEC-011. No active lane leases.

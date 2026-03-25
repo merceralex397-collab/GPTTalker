@@ -67,15 +67,20 @@ class PathNormalizer:
         # Strip whitespace
         path = path.strip()
 
-        # Check for traversal patterns before normalization
-        PathNormalizer.validate_no_traversal(path)
-
-        # Normalize the path
+        # Normalize the path - join with base first if provided
         try:
             # Use Path for normalization (handles .., ., multiple slashes)
-            normalized = str(Path(path).as_posix())
+            if base:
+                # Join relative paths to base; absolute paths override base
+                # Use resolve() to collapse .. components so validation sees clean path
+                normalized = str((Path(base) / path).resolve().as_posix())
+            else:
+                normalized = str(Path(path).resolve().as_posix())
         except (ValueError, OSError) as e:
             raise PathTraversalError(f"Invalid path: {path}") from e
+
+        # Check for traversal patterns after normalization (.. resolved by join)
+        PathNormalizer.validate_no_traversal(normalized)
 
         # If base is provided, ensure the normalized path is within base
         if base:
@@ -84,12 +89,8 @@ class PathNormalizer:
             if not base_normalized.endswith("/"):
                 base_normalized += "/"
 
-            if not normalized.startswith(base_normalized) and normalized != base_normalized.rstrip(
-                "/"
-            ):
-                # Check if it's a direct child
-                if not normalized.startswith(base_normalized):
-                    raise PathTraversalError(f"Path '{path}' escapes base directory '{base}'")
+            if not normalized.startswith(base_normalized):
+                raise PathTraversalError(f"Path '{path}' escapes base directory '{base}'")
 
         return normalized
 

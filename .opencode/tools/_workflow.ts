@@ -130,13 +130,41 @@ const DEFAULT_TICKET_CONTRACT_VERSION = 3
 const DEFAULT_BOOTSTRAP_STATE: BootstrapState = { status: "missing", last_verified_at: null, environment_fingerprint: null, proof_artifact: null }
 const DEFAULT_TICKET_WORKFLOW_STATE: TicketWorkflowState = { approved_plan: false, reopen_count: 0, needs_reverification: false }
 
-export const COARSE_STATUSES = new Set(["todo", "ready", "in_progress", "blocked", "review", "qa", "smoke_test", "done"])
+export const COARSE_STATUSES = new Set(["todo", "ready", "plan_review", "in_progress", "blocked", "review", "qa", "smoke_test", "done"])
+export const LIFECYCLE_STAGES = new Set(["planning", "plan_review", "implementation", "review", "qa", "smoke-test", "closeout"])
+export const STAGE_DEFAULT_STATUS: Record<string, string> = {
+  planning: "ready",
+  plan_review: "plan_review",
+  implementation: "in_progress",
+  review: "review",
+  qa: "qa",
+  "smoke-test": "smoke_test",
+  closeout: "done",
+}
+export const STATUS_STAGE_EQUIVALENTS: Record<string, string> = {
+  todo: "planning",
+  plan_review: "plan_review",
+  in_progress: "implementation",
+  review: "review",
+  qa: "qa",
+  smoke_test: "smoke-test",
+  done: "closeout",
+}
+export const STAGE_ALLOWED_STATUSES: Record<string, Set<string>> = {
+  planning: new Set(["todo", "ready", "blocked"]),
+  plan_review: new Set(["plan_review", "blocked"]),
+  implementation: new Set(["in_progress", "blocked"]),
+  review: new Set(["review", "blocked"]),
+  qa: new Set(["qa", "blocked"]),
+  "smoke-test": new Set(["smoke_test", "blocked"]),
+  closeout: new Set(["done"]),
+}
 export const ARTIFACT_REGISTRY_ROOT = ".opencode/state/artifacts"
 export const LEGACY_REVIEW_STAGES = new Set(["code_review", "security_review"])
 export const START_HERE_MANAGED_START = "<!-- SCAFFORGE:START_HERE_BLOCK START -->"
 export const START_HERE_MANAGED_END = "<!-- SCAFFORGE:START_HERE_BLOCK END -->"
 export const DEFAULT_OVERLAP_RISK: OverlapRisk = "high"
-export const DEFAULT_PARALLEL_MODE: ParallelMode = "parallel-lanes"
+export const DEFAULT_PARALLEL_MODE: ParallelMode = "sequential"
 export const MIN_EXECUTION_ARTIFACT_BYTES = 200
 
 const EXECUTION_EVIDENCE_PATTERNS = [
@@ -175,6 +203,43 @@ export function artifactStageDirectory(stage: string): string {
   return ".opencode/state/artifacts"
 }
 export function slugForPath(value: string): string { return value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") }
+export function isValidLifecycleStage(stage: string): boolean { return LIFECYCLE_STAGES.has(stage) }
+export function stageAllowsStatus(stage: string, status: string): boolean {
+  const allowed = STAGE_ALLOWED_STATUSES[stage]
+  return Boolean(allowed && allowed.has(status))
+}
+export function describeAllowedStatusesForStage(stage: string): string {
+  const allowed = STAGE_ALLOWED_STATUSES[stage]
+  return allowed ? [...allowed].join(", ") : ""
+}
+export function stageForStatus(status: string, currentStage?: string): string {
+  return STATUS_STAGE_EQUIVALENTS[status] || currentStage || "planning"
+}
+export function defaultStatusForStage(stage: string, currentStatus?: string): string {
+  if (stage === "planning" && currentStatus && stageAllowsStatus(stage, currentStatus)) {
+    return currentStatus
+  }
+  return STAGE_DEFAULT_STATUS[stage] || currentStatus || "ready"
+}
+export function resolveRequestedTicketProgress(ticket: Ticket, args: { stage?: string; status?: string }): { stage: string; status: string } {
+  const requestedStage = typeof args.stage === "string" && args.stage.trim() ? args.stage.trim() : undefined
+  const requestedStatus = typeof args.status === "string" && args.status.trim() ? args.status.trim() : undefined
+  const stage = requestedStage || (requestedStatus ? stageForStatus(requestedStatus, ticket.stage) : ticket.stage)
+  const status = requestedStatus || defaultStatusForStage(stage, ticket.status)
+  return { stage, status }
+}
+export function validateLifecycleStageStatus(stage: string, status: string): string | null {
+  if (!isValidLifecycleStage(stage)) {
+    return `Unsupported ticket stage: ${stage}. Use planning, plan_review, implementation, review, qa, smoke-test, or closeout.`
+  }
+  if (!COARSE_STATUSES.has(status)) {
+    return `Unsupported ticket status: ${status}`
+  }
+  if (!stageAllowsStatus(stage, status)) {
+    return `Status ${status} is not valid for stage ${stage}. Allowed statuses: ${describeAllowedStatusesForStage(stage)}.`
+  }
+  return null
+}
 export function defaultArtifactPath(ticketId: string, stage: string, kind: string): string { return `${artifactStageDirectory(stage)}/${slugForPath(ticketId)}-${slugForPath(stage)}-${slugForPath(kind)}.md` }
 export function defaultBootstrapProofPath(ticketId: string): string { return defaultArtifactPath(ticketId, "bootstrap", "environment-bootstrap") }
 
@@ -429,6 +494,38 @@ export async function validateSmokeTestArtifactEvidence(ticket: Ticket, root = r
   return /Overall Result:\s*PASS/i.test(content) ? null : "Smoke-test artifact must record an explicit PASS result before closeout."
 }
 
+function blockedDependentTickets(manifest: Manifest, ticketId: string): Ticket[] {
+  return manifest.tickets.filter((item) => item.depends_on.includes(ticketId) && item.status !== "done")
+}
+
+export async function validateHandoffNextAction(manifest: Manifest, workflow: WorkflowState, nextAction: string, root = rootPath()): Promise<string | null> {
+  const trimmed = nextAction.trim()
+  if (!trimmed) return "next_action cannot be empty."
+
+  const ticket = getTicket(manifest, workflow.active_ticket)
+  const blockedDependents = blockedDependentTickets(manifest, ticket.id)
+  const lower = trimmed.toLowerCase()
+  const claimsDependencyReadiness = /\bunblocked\b|\bready to proceed\b|\bcan proceed\b/.test(lower)
+  const claimsSingleCause = /not a code defect|only blocker|tool\/env mismatch|tooling issue/.test(lower)
+
+  if (claimsDependencyReadiness && blockedDependents.length > 0 && ticket.status !== "done") {
+    return `Cannot publish dependency-readiness claims while ${ticket.id} is not done and dependent tickets still wait on it (${blockedDependents.map((item) => item.id).join(", ")}).`
+  }
+
+  if (claimsSingleCause) {
+    if (ticket.status !== "done") {
+      return `Cannot publish causal claims such as "not a code defect" or "only blocker" while ${ticket.id} is still ${ticket.status}.`
+    }
+    const smokeTestArtifact = latestArtifact(ticket, { stage: "smoke-test", trust_state: "current" })
+    const content = await readArtifactContent(smokeTestArtifact, root)
+    if (!/Overall Result:\s*PASS/i.test(content)) {
+      return `Cannot publish causal claims about repo readiness without a passing smoke-test artifact for ${ticket.id}.`
+    }
+  }
+
+  return null
+}
+
 export async function listBootstrapInputs(root = rootPath()): Promise<string[]> {
   const hits: string[] = []
   for (const relative of BOOTSTRAP_INPUT_FILES) {
@@ -499,6 +596,9 @@ export function allowsPreBootstrapWriteClaim(workflow: WorkflowState, ticket: Ti
 }
 export function claimLaneLease(workflow: WorkflowState, ticket: Ticket, ownerAgent: string, allowedPaths: string[], writeLock = true): LaneLease {
   const otherLeases = workflow.lane_leases.filter((lease) => lease.ticket_id !== ticket.id)
+  if (workflow.parallel_mode === "sequential" && otherLeases.length > 0) {
+    throw new Error(`Workflow is in sequential mode. Release the active lease before claiming another lane for ${ticket.id}.`)
+  }
   if (!ticket.parallel_safe && workflow.parallel_mode === "parallel-lanes" && otherLeases.length > 0) {
     throw new Error(`Ticket ${ticket.id} is not marked parallel_safe and cannot hold a parallel lease while other leases are active.`)
   }
@@ -534,6 +634,7 @@ export function markArtifactsHistorical(ticket: Ticket, stage: string | undefine
   }
 }
 export function markTicketDone(ticket: Ticket, workflow: WorkflowState): void {
+  ticket.stage = "closeout"
   ticket.status = "done"
   ticket.resolution_state = "done"
   const state = ensureTicketWorkflowState(workflow, ticket.id)
@@ -761,10 +862,17 @@ export function renderStartHere(manifest: Manifest, workflow: WorkflowState, opt
   const reopened = manifest.tickets.filter((item) => item.resolution_state === "reopened")
   const suspectDone = manifest.tickets.filter((item) => item.status === "done" && item.verification_state !== "trusted" && item.verification_state !== "reverified")
   const reverification = manifest.tickets.filter((item) => getTicketWorkflowState(workflow, item.id).needs_reverification)
+  const blockedDependents = blockedDependentTickets(manifest, ticket.id)
   const verifierLabel = options.backlogVerifierAgent ? `\`${options.backlogVerifierAgent}\`` : "the backlog verifier"
-  const recommendedAction = options.nextAction || (workflow.pending_process_verification ? `Use the team leader to route ${verifierLabel} across done tickets whose trust predates the current process contract.` : workflow.bootstrap.status !== "ready" ? "Run environment_bootstrap, register its proof artifact, then continue ticket execution." : "Continue the required internal lifecycle from the current ticket stage.")
-  const lines = (items: Ticket[]) => items.length > 0 ? items.map((item) => `- ${item.id}: ${item.title}`).join("\n") : "- None"
-  return `# START HERE\n\n${START_HERE_MANAGED_START}\n## Project\n\n${manifest.project}\n\n## Workflow State\n\n- process_version: ${workflow.process_version}\n- parallel_mode: ${workflow.parallel_mode}\n- pending_process_verification: ${workflow.pending_process_verification ? "true" : "false"}\n- bootstrap_status: ${workflow.bootstrap.status}\n- bootstrap_proof: ${workflow.bootstrap.proof_artifact || "None"}\n\n## Current Ticket\n\n- ID: ${ticket.id}\n- Title: ${ticket.title}\n- Wave: ${ticket.wave}\n- Lane: ${ticket.lane}\n- Stage: ${ticket.stage}\n- Status: ${ticket.status}\n- Resolution: ${ticket.resolution_state}\n- Verification: ${ticket.verification_state}\n\n## Reopened Tickets\n\n${lines(reopened)}\n\n## Done But Not Fully Trusted\n\n${lines(suspectDone)}\n\n## Pending Reverification\n\n${lines(reverification)}\n\n## Read In This Order\n\n1. README.md\n2. AGENTS.md\n3. docs/spec/CANONICAL-BRIEF.md\n4. docs/process/workflow.md\n5. tickets/BOARD.md\n6. tickets/manifest.json\n\n## Next Action\n\n${recommendedAction}\n${START_HERE_MANAGED_END}\n`
+  const recommendedAction = options.nextAction || (workflow.pending_process_verification ? `Use the team leader to route ${verifierLabel} across done tickets whose trust predates the current process contract.` : workflow.bootstrap.status !== "ready" ? "Run environment_bootstrap, register its proof artifact, then continue ticket execution." : blockedDependents.length > 0 && ticket.status !== "done" ? `Finish ${ticket.id} and its closeout proof before resuming dependent tickets: ${blockedDependents.map((item) => item.id).join(", ")}.` : "Continue the required internal lifecycle from the current ticket stage.")
+  const summarizeTickets = (items: Ticket[]) => items.length > 0 ? items.map((item) => item.id).join(", ") : "none"
+  const riskLines = [
+    workflow.bootstrap.status !== "ready" ? "- Environment validation can fail for setup reasons until bootstrap proof exists." : null,
+    workflow.pending_process_verification ? "- Historical completion should not be treated as fully trusted until pending process verification is cleared." : null,
+    suspectDone.length > 0 ? "- Some done tickets are not fully trusted yet; use the backlog verifier before relying on earlier closeout." : null,
+    blockedDependents.length > 0 && ticket.status !== "done" ? `- Downstream tickets ${blockedDependents.map((item) => item.id).join(", ")} remain formally blocked until ${ticket.id} reaches done.` : null,
+  ].filter((line): line is string => Boolean(line)).join("\n") || "- None recorded."
+  return `# START HERE\n\n${START_HERE_MANAGED_START}\n## What This Repo Is\n\n${manifest.project}\n\n## Current State\n\nThe repo is operating under the managed OpenCode workflow. Use the canonical state files below instead of memory or raw ticket prose.\n\n## Read In This Order\n\n1. README.md\n2. AGENTS.md\n3. docs/spec/CANONICAL-BRIEF.md\n4. docs/process/workflow.md\n5. tickets/BOARD.md\n6. tickets/manifest.json\n\n## Current Or Next Ticket\n\n- ID: ${ticket.id}\n- Title: ${ticket.title}\n- Wave: ${ticket.wave}\n- Lane: ${ticket.lane}\n- Stage: ${ticket.stage}\n- Status: ${ticket.status}\n- Resolution: ${ticket.resolution_state}\n- Verification: ${ticket.verification_state}\n\n## Dependency Status\n\n- current_ticket_done: ${ticket.status === "done" ? "yes" : "no"}\n- dependent_tickets_waiting_on_current: ${summarizeTickets(blockedDependents)}\n\n## Generation Status\n\n- handoff_status: ready for continued development\n- process_version: ${workflow.process_version}\n- parallel_mode: ${workflow.parallel_mode}\n- pending_process_verification: ${workflow.pending_process_verification ? "true" : "false"}\n- bootstrap_status: ${workflow.bootstrap.status}\n- bootstrap_proof: ${workflow.bootstrap.proof_artifact || "None"}\n\n## Post-Generation Audit Status\n\n- audit_or_repair_follow_up: ${reopened.length > 0 || suspectDone.length > 0 || reverification.length > 0 ? "follow-up required" : "none recorded"}\n- reopened_tickets: ${summarizeTickets(reopened)}\n- done_but_not_fully_trusted: ${summarizeTickets(suspectDone)}\n- pending_reverification: ${summarizeTickets(reverification)}\n\n## Known Risks\n\n${riskLines}\n\n## Next Action\n\n${recommendedAction}\n${START_HERE_MANAGED_END}\n`
 }
 function escapeRegExp(value: string): string { return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") }
 export function mergeStartHere(existing: string, rendered: string): string {

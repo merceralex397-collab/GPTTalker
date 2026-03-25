@@ -468,21 +468,21 @@ def register_markdown_tools(registry: ToolRegistry) -> None:
             description="Write markdown content to an approved write target. "
             "Validates that the target path is registered and the file extension is allowed. "
             "Writes atomically with SHA256 verification. "
-            "Requires node, write_target, relative_path, and content parameters. "
+            "Requires node_id, repo_id, path, and content parameters. "
             "Use mode='no_overwrite' to fail if the file already exists.",
             handler=write_markdown_handler,
             parameters={
                 "type": "object",
                 "properties": {
-                    "node": {
+                    "node_id": {
                         "type": "string",
                         "description": "Node identifier (required)",
                     },
-                    "write_target": {
+                    "repo_id": {
                         "type": "string",
-                        "description": "Write target identifier (required)",
+                        "description": "Repo identifier (required)",
                     },
-                    "relative_path": {
+                    "path": {
                         "type": "string",
                         "description": "File path relative to write target root (required)",
                     },
@@ -497,7 +497,7 @@ def register_markdown_tools(registry: ToolRegistry) -> None:
                         "default": "create_or_overwrite",
                     },
                 },
-                "required": ["node", "write_target", "relative_path", "content"],
+                "required": ["node_id", "repo_id", "path", "content"],
             },
             policy=WRITE_REQUIREMENT,
         )

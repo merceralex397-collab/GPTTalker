@@ -31,9 +31,9 @@ def _get_extension(path: str) -> str:
 
 
 async def write_markdown_handler(
-    node: str,
-    write_target: str,
-    relative_path: str,
+    node_id: str,
+    repo_id: str,
+    path: str,
     content: str,
     mode: str = "create_or_overwrite",
     node_client: "HubNodeClient | None" = None,
@@ -54,9 +54,9 @@ async def write_markdown_handler(
     The write is performed atomically with SHA256 verification.
 
     Args:
-        node: Target node identifier (required).
-        write_target: Write target identifier (required).
-        relative_path: File path relative to write target root (required).
+        node_id: Target node identifier (required).
+        repo_id: Repo identifier (required).
+        path: File path relative to write target root (required).
         content: Markdown content to write (required).
         mode: Write mode - "create_or_overwrite" (default) or "no_overwrite".
         node_client: HubNodeClient for node communication.
@@ -80,50 +80,42 @@ async def write_markdown_handler(
         return {"success": False, "error": "WriteTargetPolicy not available"}
 
     # Validate inputs
-    if not relative_path:
-        return {"success": False, "error": "relative_path parameter is required"}
+    if not path:
+        return {"success": False, "error": "path parameter is required"}
     if not content:
         return {"success": False, "error": "content parameter is required"}
     if mode not in ("create_or_overwrite", "no_overwrite"):
         return {"success": False, "error": "mode must be 'create_or_overwrite' or 'no_overwrite'"}
 
     # Validate node exists
-    node_obj = await node_repo.get(node)
+    node_obj = await node_repo.get(node_id)
     if not node_obj:
-        logger.warning("write_markdown_node_not_found", node_id=node)
-        return {"success": False, "error": f"Node not found: {node}"}
+        logger.warning("write_markdown_node_not_found", node_id=node_id)
+        return {"success": False, "error": f"Node not found: {node_id}"}
 
     # Get write target by ID
-    try:
-        allowed_target = await write_target_policy.get(write_target)
-    except Exception as e:
-        logger.warning(
-            "write_markdown_write_target_error",
-            write_target=write_target,
-            error=str(e),
-        )
-        return {"success": False, "error": f"Failed to get write target: {e}"}
-
-    if not allowed_target:
+    targets = await write_target_policy.list_write_targets_for_repo(repo_id)
+    if not targets:
         logger.warning(
             "write_markdown_no_write_target",
-            write_target=write_target,
-            node_id=node,
+            repo_id=repo_id,
+            node_id=node_id,
         )
         return {
             "success": False,
-            "error": f"Write target not found: {write_target}",
+            "error": f"No write targets found for repo: {repo_id}",
         }
+    allowed_target = targets[0]
 
     # Extract extension and validate
-    extension = _get_extension(relative_path)
+    extension = _get_extension(path)
 
     # Validate extension is allowed for this write target
     if extension not in allowed_target.allowed_extensions:
         logger.warning(
             "write_markdown_extension_denied",
-            write_target=write_target,
-            relative_path=relative_path,
+            repo_id=repo_id,
+            path=path,
             extension=extension,
             allowed_extensions=allowed_target.allowed_extensions,
         )
@@ -135,17 +127,17 @@ async def write_markdown_handler(
 
     # Validate path doesn't contain traversal
     try:
-        PathNormalizer.validate_no_traversal(relative_path)
+        PathNormalizer.validate_no_traversal(path)
     except Exception as e:
         logger.warning(
             "write_markdown_path_traversal",
-            relative_path=relative_path,
+            path=path,
             error=str(e),
         )
         return {"success": False, "error": f"Path validation failed: {e}"}
 
     # Build the full write path
-    full_path = os.path.join(allowed_target.path, relative_path)
+    full_path = os.path.join(allowed_target.path, path)
 
     # Normalize the path
     try:
@@ -153,7 +145,7 @@ async def write_markdown_handler(
     except Exception as e:
         logger.warning(
             "write_markdown_normalize_error",
-            relative_path=relative_path,
+            path=path,
             full_path=full_path,
             error=str(e),
         )
@@ -187,8 +179,8 @@ async def write_markdown_handler(
     except Exception as e:
         logger.error(
             "write_markdown_node_call_failed",
-            node_id=node,
-            write_target=write_target,
+            node_id=node_id,
+            repo_id=repo_id,
             path=normalized_path,
             error=str(e),
         )
@@ -201,8 +193,8 @@ async def write_markdown_handler(
 
         logger.info(
             "write_markdown_success",
-            node_id=node,
-            write_target=write_target,
+            node_id=node_id,
+            repo_id=repo_id,
             path=normalized_path,
             bytes_written=data.get("bytes_written", 0),
             sha256_hash=data.get("sha256_hash", ""),
@@ -212,8 +204,8 @@ async def write_markdown_handler(
 
         return {
             "success": True,
-            "write_target": write_target,
-            "node": node,
+            "repo_id": repo_id,
+            "node_id": node_id,
             "path": normalized_path,
             "bytes_written": data.get("bytes_written", 0),
             "sha256_hash": data.get("sha256_hash", ""),
@@ -225,8 +217,8 @@ async def write_markdown_handler(
         error_msg = result.get("message", "Unknown error")
         logger.warning(
             "write_markdown_failed",
-            node_id=node,
-            write_target=write_target,
+            node_id=node_id,
+            repo_id=repo_id,
             error=error_msg,
         )
         return {"success": False, "error": error_msg}

@@ -1,90 +1,13 @@
 # START HERE
 
 <!-- SCAFFORGE:START_HERE_BLOCK START -->
-## Project
+## What This Repo Is
 
 GPTTalker
 
-## Workflow State
+## Current State
 
-- process_version: 5
-- parallel_mode: parallel-lanes
-- pending_process_verification: true
-- bootstrap_status: ready
-- bootstrap_proof: .opencode/state/artifacts/history/exec-001/bootstrap/2026-03-25T12-05-00-000Z-environment-bootstrap.md
-
-## Current Ticket
-
-- ID: EXEC-001
-- Title: Fix node-agent FastAPI dependency injection import failure
-- Wave: 9
-- Lane: bugfix
-- Stage: smoke_test
-- Status: smoke_test
-- Resolution: open
-- Verification: suspect
-
-## Reopened Tickets
-
-- None
-
-## Done But Not Fully Trusted
-
-- SETUP-001: Project skeleton and dependency baseline
-- SETUP-002: Shared schemas, config loading, and structured logging
-- SETUP-003: Async SQLite persistence and migration baseline
-- SETUP-004: FastAPI hub app shell and MCP transport baseline
-- SETUP-005: Test, lint, and local validation scaffold
-- CORE-001: Node registry and node health model
-- CORE-002: Repo, write-target, and LLM service registries
-- CORE-003: Node agent service skeleton
-- CORE-004: Hub-to-node client, auth, and health polling
-- CORE-005: Policy engine and normalized path validation
-- CORE-006: MCP tool routing framework
-- REPO-001: list_nodes and list_repos tools
-- REPO-002: inspect_repo_tree and read_repo_file tools
-- REPO-003: search_repo and git_status tools
-- WRITE-001: write_markdown with atomic scoped writes
-- LLM-001: chat_llm base routing and service registry integration
-- LLM-002: OpenCode adapter and session-aware coding-agent routing
-- LLM-003: Helper-model and embedding-service adapters
-- CTX-001: Qdrant integration and context storage schema
-- CTX-002: index_repo pipeline and content-hash tracking
-- CTX-003: get_project_context and known-issue records
-- CTX-004: Context bundles and recurring-issue workflows
-- XREPO-001: Cross-repo search and global context query
-- XREPO-002: Repo relationships and landscape metadata
-- XREPO-003: Architecture map and project landscape outputs
-- SCHED-001: Task classification and routing policy
-- SCHED-002: Distributed scheduler, node selection, and fallback
-- OBS-001: Task history, generated-doc log, and audit schema
-- OBS-002: Task detail, doc history, and issue timeline tools
-- EDGE-001: Cloudflare Tunnel integration and public-edge config
-- EDGE-002: Node registration bootstrap and operator config docs
-- POLISH-001: Contract tests for MCP tools and failure modes
-- POLISH-002: Security regression tests and redaction hardening
-- POLISH-003: README, API docs, and handoff hardening
-- FIX-001: Fix walrus operator syntax error in opencode.py
-- FIX-002: Fix Depends[] type subscript error in node agent
-- FIX-003: Fix hub MCP router async wiring and circular import
-- FIX-004: Fix SQLite write persistence and uncommitted transactions
-- FIX-005: Fix structured logger TypeError and HubConfig attribute error
-- FIX-006: Register read_repo_file tool and close tool surface gaps
-- FIX-007: Fix ripgrep search parser and implement search modes
-- FIX-008: Add recent_commits to git_status output
-- FIX-009: Align write_markdown interface with spec contract
-- FIX-010: Implement missing observability tools and audit persistence
-- FIX-011: Complete aggregation service methods
-- FIX-012: Complete cross-repo landscape with real metrics
-- FIX-013: Implement Cloudflare Tunnel runtime management
-- FIX-014: Replace placeholder tests with real implementations
-- FIX-015: Fix Task UUID handling and CLI entrypoint packaging
-- FIX-016: Security hardening - path validation and config safety
-- FIX-017: Clean up duplicate endpoints, response models, and artifact registry
-
-## Pending Reverification
-
-- None
+The repo is operating under the managed OpenCode workflow. The workflow layer was repaired on March 25, 2026 to restore closed-ticket reverification, contradiction-stop handling, and transcript-aware lifecycle guidance. Bootstrap is ready, the dev environment is installed, and Wave 10 remediation tickets now track the remaining real source failures plus lint debt.
 
 ## Read In This Order
 
@@ -95,7 +18,49 @@ GPTTalker
 5. tickets/BOARD.md
 6. tickets/manifest.json
 
+## Current Or Next Ticket
+
+- ID: EXEC-007
+- Title: Restore discovery and inspection contract behavior in hub tools
+- Wave: 10
+- Lane: bugfix
+- Stage: planning
+- Status: todo
+- Resolution: open
+- Verification: suspect
+
+## Dependency Status
+
+- current_ticket_done: no
+- dependent_tickets_waiting_on_current: none
+
+## Generation Status
+
+- handoff_status: ready for continued development
+- process_version: 5
+- parallel_mode: sequential
+- pending_process_verification: true
+- bootstrap_status: ready
+- bootstrap_proof: .opencode/state/artifacts/history/exec-001/bootstrap/2026-03-25T12-05-00-000Z-environment-bootstrap.md
+- process_changed_at: 2026-03-25T22:19:11Z
+- process_note: Diagnosis-backed Scafforge workflow repair for closed-ticket reverification, contradiction-stop guidance, and transcript-aware lifecycle hardening after diagnosis/20260325-221327.
+
+## Post-Generation Audit Status
+
+- audit_or_repair_follow_up: workflow repair applied; remaining work is backlog reverification plus EXEC-007 through EXEC-011
+- reopened_tickets: none
+- done_but_not_fully_trusted: SETUP-001, SETUP-002, SETUP-003, SETUP-004, SETUP-005, CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, REPO-001, REPO-002, REPO-003, WRITE-001, LLM-001, LLM-002, LLM-003, CTX-001, CTX-002, CTX-003, CTX-004, XREPO-001, XREPO-002, XREPO-003, SCHED-001, SCHED-002, OBS-001, OBS-002, EDGE-001, EDGE-002, POLISH-001, POLISH-002, POLISH-003, FIX-001, FIX-002, FIX-003, FIX-004, FIX-005, FIX-006, FIX-007, FIX-008, FIX-009, FIX-010, FIX-011, FIX-012, FIX-013, FIX-014, FIX-015, FIX-016, FIX-017
+- pending_reverification: none
+
+## Known Risks
+
+- Historical completion should not be treated as fully trusted until pending process verification is cleared.
+- Historical completion should not be treated as fully trusted until pending process verification is cleared.
+- The workflow is no longer deadlocked, but backlog reverification still has to clear affected done tickets under the repaired contract.
+- The full test suite still has 13 real failures routed into EXEC-007 through EXEC-010.
+- `ruff check .` reports 51 source and test lint violations routed into EXEC-011.
+
 ## Next Action
 
-EXEC-001 SOURCE FIX VERIFIED — node-agent imports cleanly (dependencies.py uses request:Request pattern). Implementation, code review, QA all PASSED. Closeout BLOCKED: smoke_test tool uses system python3 (no pytest) vs acceptance criteria requiring .venv/bin/pytest. Tool/env mismatch, not a code defect. EXEC-002 (pytest collection) depends on EXEC-001 "done" status but closeout gate cannot clear this tool limitation. Fix requires smoke_test tool to use venv python or accept custom commands. 17 suspect FIX tickets still need backlog verification.
+Plan EXEC-007, then continue EXEC-008 through EXEC-011 as the remaining remediation wave. Keep `pending_process_verification` true until the backlog verifier clears the affected historical done tickets through the repaired `ticket_reverify` path.
 <!-- SCAFFORGE:START_HERE_BLOCK END -->

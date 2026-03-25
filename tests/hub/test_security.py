@@ -95,6 +95,23 @@ class TestPathTraversal:
                 or "escape" in str(exc_info.value).lower()
             )
 
+    def test_relative_path_within_base_accepted(self):
+        """Test that relative paths are resolved against base."""
+        base = "/home/user/repo"
+
+        # Valid relative paths should be resolved and accepted
+        valid_relative = [
+            ("src", "/home/user/repo/src"),
+            ("docs/README.md", "/home/user/repo/docs/README.md"),
+            ("test.txt", "/home/user/repo/test.txt"),
+            ("./src", "/home/user/repo/src"),
+            ("foo/bar/../baz", "/home/user/repo/foo/baz"),
+        ]
+
+        for path, expected in valid_relative:
+            result = PathNormalizer.normalize(path, base)
+            assert result == expected, f"Expected {expected}, got {result}"
+
     def test_path_traversal_null_byte_rejected(self):
         """Test that null byte injection is rejected."""
         base = "/home/user/repo"

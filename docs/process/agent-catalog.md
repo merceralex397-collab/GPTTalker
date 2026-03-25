@@ -10,6 +10,7 @@ Core hidden specialists:
 
 - `gpttalker-planner`
 - `gpttalker-plan-review`
+- `gpttalker-lane-executor`
 - `gpttalker-implementer`
 - `gpttalker-implementer-hub`
 - `gpttalker-implementer-node-agent`
@@ -35,4 +36,5 @@ Workflow contract:
 - the team leader advances stages through ticket tools and workflow state, not by manually editing ticket files
 - each major stage must leave a canonical artifact before the next stage begins
 - read-only specialists return findings, artifacts, or blockers instead of mutating repo files
+- bounded parallel write work uses `gpttalker-lane-executor` after a lease is claimed
 - specialized implementers are chosen by lane: hub/registry/security/edge -> hub, node-agent/connectivity -> node agent, context/cross-repo/scheduler -> context, cross-cutting scaffold work -> generic implementer

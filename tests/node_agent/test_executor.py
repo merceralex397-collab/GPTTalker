@@ -265,7 +265,7 @@ def test_executor_validate_path_outside_allowed():
     """Test rejecting path outside allowed boundary."""
     executor = OperationExecutor(allowed_paths=["/tmp"])
 
-    with pytest.raises(PermissionError, match="not within allowed boundaries"):
+    with pytest.raises(PermissionError, match="Path is outside allowed directories"):
         executor._validate_path("/etc/passwd")
 
 

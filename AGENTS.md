@@ -73,7 +73,7 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 5. Use `.opencode/state/workflow-state.json` for transient approval and process-version state.
 6. Treat the stage-specific artifact directories as canonical proof bodies.
 7. Keep the repo signposted and deterministic for weaker models.
-8. Follow the internal stage gates: plan -> review -> implement -> review -> QA -> smoke_test -> closeout.
+8. Follow the internal stage gates: plan -> plan_review -> implement -> review -> QA -> smoke_test -> closeout.
 
 ## Required Read Order
 
@@ -103,6 +103,7 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 |---|---|---|
 | `gpttalker-planner` | Planning and task breakdown | Produces decision-complete plans for one ticket. |
 | `gpttalker-plan-review` | Plan validation | Reviews plans for completeness, feasibility, and spec alignment. |
+| `gpttalker-lane-executor` | Lease-bound parallel executor | Handles bounded write-capable lanes after the team leader claims a safe ticket lease. |
 | `gpttalker-implementer` | Cross-cutting implementation | Handles shared workflow/tooling or cross-domain implementation work. |
 | `gpttalker-implementer-hub` | Hub implementation | FastAPI hub server, MCP tool handlers, policy engine, registries, edge integration. |
 | `gpttalker-implementer-node-agent` | Node agent implementation | Per-machine service, local repo executors, write delivery, health checks. |
@@ -138,11 +139,12 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 
 ## Workflow Rules
 
-- Keep queue status coarse: `todo`, `ready`, `in_progress`, `blocked`, `review`, `qa`, `smoke_test`, `done`.
+- Keep queue status coarse: `todo`, `ready`, `plan_review`, `in_progress`, `blocked`, `review`, `qa`, `smoke_test`, `done`.
 - Keep plan approval in workflow state and artifacts, not in ticket status.
 - Treat `tickets/BOARD.md` as a derived human view, not a second state machine.
 - Use ticket tools and workflow state instead of raw file edits for stage transitions.
-- Use `parallel_safe` and `overlap_risk` to decide whether multiple tickets may advance together.
+- Default to one active foreground lane unless bounded parallel work is justified by `parallel_safe`, `overlap_risk`, and non-overlapping write ownership.
+- Use `ticket_claim` and `ticket_release` for write-capable parallel lanes instead of overlapping unmanaged edits.
 - Use `.opencode/meta/bootstrap-provenance.json` as the canonical process-contract record.
 - Only create migration, remediation, or reverification follow-up tickets through guarded ticket flows backed by current registered evidence.
 - Keep `START-HERE.md`, `tickets/BOARD.md`, and `tickets/manifest.json` aligned with the canonical sources that feed them.

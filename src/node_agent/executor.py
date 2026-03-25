@@ -32,32 +32,34 @@ class OperationExecutor:
         Validate that a path is within allowed boundaries.
 
         Args:
-            path: Path to validate (must be relative, not absolute)
+            path: Path to validate (relative or absolute, both accepted)
 
         Returns:
             Resolved absolute path
 
         Raises:
-            PermissionError: If path is absolute or contains traversal
+            PermissionError: If path contains traversal
             PermissionError: If path is not within allowed boundaries
         """
-        # Step 1: Reject absolute paths
+        # Step 1: Resolve path
         if path.startswith("/") or (len(path) > 1 and path[1] == ":"):
-            raise PermissionError(f"Absolute paths are not allowed: {path}")
+            # Absolute path — resolve to real path
+            resolved = Path(path).resolve()
+        else:
+            # Relative path — resolve from current working directory
+            resolved = Path.cwd() / path
+            resolved = resolved.resolve()
 
-        # Step 2: Explicitly reject path traversal before any resolution
+        # Step 2: Check for path traversal in original path
         path_parts = path.replace("\\", "/").split("/")
         if ".." in path_parts:
             raise PermissionError(f"Path traversal is not allowed: {path}")
-
-        # Step 3: Continue with existing resolution logic
-        resolved = Path(path).resolve()
 
         # If no allowed paths specified, deny all
         if not self.allowed_paths:
             raise PermissionError("No allowed paths configured")
 
-        # Check if path is under any allowed path
+        # Step 3: Check if resolved path is under any allowed root
         for allowed in self.allowed_paths:
             try:
                 resolved.relative_to(allowed)
@@ -65,7 +67,7 @@ class OperationExecutor:
             except ValueError:
                 continue
 
-        raise PermissionError(f"Path not within allowed boundaries: {path}")
+        raise PermissionError(f"Path is outside allowed directories: {path}")
 
     async def list_directory(self, path: str, max_entries: int = 100) -> list[dict]:
         """

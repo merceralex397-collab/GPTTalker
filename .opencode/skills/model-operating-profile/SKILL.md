@@ -1,29 +1,46 @@
 ---
 name: model-operating-profile
-description: Keep GPTTalker's repo-local model choices, evidence standards, and prompt-shaping rules explicit. Use when editing agent prompts, workflow guidance, or managed model metadata.
+description: Apply the `Specific-instruction evidence-first profile` operating profile for the selected downstream models. Use when shaping prompts, delegation briefs, review asks, or evidence requests for this repo.
 ---
 
 # Model Operating Profile
 
-Before applying these rules, call `skill_ping` with `skill_id: "model-operating-profile"` and `scope: "project"`.
+Before reading anything else, call `skill_ping` with `skill_id: "model-operating-profile"` and `scope: "project"`.
 
-Current repo choice:
+Selected runtime profile:
 
 - provider: `minimax-coding-plan`
-- planner and reviewers: `minimax-coding-plan/MiniMax-M2.7`
-- implementers: `minimax-coding-plan/MiniMax-M2.7`
-- utilities, QA, and docs: `minimax-coding-plan/MiniMax-M2.7`
+- team lead / planner / reviewers: `minimax-coding-plan/MiniMax-M2.7`
+- implementer: `minimax-coding-plan/MiniMax-M2.7`
+- utilities, docs, and QA helpers: `minimax-coding-plan/MiniMax-M2.7`
+- operating profile: `Specific-instruction evidence-first profile`
 
-Operating rules:
+Use this profile when drafting:
 
-- treat the current MiniMax assignment as an intentional repo-local choice documented in `docs/spec/CANONICAL-BRIEF.md`; do not swap models during normal ticket work
-- prefer short, explicitly structured outputs with concrete next actions
-- stage transitions require artifact or command evidence, not label-based inference
-- when validation is required, include raw command output rather than summaries
-- return a blocker instead of guessing when requirements, approval state, or proof artifacts are missing
-- use repo-local skills and workflow tools to hold stable procedure; keep prompt prose short
+- task prompts
+- delegation briefs
+- review requests
+- handoff expectations
 
-When to escalate:
+Profile guidance:
 
-- if a human wants to move off the current MiniMax profile, update `docs/spec/CANONICAL-BRIEF.md`, `docs/process/model-matrix.md`, `START-HERE.md`, provenance, and agent frontmatter together
-- if package defaults conflict with this repo-local choice, preserve the documented repo decision and record the mismatch in repair notes instead of silently changing models
+`Apply explicit, example-shaped, bounded instructions for the selected downstream models. Prefer direct evidence and concrete task framing over broad summaries.`
+
+Required rules:
+
+- prefer clear and specific instructions
+- state the purpose or why when it reduces ambiguity
+- use example-shaped outputs when they make the expected shape concrete
+- focus on one bounded goal at a time instead of broad parallel asks
+- prefer direct evidence, command output, and cited repo surfaces over summaries
+- stop on blockers instead of guessing or silently filling gaps
+
+When ambiguity is likely, prefer a concrete output shape such as:
+
+```text
+Goal
+Constraints
+Expected output
+Evidence required
+Blockers
+```

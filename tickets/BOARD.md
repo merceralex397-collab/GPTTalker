@@ -53,5 +53,14 @@
 | 8 | FIX-015 | Fix Task UUID handling and CLI entrypoint packaging | hardening | closeout | done | done | suspect | yes | low | - | - |
 | 8 | FIX-016 | Security hardening - path validation and config safety | hardening | closeout | done | done | suspect | yes | low | FIX-002 | - |
 | 8 | FIX-017 | Clean up duplicate endpoints, response models, and artifact registry | hardening | closeout | done | done | suspect | yes | low | FIX-003 | - |
-| 9 | EXEC-001 | Fix node-agent FastAPI dependency injection import failure | bugfix | smoke_test | smoke_test | open | suspect | no | high | - | - |
-| 9 | EXEC-002 | Restore pytest collection and full test execution after node-agent import fix | bugfix | planning | ready | open | suspect | no | high | EXEC-001 | - |
+| 9 | EXEC-001 | Fix node-agent FastAPI dependency injection import failure | bugfix | closeout | done | done | trusted | no | high | - | - |
+| 9 | EXEC-002 | Restore pytest collection and full test execution after node-agent import fix | bugfix | closeout | done | done | trusted | no | high | EXEC-001 | EXEC-003, EXEC-004, EXEC-005, EXEC-006, EXEC-007, EXEC-008, EXEC-009, EXEC-010, EXEC-011 |
+| 9 | EXEC-003 | Fix node-agent executor absolute-path validation within allowed roots | bugfix | closeout | done | done | trusted | yes | high | EXEC-002 | - |
+| 9 | EXEC-004 | Fix hub repo-path normalization for inspection and file-read flows | bugfix | closeout | done | done | trusted | yes | high | EXEC-002 | - |
+| 9 | EXEC-005 | Align write_markdown and MCP transport response contracts with tests | bugfix | closeout | done | done | trusted | yes | medium | EXEC-002 | - |
+| 9 | EXEC-006 | Fix structured logging redaction behavior for nested payloads | bugfix | closeout | done | done | trusted | yes | medium | EXEC-002 | - |
+| 10 | EXEC-007 | Restore discovery and inspection contract behavior in hub tools | bugfix | planning | todo | open | suspect | no | high | EXEC-004, EXEC-005 | - |
+| 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | planning | todo | open | suspect | no | high | EXEC-004 | - |
+| 10 | EXEC-009 | Repair node-agent executor timestamp and recent-commit behavior | node-agent | planning | todo | open | suspect | yes | medium | EXEC-003 | - |
+| 10 | EXEC-010 | Restore nested structured logging redaction semantics | shared-runtime | planning | todo | open | suspect | yes | medium | EXEC-006 | - |
+| 10 | EXEC-011 | Reduce repo-wide ruff violations to zero | hardening | planning | todo | open | suspect | no | high | - | - |

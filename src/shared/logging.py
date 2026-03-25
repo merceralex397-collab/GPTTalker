@@ -18,7 +18,6 @@ SENSITIVE_PATTERNS = {
     "api_key",
     "apikey",
     "authorization",
-    "auth",
     "credential",
     "private_key",
     "access_token",
@@ -55,9 +54,13 @@ def redact_sensitive(data: Any, _depth: int = 0) -> Any:
     elif isinstance(data, list):
         return [redact_sensitive(item, _depth + 1) for item in data]
     elif isinstance(data, str):
+        # Check if string content contains sensitive patterns
+        data_lower = data.lower()
+        if any(pattern in data_lower for pattern in SENSITIVE_PATTERNS):
+            return "[REDACTED]"
         # Truncate very long strings
         if len(data) > 10000:
-            return data[:10000] + "...[TRUNCATED]"
+            return data[:10000] + "... [TRUNCATED]"
         return data
     else:
         return data
