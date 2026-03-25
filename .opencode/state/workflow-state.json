@@ -1,67 +1,297 @@
 {
-  "active_ticket": "FIX-015",
-  "stage": "closeout",
-  "status": "done",
+  "active_ticket": "EXEC-001",
+  "stage": "smoke_test",
+  "status": "smoke_test",
   "approved_plan": true,
   "ticket_state": {
+    "SETUP-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SETUP-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SETUP-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SETUP-004": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SETUP-005": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-004": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-005": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CORE-006": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REPO-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REPO-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REPO-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "WRITE-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "LLM-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "LLM-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "LLM-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CTX-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CTX-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CTX-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "CTX-004": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "XREPO-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "XREPO-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "XREPO-003": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SCHED-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "SCHED-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "OBS-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "OBS-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EDGE-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EDGE-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "POLISH-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "POLISH-002": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
     "POLISH-003": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-001": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-002": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-003": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-004": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-005": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-006": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-007": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-008": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-009": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-010": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-011": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-012": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-013": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-014": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-015": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-016": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
     },
     "FIX-017": {
-      "approved_plan": true
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-001": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-002": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
     }
   },
-  "process_version": 4,
-  "process_last_changed_at": "2026-03-20T15:39:45Z",
-  "process_last_change_summary": "Deterministic managed-surface replacement approved by user after clean audit to refresh scaffold-managed repo structure.",
-  "pending_process_verification": false,
-  "parallel_mode": "parallel-lanes"
+  "process_version": 5,
+  "process_last_changed_at": "2026-03-25T12:00:00Z",
+  "process_last_change_summary": "Applied the diagnosis-backed repo-local workflow repair: made bootstrap uv-aware, restored missing model-profile guidance, removed baseline skill placeholder text, and tightened Python import and pytest collection proof requirements without changing source-layer EXEC ticket scope.",
+  "pending_process_verification": true,
+  "parallel_mode": "parallel-lanes",
+  "bootstrap": {
+    "status": "ready",
+    "last_verified_at": "2026-03-25T12:05:00.000Z",
+    "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
+    "proof_artifact": ".opencode/state/artifacts/history/exec-001/bootstrap/2026-03-25T12-05-00-000Z-environment-bootstrap.md"
+  },
+  "lane_leases": [
+    {
+      "ticket_id": "EXEC-001",
+      "lane": "bugfix",
+      "owner_agent": "gpttalker-team-leader",
+      "write_lock": true,
+      "claimed_at": "2026-03-25T04:01:31.741Z",
+      "allowed_paths": [
+        "src/node_agent/dependencies.py"
+      ]
+    }
+  ],
+  "state_revision": 30
 }

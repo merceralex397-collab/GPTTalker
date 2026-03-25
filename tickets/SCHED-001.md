@@ -25,9 +25,20 @@ closeout
 
 done
 
+## Trust
+
+- resolution_state: done
+- verification_state: suspect
+- source_ticket_id: None
+- source_mode: None
+
 ## Depends On
 
 LLM-001, CORE-002
+
+## Follow-up Tickets
+
+None
 
 ## Decision Blockers
 

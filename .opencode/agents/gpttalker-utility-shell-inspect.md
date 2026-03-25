@@ -1,10 +1,11 @@
 ---
 description: Hidden shell-oriented inspector for safe read-only command discovery
-model: minimax-coding-plan/MiniMax-M2.5
+model: minimax-coding-plan/MiniMax-M2.7
 mode: subagent
 hidden: true
-temperature: 0.1
-top_p: 0.55
+temperature: 1.0
+top_p: 0.95
+top_k: 40
 tools:
   write: false
   edit: false

@@ -73,7 +73,7 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 5. Use `.opencode/state/workflow-state.json` for transient approval and process-version state.
 6. Treat the stage-specific artifact directories as canonical proof bodies.
 7. Keep the repo signposted and deterministic for weaker models.
-8. Follow the internal stage gates: plan -> review -> implement -> review -> QA -> closeout.
+8. Follow the internal stage gates: plan -> review -> implement -> review -> QA -> smoke_test -> closeout.
 
 ## Required Read Order
 
@@ -112,7 +112,7 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 | `gpttalker-tester-qa` | Testing and QA | Runs validation and determines closeout readiness. |
 | `gpttalker-docs-handoff` | Documentation and handoff | Updates restart surfaces and closeout docs. |
 | `gpttalker-backlog-verifier` | Post-migration verification | Re-checks previously completed work after workflow changes. |
-| `gpttalker-ticket-creator` | Guarded follow-up creation | Creates migration follow-up tickets only from verifier-backed proof. |
+| `gpttalker-ticket-creator` | Guarded follow-up creation | Creates migration, remediation, and reverification follow-up tickets only from current registered evidence. |
 
 ### Utility Specialists (hidden)
 
@@ -138,11 +138,11 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 
 ## Workflow Rules
 
-- Keep queue status coarse: `todo`, `ready`, `in_progress`, `blocked`, `review`, `qa`, `done`.
+- Keep queue status coarse: `todo`, `ready`, `in_progress`, `blocked`, `review`, `qa`, `smoke_test`, `done`.
 - Keep plan approval in workflow state and artifacts, not in ticket status.
 - Treat `tickets/BOARD.md` as a derived human view, not a second state machine.
 - Use ticket tools and workflow state instead of raw file edits for stage transitions.
 - Use `parallel_safe` and `overlap_risk` to decide whether multiple tickets may advance together.
 - Use `.opencode/meta/bootstrap-provenance.json` as the canonical process-contract record.
-- Only create migration follow-up tickets from backlog-verifier findings during an active verification window.
+- Only create migration, remediation, or reverification follow-up tickets through guarded ticket flows backed by current registered evidence.
 - Keep `START-HERE.md`, `tickets/BOARD.md`, and `tickets/manifest.json` aligned with the canonical sources that feed them.

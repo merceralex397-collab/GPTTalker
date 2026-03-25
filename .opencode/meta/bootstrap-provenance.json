@@ -1,5 +1,5 @@
 {
-  "managed_repo": "/home/a/.copilot",
+  "managed_repo": "/home/pc/.codex",
   "template_commit": "unknown",
   "template_asset_root": "skills/repo-scaffold-factory/assets/project-template",
   "project_name": "GPTTalker",
@@ -8,9 +8,9 @@
   "generation_scope": "full",
   "runtime_models": {
     "provider": "minimax-coding-plan",
-    "planner": "minimax-coding-plan/MiniMax-M2.5",
-    "implementer": "minimax-coding-plan/MiniMax-M2.5",
-    "utility": "minimax-coding-plan/MiniMax-M2.5"
+    "planner": "minimax-coding-plan/MiniMax-M2.7",
+    "implementer": "minimax-coding-plan/MiniMax-M2.7",
+    "utility": "minimax-coding-plan/MiniMax-M2.7"
   },
   "bootstrap_steps": [
     "repo-scaffold-factory/render-full-scaffold"
@@ -21,8 +21,8 @@
     "tracker_plugin": "invocation-tracker"
   },
   "workflow_contract": {
-    "process_version": 4,
-    "ticket_contract_version": 2,
+    "process_version": 5,
+    "ticket_contract_version": 3,
     "parallel_mode": "parallel-lanes",
     "manager_hierarchy": {
       "first_class_scaffold_profile": false,
@@ -56,6 +56,7 @@
       "tickets/manifest.json",
       "tickets/*.md",
       ".opencode/state/artifacts",
+      ".opencode/state/bootstrap",
       ".opencode/state/plans",
       ".opencode/state/implementations",
       ".opencode/state/reviews",
@@ -92,6 +93,54 @@
       "project_specific_follow_up": [
         ".opencode/agents",
         "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-24T23:43:12Z",
+      "repair_kind": "special-case-scafforge-v5-process-refresh",
+      "summary": "Special-case Scafforge v5 process refresh after a diagnosis-pack audit: refreshed scaffold-managed workflow surfaces, upgraded the ticket and artifact contracts, synced execution-enforcement prompts, and opened EXEC remediation tickets for the remaining source-layer failures.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills (overlay; repo-local extras preserved)",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "tickets/README.md",
+        "tickets/templates/TICKET.template.md",
+        "tickets/manifest.json",
+        "tickets/BOARD.md",
+        "tickets/*.md",
+        ".opencode/state/artifacts/registry.json",
+        ".opencode/state/workflow-state.json"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-25T12:00:00Z",
+      "repair_kind": "repo-local-managed-surface-remediation",
+      "summary": "Applied the diagnosis-backed repo-local workflow repair: made bootstrap uv-aware, restored missing model-profile guidance, removed baseline skill placeholder text, and tightened Python import and pytest collection proof requirements without changing source-layer EXEC ticket scope.",
+      "replaced_surfaces": [
+        ".opencode/tools/environment_bootstrap.ts",
+        ".opencode/skills/stack-standards/SKILL.md",
+        ".opencode/skills/model-operating-profile/SKILL.md",
+        ".opencode/skills/ticket-execution/SKILL.md",
+        ".opencode/agents/gpttalker-implementer.md",
+        ".opencode/agents/gpttalker-implementer-hub.md",
+        ".opencode/agents/gpttalker-implementer-node-agent.md",
+        ".opencode/agents/gpttalker-implementer-context.md",
+        ".opencode/agents/gpttalker-tester-qa.md"
+      ],
+      "project_specific_follow_up": [
+        "EXEC-001 remains a source-layer remediation ticket",
+        "EXEC-002 remains a source-layer remediation ticket",
+        "Repo remains intentionally pinned to MiniMax-M2.7 pending an explicit human model decision"
       ]
     }
   ]

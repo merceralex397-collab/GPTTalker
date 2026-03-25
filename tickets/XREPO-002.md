@@ -25,9 +25,20 @@ closeout
 
 done
 
+## Trust
+
+- resolution_state: done
+- verification_state: suspect
+- source_ticket_id: None
+- source_mode: None
+
 ## Depends On
 
 CORE-002, CTX-001
+
+## Follow-up Tickets
+
+None
 
 ## Decision Blockers
 

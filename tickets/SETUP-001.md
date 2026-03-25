@@ -25,7 +25,18 @@ closeout
 
 done
 
+## Trust
+
+- resolution_state: done
+- verification_state: suspect
+- source_ticket_id: None
+- source_mode: None
+
 ## Depends On
+
+None
+
+## Follow-up Tickets
 
 None
 

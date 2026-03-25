@@ -28,3 +28,10 @@ Process-change rules:
 
 - if `pending_process_verification` is `true`, verify affected done tickets before trusting their completion
 - migration follow-up tickets must come from backlog-verifier proof through `ticket_create`, not raw manifest edits
+
+Python validation rules:
+
+- code inspection is not validation
+- for Python service changes, run an import check for the primary module before implementation or QA artifacts are accepted
+- when `tests/` exists, run `pytest tests/ --collect-only -q --tb=no` before the full suite
+- include raw command output in implementation and QA artifacts
