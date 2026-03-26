@@ -52,7 +52,7 @@ async function ensureWriteLease(pathValue?: string) {
   }
 }
 
-async function ensureTicketMutationLease(ticketId: string) {
+async function ensureLeaseForTicketMutation(ticketId: string) {
   const workflow = await loadWorkflowState()
   if (!hasWriteLeaseForTicket(workflow, ticketId)) {
     throw new Error(`Ticket ${ticketId} must hold an active write lease before this mutation can proceed.`)
@@ -118,7 +118,7 @@ export const StageGateEnforcer: Plugin = async () => {
         if (sourceMode === "process_verification" && !workflow.pending_process_verification) {
           throw new Error("process_verification follow-up creation is only available while pending_process_verification is true.")
         }
-        await ensureTicketMutationLease(sourceTicketId || workflow.active_ticket)
+        await ensureLeaseForTicketMutation(sourceTicketId || workflow.active_ticket)
         if (sourceMode === "post_completion_issue") {
           if (!sourceTicketId) throw new Error("post_completion_issue ticket creation requires source_ticket_id.")
           if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
@@ -134,7 +134,7 @@ export const StageGateEnforcer: Plugin = async () => {
       if (input.tool === "ticket_reopen") {
         const manifest = await loadManifest()
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
-        await ensureTicketMutationLease(ticketId)
+        await ensureLeaseForTicketMutation(ticketId)
         const ticket = getTicket(manifest, ticketId)
         if (ticket.status !== "done" && ticket.resolution_state !== "done") {
           throw new Error(`Ticket ${ticket.id} must already be done before ticket_reopen can resume it.`)
@@ -150,7 +150,7 @@ export const StageGateEnforcer: Plugin = async () => {
         if (!sourceTicketId) {
           throw new Error("issue_intake requires source_ticket_id.")
         }
-        await ensureTicketMutationLease(sourceTicketId)
+        await ensureLeaseForTicketMutation(sourceTicketId)
         if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
           throw new Error("issue_intake requires evidence_artifact_path.")
         }
@@ -170,6 +170,8 @@ export const StageGateEnforcer: Plugin = async () => {
         if (typeof output.args.evidence_artifact_path !== "string" || !output.args.evidence_artifact_path.trim()) {
           throw new Error("ticket_reverify requires evidence_artifact_path.")
         }
+        // Reverification is the narrow legal mutation path for closed done tickets.
+        // It must not depend on a normal claimed write lease because closed tickets cannot be claimed.
       }
 
       if (input.tool === "artifact_register") {
@@ -182,7 +184,7 @@ export const StageGateEnforcer: Plugin = async () => {
           throw new Error(`Use ${owner} to create ${stage} artifacts. Generic artifact_register is not allowed for that stage.`)
         }
 
-        await ensureTicketMutationLease(ticketId)
+        await ensureLeaseForTicketMutation(ticketId)
         if (LEASED_ARTIFACT_STAGES.has(stage)) {
           const artifactPath = typeof output.args.path === "string" ? output.args.path : ""
           await ensureWriteLease(artifactPath || undefined)
@@ -204,7 +206,7 @@ export const StageGateEnforcer: Plugin = async () => {
           const owner = stage === "smoke-test" ? "smoke_test" : "handoff_publish"
           throw new Error(`Use ${owner} to create ${stage} artifacts. Generic artifact_write is not allowed for that stage.`)
         }
-        await ensureTicketMutationLease(ticketId)
+        await ensureLeaseForTicketMutation(ticketId)
         if (artifactPath) {
           await ensureWriteLease(artifactPath)
         }
@@ -213,7 +215,7 @@ export const StageGateEnforcer: Plugin = async () => {
       if (input.tool === "ticket_update") {
         const manifest = await loadManifest()
         const ticketId = typeof output.args.ticket_id === "string" ? output.args.ticket_id : manifest.active_ticket
-        await ensureTicketMutationLease(ticketId)
+        await ensureLeaseForTicketMutation(ticketId)
         const ticket = getTicket(manifest, ticketId)
         const requested = resolveRequestedTicketProgress(ticket, {
           stage: typeof output.args.stage === "string" ? output.args.stage : undefined,
@@ -269,7 +271,7 @@ export const StageGateEnforcer: Plugin = async () => {
 
       if (input.tool === "handoff_publish") {
         const manifest = await loadManifest()
-        await ensureTicketMutationLease(workflow.active_ticket)
+        await ensureLeaseForTicketMutation(workflow.active_ticket)
         await ensureBootstrapReadyForValidation()
         const activeTicket = getTicket(manifest, workflow.active_ticket)
         if (activeTicket.resolution_state === "reopened") {

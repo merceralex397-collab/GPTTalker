@@ -49,9 +49,9 @@ Return:
 Rules:
 
 - do not implement or approve your own plan
+- expect the coordinator to claim the ticket write lease before you persist the planning artifact; if `artifact_write` or `artifact_register` rejects the write lease, return a blocker instead of improvising a workaround
 - do not claim the ticket file or manifest was updated
 - never treat `artifact_register` as the place to store the full artifact body
 - if the brief asks you to edit repo files directly, return a blocker instead
 - if a material architectural, provider/model, or scope choice is unresolved, return a blocker instead of choosing for the user
 - do not end with a narrative summary when a decision-complete plan or blocker list is still required
-

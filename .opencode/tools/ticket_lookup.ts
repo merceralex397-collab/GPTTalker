@@ -25,6 +25,7 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
   const blocker = validateLifecycleStageStatus(ticket.stage, ticket.status)
   const approvedPlan = isPlanApprovedForTicket(workflow, ticket.id)
   const needsProcessVerification = ticketNeedsProcessVerification(ticket, workflow)
+  const bootstrapStatus = workflow.bootstrap.status
   const base = {
     current_stage: ticket.stage,
     current_status: ticket.status,
@@ -35,6 +36,16 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
     required_artifacts: [] as string[],
     recommended_action: "",
     recommended_ticket_update: null as Record<string, unknown> | null,
+  }
+
+  if (bootstrapStatus !== "ready") {
+    return {
+      ...base,
+      next_allowed_stages: [],
+      required_artifacts: ["bootstrap"],
+      recommended_action: `Bootstrap is ${bootstrapStatus}. Run environment_bootstrap first, then rerun ticket_lookup before attempting lifecycle transitions.`,
+      current_state_blocker: blocker || `Bootstrap ${bootstrapStatus}. Lifecycle execution is blocked until environment_bootstrap succeeds.`,
+    }
   }
 
   switch (ticket.stage) {
@@ -159,7 +170,7 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
         ...base,
         next_allowed_stages: [],
         required_artifacts: ["smoke-test"],
-        recommended_action: ticket.status === "done" ? "Ticket is already closed." : "Finish closeout and mark the ticket done.",
+        recommended_action: ticket.status === "done" ? "Ticket is closed with no remaining lifecycle action." : "Finish closeout and mark the ticket done.",
         recommended_ticket_update: ticket.status === "done" ? null : { ticket_id: ticket.id, stage: "closeout", activate: true },
       }
     default:

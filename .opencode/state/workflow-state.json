@@ -1,8 +1,8 @@
 {
-  "active_ticket": "EXEC-007",
-  "stage": "planning",
-  "status": "todo",
-  "approved_plan": false,
+  "active_ticket": "EXEC-008",
+  "stage": "review",
+  "status": "review",
+  "approved_plan": true,
   "ticket_state": {
     "SETUP-001": {
       "approved_plan": true,
@@ -290,12 +290,12 @@
       "needs_reverification": false
     },
     "EXEC-007": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "EXEC-008": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
@@ -316,30 +316,25 @@
     }
   },
   "process_version": 5,
-  "process_last_changed_at": "2026-03-25T22:19:11Z",
-  "process_last_change_summary": "Diagnosis-backed Scafforge workflow repair for closed-ticket reverification, contradiction-stop guidance, and transcript-aware lifecycle hardening after diagnosis/20260325-221327.",
+  "process_last_changed_at": "2026-03-26T03:37:12.985Z",
+  "process_last_change_summary": "Diagnosis-backed Scafforge workflow repair follow-up: refreshed repo-local agent and skill guidance, synchronized latest-handoff publication, cleared the stale lane lease, restored bootstrap proof, and unblocked closed-ticket reverification after diagnosis/20260326-031228.",
   "pending_process_verification": true,
   "parallel_mode": "sequential",
   "bootstrap": {
-    "status": "failed",
-    "last_verified_at": "2026-03-25T23:02:26.471Z",
+    "status": "ready",
+    "last_verified_at": "2026-03-26T03:37:12.985Z",
     "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
-    "proof_artifact": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-25T23-02-26-471Z-environment-bootstrap.md"
+    "proof_artifact": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md"
   },
   "lane_leases": [
     {
-      "ticket_id": "EXEC-007",
-      "lane": "bugfix",
+      "ticket_id": "EXEC-008",
+      "lane": "security",
       "owner_agent": "gpttalker-team-leader",
-      "write_lock": false,
-      "claimed_at": "2026-03-25T23:00:24.084Z",
-      "allowed_paths": [
-        ".opencode/state/plans/",
-        "src/hub/tools/discovery.py",
-        "src/hub/tools/inspection.py",
-        "tests/hub/test_contracts.py"
-      ]
+      "write_lock": true,
+      "claimed_at": "2026-03-26T04:25:15.647Z",
+      "allowed_paths": []
     }
   ],
-  "state_revision": 122
+  "state_revision": 165
 }

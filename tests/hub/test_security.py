@@ -205,7 +205,7 @@ class TestTargetValidation:
     async def test_unregistered_write_target_denied(self):
         """Test that unregistered write targets are denied."""
         mock_repo = MagicMock()
-        mock_repo.get = AsyncMock(return_value=None)
+        mock_repo.get_by_path = AsyncMock(return_value=None)
 
         policy = WriteTargetPolicy(mock_repo)
 

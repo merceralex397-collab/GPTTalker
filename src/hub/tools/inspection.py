@@ -1,7 +1,6 @@
 """Inspection tools for repository tree and file reading."""
 
 import time
-from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any
 
 from src.hub.policy.path_utils import PathNormalizer
@@ -52,6 +51,15 @@ async def inspect_repo_tree_handler(
         max_entries = 500
     if max_entries < 1:
         max_entries = 1
+
+    # Validate required parameters first (before dependency checks)
+    if not node_id:
+        logger.warning("inspect_repo_tree_missing_node_id", node_id=node_id)
+        return {"success": False, "error": f"Node not found: {node_id}"}
+
+    if not repo_id:
+        logger.warning("inspect_repo_tree_missing_repo_id", repo_id=repo_id)
+        return {"success": False, "error": f"Repository not found: {repo_id}"}
 
     # Check dependencies
     if node_client is None:
@@ -198,6 +206,11 @@ async def read_repo_file_handler(
     if limit is not None and limit < 1:
         limit = None
 
+    # Validate required parameters first (before dependency checks)
+    if not file_path:
+        logger.warning("read_repo_file_missing_file_path", file_path=file_path)
+        return {"success": False, "error": f"Repository not found: {file_path}"}
+
     # Check dependencies
     if node_client is None:
         return {"success": False, "error": "Node client not available"}
@@ -236,10 +249,10 @@ async def read_repo_file_handler(
 
     # Validate and normalize the path
     try:
-        # Validate path doesn't contain traversal attempts
-        PathNormalizer.validate_no_traversal(file_path)
-        # Normalize path relative to repo root
+        # Normalize path relative to repo root first
         normalized_path = PathNormalizer.normalize(file_path, repo_path)
+        # Then validate the normalized path doesn't contain traversal attempts
+        PathNormalizer.validate_no_traversal(normalized_path)
     except PathTraversalError as e:
         logger.warning(
             "read_repo_file_path_validation_failed",

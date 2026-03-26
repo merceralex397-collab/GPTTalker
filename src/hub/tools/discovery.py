@@ -14,6 +14,20 @@ if TYPE_CHECKING:
 logger = get_logger(__name__)
 
 
+def _get_status_value(status) -> str:
+    """Handle both enum and plain-string status values."""
+    if hasattr(status, 'value'):
+        return status.value
+    return str(status)
+
+
+def _get_health_status_value(health_status) -> str:
+    """Handle both enum and plain-string health status values."""
+    if hasattr(health_status, 'value'):
+        return health_status.value
+    return str(health_status)
+
+
 async def list_nodes_handler(
     node_repo: "NodeRepository | None" = None,
 ) -> dict[str, Any]:
@@ -58,10 +72,10 @@ async def list_nodes_impl(
             "node_id": node.node_id,
             "name": node.name,
             "hostname": node.hostname,
-            "status": node.status.value,
+            "status": _get_status_value(node.status),
             "last_seen": node.last_seen.isoformat() if node.last_seen else None,
             "health": {
-                "health_status": (health.get("health_status", NodeHealthStatus.UNKNOWN)).value
+                "health_status": _get_health_status_value(health.get("health_status", NodeHealthStatus.UNKNOWN))
                 if health
                 else NodeHealthStatus.UNKNOWN.value,
                 "health_latency_ms": health.get("health_latency_ms") if health else None,

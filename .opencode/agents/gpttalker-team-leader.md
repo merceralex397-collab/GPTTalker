@@ -60,6 +60,7 @@ Start by resolving the active ticket through `ticket_lookup`.
 At session start, and again before you clear `pending_process_verification` or route migration follow-up work, re-run `ticket_lookup` and inspect `process_verification`.
 Treat `ticket_lookup.transition_guidance` as the canonical next-step summary for the active ticket; do not infer the next lifecycle move from labels or memory when the tool output says otherwise.
 If bootstrap is incomplete or stale, route the environment bootstrap flow before treating validation failures as product defects.
+If `ticket_lookup.bootstrap.status` is not `ready`, treat `environment_bootstrap` as the next required tool call, rerun `ticket_lookup` after it completes, and do not continue normal lifecycle routing until bootstrap succeeds.
 
 Use local skills only when they materially reduce ambiguity or provide the required closeout procedure:
 
@@ -98,7 +99,7 @@ Bounded parallel work:
 - default to one active write lane at a time unless the ticket graph proves safe separation
 - you may advance multiple tickets in parallel only when each ticket is marked `parallel_safe: true` and `overlap_risk: low` in `ticket_lookup.ticket`, has no unresolved dependency edge between the active tickets, and does not require overlapping write-capable work in the same ownership lane
 - workflow-state keeps one active foreground ticket for synthesis and resume, while `ticket_state` preserves per-ticket approval and reverification state when you switch the foreground lane
-- grant a write lease with `ticket_claim` before any write-capable implementation or docs closeout work, and release it with `ticket_release` when that bounded lane is complete
+- grant a write lease with `ticket_claim` before any write-capable planning, implementation, review, QA, or docs closeout work, and release it with `ticket_release` when that bounded lane is complete
 - use `gpttalker-lane-executor` as the default hidden worker for bounded parallel write work; keep the specialized implementers for single-lane or clearly domain-owned work
 - keep one visible team leader coordinating the repo by default; introduce broader manager or section-leader layers only when the project brief clearly proves disjoint domains and the local skill pack already covers them
 
@@ -141,6 +142,7 @@ Rules:
 - do not create planning, implementation, review, QA, or smoke-test artifacts yourself
 - never author stage artifacts yourself outside closeout synthesis; planning, implementation, review, and QA artifacts belong to the owning specialist
 - leave stage artifacts to the owning specialist even when you believe you already know the content that should be written
+- if a specialist must persist a stage artifact, claim the ticket write lease first so the owning lane has one legal write path
 - never ask a read-only agent to update repo files
 - do not claim that a file was updated unless a write-capable tool or artifact tool actually wrote it
 - use human slash commands only as entrypoints
