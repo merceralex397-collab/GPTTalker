@@ -33,7 +33,7 @@ export default tool({
       throw new Error(`Ticket ${ticket.id} is blocked and cannot be claimed until its decision blockers are resolved.`)
     }
     if (ticket.status === "done" || ticket.resolution_state === "superseded") {
-      throw new Error(`Ticket ${ticket.id} is already closed. Closed tickets do not take write-lane claims; use ticket_reverify when historical trust needs restoration.`)
+      throw new Error(`Ticket ${ticket.id} cannot be claimed because it is already closed.`)
     }
     for (const dependency of ticket.depends_on) {
       const dependencyTicket = getTicket(manifest, dependency)

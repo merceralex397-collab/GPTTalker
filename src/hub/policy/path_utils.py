@@ -67,6 +67,12 @@ class PathNormalizer:
         # Strip whitespace
         path = path.strip()
 
+        # Check for home directory expansion BEFORE resolve() expands ~
+        if "~" in path:
+            raise PathTraversalError(
+                f"Path traversal detected: home directory expansion '{path}' not allowed"
+            )
+
         # Normalize the path - join with base first if provided
         try:
             # Use Path for normalization (handles .., ., multiple slashes)
@@ -90,7 +96,9 @@ class PathNormalizer:
                 base_normalized += "/"
 
             if not normalized.startswith(base_normalized):
-                raise PathTraversalError(f"Path '{path}' escapes base directory '{base}'")
+                raise PathTraversalError(
+                    f"Path traversal detected: '{path}' escapes base directory '{base}'"
+                )
 
         return normalized
 

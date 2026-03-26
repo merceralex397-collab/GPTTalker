@@ -10,6 +10,12 @@ Before refreshing handoff artifacts, call `skill_ping` with `skill_id: "docs-and
 Keep these artifacts fresh:
 
 - `START-HERE.md`
+- `.opencode/state/latest-handoff.md`
 - `.opencode/state/context-snapshot.md`
 - `tickets/BOARD.md`
 - `tickets/manifest.json`
+
+Rules:
+
+- treat `START-HERE.md`, `.opencode/state/latest-handoff.md`, and `.opencode/state/context-snapshot.md` as derived restart surfaces that must agree with `tickets/manifest.json` and `.opencode/state/workflow-state.json`
+- do not publish “bootstrap ready”, “workflow repaired”, or dependency-unblocked claims when canonical workflow state still says otherwise

@@ -222,6 +222,51 @@
         ".opencode/agents",
         "docs/process/agent-catalog.md"
       ]
+    },
+    {
+      "repaired_at": "2026-03-26T03:25:58Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Diagnosis-backed Scafforge workflow repair for bootstrap-first routing, restart-surface regeneration, and lifecycle hardening after diagnosis/20260326-031228.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-26T03:37:12.985Z",
+      "repair_kind": "repo-local-managed-surface-follow-up",
+      "summary": "Diagnosis-backed Scafforge workflow repair follow-up: refreshed repo-local agent and skill guidance, synchronized latest-handoff publication, cleared the stale lane lease, restored bootstrap proof, and unblocked closed-ticket reverification after diagnosis/20260326-031228.",
+      "replaced_surfaces": [
+        ".opencode/tools/_workflow.ts",
+        ".opencode/agents/gpttalker-team-leader.md",
+        ".opencode/agents/gpttalker-planner.md",
+        ".opencode/skills/ticket-execution/SKILL.md",
+        ".opencode/skills/docs-and-handoff/SKILL.md",
+        ".opencode/skills/stack-standards/SKILL.md",
+        "docs/process/workflow.md",
+        "START-HERE.md managed block",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md",
+        ".opencode/plugins/stage-gate-enforcer.ts",
+        ".opencode/tools/ticket_lookup.ts"
+      ],
+      "project_specific_follow_up": [
+        "pending_process_verification remains true until backlog reverification clears affected historical done tickets",
+        "EXEC-007 remains the active source-layer remediation ticket after bootstrap recovery"
+      ]
     }
   ]
 }

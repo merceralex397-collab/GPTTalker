@@ -547,6 +547,7 @@ class TestWriteTools:
         mock_node_client,
         mock_node,
         mock_repo,
+        mock_write_target,
     ):
         """Test that write_markdown validates file extensions."""
         mock_node_repo = MagicMock()

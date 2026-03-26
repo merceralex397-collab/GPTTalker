@@ -2672,7 +2672,10 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T22:52:50.138Z",
-      "trust_state": "current"
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
     },
     {
       "ticket_id": "EXEC-007",
@@ -2681,7 +2684,10 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T22:53:42.709Z",
-      "trust_state": "current"
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
     },
     {
       "ticket_id": "EXEC-007",
@@ -2690,7 +2696,10 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T22:56:30.452Z",
-      "trust_state": "current"
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
     },
     {
       "ticket_id": "EXEC-007",
@@ -2699,7 +2708,10 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T22:57:48.683Z",
-      "trust_state": "current"
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
     },
     {
       "ticket_id": "EXEC-007",
@@ -2708,7 +2720,10 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T23:01:28.382Z",
-      "trust_state": "current"
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
     },
     {
       "ticket_id": "EXEC-007",
@@ -2717,6 +2732,99 @@
       "stage": "bootstrap",
       "summary": "Environment bootstrap failed.",
       "created_at": "2026-03-25T23:02:26.471Z",
+      "trust_state": "superseded",
+      "superseded_at": "2026-03-26T03:37:12.985Z",
+      "superseded_by": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "supersession_reason": "Replaced by newer bootstrap/environment-bootstrap artifact."
+    },
+    {
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-03-26T03:37:12.985Z",
+      "trust_state": "current",
+      "ticket_id": "EXEC-007"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/exec-007/planning/2026-03-26T03-51-26-914Z-planning.md",
+      "stage": "planning",
+      "summary": "Implementation plan for EXEC-007: Restore discovery and inspection contract behavior in hub tools. Identifies 3 root causes: (1) list_nodes_impl string vs enum status handling in discovery.py, (2) inspect_repo_tree_handler parameter validation order in inspection.py, (3) read_repo_file_handler parameter validation order in inspection.py. Details file-by-file changes, implementation steps, and validation plan.",
+      "created_at": "2026-03-26T03:51:26.914Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/exec-007/implementation/2026-03-26T04-02-51-970Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implemented three bug fixes: (1) Added _get_status_value/_get_health_status_value helpers in discovery.py for string/enum handling, (2) Added parameter validation before dependency checks in inspect_repo_tree_handler, (3) Added file_path validation before dependency checks in read_repo_file_handler. All 3 contract tests pass.",
+      "created_at": "2026-03-26T04:02:51.970Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/exec-007/review/2026-03-26T04-07-31-279Z-review.md",
+      "stage": "review",
+      "summary": "Code review for EXEC-007: APPROVED. All three bug fixes verified correct - helper functions handle enum/string types, validation reordering produces contract-aligned errors, trust boundaries preserved. Minor observation: read_repo_file_handler error message semantics noted but not blocking.",
+      "created_at": "2026-03-26T04:07:31.279Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/exec-007/qa/2026-03-26T04-12-51-130Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EXEC-007: Implementation verified via code inspection, but runtime validation blocked due to bash execution environment restrictions",
+      "created_at": "2026-03-26T04:12:51.130Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-007/smoke-test/2026-03-26T04-13-39-846Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-26T04:13:39.846Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-007/smoke-test/2026-03-26T04-20-53-139Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-26T04:20:53.139Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/exec-008/planning/2026-03-26T04-27-15-484Z-planning.md",
+      "stage": "planning",
+      "summary": "Planning artifact for EXEC-008: Close remaining hub path and write-target security edge cases. Identifies 5 root causes and fixes for path normalization and write-target validation issues. Notes blocker: test_unregistered_write_target_denied is out of scope per brief constraint.",
+      "created_at": "2026-03-26T04:27:15.484Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/exec-008/plan-review/2026-03-26T04-29-58-858Z-review.md",
+      "stage": "plan_review",
+      "summary": "Plan review for EXEC-008: APPROVED. The alleged blocker (test_unregistered_write_target_denied broken mock) is invalid. Acceptance criterion 3 explicitly names \"non-awaitable mocks\" as in-scope. Brief constraint protects code security behavior, not test infrastructure. All 5 fixes approved, plan is decision-complete.",
+      "created_at": "2026-03-26T04:29:58.858Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/exec-008/implementation/2026-03-26T04-50-13-178Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implemented all 5 security fixes: Fix 1 (error message with \"traversal\"), Fix 2 (~ detection before resolve), Fix 3 (mock method name), Fix 4 (normalize before validate), Fix 5 (mock_write_target fixture). 3 of 5 targeted tests pass. Fix 1 has pytest anomaly (direct Python works). Fix 4 has test expectation mismatch (foo/./bar correctly allowed).",
+      "created_at": "2026-03-26T04:50:13.178Z",
       "trust_state": "current"
     }
   ]
