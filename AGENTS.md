@@ -66,28 +66,31 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 
 ## Operating Priorities
 
-1. Read `START-HERE.md` first.
-2. Treat `docs/spec/CANONICAL-BRIEF.md` as the canonical project summary.
-3. Use `mcp_spec_pack/` when generated docs need source-pack verification.
-4. Use `tickets/manifest.json` as the machine-readable work queue.
-5. Use `.opencode/state/workflow-state.json` for transient approval and process-version state.
-6. Treat the stage-specific artifact directories as canonical proof bodies.
-7. Keep the repo signposted and deterministic for weaker models.
+1. Resume from `tickets/manifest.json` and `.opencode/state/workflow-state.json` first.
+2. `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived restart surfaces.
+3. Treat `docs/spec/CANONICAL-BRIEF.md` as the canonical project summary.
+4. Use `mcp_spec_pack/` when generated docs need source-pack verification.
+5. Treat the stage-specific artifact directories as canonical proof bodies.
+6. Keep the repo signposted and deterministic for weaker models.
+7. Treat the active open ticket as the primary lane even when historical reverification is pending.
 8. Follow the internal stage gates: plan -> plan_review -> implement -> review -> QA -> smoke_test -> closeout.
 
 ## Required Read Order
 
-1. `START-HERE.md`
-2. `AGENTS.md`
-3. `docs/spec/CANONICAL-BRIEF.md`
-4. `mcp_spec_pack/00-overview/00_project_brief.md`
-5. `docs/process/workflow.md`
-6. `docs/process/agent-catalog.md`
-7. `docs/process/model-matrix.md`
-8. `docs/process/git-capability.md`
-9. `tickets/README.md`
-10. `tickets/manifest.json`
-11. `tickets/BOARD.md`
+1. `tickets/manifest.json`
+2. `.opencode/state/workflow-state.json`
+3. `START-HERE.md`
+4. `.opencode/state/context-snapshot.md`
+5. `.opencode/state/latest-handoff.md`
+6. `AGENTS.md`
+7. `docs/spec/CANONICAL-BRIEF.md`
+8. `mcp_spec_pack/00-overview/00_project_brief.md`
+9. `docs/process/workflow.md`
+10. `docs/process/agent-catalog.md`
+11. `docs/process/model-matrix.md`
+12. `docs/process/git-capability.md`
+13. `tickets/README.md`
+14. `tickets/BOARD.md`
 
 ## Agent Team
 
@@ -144,7 +147,10 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 - Treat `tickets/BOARD.md` as a derived human view, not a second state machine.
 - Use ticket tools and workflow state instead of raw file edits for stage transitions.
 - Default to one active foreground lane unless bounded parallel work is justified by `parallel_safe`, `overlap_risk`, and non-overlapping write ownership.
+- the team leader owns `ticket_claim` and `ticket_release`
+- only Wave 0 setup work may claim a write-capable lease before bootstrap is ready
 - Use `ticket_claim` and `ticket_release` for write-capable parallel lanes instead of overlapping unmanaged edits.
 - Use `.opencode/meta/bootstrap-provenance.json` as the canonical process-contract record.
 - Only create migration, remediation, or reverification follow-up tickets through guarded ticket flows backed by current registered evidence.
+- `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived restart surfaces.
 - Keep `START-HERE.md`, `tickets/BOARD.md`, and `tickets/manifest.json` aligned with the canonical sources that feed them.

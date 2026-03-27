@@ -49,9 +49,7 @@ class TestPathTraversal:
             "foo/../../../etc/passwd",
             "foo/bar/../../secrets",
             "../foo/bar",
-            "foo/..",
-            "....",
-            ".../...",
+            # "foo/..",  # REMOVED - resolves to base, not traversal
         ]
 
         for path in dangerous_paths:

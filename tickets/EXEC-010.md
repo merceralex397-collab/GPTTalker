@@ -58,4 +58,4 @@ None
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
-
+- Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` still fails `test_redact_sensitive_nested`, `test_redact_sensitive_list`, and `test_redact_sensitive_max_depth` in `tests/shared/test_logging.py`.

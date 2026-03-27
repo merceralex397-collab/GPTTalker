@@ -10,12 +10,15 @@ Before refreshing handoff artifacts, call `skill_ping` with `skill_id: "docs-and
 Keep these artifacts fresh:
 
 - `START-HERE.md`
-- `.opencode/state/latest-handoff.md`
 - `.opencode/state/context-snapshot.md`
+- `.opencode/state/latest-handoff.md`
 - `tickets/BOARD.md`
 - `tickets/manifest.json`
 
-Rules:
+Repo-specific handoff rules:
 
-- treat `START-HERE.md`, `.opencode/state/latest-handoff.md`, and `.opencode/state/context-snapshot.md` as derived restart surfaces that must agree with `tickets/manifest.json` and `.opencode/state/workflow-state.json`
-- do not publish “bootstrap ready”, “workflow repaired”, or dependency-unblocked claims when canonical workflow state still says otherwise
+- treat `tickets/manifest.json` and `.opencode/state/workflow-state.json` as canonical and regenerate restart prose from them
+- keep `repair_follow_on`, bootstrap status, active ticket, and `pending_process_verification` visible when they block normal execution
+- do not publish a "ready for continued development" narrative while `repair_follow_on.handoff_allowed` is `false`
+- keep `tickets/BOARD.md` derived from the manifest instead of hand-authoring queue state
+- when the repo is verification-pending, the next action must name the blocker stage or source-level follow-up explicitly

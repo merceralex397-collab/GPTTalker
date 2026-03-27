@@ -4070,7 +4070,9 @@
       "resolution_state": "open",
       "verification_state": "suspect",
       "source_ticket_id": "EXEC-002",
-      "follow_up_ticket_ids": [],
+      "follow_up_ticket_ids": [
+        "EXEC-012"
+      ],
       "source_mode": "post_completion_issue"
     },
     {
@@ -4080,8 +4082,8 @@
       "lane": "security",
       "parallel_safe": false,
       "overlap_risk": "high",
-      "stage": "review",
-      "status": "review",
+      "stage": "smoke-test",
+      "status": "smoke_test",
       "depends_on": [
         "EXEC-004"
       ],
@@ -4117,12 +4119,137 @@
           "summary": "Implemented all 5 security fixes: Fix 1 (error message with \"traversal\"), Fix 2 (~ detection before resolve), Fix 3 (mock method name), Fix 4 (normalize before validate), Fix 5 (mock_write_target fixture). 3 of 5 targeted tests pass. Fix 1 has pytest anomaly (direct Python works). Fix 4 has test expectation mismatch (foo/./bar correctly allowed).",
           "created_at": "2026-03-26T04:50:13.178Z",
           "trust_state": "current"
+        },
+        {
+          "kind": "review",
+          "path": ".opencode/state/artifacts/history/exec-008/review/2026-03-26T17-54-05-984Z-review.md",
+          "stage": "review",
+          "summary": "Code review for EXEC-008: APPROVED WITH ISSUES. All 5 security fixes verified correct. Two residual test failures (test_path_traversal_dotdot_rejected and test_invalid_path_rejected) are caused by test bugs misclassifying valid paths, not code defects.",
+          "created_at": "2026-03-26T17:54:05.984Z",
+          "trust_state": "current"
+        },
+        {
+          "kind": "qa",
+          "path": ".opencode/state/artifacts/history/exec-008/qa/2026-03-26T17-57-43-192Z-qa.md",
+          "stage": "qa",
+          "summary": "QA verification for EXEC-008: PARTIAL PASS. Criteria 2/3/4 PASS. Criterion 1 PARTIAL PASS due to 2 test bugs (not code defects) in test_path_traversal_dotdot_rejected (...., .../... misclassified) and test_invalid_path_rejected (foo/./bar is valid). All 5 security fixes verified correct by code inspection.",
+          "created_at": "2026-03-26T17:57:43.192Z",
+          "trust_state": "current"
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T17-58-35-000Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T17:58:35.000Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T17:58:56.658Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T17-58-56-658Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T17-58-56-658Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T17:58:56.658Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T17:59:27.718Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T17-59-27-718Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T17-59-27-718Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T17:59:27.718Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T18:39:01.413Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-39-01-413Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-39-01-413Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T18:39:01.413Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T18:42:26.836Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-42-26-836Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-42-26-836Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T18:42:26.836Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T18:48:57.596Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-48-57-596Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-48-57-596Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T18:48:57.596Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T18:50:57.652Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-50-57-652Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-50-57-652Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T18:50:57.652Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T18:52:39.065Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-52-39-065Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-52-39-065Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T18:52:39.065Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T22:30:50.955Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-30-50-955Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-30-50-955Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T22:30:50.955Z",
+          "trust_state": "superseded",
+          "superseded_at": "2026-03-26T22:33:31.133Z",
+          "superseded_by": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-33-31-133Z-smoke-test.md",
+          "supersession_reason": "Replaced by newer smoke-test/smoke-test artifact."
+        },
+        {
+          "kind": "smoke-test",
+          "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-33-31-133Z-smoke-test.md",
+          "stage": "smoke-test",
+          "summary": "Deterministic smoke test failed.",
+          "created_at": "2026-03-26T22:33:31.133Z",
+          "trust_state": "current"
         }
       ],
       "resolution_state": "open",
       "verification_state": "suspect",
       "source_ticket_id": "EXEC-002",
-      "follow_up_ticket_ids": [],
+      "follow_up_ticket_ids": [
+        "EXEC-012"
+      ],
       "source_mode": "post_completion_issue"
     },
     {
@@ -4203,6 +4330,32 @@
       "source_ticket_id": "EXEC-002",
       "follow_up_ticket_ids": [],
       "source_mode": "post_completion_issue"
+    },
+    {
+      "id": "EXEC-012",
+      "title": "Fix misclassified paths in test_path_traversal_dotdot_rejected and test_invalid_path_rejected",
+      "wave": 11,
+      "lane": "bugfix",
+      "parallel_safe": true,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [
+        "EXEC-008"
+      ],
+      "summary": "Two security tests incorrectly classify valid paths as dangerous: (1) test_path_traversal_dotdot_rejected includes `....` and `.../...` which do NOT escape the base directory and should not be rejected; (2) test_invalid_path_rejected includes `foo/./bar` which normalizes to `foo/bar` (in-bounds) and should not be rejected. The security code in path_utils.py and inspection.py is correct. Only test expectations need correction. Fix discovered during EXEC-008 smoke-test closeout.",
+      "acceptance": [
+        "test_path_traversal_dotdot_rejected passes with `....` and `.../...` removed from dangerous_paths list",
+        "test_invalid_path_rejected passes with `foo/./bar` removed from invalid_paths list",
+        "UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_security.py tests/hub/test_contracts.py -q --tb=no exits 0"
+      ],
+      "decision_blockers": [],
+      "artifacts": [],
+      "resolution_state": "open",
+      "verification_state": "suspect",
+      "source_ticket_id": "EXEC-008",
+      "follow_up_ticket_ids": [],
+      "source_mode": "net_new_scope"
     }
   ]
 }

@@ -58,4 +58,4 @@ None
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
-
+- Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` still fails `tests/node_agent/test_executor.py::test_executor_list_directory` and `tests/node_agent/test_executor.py::test_executor_list_directory_max_entries` with `AttributeError: type object 'datetime.datetime' has no attribute 'UTC'`.

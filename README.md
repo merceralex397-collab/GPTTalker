@@ -57,6 +57,12 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 3. Run `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`
 4. Configure environment variables for hub and nodes
 
+## Resume contract
+
+- Resume from `tickets/manifest.json` and `.opencode/state/workflow-state.json` first.
+- `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived restart surfaces.
+- Treat the active open ticket as the primary lane even when historical reverification is pending.
+
 ## Testing
 
 Run tests with:

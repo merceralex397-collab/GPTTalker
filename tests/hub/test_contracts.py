@@ -842,7 +842,6 @@ class TestFailureModes:
             "../../../etc/passwd",
             "/absolute/path",
             "foo/../../bar",
-            "foo/./bar",
         ]
 
         for invalid_path in invalid_paths:

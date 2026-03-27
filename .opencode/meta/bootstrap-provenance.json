@@ -21,7 +21,7 @@
     "tracker_plugin": "invocation-tracker"
   },
   "workflow_contract": {
-    "process_version": 5,
+    "process_version": 6,
     "ticket_contract_version": 3,
     "parallel_mode": "sequential",
     "manager_hierarchy": {
@@ -267,6 +267,188 @@
         "pending_process_verification remains true until backlog reverification clears affected historical done tickets",
         "EXEC-007 remains the active source-layer remediation ticket after bootstrap recovery"
       ]
+    },
+    {
+      "repaired_at": "2026-03-26T11:54:43Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Deterministic Scafforge managed workflow refresh for diagnosis/20260326-033803, diagnosis/20260326-033916, and diagnosis/20260326-034013 after transcript-backed lifecycle bypass and coordinator-artifact findings.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-26T13:35:35Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Deterministic Scafforge managed workflow surfaces refreshed by scafforge-repair.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-26T17:07:23Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-26T18:31:28Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Deterministic Scafforge managed workflow surfaces refreshed by scafforge-repair.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-27T00:49:36Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-27T04:17:48Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
     }
-  ]
+  ],
+  "restart_surface_regeneration_history": [
+    {
+      "generated_at": "2026-03-27T04:17:48Z",
+      "source": "scafforge-repair",
+      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "regenerated": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "verification": "pending_or_failed"
+    },
+    {
+      "generated_at": "2026-03-27T04:17:57Z",
+      "source": "scafforge-repair",
+      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "regenerated": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "verification": "pending_or_failed"
+    },
+    {
+      "generated_at": "2026-03-27T04:22:29Z",
+      "source": "scafforge-repair",
+      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "regenerated": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "verification": "passed"
+    }
+  ],
+  "last_restart_surface_regeneration": {
+    "generated_at": "2026-03-27T04:22:29Z",
+    "source": "scafforge-repair",
+    "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+    "regenerated": [
+      "START-HERE.md",
+      ".opencode/state/context-snapshot.md",
+      ".opencode/state/latest-handoff.md"
+    ],
+    "verification": "passed"
+  }
 }

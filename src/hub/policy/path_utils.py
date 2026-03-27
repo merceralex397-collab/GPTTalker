@@ -67,6 +67,10 @@ class PathNormalizer:
         # Strip whitespace
         path = path.strip()
 
+        # Check for null byte injection
+        if "\x00" in path:
+            raise PathTraversalError(f"Null byte in path not allowed: '{path}'")
+
         # Check for home directory expansion BEFORE resolve() expands ~
         if "~" in path:
             raise PathTraversalError(
@@ -75,11 +79,26 @@ class PathNormalizer:
 
         # Normalize the path - join with base first if provided
         try:
-            # Use Path for normalization (handles .., ., multiple slashes)
             if base:
-                # Join relative paths to base; absolute paths override base
-                # Use resolve() to collapse .. components so validation sees clean path
-                normalized = str((Path(base) / path).resolve().as_posix())
+                # Join path to base
+                joined = str((Path(base) / path).as_posix())
+                # Manually resolve .. components since resolve() doesn't work on non-existent paths
+                parts = joined.split("/")
+                stack = []
+                for part in parts:
+                    if part == "" or part == ".":
+                        continue
+                    elif part == "..":
+                        if stack and stack[-1] != "..":
+                            stack.pop()
+                        else:
+                            # Can't go up further, this is traversal
+                            raise PathTraversalError(
+                                f"Path traversal detected: '{path}' escapes base directory '{base}'"
+                            )
+                    else:
+                        stack.append(part)
+                normalized = "/" + "/".join(stack) if stack else "/"
             else:
                 normalized = str(Path(path).resolve().as_posix())
         except (ValueError, OSError) as e:
@@ -95,7 +114,8 @@ class PathNormalizer:
             if not base_normalized.endswith("/"):
                 base_normalized += "/"
 
-            if not normalized.startswith(base_normalized):
+            # Allow exact match (normalized equals base) or prefix match (inside base)
+            if normalized != base_normalized and not normalized.startswith(base_normalized):
                 raise PathTraversalError(
                     f"Path traversal detected: '{path}' escapes base directory '{base}'"
                 )

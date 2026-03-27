@@ -60,7 +60,8 @@
 | 9 | EXEC-005 | Align write_markdown and MCP transport response contracts with tests | bugfix | closeout | done | done | trusted | yes | medium | EXEC-002 | - |
 | 9 | EXEC-006 | Fix structured logging redaction behavior for nested payloads | bugfix | closeout | done | done | trusted | yes | medium | EXEC-002 | - |
 | 10 | EXEC-007 | Restore discovery and inspection contract behavior in hub tools | bugfix | smoke-test | smoke_test | open | suspect | no | high | EXEC-004, EXEC-005 | - |
-| 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | review | review | open | suspect | no | high | EXEC-004 | - |
+| 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | smoke-test | smoke_test | open | suspect | no | high | EXEC-004 | - |
 | 10 | EXEC-009 | Repair node-agent executor timestamp and recent-commit behavior | node-agent | planning | todo | open | suspect | yes | medium | EXEC-003 | - |
 | 10 | EXEC-010 | Restore nested structured logging redaction semantics | shared-runtime | planning | todo | open | suspect | yes | medium | EXEC-006 | - |
 | 10 | EXEC-011 | Reduce repo-wide ruff violations to zero | hardening | planning | todo | open | suspect | no | high | - | - |
+| 11 | EXEC-012 | Fix misclassified paths in test_path_traversal_dotdot_rejected and test_invalid_path_rejected | bugfix | planning | todo | open | suspect | yes | low | EXEC-008 | - |

@@ -12,6 +12,8 @@ Rules:
 - keep ticket `status` coarse: `todo`, `ready`, `in_progress`, `blocked`, `review`, `qa`, `smoke_test`, `done`
 - keep `wave`, `lane`, `parallel_safe`, and `overlap_risk` aligned with the real ownership and concurrency boundaries
 - keep plan approval in `.opencode/state/workflow-state.json`
+- the team leader owns `ticket_claim` and `ticket_release`
+- only Wave 0 setup work may claim a write-capable lease before bootstrap is ready
 - treat `tickets/BOARD.md` as a derived human board, not a second state machine
 - use registered artifacts for stage proof instead of inferring state from raw ticket text
 - keep artifact metadata on the owning ticket entry in `tickets/manifest.json`
