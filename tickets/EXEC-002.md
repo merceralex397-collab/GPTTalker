@@ -30,7 +30,7 @@ done
 - resolution_state: done
 - verification_state: trusted
 - source_ticket_id: None
-- source_mode: net_new_scope
+- source_mode: split_scope
 
 ## Depends On
 

@@ -28,13 +28,13 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: net_new_scope
 
 ## Depends On
 
-EXEC-002
+None
 
 ## Follow-up Tickets
 
@@ -60,6 +60,8 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-006/smoke-test/2026-03-25T18-40-59-738Z-smoke-test.md (smoke-test) [superseded] - EXEC-006 scoped fix VERIFIED - all redaction tests pass. Full suite failures are pre-existing.
 - smoke-test: .opencode/state/artifacts/history/exec-006/smoke-test/2026-03-25T18-47-08-896Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-006/smoke-test/2026-03-25T19-01-32-778Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- backlog-verification: .opencode/state/artifacts/history/exec-006/review/2026-03-27T07-29-11-377Z-backlog-verification.md (review) - Backlog verification recorded during ticket_reverify for EXEC-006.
+- reverification: .opencode/state/artifacts/history/exec-006/review/2026-03-27T07-29-11-378Z-reverification.md (review) - Trust restored using EXEC-006.
 
 ## Notes
 

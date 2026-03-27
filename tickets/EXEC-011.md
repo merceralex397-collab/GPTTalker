@@ -2,7 +2,7 @@
 
 ## Summary
 
-Repo-managed linting is now executable and currently reports 51 Ruff violations across source and tests. Normalize imports, remove dead code, and align FastAPI/typing patterns so `ruff check .` becomes a usable gate again.
+Repo-managed linting cleanup proved too broad for one lane. This parent ticket now tracks the split into focused follow-up tickets while preserving the repo-wide lint-zero objective.
 
 ## Wave
 
@@ -19,11 +19,11 @@ hardening
 
 ## Stage
 
-planning
+implementation
 
 ## Status
 
-todo
+in_progress
 
 ## Trust
 
@@ -38,11 +38,12 @@ None
 
 ## Follow-up Tickets
 
-None
+- EXEC-013
+- EXEC-014
 
 ## Decision Blockers
 
-None
+- Execution split into follow-up tickets EXEC-013 and EXEC-014; keep this parent ticket non-foreground until the child tickets land.
 
 ## Acceptance Criteria
 
@@ -53,9 +54,10 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/plans/exec-011-planning-plan.md (planning) - Planning artifact for EXEC-011: Reduce repo-wide ruff violations to zero. Identifies 51 violations across 5 categories: UP038 datetime.utcnow deprecation (~30), duplicate imports (~5), unused imports (~10), import ordering (~5), and 1 stray syntax artifact. Recommends splitting into 2 follow-up tickets (EXEC-013 for datetime fixes, EXEC-014 for import/mechanical fixes).
 
 ## Notes
 
 - Evidence source: post-repair lint verification on 2026-03-25 reported 51 Ruff findings.
+- Current canonical child tickets are EXEC-013 and EXEC-014. Use the child tickets for active implementation; do not resume this parent directly while the split remains open.
 

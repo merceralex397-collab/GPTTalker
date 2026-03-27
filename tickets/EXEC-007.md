@@ -19,16 +19,16 @@ bugfix
 
 ## Stage
 
-smoke-test
+closeout
 
 ## Status
 
-smoke_test
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -38,7 +38,7 @@ EXEC-004, EXEC-005
 
 ## Follow-up Tickets
 
-None
+- EXEC-012
 
 ## Decision Blockers
 
@@ -66,8 +66,11 @@ None
 - qa: .opencode/state/artifacts/history/exec-007/qa/2026-03-26T04-12-51-130Z-qa.md (qa) - QA verification for EXEC-007: Implementation verified via code inspection, but runtime validation blocked due to bash execution environment restrictions
 - smoke-test: .opencode/state/artifacts/history/exec-007/smoke-test/2026-03-26T04-13-39-846Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-007/smoke-test/2026-03-26T04-20-53-139Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- backlog-verification: .opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-136Z-backlog-verification.md (review) - Backlog verification recorded during ticket_reverify for EXEC-007.
+- reverification: .opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-141Z-reverification.md (review) - Trust restored using EXEC-007.
 
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
+- Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_contracts.py -q --tb=no` exits 0.
 

@@ -19,4 +19,5 @@ Rules:
 - The team leader owns `ticket_claim` and `ticket_release`. The team leader claims and releases write leases. Specialists author artifacts and code only under the already-active lease for the current ticket.
 - Default to one active write lane at a time. Use lease-based execution only for bounded parallel work instead of overlapping unmanaged edits.
 - Route post-completion defects through `issue_intake`, not ad hoc ticket history edits.
+- Route open-parent decomposition through `ticket_create(source_mode=split_scope)` and stale lineage repair through `ticket_reconcile`.
 - Update ticket state and handoff artifacts as the cycle progresses.

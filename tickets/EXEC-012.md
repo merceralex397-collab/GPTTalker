@@ -2,7 +2,7 @@
 
 ## Summary
 
-Two security tests incorrectly classify valid paths as dangerous: (1) test_path_traversal_dotdot_rejected includes `....` and `.../...` which do NOT escape the base directory and should not be rejected; (2) test_invalid_path_rejected includes `foo/./bar` which normalizes to `foo/bar` (in-bounds) and should not be rejected. The security code in path_utils.py and inspection.py is correct. Only test expectations need correction. Fix discovered during EXEC-008 smoke-test closeout.
+Superseded ticket. The original scope captured stale evidence about `....`, `.../...`, and `foo/./bar`. Current repo truth no longer matches that failure set, so the remaining path expectation was folded back into EXEC-008.
 
 ## Wave
 
@@ -19,22 +19,22 @@ bugfix
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: superseded
+- verification_state: invalidated
 - source_ticket_id: EXEC-008
-- source_mode: net_new_scope
+- source_mode: post_completion_issue
 
 ## Depends On
 
-EXEC-008
+None
 
 ## Follow-up Tickets
 
@@ -57,4 +57,5 @@ None
 ## Notes
 
 - Evidence source: EXEC-008 smoke-test closeout and 2026-03-27 Scafforge repair verification.
-- Evidence refreshed on 2026-03-27: the full suite still includes the path-scope mismatch owned here, while `tests/hub/test_contracts.py::TestFailureModes::test_invalid_path_rejected` now passes under the current contract.
+- Superseded on 2026-03-27 after current verification showed `tests/hub/test_contracts.py` already passed and the remaining `tests/hub/test_security.py` mismatch no longer matched this ticket's stale failure set.
+

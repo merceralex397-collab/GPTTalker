@@ -21,7 +21,7 @@
     "tracker_plugin": "invocation-tracker"
   },
   "workflow_contract": {
-    "process_version": 6,
+    "process_version": 7,
     "ticket_contract_version": 3,
     "parallel_mode": "sequential",
     "manager_hierarchy": {
@@ -403,11 +403,57 @@
         ".opencode/agents",
         "docs/process/agent-catalog.md"
       ]
+    },
+    {
+      "repaired_at": "2026-03-27T05:16:43Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
+    },
+    {
+      "repaired_at": "2026-03-27T14:58:09Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
     }
   ],
   "restart_surface_regeneration_history": [
     {
-      "generated_at": "2026-03-27T04:17:48Z",
+      "generated_at": "2026-03-27T14:58:09Z",
       "source": "scafforge-repair",
       "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
       "regenerated": [
@@ -418,7 +464,7 @@
       "verification": "pending_or_failed"
     },
     {
-      "generated_at": "2026-03-27T04:17:57Z",
+      "generated_at": "2026-03-27T14:58:14Z",
       "source": "scafforge-repair",
       "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
       "regenerated": [
@@ -429,7 +475,28 @@
       "verification": "pending_or_failed"
     },
     {
-      "generated_at": "2026-03-27T04:22:29Z",
+      "generated_at": "2026-03-27T15:16:39Z",
+      "source": "scafforge-repair",
+      "reason": "Refresh restart surfaces after passing bootstrap proof registration.",
+      "regenerated": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ]
+    },
+    {
+      "generated_at": "2026-03-27T15:17:09Z",
+      "source": "scafforge-repair",
+      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "regenerated": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "verification": "pending_or_failed"
+    },
+    {
+      "generated_at": "2026-03-27T15:18:09Z",
       "source": "scafforge-repair",
       "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
       "regenerated": [
@@ -441,7 +508,7 @@
     }
   ],
   "last_restart_surface_regeneration": {
-    "generated_at": "2026-03-27T04:22:29Z",
+    "generated_at": "2026-03-27T15:18:09Z",
     "source": "scafforge-repair",
     "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
     "regenerated": [

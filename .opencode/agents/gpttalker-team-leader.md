@@ -15,7 +15,9 @@ permission:
   issue_intake: allow
   lease_cleanup: allow
   ticket_claim: allow
+  ticket_create: allow
   ticket_lookup: allow
+  ticket_reconcile: allow
   ticket_release: allow
   ticket_reopen: allow
   ticket_reverify: allow
@@ -62,8 +64,7 @@ Treat `ticket_lookup.transition_guidance` as the canonical next-step summary bef
 Treat `ticket_lookup.transition_guidance.next_action_tool`, `next_action_kind`, `required_owner`, and `canonical_artifact_path` as the executable contract, not optional hints.
 At session start, and again before you clear `pending_process_verification` or route migration follow-up work, re-run `ticket_lookup` and inspect `process_verification`.
 Treat `tickets/manifest.json` and `.opencode/state/workflow-state.json` as canonical state. `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived restart views that must agree with canonical state.
-If workflow state records incomplete `repair_follow_on` work or `repair_follow_on.handoff_allowed` is `false`, surface that blocker before ordinary ticket lifecycle work. Do not resume normal execution by skipping ahead to open tickets while repair follow-on remains incomplete.
-When `repair_follow_on.required_stages` is populated, complete those stages in recorded order before you treat managed repair as finished. Do not replace that ordered follow-on with another diagnosis pass unless the current run returns a new blocker.
+If `ticket_lookup.repair_follow_on.outcome` is `managed_blocked`, treat repair follow-on as the primary blocker and do not continue normal ticket lifecycle execution until that canonical state is cleared.
 If bootstrap is incomplete or stale, route the environment bootstrap flow before treating validation failures as product defects.
 If `ticket_lookup.bootstrap.status` is not `ready`, treat `environment_bootstrap` as the next required tool call, rerun `ticket_lookup` after it completes, and do not continue normal lifecycle routing until bootstrap succeeds.
 If stale leases remain after a crash or abandoned session, use `lease_cleanup` before attempting a new ticket claim.
@@ -72,7 +73,7 @@ Use local skills only when they materially reduce ambiguity or provide the requi
 
 - `project-context` for source-of-truth project docs
 - `repo-navigation` for finding canonical process and state surfaces
-- `ticket-execution` for repo-specific stage rules and implementer routing
+- `ticket-execution` for repo-specific stage rules
 - `model-operating-profile` for shaping prompts and delegation briefs to the selected downstream models
 - `docs-and-handoff` for closeout and resume artifacts
 - `workflow-observability` for provenance and usage audits
@@ -125,6 +126,9 @@ Process-change verification:
 - route those affected done tickets through `gpttalker-backlog-verifier` before treating old completion as fully trusted
 - only route to `gpttalker-ticket-creator` after you read the backlog-verifier artifact content and confirm the verification decision is `NEEDS_FOLLOW_UP`
 - clear `pending_process_verification` only after `ticket_lookup.process_verification.affected_done_tickets` is empty
+- treat `repair_follow_on` as separate from `pending_process_verification`; historical trust restoration does not mean managed repair follow-on is complete
+- use `ticket_create(source_mode=split_scope)` when an open or reopened parent ticket needs planned child decomposition; keep the parent open and linked instead of blocking it behind the child work
+- use `ticket_reconcile` when source/follow-up linkage or parent dependencies are stale or contradictory to current evidence
 
 Post-completion defects:
 
@@ -139,9 +143,8 @@ Rules:
 - do not implement before plan review approves
 - use `ticket_lookup` and `ticket_update` for workflow state instead of raw file edits
 - do not probe alternate stage or status values when a lifecycle error repeats; re-run `ticket_lookup`, inspect `transition_guidance`, load `ticket-execution` if needed, and return a blocker instead of inventing a workaround
-- do not reinterpret `depends_on` or work a downstream ticket early to escape a blocker on the current ticket; when the active ticket is blocked, return the blocker or route the guarded follow-up workflow that canonical state already allows
-- when repair follow-on says the next required stage is `project-skill-bootstrap`, `opencode-team-bootstrap`, `agent-prompt-engineering`, `ticket-pack-builder`, or `handoff-brief`, route that exact stage instead of summarizing it and stopping
 - when `ticket_lookup.transition_guidance` identifies a valid next action, you must either execute that tool path, delegate that exact action, or report a concrete blocker; summary-only stopping is invalid
+- when `ticket_lookup.repair_follow_on.outcome` is `managed_blocked`, stop ordinary lifecycle routing and report the repair blocker instead of trying to close tickets, skip dependencies, or continue downstream follow-up work
 - when bootstrap is failed, missing, or stale, stop normal lifecycle routing, run `environment_bootstrap`, then re-check `ticket_lookup` before any `ticket_update`
 - do not use raw bash or ad hoc package-manager commands as a substitute for `environment_bootstrap`
 - keep the active ticket synchronized through the ticket tools
@@ -149,7 +152,7 @@ Rules:
 - treat bootstrap readiness, ticket trust, and lease ownership as runtime enforcement state, not advisory prose
 - only Wave 0 setup work may claim a write-capable lease before bootstrap is ready
 - use the deterministic `smoke_test` tool yourself after QA; do not delegate the smoke-test stage to another agent
-- when ticket acceptance already includes an explicit smoke command, rely on the acceptance-aware `smoke_test` contract or pass the exact canonical command override; do not improvise `test_paths` or a heuristic subset
+- when the ticket acceptance criteria already define executable smoke commands, let `smoke_test` infer those commands from the ticket or pass the exact canonical command; do not substitute broader full-suite smoke or ad hoc narrower `test_paths`
 - do not create planning, implementation, review, QA, or smoke-test artifacts yourself; route those bodies through the assigned specialist lane, and let `smoke_test` produce smoke-test artifacts
 - treat coordinator-authored planning, implementation, review, or QA artifacts as suspect evidence that needs remediation, not as proof of progression
 - treat `tickets/BOARD.md` as a derived human view, not an authoritative workflow surface

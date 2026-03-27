@@ -24,7 +24,7 @@ Core rules:
 - resolve the ticket through `ticket_lookup` first and read `transition_guidance` before calling `ticket_update`
 - if `ticket_lookup.bootstrap.status` is not `ready`, stop normal lifecycle routing, run `environment_bootstrap`, then rerun `ticket_lookup` before any `ticket_update`
 - if bootstrap still is not `ready` after that rerun, return a blocker; do not improvise raw shell installation or lifecycle workarounds
-- if `repair_follow_on.required_stages` is non-empty or `repair_follow_on.handoff_allowed` is `false`, treat the recorded next required stage as the foreground blocker before ordinary ticket execution
+- if repeated bootstrap proofs show the same command trace but it still omits the dependency-group or extra flags the repo layout requires, stop retrying and route a managed bootstrap defect instead of bypassing `environment_bootstrap`
 - the team leader owns `ticket_claim` and `ticket_release`; the team leader claims and releases write leases; specialists work inside the already-active ticket lease and return a blocker if no lease exists
 - use `ticket_update` for stage movement; do not probe alternate stage or status values to see what passes
 - when `ticket_update` returns the same lifecycle error twice, stop and return a blocker instead of inventing a workaround
@@ -57,7 +57,6 @@ Transition contract:
   - next legal transition: `ticket_update stage=qa`
 - `qa`:
   - required proof before exit: a registered QA artifact with raw command output
-  - Python tickets should include the collect-only command first when imports or runtime wiring are in play
   - next legal transition: `ticket_update stage=smoke-test`
 - `smoke-test`:
   - required proof before exit: a current smoke-test artifact produced by `smoke_test`
@@ -74,8 +73,11 @@ Parallel rules:
 Process-change rules:
 
 - if `pending_process_verification` is `true`, verify affected done tickets before trusting their completion
-- `pending_process_verification` alone is not proof that managed repair failed; keep it visible and route reverification explicitly
+- if `repair_follow_on.outcome` is `managed_blocked`, stop ordinary lifecycle routing and surface the canonical blocker before continuing ticket work
+- `repair_follow_on.outcome == source_follow_up` does not by itself block the active open ticket from continuing
 - migration follow-up tickets must come from backlog-verifier proof through `ticket_create`, not raw manifest edits
+- use `ticket_create(source_mode=split_scope)` when an open or reopened parent ticket needs planned child decomposition
+- use `ticket_reconcile` when evidence proves an existing follow-up graph is stale or contradictory
 - previously completed tickets are not fully trusted again until backlog verification says so
 
 Bootstrap gate:

@@ -2,7 +2,7 @@
 
 ## Summary
 
-Full-suite validation still shows hub security edge-case failures: `foo/./bar` is accepted, home-directory expansion is not rejected, traversal errors do not match the contract, and unregistered write-target validation still breaks on the repository interface boundary.
+The remaining EXEC-008 blocker is a stale test expectation in `tests/hub/test_security.py::TestPathTraversal::test_path_traversal_dotdot_rejected`. The live failing case is `foo/bar/../../secrets`, which normalizes to an in-bounds repo path and should be accepted.
 
 ## Wave
 
@@ -19,16 +19,16 @@ security
 
 ## Stage
 
-smoke-test
+closeout
 
 ## Status
 
-smoke_test
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -38,7 +38,7 @@ EXEC-004
 
 ## Follow-up Tickets
 
-EXEC-012
+- EXEC-012
 
 ## Decision Blockers
 
@@ -67,9 +67,15 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-50-57-652Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-52-39-065Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-30-50-955Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-33-31-133Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-33-31-133Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
+- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-27T04-32-02-462Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
+- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-27T04-36-14-727Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- backlog-verification: .opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-171Z-backlog-verification.md (review) - Backlog verification recorded during ticket_reverify for EXEC-008.
+- reverification: .opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-172Z-reverification.md (review) - Trust restored using EXEC-008.
 
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
-- Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` now leaves `tests/hub/test_security.py::TestPathTraversal::test_path_traversal_dotdot_rejected` as the remaining EXEC-008-owned failure before the test-scope follow-up in `EXEC-012`.
+- Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` now leaves `tests/hub/test_security.py::TestPathTraversal::test_path_traversal_dotdot_rejected` as the only remaining EXEC-008-owned failure.
+- Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_security.py -q --tb=no` exits 0.
+

@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: trusted
 - source_ticket_id: None
 - source_mode: None
 

@@ -19,16 +19,16 @@ shared-runtime
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -53,9 +53,11 @@ None
 
 ## Artifacts
 
-- None yet
+- backlog-verification: .opencode/state/artifacts/history/exec-010/review/2026-03-27T07-32-25-991Z-backlog-verification.md (review) - Backlog verification for EXEC-010: PASS — nested redaction, max-depth, and truncation semantics verified correct
+- reverification: .opencode/state/artifacts/history/exec-010/review/2026-03-27T07-32-46-344Z-reverification.md (review) - Trust restored using EXEC-010.
 
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
-- Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` still fails `test_redact_sensitive_nested`, `test_redact_sensitive_list`, and `test_redact_sensitive_max_depth` in `tests/shared/test_logging.py`.
+- Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/shared/test_logging.py -q --tb=no` exits 0 after preserving container shape for sensitive dict/list keys and fixing the max-depth sentinel cutoff.
+

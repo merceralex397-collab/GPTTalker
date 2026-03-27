@@ -6,44 +6,45 @@ GPTTalker
 
 ## Active Ticket
 
-- ID: EXEC-008
-- Title: Close remaining hub path and write-target security edge cases
-- Stage: smoke-test
-- Status: smoke_test
+- ID: EXEC-014
+- Title: Fix remaining mechanical Ruff violations after EXEC-013
+- Stage: plan_review
+- Status: plan_review
 - Resolution: open
 - Verification: suspect
-- Approved plan: yes
+- Approved plan: no
 - Needs reverification: no
+- Open split children: none
 
 ## Bootstrap
 
 - status: ready
-- last_verified_at: 2026-03-26T03:37:12.985Z
-- proof_artifact: .opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md
+- last_verified_at: 2026-03-27T15:16:36.184Z
+- proof_artifact: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md
 
 ## Process State
 
-- process_version: 6
+- process_version: 7
 - pending_process_verification: true
 - parallel_mode: sequential
-- state_revision: 187
+- state_revision: 235
 
 ## Repair Follow-On
 
+- outcome: clean
 - required: no
 - next_required_stage: none
 - verification_passed: true
-- handoff_allowed: true
-- last_updated_at: 2026-03-27T04:22:29Z
+- last_updated_at: 2026-03-27T15:18:09Z
 
 ## Lane Leases
 
-- EXEC-008: gpttalker-team-leader (security)
+- No active lane leases
 
 ## Recent Artifacts
 
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-48-57-596Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-50-57-652Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T18-52-39-065Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-30-50-955Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-26T22-33-31-133Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-55-04-836Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-18-58-565Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-20-16-174Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-23-09-710Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md (bootstrap) - Environment bootstrap completed successfully.

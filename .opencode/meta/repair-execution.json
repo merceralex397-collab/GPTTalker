@@ -1,24 +1,7 @@
 {
   "repair_plan": {
     "repo_root": "/home/pc/projects/GPTTalker",
-    "required_follow_on_stages": [
-      {
-        "stage": "opencode-team-bootstrap",
-        "reason": "Agent or .opencode prompt surfaces still drift from the current workflow contract and must be regenerated."
-      },
-      {
-        "stage": "agent-prompt-engineering",
-        "reason": "Prompt behavior changed or remains stale after repair, so the same-session hardening pass is required before handoff."
-      },
-      {
-        "stage": "ticket-pack-builder",
-        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
-      },
-      {
-        "stage": "handoff-brief",
-        "reason": "Restart surfaces must be regenerated only after required follow-on repair stages are complete."
-      }
-    ],
+    "required_follow_on_stages": [],
     "replaced_surfaces": []
   },
   "stage_results": [
@@ -33,24 +16,11 @@
     {
       "stage": "project-skill-bootstrap",
       "status": "completed"
-    },
-    {
-      "stage": "ticket-pack-builder",
-      "status": "completed"
-    },
-    {
-      "stage": "handoff-brief",
-      "status": "completed"
     }
   ],
   "execution_record": {
     "repo_root": "/home/pc/projects/GPTTalker",
-    "required_follow_on_stages": [
-      "opencode-team-bootstrap",
-      "agent-prompt-engineering",
-      "ticket-pack-builder",
-      "handoff-brief"
-    ],
+    "required_follow_on_stages": [],
     "executed_stages": [
       {
         "stage": "agent-prompt-engineering",
@@ -63,58 +33,39 @@
       {
         "stage": "project-skill-bootstrap",
         "status": "completed"
-      },
-      {
-        "stage": "ticket-pack-builder",
-        "status": "completed"
-      },
-      {
-        "stage": "handoff-brief",
-        "status": "completed"
       }
     ],
     "deferred_stages": [],
     "skipped_stages": [],
     "blocking_reasons": [],
+    "repair_follow_on_outcome": "clean",
     "verification_status": {
       "performed": true,
-      "finding_count": 1,
+      "finding_count": 0,
       "error_count": 0,
-      "warning_count": 1,
-      "codes": [
-        "EXEC003"
-      ],
+      "warning_count": 0,
+      "codes": [],
       "blocking_codes": [],
-      "source_follow_up_codes": [
-        "EXEC003"
-      ],
+      "source_follow_up_codes": [],
       "process_state_codes": [],
       "pending_process_verification": true,
       "verification_passed": true,
-      "supporting_logs": [
-        "/home/pc/projects/GPTTalker/blocker1.md"
-      ]
+      "supporting_logs": []
     },
     "handoff_allowed": true
   },
   "repair_follow_on_state": {
-    "required_stages": [
-      "opencode-team-bootstrap",
-      "agent-prompt-engineering",
-      "ticket-pack-builder",
-      "handoff-brief"
-    ],
+    "outcome": "clean",
+    "required_stages": [],
     "completed_stages": [
       "agent-prompt-engineering",
-      "handoff-brief",
       "opencode-team-bootstrap",
-      "project-skill-bootstrap",
-      "ticket-pack-builder"
+      "project-skill-bootstrap"
     ],
     "blocking_reasons": [],
     "verification_passed": true,
     "handoff_allowed": true,
-    "last_updated_at": "2026-03-27T04:22:29Z",
-    "process_version": 6
+    "last_updated_at": "2026-03-27T15:18:09Z",
+    "process_version": 7
   }
 }

@@ -41,7 +41,7 @@
       "kind": "planning",
       "path": ".opencode/state/plans/setup-002-planning-plan.md",
       "stage": "planning",
-      "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+      "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub\u2194node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
       "created_at": "2026-03-16T12:51:03.084Z",
       "trust_state": "current",
       "ticket_id": "SETUP-002"
@@ -689,7 +689,7 @@
       "kind": "planning",
       "path": ".opencode/state/plans/ctx-002-planning-plan.md",
       "stage": "planning",
-      "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init → Discovery → Hash Check → Embed & Upsert → Cleanup → Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
+      "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init \u2192 Discovery \u2192 Hash Check \u2192 Embed & Upsert \u2192 Cleanup \u2192 Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
       "created_at": "2026-03-16T22:44:00.693Z",
       "trust_state": "current",
       "ticket_id": "CTX-002"
@@ -1814,7 +1814,7 @@
       "kind": "implementation",
       "path": ".opencode/state/implementations/fix-009-implementation-implementation.md",
       "stage": "implementation",
-      "summary": "Implementation of FIX-009: Aligned write_markdown interface with spec contract. Changed parameter names (node_id→node, repo_id→write_target, path→relative_path), added mode parameter (create_or_overwrite/no_overwrite), added created flag in response, added get(target_id) to WriteTargetPolicy.",
+      "summary": "Implementation of FIX-009: Aligned write_markdown interface with spec contract. Changed parameter names (node_id\u2192node, repo_id\u2192write_target, path\u2192relative_path), added mode parameter (create_or_overwrite/no_overwrite), added created flag in response, added get(target_id) to WriteTargetPolicy.",
       "created_at": "2026-03-20T21:00:15.963Z",
       "trust_state": "current",
       "ticket_id": "FIX-009"
@@ -2328,7 +2328,7 @@
       "kind": "smoke-test",
       "path": ".opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T17-02-42-249Z-smoke-test.md",
       "stage": "smoke-test",
-      "summary": "PARTIAL PASS — scoped fix verified correct (import exits 0, collection passes 126). 40 full-suite failures are pre-existing bugs in other components, mapped to EXEC-003 through EXEC-006.",
+      "summary": "PARTIAL PASS \u2014 scoped fix verified correct (import exits 0, collection passes 126). 40 full-suite failures are pre-existing bugs in other components, mapped to EXEC-003 through EXEC-006.",
       "created_at": "2026-03-25T17:02:42.249Z",
       "trust_state": "current"
     },
@@ -2373,7 +2373,7 @@
       "kind": "qa",
       "path": ".opencode/state/artifacts/history/exec-002/qa/2026-03-25T17-13-38-680Z-qa.md",
       "stage": "qa",
-      "summary": "QA verification for EXEC-002: PASS. Collection exits 0 (126 tests). Full suite: 40 failed/86 passed — all mapped to EXEC-003-006. Acceptance criterion 4 (failures split to follow-ups) is the controlling criterion.",
+      "summary": "QA verification for EXEC-002: PASS. Collection exits 0 (126 tests). Full suite: 40 failed/86 passed \u2014 all mapped to EXEC-003-006. Acceptance criterion 4 (failures split to follow-ups) is the controlling criterion.",
       "created_at": "2026-03-25T17:13:38.680Z",
       "trust_state": "current"
     },
@@ -2580,7 +2580,7 @@
       "kind": "planning",
       "path": ".opencode/state/artifacts/history/exec-006/planning/2026-03-25T18-32-13-507Z-planning.md",
       "stage": "planning",
-      "summary": "Plan for EXEC-006: Fix three bugs in src/shared/logging.py — remove \"auth\" from SENSITIVE_PATTERNS, fix truncation format from \"...[TRUNCATED]\" to \"... [TRUNCATED]\", add string content redaction for list items.",
+      "summary": "Plan for EXEC-006: Fix three bugs in src/shared/logging.py \u2014 remove \"auth\" from SENSITIVE_PATTERNS, fix truncation format from \"...[TRUNCATED]\" to \"... [TRUNCATED]\", add string content redaction for list items.",
       "created_at": "2026-03-25T18:32:13.507Z",
       "trust_state": "current"
     },
@@ -2933,6 +2933,465 @@
       "stage": "smoke-test",
       "summary": "Deterministic smoke test failed.",
       "created_at": "2026-03-26T22:33:31.133Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-27T04-32-02-462Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T04:32:02.462Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-008/smoke-test/2026-03-27T04-36-14-727Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T04:36:14.727Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-011",
+      "kind": "plan",
+      "path": ".opencode/state/plans/exec-011-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for EXEC-011: Reduce repo-wide ruff violations to zero. Identifies 51 violations across 5 categories: UP038 datetime.utcnow deprecation (~30), duplicate imports (~5), unused imports (~10), import ordering (~5), and 1 stray syntax artifact. Recommends splitting into 2 follow-up tickets (EXEC-013 for datetime fixes, EXEC-014 for import/mechanical fixes).",
+      "created_at": "2026-03-27T05:41:58.349Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/exec-013/planning/2026-03-27T07-04-26-225Z-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for EXEC-013: Fix datetime.UTC, collections.abc, and TimeoutError alias violations. Covers 3 files with precise line-level changes for UP017, UP035, and UP041 violations. EXEC-014 scope is explicitly excluded.",
+      "created_at": "2026-03-27T07:04:26.225Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/exec-013/implementation/2026-03-27T07-12-38-634Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EXEC-013: Fixed alias-modernization violations (UP017, UP035, UP041) in 3 files. All target violations resolved. Exit code 1 due to pre-existing I001/F401 in conftest.py (out of EXEC-013 scope, handled by EXEC-014).",
+      "created_at": "2026-03-27T07:12:38.634Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/exec-013/review/2026-03-27T07-15-28-802Z-review.md",
+      "stage": "review",
+      "summary": "Code review for EXEC-013: APPROVED. All UP017/UP035/UP041 violations correctly fixed. Exit code 1 due to pre-existing EXEC-014 scope (I001, F401) \u2014 correctly excluded.",
+      "created_at": "2026-03-27T07:15:28.802Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/exec-013/qa/2026-03-27T07-18-18-033Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EXEC-013: PARTIAL PASS. All target violations (UP017, UP035, UP041) are correctly fixed. Criterion 1 exits 1 due to pre-existing I001/F401 in conftest.py (EXEC-014 scope). Full acceptance command will pass when EXEC-014 lands.",
+      "created_at": "2026-03-27T07:18:18.033Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-19-23-963Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T07:19:23.963Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-20-24-325Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T07:20:24.325Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-21-29-235Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T07:21:29.235Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-22-25-437Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-27T07:22:25.437Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-013",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-22-41-396Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-03-27T07:22:41.396Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-002",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-002/review/2026-03-27T07-28-42-612Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-002.",
+      "created_at": "2026-03-27T07:28:42.612Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-002/review/2026-03-27T07-28-42-629Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-002.",
+      "created_at": "2026-03-27T07:28:42.629Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-003",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-003/review/2026-03-27T07-28-45-165Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-003.",
+      "created_at": "2026-03-27T07:28:45.165Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-003/review/2026-03-27T07-28-45-176Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-003.",
+      "created_at": "2026-03-27T07:28:45.176Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-004",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-004/review/2026-03-27T07-28-48-563Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-004.",
+      "created_at": "2026-03-27T07:28:48.563Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-004",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-004/review/2026-03-27T07-28-48-564Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-004.",
+      "created_at": "2026-03-27T07:28:48.564Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-005",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-005/review/2026-03-27T07-28-51-518Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-005.",
+      "created_at": "2026-03-27T07:28:51.518Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-005",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-005/review/2026-03-27T07-28-51-520Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-005.",
+      "created_at": "2026-03-27T07:28:51.520Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-007",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-007/review/2026-03-27T07-28-54-220Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-007.",
+      "created_at": "2026-03-27T07:28:54.220Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-007",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-007/review/2026-03-27T07-28-54-222Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-007.",
+      "created_at": "2026-03-27T07:28:54.222Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-009",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-009/review/2026-03-27T07-28-56-489Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-009.",
+      "created_at": "2026-03-27T07:28:56.489Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-009",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-009/review/2026-03-27T07-28-56-513Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-009.",
+      "created_at": "2026-03-27T07:28:56.513Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-010",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-010/review/2026-03-27T07-28-58-960Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-010.",
+      "created_at": "2026-03-27T07:28:58.960Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-010",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-010/review/2026-03-27T07-28-58-963Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-010.",
+      "created_at": "2026-03-27T07:28:58.963Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-011",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-011/review/2026-03-27T07-29-01-990Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-011.",
+      "created_at": "2026-03-27T07:29:01.990Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-011",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-011/review/2026-03-27T07-29-01-998Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-011.",
+      "created_at": "2026-03-27T07:29:01.998Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-012",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-012/review/2026-03-27T07-29-05-262Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-012.",
+      "created_at": "2026-03-27T07:29:05.262Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-012",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-012/review/2026-03-27T07-29-05-264Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-012.",
+      "created_at": "2026-03-27T07:29:05.264Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-013",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-013/review/2026-03-27T07-29-08-051Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for FIX-013.",
+      "created_at": "2026-03-27T07:29:08.051Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-013",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-013/review/2026-03-27T07-29-08-172Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-013.",
+      "created_at": "2026-03-27T07:29:08.172Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-006",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/exec-006/review/2026-03-27T07-29-11-377Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for EXEC-006.",
+      "created_at": "2026-03-27T07:29:11.377Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-006",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/exec-006/review/2026-03-27T07-29-11-378Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using EXEC-006.",
+      "created_at": "2026-03-27T07:29:11.378Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-136Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for EXEC-007.",
+      "created_at": "2026-03-27T07:29:15.136Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-141Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using EXEC-007.",
+      "created_at": "2026-03-27T07:29:15.141Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-171Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification recorded during ticket_reverify for EXEC-008.",
+      "created_at": "2026-03-27T07:29:19.171Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-008",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-172Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using EXEC-008.",
+      "created_at": "2026-03-27T07:29:19.172Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-009",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/exec-009/review/2026-03-27T07-32-24-091Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for EXEC-009: PASS \u2014 datetime.UTC alias and recent_commits implementation verified correct",
+      "created_at": "2026-03-27T07:32:24.091Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-010",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/exec-010/review/2026-03-27T07-32-25-991Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for EXEC-010: PASS \u2014 nested redaction, max-depth, and truncation semantics verified correct",
+      "created_at": "2026-03-27T07:32:25.991Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-009",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/exec-009/review/2026-03-27T07-32-44-493Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using EXEC-009.",
+      "created_at": "2026-03-27T07:32:44.493Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-010",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/exec-010/review/2026-03-27T07-32-46-344Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using EXEC-010.",
+      "created_at": "2026-03-27T07:32:46.344Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-46-54-868Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T07:46:54.868Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/exec-014/planning/2026-03-27T07-50-47-009Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for EXEC-014: Fix remaining mechanical Ruff violations after EXEC-013. Covers auto-fix for F541/F841/C401/C414/F401/B007, manual fixes for I001 in tests/conftest.py, E402/I001 in src/hub/dependencies.py, and removal of redundant noqa B008 comments.",
+      "created_at": "2026-03-27T07:50:47.009Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-51-46-469Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T07:51:46.469Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-53-39-009Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T07:53:39.009Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-55-04-836Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T07:55:04.836Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-18-58-565Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T13:18:58.565Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-20-16-174Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T13:20:16.174Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-23-09-710Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-03-27T13:23:09.710Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-014",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-03-27T15:16:36.184Z",
       "trust_state": "current"
     }
   ]

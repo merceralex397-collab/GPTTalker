@@ -1,7 +1,7 @@
 """Bounded operation executor for node agent."""
 
 import asyncio
-from datetime import datetime
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -96,9 +96,7 @@ class OperationExecutor:
                             "path": str(entry),
                             "is_dir": entry.is_dir(),
                             "size": stat.st_size if entry.is_file() else None,
-                            "modified": datetime.fromtimestamp(
-                                stat.st_mtime, tz=datetime.UTC
-                            ).isoformat(),
+                            "modified": datetime.fromtimestamp(stat.st_mtime, tz=UTC).isoformat(),
                         }
                     )
                 except (OSError, PermissionError):

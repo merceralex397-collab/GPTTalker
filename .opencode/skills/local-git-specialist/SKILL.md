@@ -18,5 +18,4 @@ Rules:
 - treat git work as local read/write unless the repo explicitly enables more
 - do not assume GitHub APIs, PR automation, or remote pushes are available
 - keep commit scope aligned with the active ticket
-- keep workflow-surface regeneration, diagnosis packs, and source fixes distinguishable in commit reasoning; do not blur managed repair with product-code remediation
 - use git state as supporting evidence, not as a substitute for ticket, workflow-state, or artifact updates

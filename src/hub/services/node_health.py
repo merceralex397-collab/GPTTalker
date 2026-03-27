@@ -1,6 +1,6 @@
 """Health polling service for node agents."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 import httpx
@@ -70,7 +70,7 @@ class NodeHealth:
         """
         if not self.last_health_check:
             return True
-        elapsed = (datetime.now(timezone.utc) - self.last_health_check).total_seconds()
+        elapsed = (datetime.now(UTC) - self.last_health_check).total_seconds()
         return elapsed > self.STALE_THRESHOLD_SECONDS
 
     @property
@@ -146,7 +146,7 @@ class NodeHealthService:
             NodeHealth instance with computed health status.
         """
         health = NodeHealth(node_id=node.node_id)
-        health.last_health_attempt = datetime.now(timezone.utc)
+        health.last_health_attempt = datetime.now(UTC)
 
         try:
             url = f"http://{node.hostname}{self.HEALTH_ENDPOINT}"
@@ -172,7 +172,7 @@ class NodeHealthService:
                     latency_ms=latency_ms,
                     error=None,
                 )
-                health.last_health_check = datetime.now(timezone.utc)
+                health.last_health_check = datetime.now(UTC)
                 health.health_error = None
                 health.consecutive_failures = 0
 

@@ -47,7 +47,6 @@ class TestPathTraversal:
             "../etc/passwd",
             "../../../../etc/passwd",
             "foo/../../../etc/passwd",
-            "foo/bar/../../secrets",
             "../foo/bar",
             # "foo/..",  # REMOVED - resolves to base, not traversal
         ]
@@ -56,6 +55,10 @@ class TestPathTraversal:
             with pytest.raises(PathTraversalError) as exc_info:
                 PathNormalizer.normalize(path, base)
             assert "traversal" in str(exc_info.value).lower()
+
+        assert PathNormalizer.normalize("foo/bar/../../secrets", base) == (
+            "/home/user/repo/secrets"
+        )
 
     def test_path_traversal_windows_backslash_rejected(self):
         """Test that Windows backslash traversal is rejected."""

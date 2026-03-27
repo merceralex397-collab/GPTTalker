@@ -373,7 +373,7 @@ class TunnelManager:
                         "cloudflare_tunnel_stopped_gracefully",
                         pid=self._process.pid,
                     )
-                except asyncio.TimeoutError:
+                except TimeoutError:
                     # Force kill if graceful shutdown fails
                     logger.warning(
                         "cloudflare_tunnel_force_kill",

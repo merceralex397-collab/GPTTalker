@@ -25,7 +25,7 @@ SENSITIVE_PATTERNS = {
 }
 
 
-def redact_sensitive(data: Any, _depth: int = 0) -> Any:
+def redact_sensitive(data: Any, _depth: int = 0, _force_redact: bool = False) -> Any:
     """Redact sensitive fields from log data.
 
     Recursively processes dicts, lists, and other types to redact
@@ -39,21 +39,31 @@ def redact_sensitive(data: Any, _depth: int = 0) -> Any:
         Data with sensitive fields redacted.
     """
     # Prevent infinite recursion
-    if _depth > 20:
+    if _depth >= 20:
         return "[MAX_DEPTH_EXCEEDED]"
 
     if isinstance(data, dict):
         redacted: dict[str, Any] = {}
         for key, value in data.items():
             key_lower = key.lower()
-            if any(pattern in key_lower for pattern in SENSITIVE_PATTERNS):
+            key_is_sensitive = any(pattern in key_lower for pattern in SENSITIVE_PATTERNS)
+            if key_is_sensitive and not isinstance(value, (dict, list)):
                 redacted[key] = "[REDACTED]"
-            else:
-                redacted[key] = redact_sensitive(value, _depth + 1)
+                continue
+            redacted[key] = redact_sensitive(
+                value,
+                _depth + 1,
+                _force_redact=_force_redact or key_is_sensitive,
+            )
         return redacted
     elif isinstance(data, list):
-        return [redact_sensitive(item, _depth + 1) for item in data]
+        return [
+            redact_sensitive(item, _depth + 1, _force_redact=_force_redact)
+            for item in data
+        ]
     elif isinstance(data, str):
+        if _force_redact:
+            return "[REDACTED]"
         # Check if string content contains sensitive patterns
         data_lower = data.lower()
         if any(pattern in data_lower for pattern in SENSITIVE_PATTERNS):

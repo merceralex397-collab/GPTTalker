@@ -1,8 +1,8 @@
 {
-  "active_ticket": "EXEC-008",
-  "stage": "smoke-test",
-  "status": "smoke_test",
-  "approved_plan": true,
+  "active_ticket": "EXEC-014",
+  "stage": "plan_review",
+  "status": "plan_review",
+  "approved_plan": false,
   "ticket_state": {
     "SETUP-001": {
       "approved_plan": true,
@@ -300,17 +300,17 @@
       "needs_reverification": false
     },
     "EXEC-009": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "EXEC-010": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "EXEC-011": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
@@ -318,49 +318,43 @@
       "approved_plan": false,
       "reopen_count": 0,
       "needs_reverification": false
+    },
+    "EXEC-013": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "EXEC-014": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
     }
   },
-  "process_version": 6,
-  "process_last_changed_at": "2026-03-27T04:17:48Z",
+  "process_version": 7,
+  "process_last_changed_at": "2026-03-27T14:58:09Z",
   "process_last_change_summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
   "pending_process_verification": true,
   "parallel_mode": "sequential",
   "repair_follow_on": {
-    "required_stages": [
-      "opencode-team-bootstrap",
-      "agent-prompt-engineering",
-      "ticket-pack-builder",
-      "handoff-brief"
-    ],
+    "outcome": "clean",
+    "required_stages": [],
     "completed_stages": [
       "agent-prompt-engineering",
-      "handoff-brief",
       "opencode-team-bootstrap",
-      "project-skill-bootstrap",
-      "ticket-pack-builder"
+      "project-skill-bootstrap"
     ],
     "blocking_reasons": [],
     "verification_passed": true,
     "handoff_allowed": true,
-    "last_updated_at": "2026-03-27T04:22:29Z",
-    "process_version": 6
+    "last_updated_at": "2026-03-27T15:18:09Z",
+    "process_version": 7
   },
   "bootstrap": {
     "status": "ready",
-    "last_verified_at": "2026-03-26T03:37:12.985Z",
+    "last_verified_at": "2026-03-27T15:16:36.184Z",
     "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
-    "proof_artifact": ".opencode/state/artifacts/history/exec-007/bootstrap/2026-03-26T03-37-12-985Z-environment-bootstrap.md"
+    "proof_artifact": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md"
   },
-  "lane_leases": [
-    {
-      "ticket_id": "EXEC-008",
-      "lane": "security",
-      "owner_agent": "gpttalker-team-leader",
-      "write_lock": true,
-      "claimed_at": "2026-03-26T22:24:58.979Z",
-      "expires_at": "2026-03-27T00:24:58.979Z",
-      "allowed_paths": []
-    }
-  ],
-  "state_revision": 187
+  "lane_leases": [],
+  "state_revision": 235
 }

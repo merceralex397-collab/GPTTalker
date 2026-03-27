@@ -151,6 +151,6 @@ If this file conflicts with any global AI instruction file, **this file wins** f
 - only Wave 0 setup work may claim a write-capable lease before bootstrap is ready
 - Use `ticket_claim` and `ticket_release` for write-capable parallel lanes instead of overlapping unmanaged edits.
 - Use `.opencode/meta/bootstrap-provenance.json` as the canonical process-contract record.
-- Only create migration, remediation, or reverification follow-up tickets through guarded ticket flows backed by current registered evidence.
+- Only create migration, remediation, reverification, or split-scope follow-up tickets through guarded ticket flows backed by current registered evidence.
 - `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived restart surfaces.
 - Keep `START-HERE.md`, `tickets/BOARD.md`, and `tickets/manifest.json` aligned with the canonical sources that feed them.

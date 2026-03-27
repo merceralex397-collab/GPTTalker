@@ -10,21 +10,6 @@ Before starting a code review, security review, or QA pass, call `skill_ping` wi
 Use this skill after implementation exists. It bridges the review and QA lanes so they return evidence-backed findings instead of vague commentary.
 This is a generated repo-local skill. It may recommend remediation or reverification follow-up, but it does not become the canonical ticket owner by itself.
 
-Repo-specific validation priorities:
-
-- hub contract and security tickets: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/ -q --tb=no`
-- node-agent executor tickets: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/node_agent/test_executor.py -q --tb=no`
-- shared-runtime logging tickets: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/shared/test_logging.py -q --tb=no`
-- broad regression check: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ --collect-only -q --tb=no` followed by `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v`
-- lint baseline: `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .`
-
-Security-sensitive areas that need explicit attention:
-
-- `src/hub/policy/` for path normalization, write-target scoping, and fail-closed checks
-- `src/hub/tools/` and `src/hub/tool_routing/` for MCP handler contracts
-- `src/node_agent/executor.py` for allowed-path enforcement and filesystem metadata
-- `src/shared/logging.py` and `src/shared/context.py` for redaction and trace propagation
-
 Prioritize findings in this order:
 
 1. correctness bugs
@@ -52,7 +37,7 @@ Rules:
 - reference exact files, diffs, commands, or artifact paths
 - if the approved plan, implementation artifact, or required validation context is missing, return a blocker instead of inferring correctness
 - use `ticket-execution` for lifecycle order and `project-context` for canonical repo docs
-- write any workflow-failure explanation or review retrospective under `diagnosis/<timestamp>/` or the repo-local process-log path described in `references/review-contract.md`
+- write any workflow-failure explanation or review retrospective to the repo-local process-log path described in `references/review-contract.md`
 - recommend follow-up tickets only when current evidence justifies them, and route canonical ticket creation through the repo's guarded ticket workflow
 - do not claim that repo files changed
 
