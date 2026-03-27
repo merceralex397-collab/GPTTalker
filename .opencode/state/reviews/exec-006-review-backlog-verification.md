@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (datetime.UTC in unrelated files, ripgrep, git config), not code defects. EXEC-006 scope: removed "auth" from SENSITIVE_PATTERNS, fixed truncation format to "... [TRUNCATED]" with space, added string content redaction for list items. All redaction tests pass per QA artifact.

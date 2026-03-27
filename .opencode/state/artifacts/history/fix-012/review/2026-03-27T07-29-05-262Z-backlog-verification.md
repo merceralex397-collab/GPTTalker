@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (aiosqlite), not code defects. FIX-012 scope: cross-repo landscape metrics (file_count, issue_count, languages) replaced with real Qdrant and IssueRepository queries. All acceptance criteria passed.

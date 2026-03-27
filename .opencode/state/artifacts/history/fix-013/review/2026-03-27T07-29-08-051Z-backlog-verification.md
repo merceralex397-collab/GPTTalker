@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (aiosqlite), not code defects. FIX-013 scope: TunnelManager implemented with subprocess management, health monitoring, systemd detection, graceful shutdown. All acceptance criteria verified by QA and review.

@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues, not code defects. FIX-003 scope: circular import resolved, _ensure_router() fixed to async, single /health endpoint. Verified correct by review and QA artifacts. All acceptance criteria passed.

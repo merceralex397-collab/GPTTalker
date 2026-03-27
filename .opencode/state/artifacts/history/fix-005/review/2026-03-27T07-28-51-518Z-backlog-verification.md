@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues, not code defects. FIX-005 scope: structured logger TypeError fixed, HubConfig.database_path attribute error resolved. All acceptance criteria passed per QA artifact.

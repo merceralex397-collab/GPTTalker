@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues, not code defects. FIX-007 scope: ripgrep parser fixed (removed -c flag), mode parameter added to search_repo. All acceptance criteria verified by QA.

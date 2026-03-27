@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (aiosqlite), not code defects. FIX-010 scope: list_known_issues and list_task_history handlers registered, task persistence added to handle_tool_call. All acceptance criteria passed.

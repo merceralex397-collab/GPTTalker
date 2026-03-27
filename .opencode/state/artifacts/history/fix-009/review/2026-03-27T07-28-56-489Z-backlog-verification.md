@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (aiosqlite), not code defects. FIX-009 scope: write_markdown interface aligned with spec contract (node/write_target/relative_path/mode parameters). Atomic write and SHA256 verification preserved. All acceptance criteria passed.

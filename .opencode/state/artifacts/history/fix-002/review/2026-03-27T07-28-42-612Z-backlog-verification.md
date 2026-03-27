@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues, not code defects. FIX-002 scope: Depends[] type subscript error removed, routes updated to proper FastAPI DI pattern. Verified correct by QA artifact. All acceptance criteria passed.

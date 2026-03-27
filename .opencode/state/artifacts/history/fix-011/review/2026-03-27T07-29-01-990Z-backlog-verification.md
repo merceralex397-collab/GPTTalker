@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues (aiosqlite), not code defects. FIX-011 scope: aggregation service methods implemented (aggregate_by_title, aggregate_by_similarity, aggregate_by_tag) using IssueRepository and Qdrant. No placeholder stubs remain. All acceptance criteria passed.

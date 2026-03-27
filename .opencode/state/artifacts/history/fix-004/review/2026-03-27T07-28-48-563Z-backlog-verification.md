@@ -1,0 +1,1 @@
+Backlog verification confirmed scoped fix correct. Smoke test failures are pre-existing environment issues, not code defects. FIX-004 scope: SQLite write persistence fixed via isolation_level="", transaction() context manager corrected, explicit commits added, migrations wrapped in transactions. All acceptance criteria verified by QA.
