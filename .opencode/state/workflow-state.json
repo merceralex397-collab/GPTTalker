@@ -1,8 +1,8 @@
 {
-  "active_ticket": "EXEC-014",
-  "stage": "plan_review",
-  "status": "plan_review",
-  "approved_plan": false,
+  "active_ticket": "EXEC-011",
+  "stage": "closeout",
+  "status": "done",
+  "approved_plan": true,
   "ticket_state": {
     "SETUP-001": {
       "approved_plan": true,
@@ -325,36 +325,34 @@
       "needs_reverification": false
     },
     "EXEC-014": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     }
   },
   "process_version": 7,
-  "process_last_changed_at": "2026-03-27T14:58:09Z",
+  "process_last_changed_at": "2026-03-28T16:19:18Z",
   "process_last_change_summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
-  "pending_process_verification": true,
+  "pending_process_verification": false,
   "parallel_mode": "sequential",
   "repair_follow_on": {
-    "outcome": "clean",
+    "outcome": "source_follow_up",
     "required_stages": [],
     "completed_stages": [
-      "agent-prompt-engineering",
-      "opencode-team-bootstrap",
       "project-skill-bootstrap"
     ],
     "blocking_reasons": [],
     "verification_passed": true,
     "handoff_allowed": true,
-    "last_updated_at": "2026-03-27T15:18:09Z",
+    "last_updated_at": "2026-03-28T16:20:39Z",
     "process_version": 7
   },
   "bootstrap": {
     "status": "ready",
-    "last_verified_at": "2026-03-27T15:16:36.184Z",
+    "last_verified_at": "2026-03-28T16:33:16.170Z",
     "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
-    "proof_artifact": ".opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md"
+    "proof_artifact": ".opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md"
   },
   "lane_leases": [],
-  "state_revision": 235
+  "state_revision": 272
 }

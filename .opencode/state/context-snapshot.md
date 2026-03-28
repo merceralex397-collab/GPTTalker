@@ -6,36 +6,36 @@ GPTTalker
 
 ## Active Ticket
 
-- ID: EXEC-014
-- Title: Fix remaining mechanical Ruff violations after EXEC-013
-- Stage: plan_review
-- Status: plan_review
-- Resolution: open
-- Verification: suspect
-- Approved plan: no
+- ID: EXEC-011
+- Title: Reduce repo-wide ruff violations to zero
+- Stage: closeout
+- Status: done
+- Resolution: done
+- Verification: trusted
+- Approved plan: yes
 - Needs reverification: no
 - Open split children: none
 
 ## Bootstrap
 
 - status: ready
-- last_verified_at: 2026-03-27T15:16:36.184Z
-- proof_artifact: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md
+- last_verified_at: 2026-03-28T16:33:16.170Z
+- proof_artifact: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md
 
 ## Process State
 
 - process_version: 7
-- pending_process_verification: true
+- pending_process_verification: false
 - parallel_mode: sequential
-- state_revision: 235
+- state_revision: 272
 
 ## Repair Follow-On
 
-- outcome: clean
+- outcome: source_follow_up
 - required: no
 - next_required_stage: none
 - verification_passed: true
-- last_updated_at: 2026-03-27T15:18:09Z
+- last_updated_at: 2026-03-28T16:20:39Z
 
 ## Lane Leases
 
@@ -43,8 +43,8 @@ GPTTalker
 
 ## Recent Artifacts
 
-- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T07-55-04-836Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
-- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-18-58-565Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
-- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-20-16-174Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
-- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T13-23-09-710Z-environment-bootstrap.md (bootstrap) [superseded] - Environment bootstrap failed.
-- environment-bootstrap: .opencode/state/artifacts/history/exec-014/bootstrap/2026-03-27T15-16-36-184Z-environment-bootstrap.md (bootstrap) - Environment bootstrap completed successfully.
+- reverification: .opencode/state/artifacts/history/exec-011/review/2026-03-28T12-39-37-363Z-reverification.md (review) - Trust restored using EXEC-014.
+- backlog-verification: .opencode/state/artifacts/history/exec-011/review/2026-03-28T16-28-26-361Z-backlog-verification.md (review) - Backlog verification for EXEC-011: PASS. All acceptance criteria verified via smoke-test artifacts and corroborating evidence from EXEC-013/EXEC-014.
+- smoke-test: .opencode/state/artifacts/history/exec-011/smoke-test/2026-03-28T16-32-27-376Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
+- environment-bootstrap: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md (bootstrap) - Environment bootstrap completed successfully.
+- smoke-test: .opencode/state/artifacts/history/exec-011/smoke-test/2026-03-28T16-39-25-444Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.

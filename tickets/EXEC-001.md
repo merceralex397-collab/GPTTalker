@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: net_new_scope
 
@@ -67,6 +67,8 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T17-01-09-516Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T17-02-42-249Z-smoke-test.md (smoke-test) [superseded] - PARTIAL PASS — scoped fix verified correct (import exits 0, collection passes 126). 40 full-suite failures are pre-existing bugs in other components, mapped to EXEC-003 through EXEC-006.
 - smoke-test: .opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T17-03-47-012Z-smoke-test.md (smoke-test) - PASS - EXEC-001 scoped fix verified correct. Import exits 0, collection passes 126 tests. 40 full-suite failures are pre-existing bugs in EXEC-003-006 components, not EXEC-001 regressions.
+- backlog-verification: .opencode/state/artifacts/history/exec-001/review/2026-03-28T12-36-52-666Z-backlog-verification.md (review) - Backlog verification for EXEC-001: PASS. Scoped fix remains correct, all acceptance criteria verified against current code, no regressions.
+- reverification: .opencode/state/artifacts/history/exec-001/review/2026-03-28T12-39-06-862Z-reverification.md (review) - Trust restored using EXEC-001.
 
 ## Notes
 

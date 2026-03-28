@@ -39,8 +39,8 @@ def main() -> int:
     if len(sys.argv) > 1:
         pytest_args.extend(sys.argv[1:])
 
-    print(f"GPTTalker Test Runner")
-    print(f"=" * 40)
+    print("GPTTalker Test Runner")
+    print("=" * 40)
     print(f"PYTHONPATH: {os.environ.get('PYTHONPATH')}")
     print(f"TEST_DB_URL: {os.environ.get('TEST_DB_URL')}")
     print(f"Command: {' '.join(pytest_args)}")

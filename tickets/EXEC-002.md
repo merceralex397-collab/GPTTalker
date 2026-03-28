@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: split_scope
 
@@ -67,6 +67,7 @@ None
 - qa: .opencode/state/artifacts/history/exec-002/qa/2026-03-25T17-13-38-680Z-qa.md (qa) - QA verification for EXEC-002: PASS. Collection exits 0 (126 tests). Full suite: 40 failed/86 passed — all mapped to EXEC-003-006. Acceptance criterion 4 (failures split to follow-ups) is the controlling criterion.
 - smoke-test: .opencode/state/artifacts/history/exec-002/smoke-test/2026-03-25T17-14-03-990Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-002/smoke-test/2026-03-25T17-14-32-690Z-smoke-test.md (smoke-test) - PASS - EXEC-002 scoped fix verified. Collection exits 0 (126 tests). 40 full-suite failures are pre-existing bugs in EXEC-003-006 scope, not EXEC-002 regressions.
+- reverification: .opencode/state/artifacts/history/exec-002/review/2026-03-28T12-40-06-445Z-reverification.md (review) - Trust restored using EXEC-002.
 
 ## Notes
 

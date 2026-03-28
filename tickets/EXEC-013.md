@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: EXEC-011
 - source_mode: split_scope
 
@@ -63,6 +63,7 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-21-29-235Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-22-25-437Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-013/smoke-test/2026-03-27T07-22-41-396Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- reverification: .opencode/state/artifacts/history/exec-013/review/2026-03-27T16-33-44-038Z-reverification.md (review) - Trust restored using EXEC-013.
 
 ## Notes
 

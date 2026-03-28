@@ -8,6 +8,7 @@ import httpx
 from fastapi import Depends, Request
 
 from src.hub.config import HubConfig, get_hub_config
+from src.hub.policy.distributed_scheduler import DistributedScheduler
 from src.hub.policy.engine import PolicyEngine
 from src.hub.policy.llm_service_policy import LLMServicePolicy
 from src.hub.policy.node_policy import NodePolicy
@@ -154,7 +155,7 @@ async def get_node_repository(request: Request) -> NodeRepository:
 
 async def get_node_health_service(
     request: Request,
-    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
+    node_repo: NodeRepository = Depends(get_node_repository),
 ) -> NodeHealthService:
     """Get node health service from app state or create new instance.
 
@@ -197,7 +198,7 @@ def get_node_auth_handler(request: Request) -> NodeAuthHandler:
 
 async def get_node_client(
     request: Request,
-    auth_handler: NodeAuthHandler = Depends(get_node_auth_handler),  # noqa: B008
+    auth_handler: NodeAuthHandler = Depends(get_node_auth_handler),
 ) -> HubNodeClient:
     """Get hub-to-node HTTP client.
 
@@ -225,8 +226,8 @@ async def get_node_client(
 
 
 async def get_node_policy(
-    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
-    health_service: NodeHealthService = Depends(get_node_health_service),  # noqa: B008
+    node_repo: NodeRepository = Depends(get_node_repository),
+    health_service: NodeHealthService = Depends(get_node_health_service),
 ) -> NodePolicy:
     """Get node policy engine.
 
@@ -376,7 +377,7 @@ async def get_task_repository(request: Request) -> TaskRepository:
 
 
 async def get_repo_policy(
-    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+    repo_repo: RepoRepository = Depends(get_repo_repository),
 ) -> RepoPolicy:
     """Get repo policy engine.
 
@@ -390,7 +391,7 @@ async def get_repo_policy(
 
 
 async def get_write_target_policy(
-    write_repo: WriteTargetRepository = Depends(get_write_target_repository),  # noqa: B008
+    write_repo: WriteTargetRepository = Depends(get_write_target_repository),
 ) -> WriteTargetPolicy:
     """Get write target policy engine.
 
@@ -404,7 +405,7 @@ async def get_write_target_policy(
 
 
 async def get_llm_service_policy(
-    llm_repo: LLMServiceRepository = Depends(get_llm_service_repository),  # noqa: B008
+    llm_repo: LLMServiceRepository = Depends(get_llm_service_repository),
 ) -> LLMServicePolicy:
     """Get LLM service policy engine.
 
@@ -464,10 +465,10 @@ async def get_embedding_service_client(request: Request) -> EmbeddingServiceClie
 
 
 async def get_policy_engine(
-    node_policy: NodePolicy = Depends(get_node_policy),  # noqa: B008
-    repo_policy: RepoPolicy = Depends(get_repo_policy),  # noqa: B008
-    write_target_policy: WriteTargetPolicy = Depends(get_write_target_policy),  # noqa: B008
-    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    node_policy: NodePolicy = Depends(get_node_policy),
+    repo_policy: RepoPolicy = Depends(get_repo_policy),
+    write_target_policy: WriteTargetPolicy = Depends(get_write_target_policy),
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),
 ) -> PolicyEngine:
     """Get the unified policy engine.
 
@@ -505,20 +506,20 @@ def get_tool_registry() -> ToolRegistry:
 
 async def get_policy_aware_router(
     request: Request,
-    registry: ToolRegistry = Depends(get_tool_registry),  # noqa: B008
-    policy_engine: PolicyEngine = Depends(get_policy_engine),  # noqa: B008
-    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
-    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
-    node_client: HubNodeClient = Depends(get_node_client),  # noqa: B008
-    write_target_repo: WriteTargetRepository = Depends(get_write_target_repository),  # noqa: B008
-    write_target_policy: WriteTargetPolicy = Depends(get_write_target_policy),  # noqa: B008
-    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
-    llm_client: LLMServiceClient = Depends(get_llm_service_client),  # noqa: B008
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant),  # noqa: B008
-    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
-    issue_repo: IssueRepository = Depends(get_issue_repository),  # noqa: B008
-    task_repo: TaskRepository = Depends(get_task_repository),  # noqa: B008
-    doc_repo: GeneratedDocsRepository = Depends(get_generated_docs_repository),  # noqa: B008
+    registry: ToolRegistry = Depends(get_tool_registry),
+    policy_engine: PolicyEngine = Depends(get_policy_engine),
+    node_repo: NodeRepository = Depends(get_node_repository),
+    repo_repo: RepoRepository = Depends(get_repo_repository),
+    node_client: HubNodeClient = Depends(get_node_client),
+    write_target_repo: WriteTargetRepository = Depends(get_write_target_repository),
+    write_target_policy: WriteTargetPolicy = Depends(get_write_target_policy),
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),
+    llm_client: LLMServiceClient = Depends(get_llm_service_client),
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant),
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),
+    issue_repo: IssueRepository = Depends(get_issue_repository),
+    task_repo: TaskRepository = Depends(get_task_repository),
+    doc_repo: GeneratedDocsRepository = Depends(get_generated_docs_repository),
 ) -> PolicyAwareToolRouter:
     """Get the policy-aware tool router.
 
@@ -706,9 +707,9 @@ async def get_qdrant_client(request: Request) -> QdrantClientWrapper:
 
 async def get_indexing_pipeline(
     request: Request,
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
-    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
-    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),
 ) -> "IndexingPipeline":
     """Get indexing pipeline instance.
 
@@ -738,9 +739,9 @@ async def get_indexing_pipeline(
 
 async def get_bundle_service(
     request: Request,
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
-    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
-    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),
 ) -> "BundleService":
     """Get bundle service instance.
 
@@ -770,8 +771,8 @@ async def get_bundle_service(
 
 async def get_aggregation_service(
     request: Request,
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
-    issue_repo: "IssueRepository" = Depends(get_issue_repository),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),
+    issue_repo: "IssueRepository" = Depends(get_issue_repository),
 ) -> "AggregationService":
     """Get aggregation service instance.
 
@@ -791,13 +792,13 @@ async def get_aggregation_service(
 
 async def get_cross_repo_service(
     request: Request,
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
-    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),  # noqa: B008
-    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
-    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
-    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
-    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
-    issue_repo: IssueRepository = Depends(get_issue_repository),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),
+    embedding_client: EmbeddingServiceClient = Depends(get_embedding_service_client),
+    llm_policy: LLMServicePolicy = Depends(get_llm_service_policy),
+    repo_repo: RepoRepository = Depends(get_repo_repository),
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),
+    issue_repo: IssueRepository = Depends(get_issue_repository),
 ) -> "CrossRepoService":
     """Get cross-repo service instance.
 
@@ -830,9 +831,9 @@ async def get_cross_repo_service(
 
 async def get_relationship_service(
     request: Request,
-    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
-    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
-    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),
+    repo_repo: RepoRepository = Depends(get_repo_repository),
 ) -> RelationshipService:
     """Get relationship service instance.
 
@@ -857,10 +858,10 @@ async def get_relationship_service(
 
 async def get_architecture_service(
     request: Request,
-    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),  # noqa: B008
-    repo_repo: RepoRepository = Depends(get_repo_repository),  # noqa: B008
-    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),  # noqa: B008
-    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),  # noqa: B008
+    qdrant_client: QdrantClientWrapper = Depends(get_qdrant_client),
+    repo_repo: RepoRepository = Depends(get_repo_repository),
+    relationship_repo: RelationshipRepository = Depends(get_relationship_repository),
+    owner_repo: RepoOwnerRepository = Depends(get_owner_repository),
 ) -> ArchitectureService:
     """Get architecture service instance.
 
@@ -891,7 +892,7 @@ async def get_architecture_service(
 async def get_task_routing_policy(
     task_class: TaskClass | None = None,
     preferred_service_id: str | None = None,
-    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),
 ) -> TaskRoutingPolicy:
     """Get task routing policy instance.
 
@@ -916,16 +917,14 @@ async def get_task_routing_policy(
 
 # === Distributed Scheduler Provider (SCHED-002) ===
 
-from src.hub.policy.distributed_scheduler import DistributedScheduler
-
 
 async def get_distributed_scheduler(
     task_class: TaskClass | None = None,
     preferred_service_id: str | None = None,
-    node_health_service: NodeHealthService = Depends(get_node_health_service),  # noqa: B008
-    node_repo: NodeRepository = Depends(get_node_repository),  # noqa: B008
-    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),  # noqa: B008
-    llm_service_repo: LLMServiceRepository = Depends(get_llm_service_repository),  # noqa: B008
+    node_health_service: NodeHealthService = Depends(get_node_health_service),
+    node_repo: NodeRepository = Depends(get_node_repository),
+    llm_service_policy: LLMServicePolicy = Depends(get_llm_service_policy),
+    llm_service_repo: LLMServiceRepository = Depends(get_llm_service_repository),
 ) -> DistributedScheduler:
     """Get distributed scheduler instance.
 

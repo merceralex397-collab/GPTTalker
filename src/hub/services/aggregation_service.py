@@ -89,7 +89,7 @@ class AggregationService:
 
             for title_info in recurring_titles:
                 title = title_info["title"]
-                title_count = title_info["count"]
+                _ = title_info["count"]
 
                 # Fetch all issues with this exact title
                 all_issues = await self.issue_repo.list_all(limit=1000)
@@ -112,7 +112,7 @@ class AggregationService:
                 matching_issues.sort(key=lambda x: x.created_at)
 
                 # Collect unique repo IDs
-                group_repo_ids = list(set(i.repo_id for i in matching_issues))
+                group_repo_ids = {i.repo_id for i in matching_issues}
 
                 # Compute status counts
                 group_open = sum(1 for i in matching_issues if i.status == IssueStatus.OPEN)
@@ -313,7 +313,7 @@ class AggregationService:
                 group_issues.sort(key=lambda x: x.created_at)
 
                 # Collect unique repo IDs
-                group_repo_ids = list(set(i.repo_id for i in group_issues))
+                group_repo_ids = {i.repo_id for i in group_issues}
 
                 # Compute status counts
                 group_open = sum(1 for i in group_issues if i.status == IssueStatus.OPEN)
@@ -448,7 +448,7 @@ class AggregationService:
                 issues.sort(key=lambda x: x.created_at)
 
                 # Collect unique repo IDs
-                group_repo_ids = list(set(i.repo_id for i in issues))
+                group_repo_ids = {i.repo_id for i in issues}
 
                 # Compute status counts
                 group_open = sum(1 for i in issues if i.status == IssueStatus.OPEN)

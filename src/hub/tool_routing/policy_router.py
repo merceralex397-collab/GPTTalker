@@ -28,11 +28,11 @@ if TYPE_CHECKING:
     from src.hub.services.node_client import HubNodeClient
     from src.hub.services.opencode_adapter import OpenCodeAdapter
     from src.hub.services.qdrant_client import QdrantClientWrapper
+    from src.shared.repositories.generated_docs import GeneratedDocsRepository
     from src.shared.repositories.issues import IssueRepository
     from src.shared.repositories.nodes import NodeRepository
     from src.shared.repositories.repos import RepoRepository
     from src.shared.repositories.tasks import TaskRepository
-    from src.shared.repositories.generated_docs import GeneratedDocsRepository
     from src.shared.repositories.write_targets import WriteTargetRepository
 
 logger = get_logger(__name__)

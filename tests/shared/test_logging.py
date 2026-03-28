@@ -12,7 +12,6 @@ from src.shared.context import (
     generate_trace_id,
     get_trace_context,
     get_trace_id,
-    set_trace_context,
     set_trace_id,
     trace_context,
     trace_context_async,
@@ -21,9 +20,7 @@ from src.shared.logging import (
     JSONFormatter,
     TextFormatter,
     redact_sensitive,
-    setup_logging,
 )
-
 
 # =============================================================================
 # Happy-path tests

@@ -212,8 +212,8 @@ async def chat_embeddings_with_distributed_scheduler(
     Returns:
         Embedding results or error.
     """
-    from src.hub.services.embedding_client import EmbeddingServiceClient
     from src.hub.policy.task_routing_policy import TaskRoutingPolicy
+    from src.hub.services.embedding_client import EmbeddingServiceClient
 
     # Ensure task class is set to EMBEDDING
     scheduler_input = params.scheduler_input

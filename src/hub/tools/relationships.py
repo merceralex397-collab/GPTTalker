@@ -107,7 +107,6 @@ async def create_relationship_handler(
 
     # Import here to avoid circular dependencies
     from src.shared.models import RelationshipType
-    from src.hub.services.relationship_service import RelationshipService
 
     # Validate both repos exist
     source_repo = await repo_repo.get(params.source_repo_id)
@@ -297,6 +296,7 @@ async def set_repo_owner_handler(
         }
 
     from datetime import datetime
+
     from src.shared.models import RepoOwner
 
     owner = RepoOwner(

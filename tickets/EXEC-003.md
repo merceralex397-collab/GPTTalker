@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: net_new_scope
 
@@ -59,6 +59,8 @@ None
 - qa: .opencode/state/artifacts/history/exec-003/qa/2026-03-25T17-28-24-511Z-qa.md (qa) - QA verification for EXEC-003: All 4 _validate_path tests pass. 7 failures are pre-existing environment issues (datetime.UTC, ripgrep, git config), not EXEC-003 regressions.
 - smoke-test: .opencode/state/artifacts/history/exec-003/smoke-test/2026-03-25T17-29-07-950Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-003/smoke-test/2026-03-25T17-29-44-537Z-smoke-test.md (smoke-test) - Deterministic smoke test for EXEC-003: PASS. Import exits 0, compileall passes, scoped pytest (test_executor.py) exits 0 with 15 passed / 7 pre-existing env failures. All _validate_path tests pass.
+- backlog-verification: .opencode/state/artifacts/history/exec-003/review/2026-03-28T12-36-51-935Z-backlog-verification.md (review) - Backlog verification for EXEC-003: PASS — implementation matches planned fix, smoke-test evidence holds, no drift detected, no follow-up required.
+- reverification: .opencode/state/artifacts/history/exec-003/review/2026-03-28T12-39-14-597Z-reverification.md (review) - Trust restored using EXEC-003.
 
 ## Notes
 

@@ -7,9 +7,9 @@ from src.shared.logging import get_logger
 
 # Import type hints for forward references only
 if TYPE_CHECKING:
-    from src.shared.repositories.tasks import TaskRepository
     from src.shared.repositories.generated_docs import GeneratedDocsRepository
     from src.shared.repositories.issues import IssueRepository
+    from src.shared.repositories.tasks import TaskRepository
 
 logger = get_logger(__name__)
 

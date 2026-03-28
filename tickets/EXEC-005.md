@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: net_new_scope
 
@@ -59,6 +59,7 @@ None
 - qa: .opencode/state/artifacts/history/exec-005/qa/2026-03-25T18-27-52-344Z-qa.md (qa) - QA verification for EXEC-005: All acceptance criteria passed - scoped pytest (6 tests) all pass.
 - smoke-test: .opencode/state/artifacts/history/exec-005/smoke-test/2026-03-25T18-28-00-022Z-smoke-test.md (smoke-test) [superseded] - EXEC-005 scoped fix VERIFIED - 6/6 scoped tests pass. Full suite failures are pre-existing.
 - smoke-test: .opencode/state/artifacts/history/exec-005/smoke-test/2026-03-25T18-29-03-480Z-smoke-test.md (smoke-test) - EXEC-005 scoped fix VERIFIED - 6/6 scoped tests pass. Full suite failures are pre-existing.
+- reverification: .opencode/state/artifacts/history/exec-005/review/2026-03-27T16-33-41-546Z-reverification.md (review) - Trust restored using EXEC-005.
 
 ## Notes
 

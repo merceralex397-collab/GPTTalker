@@ -36,34 +36,34 @@
 | 6 | POLISH-001 | Contract tests for MCP tools and failure modes | qa | closeout | done | done | suspect | no | high | REPO-003, WRITE-001, LLM-002, CTX-003, OBS-002 | - |
 | 6 | POLISH-002 | Security regression tests and redaction hardening | qa | closeout | done | done | suspect | no | medium | CORE-005, OBS-001, POLISH-001 | - |
 | 6 | POLISH-003 | README, API docs, and handoff hardening | docs | closeout | done | done | suspect | yes | low | POLISH-001 | - |
-| 7 | FIX-001 | Fix walrus operator syntax error in opencode.py | bugfix | closeout | done | done | suspect | no | high | - | - |
+| 7 | FIX-001 | Fix walrus operator syntax error in opencode.py | bugfix | closeout | done | done | reverified | no | high | - | - |
 | 7 | FIX-002 | Fix Depends[] type subscript error in node agent | bugfix | closeout | done | done | reverified | yes | medium | - | - |
 | 7 | FIX-003 | Fix hub MCP router async wiring and circular import | bugfix | closeout | done | done | reverified | no | high | FIX-001 | - |
 | 7 | FIX-004 | Fix SQLite write persistence and uncommitted transactions | bugfix | closeout | done | done | reverified | yes | medium | - | - |
 | 7 | FIX-005 | Fix structured logger TypeError and HubConfig attribute error | bugfix | closeout | done | done | reverified | yes | medium | - | - |
-| 7 | FIX-006 | Register read_repo_file tool and close tool surface gaps | bugfix | closeout | done | done | suspect | yes | low | FIX-001, FIX-003 | - |
+| 7 | FIX-006 | Register read_repo_file tool and close tool surface gaps | bugfix | closeout | done | done | reverified | yes | low | FIX-001, FIX-003 | - |
 | 7 | FIX-007 | Fix ripgrep search parser and implement search modes | bugfix | closeout | done | done | reverified | yes | low | FIX-002 | - |
-| 7 | FIX-008 | Add recent_commits to git_status output | bugfix | closeout | done | done | suspect | yes | low | FIX-002 | - |
+| 7 | FIX-008 | Add recent_commits to git_status output | bugfix | closeout | done | done | reverified | yes | low | FIX-002 | - |
 | 7 | FIX-009 | Align write_markdown interface with spec contract | bugfix | closeout | done | done | reverified | yes | low | FIX-003 | - |
 | 7 | FIX-010 | Implement missing observability tools and audit persistence | bugfix | closeout | done | done | reverified | yes | low | FIX-003, FIX-004 | - |
 | 8 | FIX-011 | Complete aggregation service methods | completion | closeout | done | done | reverified | yes | low | FIX-004, FIX-010 | - |
 | 8 | FIX-012 | Complete cross-repo landscape with real metrics | completion | closeout | done | done | reverified | yes | low | FIX-004 | - |
 | 8 | FIX-013 | Implement Cloudflare Tunnel runtime management | completion | closeout | done | done | reverified | yes | low | FIX-003 | - |
-| 8 | FIX-014 | Replace placeholder tests with real implementations | hardening | closeout | done | done | suspect | yes | low | FIX-001, FIX-002, FIX-003 | - |
-| 8 | FIX-015 | Fix Task UUID handling and CLI entrypoint packaging | hardening | closeout | done | done | suspect | yes | low | - | - |
-| 8 | FIX-016 | Security hardening - path validation and config safety | hardening | closeout | done | done | suspect | yes | low | FIX-002 | - |
-| 8 | FIX-017 | Clean up duplicate endpoints, response models, and artifact registry | hardening | closeout | done | done | suspect | yes | low | FIX-003 | - |
-| 9 | EXEC-001 | Fix node-agent FastAPI dependency injection import failure | bugfix | closeout | done | done | trusted | no | high | - | - |
-| 9 | EXEC-002 | Restore pytest collection and full test execution after node-agent import fix | bugfix | closeout | done | done | trusted | no | high | EXEC-001 | EXEC-003, EXEC-004, EXEC-005, EXEC-006, EXEC-007, EXEC-008, EXEC-009, EXEC-010, EXEC-011 |
-| 9 | EXEC-003 | Fix node-agent executor absolute-path validation within allowed roots | bugfix | closeout | done | done | trusted | yes | high | - | - |
-| 9 | EXEC-004 | Fix hub repo-path normalization for inspection and file-read flows | bugfix | closeout | done | done | trusted | yes | high | - | - |
-| 9 | EXEC-005 | Align write_markdown and MCP transport response contracts with tests | bugfix | closeout | done | done | trusted | yes | medium | - | - |
+| 8 | FIX-014 | Replace placeholder tests with real implementations | hardening | closeout | done | done | reverified | yes | low | FIX-001, FIX-002, FIX-003 | - |
+| 8 | FIX-015 | Fix Task UUID handling and CLI entrypoint packaging | hardening | closeout | done | done | reverified | yes | low | - | - |
+| 8 | FIX-016 | Security hardening - path validation and config safety | hardening | closeout | done | done | reverified | yes | low | FIX-002 | - |
+| 8 | FIX-017 | Clean up duplicate endpoints, response models, and artifact registry | hardening | closeout | done | done | reverified | yes | low | FIX-003 | - |
+| 9 | EXEC-001 | Fix node-agent FastAPI dependency injection import failure | bugfix | closeout | done | done | reverified | no | high | - | - |
+| 9 | EXEC-002 | Restore pytest collection and full test execution after node-agent import fix | bugfix | closeout | done | done | reverified | no | high | EXEC-001 | EXEC-003, EXEC-004, EXEC-005, EXEC-006, EXEC-007, EXEC-008, EXEC-009, EXEC-010, EXEC-011 |
+| 9 | EXEC-003 | Fix node-agent executor absolute-path validation within allowed roots | bugfix | closeout | done | done | reverified | yes | high | - | - |
+| 9 | EXEC-004 | Fix hub repo-path normalization for inspection and file-read flows | bugfix | closeout | done | done | reverified | yes | high | - | - |
+| 9 | EXEC-005 | Align write_markdown and MCP transport response contracts with tests | bugfix | closeout | done | done | reverified | yes | medium | - | - |
 | 9 | EXEC-006 | Fix structured logging redaction behavior for nested payloads | bugfix | closeout | done | done | reverified | yes | medium | - | - |
 | 10 | EXEC-007 | Restore discovery and inspection contract behavior in hub tools | bugfix | closeout | done | done | reverified | no | high | EXEC-004, EXEC-005 | EXEC-012 |
 | 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | closeout | done | done | reverified | no | high | EXEC-004 | EXEC-012 |
 | 10 | EXEC-009 | Repair node-agent executor timestamp and recent-commit behavior | node-agent | closeout | done | done | reverified | yes | medium | EXEC-003 | - |
 | 10 | EXEC-010 | Restore nested structured logging redaction semantics | shared-runtime | closeout | done | done | reverified | yes | medium | EXEC-006 | - |
-| 10 | EXEC-011 | Reduce repo-wide ruff violations to zero | hardening | implementation | in_progress | open | suspect | no | high | - | EXEC-013, EXEC-014 |
-| 11 | EXEC-012 | Fix misclassified paths in test_path_traversal_dotdot_rejected and test_invalid_path_rejected | bugfix | closeout | done | superseded | invalidated | yes | low | - | - |
-| 11 | EXEC-013 | Fix datetime.UTC, collections.abc, and TimeoutError alias violations | bugfix | closeout | done | done | trusted | yes | low | - | - |
-| 11 | EXEC-014 | Fix remaining mechanical Ruff violations after EXEC-013 | hardening | plan_review | plan_review | open | suspect | yes | low | EXEC-013 | - |
+| 10 | EXEC-011 | Reduce repo-wide ruff violations to zero | hardening | closeout | done | done | trusted | no | high | - | EXEC-013, EXEC-014 |
+| 11 | EXEC-012 | Fix misclassified paths in test_path_traversal_dotdot_rejected and test_invalid_path_rejected | bugfix | closeout | done | superseded | reverified | yes | low | - | - |
+| 11 | EXEC-013 | Fix datetime.UTC, collections.abc, and TimeoutError alias violations | bugfix | closeout | done | done | reverified | yes | low | - | - |
+| 11 | EXEC-014 | Fix remaining mechanical Ruff violations after EXEC-013 | hardening | closeout | done | done | reverified | yes | low | EXEC-013 | - |

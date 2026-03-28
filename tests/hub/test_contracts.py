@@ -4,23 +4,23 @@ These tests verify the behavior of MCP tool handlers under various scenarios
 including happy paths and failure modes. Tests use mocked dependencies.
 """
 
-import pytest
 from datetime import datetime
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock
+
+import pytest
 
 from src.hub.tools.discovery import (
     list_nodes_handler,
     list_repos_handler,
 )
+from src.hub.tools.git_operations import git_status_handler
 from src.hub.tools.inspection import (
     inspect_repo_tree_handler,
     read_repo_file_handler,
 )
-from src.hub.tools.search import search_repo_handler
-from src.hub.tools.markdown import write_markdown_handler
 from src.hub.tools.llm import chat_llm_handler
-from src.hub.tools.git_operations import git_status_handler
-
+from src.hub.tools.markdown import write_markdown_handler
+from src.hub.tools.search import search_repo_handler
 
 # ============================================================================
 # Fixtures for Mock Dependencies

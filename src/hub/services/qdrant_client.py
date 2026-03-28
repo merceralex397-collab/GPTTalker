@@ -902,7 +902,7 @@ class QdrantClientWrapper:
 
                 offset = next_offset
 
-            return sorted(list(languages))
+            return sorted(languages)
 
         except Exception as e:
             logger.error(

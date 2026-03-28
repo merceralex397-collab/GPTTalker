@@ -2,6 +2,7 @@
 
 import pytest
 
+from src.hub.policy.scopes import OperationScope
 from src.hub.tool_router import (
     ToolDefinition,
     ToolRegistry,
@@ -10,10 +11,8 @@ from src.hub.tool_router import (
     register_tool,
 )
 from src.hub.tool_routing.requirements import (
-    PolicyRequirement,
     READ_REPO_REQUIREMENT,
 )
-from src.hub.policy.scopes import OperationScope
 
 
 # Sample async handler for testing

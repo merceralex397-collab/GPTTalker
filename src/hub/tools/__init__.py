@@ -167,9 +167,9 @@ def register_observability_tools(registry: ToolRegistry) -> None:
     from src.hub.tools.observability import (
         get_issue_timeline_handler,
         get_task_details_handler,
+        list_generated_docs_handler,
         list_known_issues_handler,
         list_task_history_handler,
-        list_generated_docs_handler,
     )
 
     # Register get_task_details tool

@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - source_ticket_id: EXEC-002
 - source_mode: net_new_scope
 
@@ -61,6 +61,7 @@ None
 - qa: .opencode/state/artifacts/history/exec-004/qa/2026-03-25T17-58-05-766Z-qa.md (qa) - QA verification for EXEC-004: All 4 acceptance criteria PASSED. 10/11 path-related tests passed. 25 failures are pre-existing issues in EXEC-005/EXEC-006/env.
 - smoke-test: .opencode/state/artifacts/history/exec-004/smoke-test/2026-03-25T17-58-27-748Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/exec-004/smoke-test/2026-03-25T17-58-54-379Z-smoke-test.md (smoke-test) - Deterministic smoke test for EXEC-004: PASS. Import exits 0, compileall passes, scoped pytest (path-related) passes 10/11. 25 failures are pre-existing issues in EXEC-005/EXEC-006/env.
+- reverification: .opencode/state/artifacts/history/exec-004/review/2026-03-27T16-33-39-680Z-reverification.md (review) - Trust restored using EXEC-004.
 
 ## Notes
 

@@ -8,9 +8,9 @@ from src.shared.logging import get_logger
 from src.shared.models import (
     LandscapeMetadata,
     LandscapeSource,
+    RelationshipType,
     RepoOwner,
     RepoRelationship,
-    RelationshipType,
 )
 from src.shared.repositories.relationships import RelationshipRepository, RepoOwnerRepository
 from src.shared.repositories.repos import RepoRepository
@@ -282,7 +282,7 @@ class RelationshipService:
         maintainers: list[RepoOwner] = []
 
         # Get maintainers from owners
-        for repo_id, owner in all_owners.items():
+        for _repo_id, owner in all_owners.items():
             if owner.role == "maintainer":
                 maintainers.append(owner)
                 if primary_owner is None:

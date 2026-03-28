@@ -72,6 +72,7 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-008/smoke-test/2026-03-27T04-36-14-727Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
 - backlog-verification: .opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-171Z-backlog-verification.md (review) - Backlog verification recorded during ticket_reverify for EXEC-008.
 - reverification: .opencode/state/artifacts/history/exec-008/review/2026-03-27T07-29-19-172Z-reverification.md (review) - Trust restored using EXEC-008.
+- ticket-reconciliation: .opencode/state/reviews/exec-008-review-ticket-reconciliation.md (review) - Reconciled EXEC-012 against EXEC-008.
 
 ## Notes
 

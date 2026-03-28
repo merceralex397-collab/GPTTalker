@@ -1,9 +1,8 @@
 """Pytest fixtures for GPTTalker tests."""
 
-import os
 import sys
-from pathlib import Path
 from collections.abc import AsyncGenerator, Generator
+from pathlib import Path
 from unittest.mock import MagicMock
 
 import aiosqlite

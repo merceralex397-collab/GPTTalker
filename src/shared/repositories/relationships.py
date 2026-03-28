@@ -6,7 +6,7 @@ from typing import Any
 
 from src.shared.database import DatabaseManager
 from src.shared.logging import get_logger
-from src.shared.models import RepoOwner, RepoRelationship, RelationshipType
+from src.shared.models import RelationshipType, RepoOwner, RepoRelationship
 
 logger = get_logger(__name__)
 

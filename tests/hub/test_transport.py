@@ -2,14 +2,13 @@
 
 import pytest
 
-from src.hub.transport.base import TransportError, TransportResult, TransportStatus
+from src.hub.transport.base import TransportError, TransportStatus
 from src.hub.transport.mcp import (
     MCPTransport,
     format_tool_list,
     format_tool_response,
     parse_tool_call,
 )
-
 
 # =============================================================================
 # Happy-path tests

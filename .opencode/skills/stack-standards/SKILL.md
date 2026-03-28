@@ -1,46 +1,74 @@
 ---
 name: stack-standards
-description: Hold the project-local standards for GPTTalker's Python, FastAPI, storage, networking, validation, and runtime assumptions. Use when planning or implementing work that must follow repo-specific engineering conventions.
+description: Apply GPTTalker's repo-local Python, FastAPI, storage, networking, logging, and validation conventions. Use when planning, implementing, or reviewing code that must match this repo's actual engineering contract.
 ---
 
 # Stack Standards
 
 Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
 
-Current stack:
+## Stack Summary
 
-- Python 3.11+ application code
-- FastAPI hub and node-agent services
-- SQLite via `aiosqlite` for structured runtime state
-- Qdrant for semantic project context
-- `httpx` async clients for outbound service calls
-- Tailscale as the internal transport boundary
-- `ruff` for linting and formatting
-- `pytest` plus `pytest-asyncio` for validation
+- Language: Python 3.11+
+- API layer: FastAPI
+- Structured storage: SQLite through `aiosqlite`
+- Semantic context storage: Qdrant via `qdrant-client`
+- Outbound HTTP: async `httpx` with explicit timeouts
+- Validation: `pytest`, `pytest-asyncio`, `ruff`
 
-Core implementation rules:
+## Python Rules
 
-- use type hints on function signatures, return values, and non-obvious variables
-- prefer `str | None` over `Optional[str]`
-- use Pydantic models for API request and response schemas
-- keep FastAPI endpoints async and use `fastapi.Depends` for dependency injection
-- do not use synchronous sqlite APIs in async paths
-- treat unknown nodes, repos, write targets, and service aliases as fail-closed errors
-- use structured logging; do not add bare `print()` calls
-- redact secrets, tokens, passwords, and raw file contents from logs
-- log tool activity with `trace_id`, `tool_name`, `target_node`, `target_repo`, `caller`, `outcome`, and `duration_ms`
-- preserve the Tailscale-only trust boundary for internal hub-to-node traffic
+- Use type hints on public functions, return values, and non-obvious locals.
+- Prefer modern union syntax such as `str | None`.
+- Keep async paths fully async; do not call synchronous sqlite APIs from FastAPI handlers or other async services.
+- Use small, explicit helpers over hidden side effects.
 
-Validation rules:
+## FastAPI Rules
 
-- prefer `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .` for repo-wide lint validation
-- use `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ --collect-only -q --tb=no` before broader Python test runs when import or collection risk is relevant
-- use `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=no` for the project test suite unless the ticket defines a narrower canonical command
-- when a ticket acceptance criterion defines an explicit smoke command, treat that command as canonical over heuristic test selection
-- if `uv`, `pytest`, `ruff`, or another required executable is missing, return a blocker instead of improvising a workaround
+- Endpoints must be `async def`.
+- Use Pydantic models for request and response contracts.
+- Use `fastapi.Depends` for dependency injection rather than ad hoc request wiring.
+- Follow the repo's dependency modules and service wrappers instead of creating duplicate app-state access patterns.
+- FastAPI `Depends(...)` in function defaults is expected in this repo; `ruff` B008 is intentionally ignored for those paths.
 
-Safety notes:
+## Storage And Context Rules
 
-- keep changes mechanical when addressing lint-only tickets unless the approved plan explicitly allows broader behavior changes
-- preserve FastAPI dependency patterns that intentionally rely on `Depends(...)`; do not "fix" them into non-idiomatic alternatives
-- prefer repo-local environment/bootstrap flows over ad hoc package-manager commands when bootstrap state is missing, stale, or failed
+- SQLite runtime state belongs in async `aiosqlite` repositories and helpers under `src/shared/` and hub/node-agent services.
+- Qdrant is the semantic memory layer for indexed repo content, issues, context bundles, and cross-repo intelligence.
+- Preserve idempotent indexing and content-hash tracking behavior when changing context flows.
+
+## Networking And Security Rules
+
+- Use async `httpx` for hub-to-node and hub-to-service calls.
+- Set an explicit timeout on every outbound `httpx` request.
+- Treat Tailscale as the internal transport boundary; do not introduce broader trust assumptions.
+- Fail closed on unknown nodes, repos, write targets, and service aliases.
+- Normalize user-influenced paths and reject traversal or escaping behavior.
+
+## Logging And Audit Rules
+
+- Use structured logging helpers from `src/shared/logging.py`; do not add bare `print()` calls.
+- Keep log payloads redacted for secrets, tokens, passwords, and raw file contents.
+- Preserve audit-oriented metadata on tool flows, including trace IDs and outcome data, when changing hub or node-agent execution paths.
+
+## Validation Commands
+
+- Lint: `ruff check .`
+- Tests: `pytest`
+- Targeted repo scripts are also available:
+  - `gpttalker-lint`
+  - `gpttalker-test`
+  - `gpttalker-validate`
+
+## Testing Expectations
+
+- Add or update `pytest` coverage for behavior changes.
+- MCP tool handlers need at least one happy-path and one error-path test.
+- Use `pytest-asyncio` patterns for async behavior and FastAPI-adjacent async services.
+- Treat blocked validation as a real blocker; do not claim PASS without executable evidence.
+
+## Review Focus
+
+- Check FastAPI dependency wiring, async boundaries, path validation, and logging redaction first.
+- Check persistence changes for missing commits, transaction drift, or sync/async mixing.
+- Check context and cross-repo flows for Qdrant schema drift, indexing regressions, and policy bypasses.
