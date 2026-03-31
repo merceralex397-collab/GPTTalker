@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/xrepo-003-review-review.md (review) - Code review for XREPO-003: Architecture map and project landscape outputs. APPROVED - all acceptance criteria met.
 - qa: .opencode/state/qa/xrepo-003-qa-qa.md (qa) - QA verification for XREPO-003: Architecture map and project landscape outputs. All 3 acceptance criteria verified via code inspection - architecture map output shape defined, landscape views cite source repos, output bounded to approved repos.
 - backlog-verification: .opencode/state/reviews/xrepo-003-review-backlog-verification.md (review) - Backlog verification for XREPO-003: PASS
+- reverification: .opencode/state/artifacts/history/xrepo-003/review/2026-03-31T21-25-57-260Z-reverification.md (review) - Trust restored using XREPO-003.
 
 ## Notes
 

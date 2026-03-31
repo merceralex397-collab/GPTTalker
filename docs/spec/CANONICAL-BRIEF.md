@@ -15,7 +15,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 - Support distributed LLM execution: multi-machine model routing, task classification, scheduler policies, health checks
 - Support full observability: task history, generated document history, issue timelines, audit logs
 - Support node-agent architecture: lightweight agent on each managed machine, hub routes over Tailscale
-- Expose a public HTTPS edge via Cloudflare Tunnel for ChatGPT MCP connectivity
+- Expose a public HTTPS edge via ngrok for ChatGPT MCP connectivity
 - Keep the hub lightweight enough to run on an older laptop
 - Fail closed on unknown targets, missing aliases, and invalid paths
 - Persist all config, registry, and history state across restarts
@@ -35,7 +35,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 - **Database**: SQLite for structured records (registry, history, task records)
 - **Vector store**: Qdrant for semantic project context retrieval
 - **Internal connectivity**: Tailscale tailnet (private, all hub-to-node traffic)
-- **Public edge**: Cloudflare Tunnel (HTTPS, no inbound ports)
+- **Public edge**: ngrok (HTTPS, no inbound ports)
 - **Node architecture**: Lightweight Python agent on each managed machine
 - **LLM runtimes**: OpenCode for coding-agent workflows; llama.cpp-class serving for local CPU inference; dedicated embedding service
 - **Deployment**: Hub on older laptop; main LLM on stronger machine; repos spread across multiple machines
@@ -59,7 +59,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 - Advanced context: `build_context_bundle`, `list_recurring_issues`, `search_global_context`
 - Node management: `list_nodes` with health checks
 - Registry management: node registry, repo registry, write-target registry, LLM service registry
-- Cloudflare Tunnel configuration for public HTTPS edge
+- ngrok configuration for public HTTPS edge
 - Full test suite covering tool contracts, policy enforcement, failure modes
 
 ## 6. Tooling and Model Constraints
@@ -108,7 +108,7 @@ All blocking decisions have been resolved:
 | Project name | GPTTalker | User-specified |
 | Stack | Python + FastAPI | Lightweight, hub-friendly |
 | Architecture | Node-agent | Recommended for multi-machine growth |
-| Public edge | Cloudflare Tunnel | Production-grade, no inbound ports |
+| Public edge | ngrok | Production-grade, no inbound ports |
 | Vector DB | Qdrant | Robust filtering, durable search |
 | Structured DB | SQLite | Lightweight for hub laptop |
 | Scope | Combined V1+V2 | All features in single scope |
@@ -126,7 +126,7 @@ All blocking decisions have been resolved:
 - Specific llama.cpp-compatible model to run on the 32GB machine
 - Qdrant deployment mode: embedded vs. standalone service
 - Whether to include a small helper model on the hub machine itself
-- Specific Cloudflare Tunnel configuration details (domain, access policies)
+- Specific ngrok configuration details (authtoken, reserved domain, access policies)
 - Git hook integration details for indexing triggers
 - Scheduled indexing interval
 - Knowledge graph storage backend (can be deferred to later tickets)
@@ -147,13 +147,13 @@ Ticketing can proceed for all areas:
 - Cross-repo intelligence
 - Distributed LLM scheduling
 - Observability and history
-- Cloudflare Tunnel public edge
+- ngrok public edge
 - Security and registry management
 - Testing and validation
 
 ## 11. Acceptance Signals
 
-- Hub starts and exposes MCP-compliant tools over HTTPS via Cloudflare Tunnel
+- Hub starts and exposes MCP-compliant tools over HTTPS via ngrok
 - ChatGPT can call `list_nodes`, `list_repos`, `inspect_repo_tree`, `read_repo_file`, `search_repo`, `git_status` against approved repos on remote machines
 - ChatGPT can call `write_markdown` to approved write roots with atomic writes and extension enforcement
 - ChatGPT can call `chat_llm` to route prompts to approved LLM backends
@@ -169,7 +169,7 @@ Ticketing can proceed for all areas:
 ## 12. Assumptions
 
 - The operator has a working Tailscale tailnet connecting all machines
-- The operator has a Cloudflare account for tunnel configuration
+- The operator has an ngrok account for tunnel configuration
 - Target machines run Linux (for node agent deployment)
 - The hub laptop runs Windows or Linux with Python 3.11+
 - Qdrant can run on the hub machine or a dedicated machine on the tailnet
@@ -177,3 +177,22 @@ Ticketing can proceed for all areas:
 - ChatGPT MCP integration follows the OpenAI MCP protocol as documented
 - The operator manages a small number of machines (single-digit) in a home-lab environment
 - Network latency over Tailscale is acceptable for interactive ChatGPT tool use
+
+## Pivot History
+
+### 2026-03-31T13:02:54Z — architecture-change
+
+- Requested change: Switch GPTTalker public edge from Cloudflare Tunnel to ngrok and route resulting ticket lineage through Scafforge pivot
+- Accepted decisions:
+- GPTTalker now uses ngrok as the public HTTPS edge provider instead of Cloudflare Tunnel.
+- Cloudflare-specific edge implementation, docs, prompts, and ticket assumptions are no longer canonical project truth after this pivot.
+- Pivot restart surfaces and follow-up routing must make the ngrok migration explicit until code, docs, and ticket lineage converge.
+- Unresolved follow-up:
+- Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.
+- Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture.
+- Affected contract families:
+- agent_team_and_prompts
+- managed_workflow_tools_and_prompts
+- repo_local_skills
+- restart_surfaces
+- ticket_graph_and_lineage

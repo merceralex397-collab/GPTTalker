@@ -1,8 +1,4 @@
-"""Cloudflare Tunnel runtime management.
-
-This module provides the TunnelManager class for managing the cloudflared subprocess
-from within the GPTTalker hub's lifespan.
-"""
+"""ngrok runtime management for GPTTalker's public edge."""
 
 import asyncio
 import os
@@ -16,23 +12,9 @@ logger = get_logger(__name__)
 
 
 class TunnelManager:
-    """Manages the Cloudflare Tunnel (cloudflared) subprocess.
+    """Manage the ngrok subprocess used for GPTTalker's public HTTPS edge."""
 
-    This class handles:
-    - Starting cloudflared subprocess when tunnel is enabled
-    - Health monitoring with automatic restart on failure
-    - Systemd/service detection to avoid conflicting with external management
-    - Graceful shutdown of the subprocess
-
-    Attributes:
-        config: Hub configuration with tunnel settings.
-        _process: The asyncio subprocess instance (if managed by hub).
-        _monitor_task: Background task for health monitoring.
-        _is_external: Whether tunnel is managed externally (e.g., by systemd).
-        _restart_count: Number of restart attempts made.
-    """
-
-    CLOUDFLARED_COMMAND = "cloudflared"
+    NGROK_COMMAND = "ngrok"
 
     def __init__(self, config: HubConfig) -> None:
         """Initialize the tunnel manager.
@@ -57,138 +39,120 @@ class TunnelManager:
         return self._running
 
     async def start(self) -> bool:
-        """Start the Cloudflare Tunnel subprocess if enabled.
-
-        This method:
-        1. Checks if tunnel is enabled in config
-        2. Detects if cloudflared is already managed externally (systemd/process)
-        3. Starts subprocess if not externally managed
-
-        Returns:
-            True if tunnel was started successfully or is externally managed,
-            False if tunnel is disabled or failed to start.
-        """
-        # Check if tunnel is enabled
-        if not self.config.cloudflare_tunnel_enabled:
-            logger.info("cloudflare_tunnel_disabled")
+        """Start the ngrok subprocess if enabled or detect external management."""
+        if not self.config.ngrok_enabled:
+            logger.info("ngrok_tunnel_disabled")
             return False
 
-        # Check for token
-        token = self.config.cloudflare_tunnel_token
-        if not token:
-            logger.warning(
-                "cloudflare_tunnel_enabled_but_no_token",
-                message="Tunnel enabled but CLOUDFLARE_TUNNEL_TOKEN not set",
-            )
-            return False
-
-        # Check if tunnel is externally managed (systemd or already running)
         if await self._check_external_management():
             if self._is_external:
                 logger.info(
-                    "cloudflare_tunnel_external_detected",
-                    message="Tunnel appears to be managed externally (systemd or running process)",
+                    "ngrok_tunnel_external_detected",
+                    message="ngrok appears to be managed externally (systemd or running process)",
                 )
                 self._running = True
                 return True
-            else:
-                logger.warning(
-                    "cloudflare_tunnel_check_failed",
-                    message="Could not determine external tunnel status, proceeding with hub management",
-                )
 
-        # Start the tunnel subprocess
+            logger.warning(
+                "ngrok_tunnel_check_failed",
+                message="Could not determine external ngrok status, proceeding with hub management",
+            )
+
+        if not self.config.ngrok_authtoken:
+            logger.warning(
+                "ngrok_tunnel_enabled_but_no_authtoken",
+                message="ngrok enabled but GPTTALKER_NGROK_AUTHTOKEN not set for hub-managed mode",
+            )
+            return False
+
         try:
             return await self._start_subprocess()
         except Exception as e:
             logger.error(
-                "cloudflare_tunnel_start_failed",
+                "ngrok_tunnel_start_failed",
                 error=str(e),
             )
             return False
 
     async def _check_external_management(self) -> bool:
-        """Check if cloudflared is managed externally (systemd or running process).
-
-        Returns:
-            True if external management detected, False otherwise.
-        """
-        # Check if cloudflared process is already running
+        """Check whether ngrok is already managed externally."""
         try:
             proc = await asyncio.create_subprocess_exec(
                 "pgrep",
                 "-x",
-                "cloudflared",
+                self.NGROK_COMMAND,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
             stdout, _ = await proc.communicate()
             if proc.returncode == 0 and stdout.strip():
                 logger.info(
-                    "cloudflare_tunnel_process_found",
-                    message="cloudflared process already running",
+                    "ngrok_tunnel_process_found",
+                    message="ngrok process already running",
                 )
                 self._is_external = True
                 return True
         except FileNotFoundError:
-            # pgrep not available, continue with other checks
             pass
         except Exception as e:
             logger.debug(
-                "cloudflare_tunnel_pgrep_check_error",
+                "ngrok_tunnel_pgrep_check_error",
                 error=str(e),
             )
 
-        # Check if systemd service is active
         try:
             proc = await asyncio.create_subprocess_exec(
                 "systemctl",
                 "is-active",
-                "cloudflared",
+                self.NGROK_COMMAND,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
             )
             stdout, _ = await proc.communicate()
             if proc.returncode == 0 and stdout.strip() == b"active":
                 logger.info(
-                    "cloudflare_tunnel_systemd_active",
-                    message="cloudflared systemd service is active",
+                    "ngrok_tunnel_systemd_active",
+                    message="ngrok systemd service is active",
                 )
                 self._is_external = True
                 return True
         except FileNotFoundError:
-            # systemctl not available (not systemd), continue
             pass
         except Exception as e:
             logger.debug(
-                "cloudflare_tunnel_systemd_check_error",
+                "ngrok_tunnel_systemd_check_error",
                 error=str(e),
             )
 
         return False
 
-    async def _start_subprocess(self) -> bool:
-        """Start the cloudflared subprocess.
+    def _build_command(self) -> list[str]:
+        """Build the ngrok CLI command for hub-managed mode."""
+        command = [
+            self.NGROK_COMMAND,
+            "http",
+            self.config.ngrok_forward_url,
+            "--authtoken",
+            self.config.ngrok_authtoken,
+        ]
+        if self.config.ngrok_public_url:
+            command.extend(["--url", self.config.ngrok_public_url])
+        return command
 
-        Returns:
-            True if subprocess started successfully, False otherwise.
-        """
+    async def _start_subprocess(self) -> bool:
+        """Start the ngrok subprocess."""
         logger.info(
-            "cloudflare_tunnel_starting",
-            token_present=bool(self.config.cloudflare_tunnel_token),
+            "ngrok_tunnel_starting",
+            authtoken_present=bool(self.config.ngrok_authtoken),
+            public_url=self.config.ngrok_public_url,
+            forward_url=self.config.ngrok_forward_url,
         )
 
-        # Build environment with token
-        env = os.environ.copy()
-        env["CLOUDFLARE_TUNNEL_TOKEN"] = self.config.cloudflare_tunnel_token
+        command = self._build_command()
 
-        # Start cloudflared tunnel
         self._process = await asyncio.create_subprocess_exec(
-            self.CLOUDFLARED_COMMAND,
-            "tunnel",
-            "--url",
-            self.config.cloudflare_tunnel_url,
-            env=env,
+            *command,
+            env=os.environ.copy(),
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
@@ -197,41 +161,32 @@ class TunnelManager:
         self._restart_count = 0
 
         logger.info(
-            "cloudflare_tunnel_started",
+            "ngrok_tunnel_started",
             pid=self._process.pid,
         )
 
-        # Start health monitoring
         self._monitor_task = asyncio.create_task(self._monitor_loop())
-
         return True
 
     async def _monitor_loop(self) -> None:
-        """Background task for health monitoring and auto-restart.
-
-        This task:
-        1. Periodically checks if the tunnel process is alive
-        2. Attempts restart on failure up to max_restarts times
-        3. Logs failures but continues hub operation (fail-open)
-        """
+        """Monitor the ngrok subprocess and restart it on failure."""
         while self._running:
             try:
-                await asyncio.sleep(self.config.cloudflare_tunnel_health_check_interval)
+                await asyncio.sleep(self.config.ngrok_health_check_interval)
 
                 if not self._running:
                     break
 
-                # Check if process is still running
                 if self._process and self._process.returncode is not None:
                     logger.warning(
-                        "cloudflare_tunnel_process_died",
+                        "ngrok_tunnel_process_died",
                         exit_code=self._process.returncode,
                         restart_count=self._restart_count,
                     )
                     await self._restart()
                 elif self._process is None and not self._is_external:
                     logger.warning(
-                        "cloudflare_tunnel_process_missing",
+                        "ngrok_tunnel_process_missing",
                     )
                     await self._restart()
 
@@ -239,24 +194,20 @@ class TunnelManager:
                 break
             except Exception as e:
                 logger.error(
-                    "cloudflare_tunnel_monitor_error",
+                    "ngrok_tunnel_monitor_error",
                     error=str(e),
                 )
-                # Continue monitoring despite errors (fail-open)
 
     async def _restart(self) -> None:
-        """Attempt to restart the tunnel process.
-
-        If max_restarts is exceeded, logs an error but continues hub operation.
-        """
+        """Attempt to restart the ngrok process."""
         if self._is_external:
             return
 
-        if self._restart_count >= self.config.cloudflare_tunnel_max_restarts:
+        if self._restart_count >= self.config.ngrok_max_restarts:
             logger.error(
-                "cloudflare_tunnel_max_restarts_exceeded",
-                max_restarts=self.config.cloudflare_tunnel_max_restarts,
-                message="Giving up on tunnel restart, hub will continue without tunnel",
+                "ngrok_tunnel_max_restarts_exceeded",
+                max_restarts=self.config.ngrok_max_restarts,
+                message="Giving up on ngrok restart, hub will continue without the public edge",
             )
             self._running = False
             return
@@ -264,34 +215,30 @@ class TunnelManager:
         self._restart_count += 1
 
         logger.info(
-            "cloudflare_tunnel_restarting",
+            "ngrok_tunnel_restarting",
             attempt=self._restart_count,
-            max_attempts=self.config.cloudflare_tunnel_max_restarts,
+            max_attempts=self.config.ngrok_max_restarts,
         )
 
-        # Wait before restarting
-        await asyncio.sleep(self.config.cloudflare_tunnel_restart_delay)
+        await asyncio.sleep(self.config.ngrok_restart_delay)
 
         try:
             await self._start_subprocess()
         except Exception as e:
             logger.error(
-                "cloudflare_tunnel_restart_failed",
+                "ngrok_tunnel_restart_failed",
                 error=str(e),
                 attempt=self._restart_count,
             )
 
     async def health_check(self) -> dict[str, Any]:
-        """Check the health of the tunnel.
-
-        Returns:
-            Dictionary with health status information.
-        """
-        if not self.config.cloudflare_tunnel_enabled:
+        """Check the health of the configured public-edge process."""
+        if not self.config.ngrok_enabled:
             return {
                 "enabled": False,
                 "running": False,
                 "status": "disabled",
+                "provider": "ngrok",
             }
 
         if self._is_external:
@@ -300,6 +247,7 @@ class TunnelManager:
                 "running": self._running,
                 "status": "external" if self._running else "external_not_running",
                 "managed_by": "external",
+                "provider": "ngrok",
             }
 
         if not self._running or self._process is None:
@@ -307,15 +255,16 @@ class TunnelManager:
                 "enabled": True,
                 "running": False,
                 "status": "not_running",
+                "provider": "ngrok",
             }
 
-        # Check process status
         if self._process.returncode is not None:
             return {
                 "enabled": True,
                 "running": False,
                 "status": "crashed",
                 "exit_code": self._process.returncode,
+                "provider": "ngrok",
             }
 
         return {
@@ -324,19 +273,13 @@ class TunnelManager:
             "status": "healthy",
             "pid": self._process.pid,
             "restart_count": self._restart_count,
+            "provider": "ngrok",
         }
 
     async def stop(self) -> None:
-        """Stop the tunnel subprocess gracefully.
-
-        This method:
-        1. Signals the process to stop (SIGTERM first, then SIGKILL)
-        2. Waits for graceful shutdown
-        3. Cancels the health monitoring task
-        """
+        """Stop the ngrok subprocess gracefully."""
         self._running = False
 
-        # Cancel monitoring task
         if self._monitor_task and not self._monitor_task.done():
             self._monitor_task.cancel()
             try:
@@ -344,39 +287,33 @@ class TunnelManager:
             except asyncio.CancelledError:
                 pass
 
-        # Don't stop externally managed tunnels
         if self._is_external:
             logger.info(
-                "cloudflare_tunnel_external_skip_stop",
-                message="Skipping stop for externally managed tunnel",
+                "ngrok_tunnel_external_skip_stop",
+                message="Skipping stop for externally managed ngrok",
             )
             return
 
-        # Stop the subprocess
         if self._process and self._process.returncode is None:
             logger.info(
-                "cloudflare_tunnel_stopping",
+                "ngrok_tunnel_stopping",
                 pid=self._process.pid,
             )
 
             try:
-                # Send SIGTERM for graceful shutdown
                 self._process.send_signal(signal.SIGTERM)
-
-                # Wait for graceful shutdown with timeout
                 try:
                     await asyncio.wait_for(
                         self._process.wait(),
                         timeout=10.0,
                     )
                     logger.info(
-                        "cloudflare_tunnel_stopped_gracefully",
+                        "ngrok_tunnel_stopped_gracefully",
                         pid=self._process.pid,
                     )
                 except TimeoutError:
-                    # Force kill if graceful shutdown fails
                     logger.warning(
-                        "cloudflare_tunnel_force_kill",
+                        "ngrok_tunnel_force_kill",
                         pid=self._process.pid,
                     )
                     self._process.send_signal(signal.SIGKILL)
@@ -384,9 +321,9 @@ class TunnelManager:
 
             except Exception as e:
                 logger.error(
-                    "cloudflare_tunnel_stop_error",
+                    "ngrok_tunnel_stop_error",
                     error=str(e),
                 )
 
         self._process = None
-        logger.info("cloudflare_tunnel_stop_complete")
+        logger.info("ngrok_tunnel_stop_complete")

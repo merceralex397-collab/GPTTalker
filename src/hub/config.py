@@ -64,26 +64,26 @@ class HubConfig(BaseSettings):
         30.0, ge=1.0, description="Default timeout for embedding service calls in seconds"
     )
 
-    # Cloudflare Tunnel settings
-    cloudflare_tunnel_token: str | None = Field(
-        None, description="Cloudflare Tunnel token for authentication"
+    # ngrok settings
+    ngrok_enabled: bool = Field(False, description="Enable ngrok public-edge integration")
+    ngrok_authtoken: str | None = Field(
+        None, description="ngrok authtoken used when the hub manages the ngrok process"
     )
-    cloudflare_tunnel_hostname: str | None = Field(
-        None, description="Public hostname for Cloudflare Tunnel (e.g., myhub.example.com)"
+    ngrok_public_url: str | None = Field(
+        None,
+        description="Optional fixed ngrok URL, for example https://gpttalker.ngrok.app",
     )
-    cloudflare_tunnel_url: str = Field(
-        "http://localhost:8000", description="Local hub URL that tunnel forwards to"
+    ngrok_forward_url: str = Field(
+        "http://localhost:8000",
+        description="Local hub URL that ngrok forwards to",
     )
-    cloudflare_tunnel_enabled: bool = Field(
-        False, description="Enable Cloudflare Tunnel integration"
-    )
-    cloudflare_tunnel_health_check_interval: int = Field(
+    ngrok_health_check_interval: int = Field(
         30, ge=5, description="Health check interval in seconds"
     )
-    cloudflare_tunnel_restart_delay: int = Field(
-        5, ge=1, description="Delay in seconds before restarting tunnel after failure"
+    ngrok_restart_delay: int = Field(
+        5, ge=1, description="Delay in seconds before restarting ngrok after failure"
     )
-    cloudflare_tunnel_max_restarts: int = Field(
+    ngrok_max_restarts: int = Field(
         5, ge=0, description="Maximum number of restart attempts before giving up"
     )
 

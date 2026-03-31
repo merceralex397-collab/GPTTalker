@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/write-001-review-review.md (review) - Code review for WRITE-001: write_markdown with atomic scoped writes. APPROVED - all 3 acceptance criteria met (write target restriction, atomic write with temp+rename, SHA256 verification in response). WRITE_REQUIREMENT policy correctly applied with proper DI integration.
 - qa: .opencode/state/qa/write-001-qa-qa.md (qa) - QA verification for WRITE-001: All 3 acceptance criteria verified - write target restriction via WriteTargetPolicy + extension allowlist + path boundary, atomic write via temp+rename, SHA256 verification metadata in response.
 - backlog-verification: .opencode/state/reviews/write-001-review-backlog-verification.md (review) - Backlog verification for WRITE-001: PASS
+- reverification: .opencode/state/artifacts/history/write-001/review/2026-03-31T21-25-34-116Z-reverification.md (review) - Trust restored using WRITE-001.
 
 ## Notes
 

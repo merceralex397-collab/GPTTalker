@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/core-006-review-review.md (review) - Fix verification for CORE-006: Policy default now correctly returns READ_NODE_REQUIREMENT instead of None, enforcing fail-closed validation for all tools without explicit policy declarations.
 - qa: .opencode/state/qa/core-006-qa-qa.md (qa) - QA verification for CORE-006: All 3 acceptance criteria verified via code inspection - tool registration boundary defined, policy integration before execution confirmed, MCP-safe error formatting with JSON-RPC 2.0 codes implemented.
 - backlog-verification: .opencode/state/reviews/core-006-review-backlog-verification.md (review) - Backlog verification for CORE-006: PASS
+- reverification: .opencode/state/artifacts/history/core-006/review/2026-03-31T21-25-18-177Z-reverification.md (review) - Trust restored using CORE-006.
 
 ## Notes
 

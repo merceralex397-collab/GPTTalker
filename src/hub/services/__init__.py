@@ -19,6 +19,7 @@ from .qdrant_client import (
     create_qdrant_client,
     get_qdrant_client,
 )
+from .tunnel_manager import TunnelManager
 
 __all__ = [
     # Context collections
@@ -36,6 +37,8 @@ __all__ = [
     # Node health
     "NodeHealth",
     "NodeHealthService",
+    # Tunnel manager
+    "TunnelManager",
     # Qdrant client
     "QdrantClientWrapper",
     "get_qdrant_client",

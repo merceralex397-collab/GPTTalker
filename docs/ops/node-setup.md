@@ -302,4 +302,4 @@ After setting up the node agent:
 
 - [Node Registration Guide](node-registration.md)
 - [Hub Configuration](../hub/config.md)
-- [Cloudflare Tunnel Setup](cloudflare-tunnel.md)
+- [ngrok Setup](ngrok.md)

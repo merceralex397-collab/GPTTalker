@@ -1,6 +1,6 @@
 {
-  "managed_repo": "/home/pc/.codex",
-  "template_commit": "unknown",
+  "managed_repo": "/home/rowan/.codex",
+  "template_commit": "missing_provenance",
   "template_asset_root": "skills/repo-scaffold-factory/assets/project-template",
   "project_name": "GPTTalker",
   "project_slug": "gpttalker",
@@ -521,13 +521,37 @@
         ".opencode/agents",
         "docs/process/agent-catalog.md"
       ]
+    },
+    {
+      "repaired_at": "2026-03-31T13:00:58Z",
+      "repair_kind": "deterministic-workflow-engine-replacement",
+      "repair_package_commit": "missing_provenance",
+      "summary": "Refresh GPTTalker managed workflow surfaces against rewritten Scafforge package",
+      "replaced_surfaces": [
+        "opencode.jsonc",
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "scaffold-managed .opencode/skills",
+        "docs/process/workflow.md",
+        "docs/process/tooling.md",
+        "docs/process/model-matrix.md",
+        "docs/process/git-capability.md",
+        "START-HERE.md managed block"
+      ],
+      "project_specific_follow_up": [
+        ".opencode/skills",
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ]
     }
   ],
   "restart_surface_regeneration_history": [
     {
-      "generated_at": "2026-03-28T16:19:18Z",
+      "generated_at": "2026-03-31T13:00:58Z",
       "source": "scafforge-repair",
-      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "reason": "Refresh GPTTalker managed workflow surfaces against rewritten Scafforge package",
       "regenerated": [
         "START-HERE.md",
         ".opencode/state/context-snapshot.md",
@@ -536,37 +560,52 @@
       "verification": "pending_or_failed"
     },
     {
-      "generated_at": "2026-03-28T16:19:25Z",
+      "generated_at": "2026-03-31T13:00:59Z",
       "source": "scafforge-repair",
-      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+      "reason": "Refresh GPTTalker managed workflow surfaces against rewritten Scafforge package",
       "regenerated": [
         "START-HERE.md",
         ".opencode/state/context-snapshot.md",
         ".opencode/state/latest-handoff.md"
       ],
       "verification": "pending_or_failed"
-    },
-    {
-      "generated_at": "2026-03-28T16:20:39Z",
-      "source": "scafforge-repair",
-      "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
-      "regenerated": [
-        "START-HERE.md",
-        ".opencode/state/context-snapshot.md",
-        ".opencode/state/latest-handoff.md"
-      ],
-      "verification": "passed"
     }
   ],
   "last_restart_surface_regeneration": {
-    "generated_at": "2026-03-28T16:20:39Z",
+    "generated_at": "2026-03-31T13:00:59Z",
     "source": "scafforge-repair",
-    "reason": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
+    "reason": "Refresh GPTTalker managed workflow surfaces against rewritten Scafforge package",
     "regenerated": [
       "START-HERE.md",
       ".opencode/state/context-snapshot.md",
       ".opencode/state/latest-handoff.md"
     ],
-    "verification": "passed"
-  }
+    "verification": "pending_or_failed"
+  },
+  "pivot_history": [
+    {
+      "recorded_at": "2026-03-31T13:02:54Z",
+      "pivot_id": "2026-03-31T13:02:54Z",
+      "pivot_class": "architecture-change",
+      "requested_change": "Switch GPTTalker public edge from Cloudflare Tunnel to ngrok and route resulting ticket lineage through Scafforge pivot",
+      "accepted_decisions": [
+        "GPTTalker now uses ngrok as the public HTTPS edge provider instead of Cloudflare Tunnel.",
+        "Cloudflare-specific edge implementation, docs, prompts, and ticket assumptions are no longer canonical project truth after this pivot.",
+        "Pivot restart surfaces and follow-up routing must make the ngrok migration explicit until code, docs, and ticket lineage converge."
+      ],
+      "unresolved_follow_up": [
+        "Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+        "Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture."
+      ],
+      "affected_contract_families": [
+        "agent_team_and_prompts",
+        "managed_workflow_tools_and_prompts",
+        "repo_local_skills",
+        "restart_surfaces",
+        "ticket_graph_and_lineage"
+      ]
+    }
+  ],
+  "last_pivot_at": "2026-03-31T13:02:54Z",
+  "last_pivot_class": "architecture-change"
 }

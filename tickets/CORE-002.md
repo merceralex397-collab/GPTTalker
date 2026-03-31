@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - implementation: .opencode/state/implementations/core-002-implementation-implementation.md (implementation) - Implementation of CORE-002: Created 3 policy classes (RepoPolicy, WriteTargetPolicy, LLMServicePolicy) for fail-closed validation, and added 6 DI providers in dependencies.py for repositories and policies.
 - qa: .opencode/state/qa/core-002-qa-qa.md (qa) - QA verification for CORE-002: All 3 acceptance criteria verified - models exist in src/shared/models.py, DI providers added to dependencies.py, policy classes created and linting passes.
 - backlog-verification: .opencode/state/reviews/core-002-review-backlog-verification.md (review) - Backlog verification for CORE-002: PASS
+- reverification: .opencode/state/artifacts/history/core-002/review/2026-03-31T21-25-14-042Z-reverification.md (review) - Trust restored using CORE-002.
 
 ## Notes
 

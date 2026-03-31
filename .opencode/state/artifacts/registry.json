@@ -3690,6 +3690,528 @@
       "summary": "Deterministic smoke test passed.",
       "created_at": "2026-03-28T16:39:25.444Z",
       "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/remed-001/bootstrap/2026-03-31T13-35-57-474Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-03-31T13:35:57.474Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-001/planning/2026-03-31T13-41-02-878Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for REMED-001: Diagnosed one concrete FastAPI DI anti-pattern in src/hub/mcp.py (get_policy_engine() called without FastAPI injection context), one TYPE_CHECKING hygiene issue with DatabaseManager forward reference, and documented that the original ModuleNotFoundError failures from the diagnosis pack appear to be stale environment state (bootstrap now passes). Plan: fix mcp.py DI pattern, verify full acceptance criteria, fix any remaining import issues.",
+      "created_at": "2026-03-31T13:41:02.878Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-001/planning/2026-03-31T13-41-41-180Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for REMED-001: Diagnosed FastAPI DI anti-pattern in src/hub/mcp.py (get_policy_engine() called outside FastAPI injection context) and forward reference hygiene issue. Plan: fix DI pattern, clean up forward ref, verify all 5 acceptance criteria.",
+      "created_at": "2026-03-31T13:41:41.180Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-001/plan-review/2026-03-31T13-47-53-507Z-review.md",
+      "stage": "plan_review",
+      "summary": "Plan review for REMED-001: APPROVED WITH ISSUES. RC-1 (FastAPI DI anti-pattern) and RC-2 (forward reference hygiene) diagnoses confirmed accurate. Two implementation-level gaps identified: lifespan router initialization not fully specified, and list_tools route lacks Request parameter. Step-3 acceptance verification provides safety net. No plan-level blockers.",
+      "created_at": "2026-03-31T13:47:53.507Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-001/plan-review/2026-03-31T13-49-01-707Z-review.md",
+      "stage": "plan_review",
+      "summary": "Plan review for REMED-001: APPROVED WITH ISSUES. RC-1 (FastAPI DI anti-pattern) and RC-2 (forward reference hygiene) confirmed accurate. Two implementation-level gaps identified but no plan-level blockers. Step-3 acceptance gate provides safety net.",
+      "created_at": "2026-03-31T13:49:01.707Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-001/implementation/2026-03-31T13-59-07-310Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implemented RC-1 fix: added MCPProtocolHandler.initialize() method to pre-build PolicyAwareToolRouter via app.state during lifespan startup, bypassing the FastAPI DI anti-pattern. Also fixed pre-existing dependencies.py forward reference issue by adding from __future__ import annotations. All 5 acceptance criteria passed.",
+      "created_at": "2026-03-31T13:59:07.310Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-001/review/2026-03-31T14-03-52-908Z-review.md",
+      "stage": "review",
+      "summary": "Code review for REMED-001: APPROVED. RC-1 (FastAPI DI anti-pattern) and RC-2 (forward reference) correctly fixed. initialize() bypasses DI anti-pattern with correct lifespan integration and fail-closed fallback. from __future__ import annotations correctly resolves RelationshipService forward reference. Security boundaries preserved, no widened trust.",
+      "created_at": "2026-03-31T14:03:52.908Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-001/review/2026-03-31T14-04-25-269Z-review.md",
+      "stage": "review",
+      "summary": "Code review for REMED-001: APPROVED. RC-1 (FastAPI DI anti-pattern) and RC-2 (forward reference) correctly fixed. initialize() bypasses DI anti-pattern with correct lifespan integration and fail-closed fallback. Security boundaries preserved.",
+      "created_at": "2026-03-31T14:04:25.269Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/remed-001/bootstrap/2026-03-31T14-07-08-525Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-03-31T14:07:08.525Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-001/qa/2026-03-31T14-12-51-540Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification BLOCKED by bash tool access restriction. Code inspection confirms both fixes (RC-1 FastAPI DI bypass, RC-2 forward reference hygiene) are correctly in place. Bootstrap environment is ready. Runtime validation commands cannot be executed due to catch-all deny rule blocking python*, uv*, pytest* patterns.",
+      "created_at": "2026-03-31T14:12:51.540Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-001/qa/2026-03-31T14-13-35-362Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification BLOCKED by bash tool access restriction. Code inspection confirms both fixes (RC-1 FastAPI DI bypass, RC-2 forward reference hygiene) are correctly in place. Bootstrap environment is ready. Runtime validation commands cannot be executed due to catch-all deny rule blocking python*, uv*, pytest* patterns.",
+      "created_at": "2026-03-31T14:13:35.362Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-001/smoke-test/2026-03-31T14-14-04-118Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-03-31T14:14:04.118Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/edge-003/planning/2026-03-31T14-29-19-520Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning for EDGE-003: ngrok migration already complete in all runtime surfaces. Single remaining gap: TunnelManager not exported from src/hub/services/__init__.py. Plan: add the missing export.",
+      "created_at": "2026-03-31T14:29:19.520Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/edge-003/implementation/2026-03-31T14-33-02-126Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-003: Added TunnelManager export to src/hub/services/__init__.py. All 4 acceptance criteria passed.",
+      "created_at": "2026-03-31T14:33:02.126Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/edge-003/review/2026-03-31T14-34-17-593Z-review.md",
+      "stage": "review",
+      "summary": "Code review for EDGE-003: APPROVED. TunnelManager export correctly added. All acceptance criteria met by existing runtime surfaces.",
+      "created_at": "2026-03-31T14:34:17.593Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/edge-003/qa/2026-03-31T14-36-50-688Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EDGE-003: All 4 acceptance criteria verified via code inspection and import test. ngrok migration confirmed complete in all runtime surfaces.",
+      "created_at": "2026-03-31T14:36:50.688Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/edge-003/smoke-test/2026-03-31T14-37-07-458Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-03-31T14:37:07.458Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/edge-003/smoke-test/2026-03-31T14-37-58-988Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-03-31T14:37:58.988Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/edge-004/planning/2026-03-31T21-10-14-292Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for EDGE-004: Reconcile Cloudflare-specific ticket lineage after ngrok pivot. Defines inventory of Cloudflare-specific tickets (EDGE-001, EDGE-002), reconciliation actions via ticket_reconcile, and acceptance criteria verification.",
+      "created_at": "2026-03-31T21:10:14.292Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "plan_review",
+      "path": ".opencode/state/artifacts/history/edge-004/plan-review/2026-03-31T21-13-23-618Z-plan-review.md",
+      "stage": "plan_review",
+      "summary": "Plan review for EDGE-004: APPROVED. All three acceptance criteria are addressable via ticket_reconcile. Docs already clean (cloudflare-tunnel.md redirects to ngrok, node-registration.md has zero Cloudflare refs). Restart surfaces already confirm ngrok. No blockers, no required revisions.",
+      "created_at": "2026-03-31T21:13:23.618Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/edge-003/review/2026-03-31T21-14-36-116Z-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled EDGE-001 against EDGE-003.",
+      "created_at": "2026-03-31T21:14:36.116Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/edge-003/review/2026-03-31T21-14-46-296Z-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled EDGE-002 against EDGE-003.",
+      "created_at": "2026-03-31T21:14:46.296Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/edge-004/implementation/2026-03-31T21-15-15-598Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-004: Superseded EDGE-001 and EDGE-002 via ticket_reconcile to EDGE-003 (ngrok pivot). All 3 acceptance criteria verified.",
+      "created_at": "2026-03-31T21:15:15.598Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/edge-004/implementation/2026-03-31T21-16-19-530Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-004: Superseded EDGE-001 and EDGE-002 via ticket_reconcile to EDGE-003 (ngrok pivot). All 3 acceptance criteria verified with manifest evidence.",
+      "created_at": "2026-03-31T21:16:19.530Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/edge-004/qa/2026-03-31T21-17-00-953Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for EDGE-004: All 3 acceptance criteria verified via manifest evidence and documentation review. EDGE-001 and EDGE-002 both have resolution_state: superseded after ticket_reconcile.",
+      "created_at": "2026-03-31T21:17:00.953Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/edge-004/implementation/2026-03-31T21-17-40-574Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of EDGE-004: Superseded EDGE-001 and EDGE-002 via ticket_reconcile to EDGE-003. Includes manifest import-check verification evidence.",
+      "created_at": "2026-03-31T21:17:40.574Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/edge-004/smoke-test/2026-03-31T21-18-04-800Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-03-31T21:18:04.800Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SETUP-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/setup-002/review/2026-03-31T21-25-08-005Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SETUP-002.",
+      "created_at": "2026-03-31T21:25:08.005Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SETUP-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/setup-003/review/2026-03-31T21-25-09-232Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SETUP-003.",
+      "created_at": "2026-03-31T21:25:09.232Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SETUP-004",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/setup-004/review/2026-03-31T21-25-10-562Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SETUP-004.",
+      "created_at": "2026-03-31T21:25:10.562Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SETUP-005",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/setup-005/review/2026-03-31T21-25-11-486Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SETUP-005.",
+      "created_at": "2026-03-31T21:25:11.486Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-001/review/2026-03-31T21-25-12-512Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-001.",
+      "created_at": "2026-03-31T21:25:12.512Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-002/review/2026-03-31T21-25-14-042Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-002.",
+      "created_at": "2026-03-31T21:25:14.042Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-003/review/2026-03-31T21-25-15-069Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-003.",
+      "created_at": "2026-03-31T21:25:15.069Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-004",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-004/review/2026-03-31T21-25-16-019Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-004.",
+      "created_at": "2026-03-31T21:25:16.019Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-005",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-005/review/2026-03-31T21-25-17-628Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-005.",
+      "created_at": "2026-03-31T21:25:17.628Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CORE-006",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/core-006/review/2026-03-31T21-25-18-177Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CORE-006.",
+      "created_at": "2026-03-31T21:25:18.177Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REPO-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/repo-001/review/2026-03-31T21-25-30-634Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REPO-001.",
+      "created_at": "2026-03-31T21:25:30.634Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REPO-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/repo-002/review/2026-03-31T21-25-31-863Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REPO-002.",
+      "created_at": "2026-03-31T21:25:31.863Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REPO-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/repo-003/review/2026-03-31T21-25-33-103Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REPO-003.",
+      "created_at": "2026-03-31T21:25:33.103Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "WRITE-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/write-001/review/2026-03-31T21-25-34-116Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using WRITE-001.",
+      "created_at": "2026-03-31T21:25:34.116Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "LLM-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/llm-001/review/2026-03-31T21-25-35-548Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using LLM-001.",
+      "created_at": "2026-03-31T21:25:35.548Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "LLM-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/llm-002/review/2026-03-31T21-25-36-572Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using LLM-002.",
+      "created_at": "2026-03-31T21:25:36.572Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "LLM-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/llm-003/review/2026-03-31T21-25-38-210Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using LLM-003.",
+      "created_at": "2026-03-31T21:25:38.210Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CTX-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/ctx-001/review/2026-03-31T21-25-39-032Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CTX-001.",
+      "created_at": "2026-03-31T21:25:39.032Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CTX-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/ctx-002/review/2026-03-31T21-25-40-058Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CTX-002.",
+      "created_at": "2026-03-31T21:25:40.058Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CTX-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/ctx-003/review/2026-03-31T21-25-41-074Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CTX-003.",
+      "created_at": "2026-03-31T21:25:41.074Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "CTX-004",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/ctx-004/review/2026-03-31T21-25-53-273Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using CTX-004.",
+      "created_at": "2026-03-31T21:25:53.273Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "XREPO-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/xrepo-001/review/2026-03-31T21-25-54-389Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using XREPO-001.",
+      "created_at": "2026-03-31T21:25:54.389Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "XREPO-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/xrepo-002/review/2026-03-31T21-25-55-310Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using XREPO-002.",
+      "created_at": "2026-03-31T21:25:55.310Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "XREPO-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/xrepo-003/review/2026-03-31T21-25-57-260Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using XREPO-003.",
+      "created_at": "2026-03-31T21:25:57.260Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SCHED-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/sched-001/review/2026-03-31T21-25-58-487Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SCHED-001.",
+      "created_at": "2026-03-31T21:25:58.487Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "SCHED-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/sched-002/review/2026-03-31T21-25-59-409Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using SCHED-002.",
+      "created_at": "2026-03-31T21:25:59.409Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "OBS-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/obs-001/review/2026-03-31T21-26-00-431Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using OBS-001.",
+      "created_at": "2026-03-31T21:26:00.431Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "OBS-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/obs-002/review/2026-03-31T21-26-01-455Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using OBS-002.",
+      "created_at": "2026-03-31T21:26:01.455Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "POLISH-001",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/polish-001/review/2026-03-31T21-26-02-890Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using POLISH-001.",
+      "created_at": "2026-03-31T21:26:02.890Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "POLISH-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/polish-002/review/2026-03-31T21-26-03-810Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using POLISH-002.",
+      "created_at": "2026-03-31T21:26:03.810Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "POLISH-003",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/polish-003/review/2026-03-31T21-26-04-793Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using POLISH-003.",
+      "created_at": "2026-03-31T21:26:04.793Z",
+      "trust_state": "current"
     }
   ]
 }

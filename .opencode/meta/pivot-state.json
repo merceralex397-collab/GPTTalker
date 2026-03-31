@@ -1,0 +1,580 @@
+{
+  "repo_root": "/home/rowan/GPTTalker",
+  "pivot_id": "2026-03-31T13:02:54Z",
+  "pivot_class": "architecture-change",
+  "requested_change": "Switch GPTTalker public edge from Cloudflare Tunnel to ngrok and route resulting ticket lineage through Scafforge pivot",
+  "accepted_decisions": [
+    "GPTTalker now uses ngrok as the public HTTPS edge provider instead of Cloudflare Tunnel.",
+    "Cloudflare-specific edge implementation, docs, prompts, and ticket assumptions are no longer canonical project truth after this pivot.",
+    "Pivot restart surfaces and follow-up routing must make the ngrok migration explicit until code, docs, and ticket lineage converge."
+  ],
+  "unresolved_follow_up": [
+    "Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+    "Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture."
+  ],
+  "affected_contract_families": [
+    "agent_team_and_prompts",
+    "managed_workflow_tools_and_prompts",
+    "repo_local_skills",
+    "restart_surfaces",
+    "ticket_graph_and_lineage"
+  ],
+  "stale_surface_map": {
+    "canonical_brief_and_truth_docs": {
+      "status": "replace",
+      "surfaces": [
+        "docs/spec/CANONICAL-BRIEF.md"
+      ],
+      "reason": "Pivot work always updates canonical brief truth before any derived refresh."
+    },
+    "repo_local_skills": {
+      "status": "regenerate",
+      "surfaces": [
+        ".opencode/skills"
+      ],
+      "reason": "Repo-local skills regenerate only when the pivot changes local procedure or project-specific capability surfaces."
+    },
+    "agent_team_and_prompts": {
+      "status": "regenerate",
+      "surfaces": [
+        ".opencode/agents",
+        "docs/process/agent-catalog.md"
+      ],
+      "reason": "Agent-team prompts regenerate only when the pivot changes delegation, team layout, or prompt semantics."
+    },
+    "managed_workflow_tools_and_prompts": {
+      "status": "replace",
+      "surfaces": [
+        ".opencode/tools",
+        ".opencode/lib",
+        ".opencode/plugins",
+        ".opencode/commands",
+        "docs/process/workflow.md"
+      ],
+      "reason": "Managed workflow surfaces route through scafforge-repair only when the pivot changes workflow contract behavior."
+    },
+    "ticket_graph_and_lineage": {
+      "status": "ticket_follow_up",
+      "surfaces": [
+        "tickets/manifest.json",
+        "tickets/BOARD.md"
+      ],
+      "reason": "Ticket graph changes should be routed through ticket-pack-builder so supersede, reopen, and follow-up lineage stay explicit."
+    },
+    "restart_surfaces": {
+      "status": "replace",
+      "surfaces": [
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "reason": "Restart surfaces must be republished when the pivot changes what the repo is doing next."
+    }
+  },
+  "downstream_refresh": [
+    {
+      "stage": "project-skill-bootstrap",
+      "owner": "project-skill-bootstrap",
+      "category": "repo_local_skills",
+      "reason": "Pivot changed repo-local procedure or capability surfaces, so local skills need regeneration."
+    },
+    {
+      "stage": "opencode-team-bootstrap",
+      "owner": "opencode-team-bootstrap",
+      "category": "agent_team",
+      "reason": "Pivot changed team layout, delegation, or agent/tool boundaries."
+    },
+    {
+      "stage": "agent-prompt-engineering",
+      "owner": "agent-prompt-engineering",
+      "category": "prompt_hardening",
+      "reason": "Pivot changed prompt behavior or delegation semantics and requires prompt hardening after regeneration."
+    },
+    {
+      "stage": "ticket-pack-builder",
+      "owner": "ticket-pack-builder",
+      "category": "ticket_follow_up",
+      "reason": "Pivot changed ticket lineage or introduced new work that must be superseded, reopened, reconciled, or refined."
+    },
+    {
+      "stage": "scafforge-repair",
+      "owner": "scafforge-repair",
+      "category": "managed_workflow_refresh",
+      "reason": "Pivot changed managed workflow contract surfaces and requires safe managed refresh instead of ad hoc edits."
+    }
+  ],
+  "ticket_lineage_plan": {
+    "actions": [
+      {
+        "action": "supersede",
+        "target_ticket_id": "EDGE-001",
+        "summary": "Supersede EDGE-001 because its acceptance no longer matches the pivoted brief.",
+        "reason": "Pivot invalidated the prior acceptance or completion claim for this ticket.",
+        "label": "supersede:EDGE-001",
+        "status": "completed",
+        "completion_mode": "downstream_stage_completion",
+        "completed_by": "scafforge-pivot",
+        "execution_summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup.",
+        "execution_result": null,
+        "last_updated_at": "2026-03-31T13:13:46Z",
+        "evidence_artifact_path": "docs/spec/CANONICAL-BRIEF.md",
+        "replacement_source_ticket_id": "None",
+        "replacement_source_mode": "None",
+        "ticket_spec": null
+      },
+      {
+        "action": "supersede",
+        "target_ticket_id": "FIX-013",
+        "summary": "Supersede FIX-013 because its acceptance no longer matches the pivoted brief.",
+        "reason": "Pivot invalidated the prior acceptance or completion claim for this ticket.",
+        "label": "supersede:FIX-013",
+        "status": "completed",
+        "completion_mode": "downstream_stage_completion",
+        "completed_by": "scafforge-pivot",
+        "execution_summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup.",
+        "execution_result": null,
+        "last_updated_at": "2026-03-31T13:13:46Z",
+        "evidence_artifact_path": "docs/spec/CANONICAL-BRIEF.md",
+        "replacement_source_ticket_id": "None",
+        "replacement_source_mode": "None",
+        "ticket_spec": null
+      },
+      {
+        "action": "create_follow_up",
+        "target_ticket_id": null,
+        "summary": "Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+        "reason": "Pivot introduced explicit follow-up work that should become a new ticket instead of staying implicit.",
+        "label": "create_follow_up:Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+        "status": "completed",
+        "completion_mode": "downstream_stage_completion",
+        "completed_by": "scafforge-pivot",
+        "execution_summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup.",
+        "execution_result": null,
+        "last_updated_at": "2026-03-31T13:13:46Z",
+        "evidence_artifact_path": "None",
+        "replacement_source_ticket_id": "None",
+        "replacement_source_mode": "None",
+        "ticket_spec": null
+      },
+      {
+        "action": "create_follow_up",
+        "target_ticket_id": null,
+        "summary": "Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture.",
+        "reason": "Pivot introduced explicit follow-up work that should become a new ticket instead of staying implicit.",
+        "label": "create_follow_up:Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture.",
+        "status": "completed",
+        "completion_mode": "downstream_stage_completion",
+        "completed_by": "scafforge-pivot",
+        "execution_summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup.",
+        "execution_result": null,
+        "last_updated_at": "2026-03-31T13:13:46Z",
+        "evidence_artifact_path": "None",
+        "replacement_source_ticket_id": "None",
+        "replacement_source_mode": "None",
+        "ticket_spec": null
+      }
+    ],
+    "history": [
+      {
+        "recorded_at": "2026-03-31T13:13:46Z",
+        "event": "ticket-pack-builder:completed",
+        "summary": "All explicit pivot lineage actions were satisfied by ticket-pack-builder stage completion."
+      }
+    ],
+    "pending_actions": [],
+    "completed_actions": [
+      "supersede:EDGE-001",
+      "supersede:FIX-013",
+      "create_follow_up:Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+      "create_follow_up:Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture."
+    ]
+  },
+  "verification_status": {
+    "performed": true,
+    "verification_kind": "post_pivot",
+    "finding_count": 4,
+    "verification_passed": false,
+    "codes": [
+      "SKILL001",
+      "CYCLE002",
+      "ENV003",
+      "EXEC001"
+    ],
+    "supporting_logs": [],
+    "findings": [
+      {
+        "code": "SKILL001",
+        "severity": "warning",
+        "problem": "One or more repo-local skills still contain generic placeholder text instead of project-specific guidance.",
+        "root_cause": "project-skill-bootstrap or later managed-surface repair left baseline local skills in a scaffold placeholder state, so agents lose concrete stack and validation guidance.",
+        "files": [
+          ".opencode/skills/stack-standards/SKILL.md"
+        ],
+        "safer_pattern": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+        "evidence": [
+          ".opencode/skills/stack-standards/SKILL.md -> Replace this file with stack-specific rules once the real project stack is known."
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "CYCLE002",
+        "severity": "error",
+        "problem": "Repeated diagnosis packs are re-reporting the same repair-routed findings without any intervening package or process-version change.",
+        "root_cause": "Audit kept producing new diagnosis packs even though the repo had no later Scafforge repair or workflow-contract change after the latest diagnosis. That creates audit churn instead of new decision-making evidence.",
+        "files": [
+          "diagnosis/20260331-130059/manifest.json",
+          ".opencode/meta/bootstrap-provenance.json"
+        ],
+        "safer_pattern": "Stop rerunning subject-repo audit until Scafforge package work changes the managed workflow contract or process version, then rerun one fresh audit against the updated package.",
+        "evidence": [
+          "Same-day diagnosis packs considered: 2 on 2026-03-31",
+          "Latest diagnosis pack without later repair: diagnosis/20260331-130059",
+          "Current audit package commit: missing_provenance",
+          "Repeated repair-routed findings: SKILL001",
+          "Compared packs: diagnosis/20260331-130059"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "ENV003",
+        "severity": "warning",
+        "problem": "Git identity is not configured for this host, but the repo's tests or workflow expect commit-producing validation.",
+        "root_cause": "Some repo validations rely on creating commits or reading recent commit history. Without `user.name` and `user.email`, those checks fail for host-environment reasons and can be misread as product regressions.",
+        "files": [
+          "tests/node_agent/test_executor.py"
+        ],
+        "safer_pattern": "Configure git identity on the host used for audit or repair, or mark the affected verification as blocked by environment rather than as a clean or source-level result.",
+        "evidence": [
+          "Repo references git-commit validation in tests/node_agent/test_executor.py.",
+          "`git config --get user.name` -> missing",
+          "`git config --get user.email` -> missing"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "EXEC001",
+        "severity": "error",
+        "problem": "One or more Python packages fail to import \u2014 the service cannot start.",
+        "root_cause": "Runtime errors (NameError, FastAPIError, missing dependency, broken DI pattern, etc.) that are invisible to static analysis prevent module load. Common causes: TYPE_CHECKING-guarded names used in runtime annotations, FastAPI dependency functions with non-Pydantic parameter types, circular imports.",
+        "files": [
+          "/home/rowan/GPTTalker/src"
+        ],
+        "safer_pattern": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
+        "evidence": [
+          "src.hub: ModuleNotFoundError: No module named 'pydantic'",
+          "src.node_agent: ModuleNotFoundError: No module named 'uvicorn'",
+          "src.shared: ModuleNotFoundError: No module named 'pydantic'"
+        ],
+        "provenance": "script"
+      }
+    ]
+  },
+  "pivot_history_entry": {
+    "recorded_at": "2026-03-31T13:02:54Z",
+    "pivot_id": "2026-03-31T13:02:54Z",
+    "pivot_class": "architecture-change",
+    "requested_change": "Switch GPTTalker public edge from Cloudflare Tunnel to ngrok and route resulting ticket lineage through Scafforge pivot",
+    "accepted_decisions": [
+      "GPTTalker now uses ngrok as the public HTTPS edge provider instead of Cloudflare Tunnel.",
+      "Cloudflare-specific edge implementation, docs, prompts, and ticket assumptions are no longer canonical project truth after this pivot.",
+      "Pivot restart surfaces and follow-up routing must make the ngrok migration explicit until code, docs, and ticket lineage converge."
+    ],
+    "unresolved_follow_up": [
+      "Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+      "Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture."
+    ],
+    "affected_contract_families": [
+      "agent_team_and_prompts",
+      "managed_workflow_tools_and_prompts",
+      "repo_local_skills",
+      "restart_surfaces",
+      "ticket_graph_and_lineage"
+    ]
+  },
+  "canonical_brief_path": "docs/spec/CANONICAL-BRIEF.md",
+  "pivot_state_path": ".opencode/meta/pivot-state.json",
+  "downstream_refresh_state": {
+    "tracking_mode": "persistent_recorded_state",
+    "pivot_id": "2026-03-31T13:02:54Z",
+    "required_stage_details": [
+      {
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "reason": "Pivot changed repo-local procedure or capability surfaces, so local skills need regeneration."
+      },
+      {
+        "stage": "opencode-team-bootstrap",
+        "owner": "opencode-team-bootstrap",
+        "category": "agent_team",
+        "reason": "Pivot changed team layout, delegation, or agent/tool boundaries."
+      },
+      {
+        "stage": "agent-prompt-engineering",
+        "owner": "agent-prompt-engineering",
+        "category": "prompt_hardening",
+        "reason": "Pivot changed prompt behavior or delegation semantics and requires prompt hardening after regeneration."
+      },
+      {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "reason": "Pivot changed ticket lineage or introduced new work that must be superseded, reopened, reconciled, or refined."
+      },
+      {
+        "stage": "scafforge-repair",
+        "owner": "scafforge-repair",
+        "category": "managed_workflow_refresh",
+        "reason": "Pivot changed managed workflow contract surfaces and requires safe managed refresh instead of ad hoc edits."
+      }
+    ],
+    "required_stages": [
+      "project-skill-bootstrap",
+      "opencode-team-bootstrap",
+      "agent-prompt-engineering",
+      "ticket-pack-builder",
+      "scafforge-repair"
+    ],
+    "pending_stages": [],
+    "completed_stages": [
+      "agent-prompt-engineering",
+      "opencode-team-bootstrap",
+      "project-skill-bootstrap",
+      "scafforge-repair",
+      "ticket-pack-builder"
+    ],
+    "stage_records": {
+      "project-skill-bootstrap": {
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "status": "completed",
+        "reason": "Pivot changed repo-local procedure or capability surfaces, so local skills need regeneration.",
+        "completion_mode": "recorded_execution",
+        "evidence_paths": [
+          ".opencode/skills/stack-standards/SKILL.md"
+        ],
+        "last_updated_at": "2026-03-31T13:13:18Z",
+        "completed_by": "scafforge-pivot",
+        "summary": "Regenerated GPTTalker stack standards after managed repair replaced the repo-local skill with a framework-agnostic placeholder."
+      },
+      "opencode-team-bootstrap": {
+        "stage": "opencode-team-bootstrap",
+        "owner": "opencode-team-bootstrap",
+        "category": "agent_team",
+        "status": "completed",
+        "reason": "Pivot changed team layout, delegation, or agent/tool boundaries.",
+        "completion_mode": "recorded_execution",
+        "evidence_paths": [
+          ".opencode/agents/gpttalker-implementer-hub.md",
+          ".opencode/agents/gpttalker-team-leader.md"
+        ],
+        "last_updated_at": "2026-03-31T13:13:29Z",
+        "completed_by": "scafforge-pivot",
+        "summary": "Updated the GPTTalker team-leader and hub implementer prompts so the repo-local agent team now describes ngrok as the public edge."
+      },
+      "agent-prompt-engineering": {
+        "stage": "agent-prompt-engineering",
+        "owner": "agent-prompt-engineering",
+        "category": "prompt_hardening",
+        "status": "completed",
+        "reason": "Pivot changed prompt behavior or delegation semantics and requires prompt hardening after regeneration.",
+        "completion_mode": "recorded_execution",
+        "evidence_paths": [
+          ".opencode/agents/gpttalker-implementer-hub.md",
+          ".opencode/agents/gpttalker-team-leader.md"
+        ],
+        "last_updated_at": "2026-03-31T13:13:42Z",
+        "completed_by": "scafforge-pivot",
+        "summary": "Hardened prompt-facing architecture language so the active team prompts align with the ngrok pivot and no longer describe Cloudflare as live repo truth."
+      },
+      "ticket-pack-builder": {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "status": "completed",
+        "reason": "Pivot changed ticket lineage or introduced new work that must be superseded, reopened, reconciled, or refined.",
+        "completion_mode": "recorded_execution",
+        "evidence_paths": [
+          "tickets/EDGE-003.md",
+          "tickets/EDGE-004.md"
+        ],
+        "last_updated_at": "2026-03-31T13:13:46Z",
+        "completed_by": "scafforge-pivot",
+        "summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup."
+      },
+      "scafforge-repair": {
+        "stage": "scafforge-repair",
+        "owner": "scafforge-repair",
+        "category": "managed_workflow_refresh",
+        "status": "completed",
+        "reason": "Pivot changed managed workflow contract surfaces and requires safe managed refresh instead of ad hoc edits.",
+        "completion_mode": "recorded_execution",
+        "evidence_paths": [
+          ".opencode/meta/repair-execution.json"
+        ],
+        "last_updated_at": "2026-03-31T13:13:54Z",
+        "completed_by": "scafforge-pivot",
+        "summary": "Ran Scafforge managed repair during the same refresh cycle before pivot implementation, refreshing managed workflow surfaces and republishing restart state."
+      }
+    },
+    "history": [
+      {
+        "recorded_at": "2026-03-31T13:02:54Z",
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "status": "planned",
+        "reason": "Pivot changed repo-local procedure or capability surfaces, so local skills need regeneration.",
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:02:54Z",
+        "stage": "opencode-team-bootstrap",
+        "owner": "opencode-team-bootstrap",
+        "category": "agent_team",
+        "status": "planned",
+        "reason": "Pivot changed team layout, delegation, or agent/tool boundaries.",
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:02:54Z",
+        "stage": "agent-prompt-engineering",
+        "owner": "agent-prompt-engineering",
+        "category": "prompt_hardening",
+        "status": "planned",
+        "reason": "Pivot changed prompt behavior or delegation semantics and requires prompt hardening after regeneration.",
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:02:54Z",
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "status": "planned",
+        "reason": "Pivot changed ticket lineage or introduced new work that must be superseded, reopened, reconciled, or refined.",
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:02:54Z",
+        "stage": "scafforge-repair",
+        "owner": "scafforge-repair",
+        "category": "managed_workflow_refresh",
+        "status": "planned",
+        "reason": "Pivot changed managed workflow contract surfaces and requires safe managed refresh instead of ad hoc edits.",
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:13:18Z",
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "status": "completed",
+        "completion_mode": "recorded_execution",
+        "completed_by": "scafforge-pivot",
+        "summary": "Regenerated GPTTalker stack standards after managed repair replaced the repo-local skill with a framework-agnostic placeholder.",
+        "evidence_paths": [
+          ".opencode/skills/stack-standards/SKILL.md"
+        ],
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:13:29Z",
+        "stage": "opencode-team-bootstrap",
+        "owner": "opencode-team-bootstrap",
+        "category": "agent_team",
+        "status": "completed",
+        "completion_mode": "recorded_execution",
+        "completed_by": "scafforge-pivot",
+        "summary": "Updated the GPTTalker team-leader and hub implementer prompts so the repo-local agent team now describes ngrok as the public edge.",
+        "evidence_paths": [
+          ".opencode/agents/gpttalker-implementer-hub.md",
+          ".opencode/agents/gpttalker-team-leader.md"
+        ],
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:13:42Z",
+        "stage": "agent-prompt-engineering",
+        "owner": "agent-prompt-engineering",
+        "category": "prompt_hardening",
+        "status": "completed",
+        "completion_mode": "recorded_execution",
+        "completed_by": "scafforge-pivot",
+        "summary": "Hardened prompt-facing architecture language so the active team prompts align with the ngrok pivot and no longer describe Cloudflare as live repo truth.",
+        "evidence_paths": [
+          ".opencode/agents/gpttalker-implementer-hub.md",
+          ".opencode/agents/gpttalker-team-leader.md"
+        ],
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:13:46Z",
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "status": "completed",
+        "completion_mode": "recorded_execution",
+        "completed_by": "scafforge-pivot",
+        "summary": "Routed pivot follow-up into the repo backlog by creating EDGE-003 for the ngrok migration and EDGE-004 for Cloudflare-ticket lineage cleanup.",
+        "evidence_paths": [
+          "tickets/EDGE-003.md",
+          "tickets/EDGE-004.md"
+        ],
+        "pivot_id": "2026-03-31T13:02:54Z"
+      },
+      {
+        "recorded_at": "2026-03-31T13:13:54Z",
+        "stage": "scafforge-repair",
+        "owner": "scafforge-repair",
+        "category": "managed_workflow_refresh",
+        "status": "completed",
+        "completion_mode": "recorded_execution",
+        "completed_by": "scafforge-pivot",
+        "summary": "Ran Scafforge managed repair during the same refresh cycle before pivot implementation, refreshing managed workflow surfaces and republishing restart state.",
+        "evidence_paths": [
+          ".opencode/meta/repair-execution.json"
+        ],
+        "pivot_id": "2026-03-31T13:02:54Z"
+      }
+    ],
+    "last_updated_at": "2026-03-31T13:13:54Z"
+  },
+  "restart_surface_inputs": {
+    "pivot_in_progress": true,
+    "pivot_class": "architecture-change",
+    "pivot_changed_surfaces": [
+      "agent_team_and_prompts",
+      "canonical_brief_and_truth_docs",
+      "managed_workflow_tools_and_prompts",
+      "repo_local_skills",
+      "restart_surfaces",
+      "ticket_graph_and_lineage"
+    ],
+    "pending_downstream_stages": [],
+    "completed_downstream_stages": [
+      "agent-prompt-engineering",
+      "opencode-team-bootstrap",
+      "project-skill-bootstrap",
+      "scafforge-repair",
+      "ticket-pack-builder"
+    ],
+    "pending_ticket_lineage_actions": [],
+    "completed_ticket_lineage_actions": [
+      "supersede:EDGE-001",
+      "supersede:FIX-013",
+      "create_follow_up:Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior.",
+      "create_follow_up:Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture."
+    ],
+    "post_pivot_verification_passed": false
+  },
+  "restart_surface_publication": {
+    "status": "published",
+    "published_at": "2026-03-31T13:13:54Z",
+    "published_by": "scafforge-pivot",
+    "next_action": "None",
+    "start_here": "/home/rowan/GPTTalker/START-HERE.md",
+    "latest_handoff": "/home/rowan/GPTTalker/.opencode/state/latest-handoff.md",
+    "context_snapshot": ".opencode/state/context-snapshot.md"
+  }
+}

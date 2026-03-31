@@ -13,7 +13,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
   - Node agent service for distributed execution
   - SQLite registry and history storage
   - Qdrant vector store for project context
-  - Cloudflare Tunnel integration for public HTTPS edge
+  - ngrok integration for public HTTPS edge
   - Security-focused fail-closed design
 
 ## Implemented Features
@@ -55,7 +55,7 @@ GPTTalker is a lightweight MCP hub that lets ChatGPT safely interact with a mult
 1. Read `START-HERE.md` for operational guidance
 2. Review `docs/process/workflow.md` and `tickets/BOARD.md`
 3. Run `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`
-4. Configure environment variables for hub and nodes
+4. Configure environment variables for hub, nodes, and ngrok if you want the public edge enabled
 
 ## Resume contract
 

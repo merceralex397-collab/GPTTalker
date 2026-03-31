@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/setup-004-review-review.md (review) - Code review for SETUP-004: Approved. Implementation matches plan - all 6 new files created, all 4 files modified as planned. Acceptance criteria satisfied: hub app entrypoint defined, MCP transport boundary explicit, startup path leaves room for policy/registry injection. Code quality high with complete type hints and docstrings.
 - qa: .opencode/state/qa/setup-004-qa-qa.md (qa) - QA verification for SETUP-004: All 3 acceptance criteria verified - hub app entrypoint, MCP transport boundary, and startup injection hooks all pass. Code quality confirmed via static analysis.
 - backlog-verification: .opencode/state/reviews/setup-004-review-backlog-verification.md (review) - Backlog verification for SETUP-004: PASS
+- reverification: .opencode/state/artifacts/history/setup-004/review/2026-03-31T21-25-10-562Z-reverification.md (review) - Trust restored using SETUP-004.
 
 ## Notes
 

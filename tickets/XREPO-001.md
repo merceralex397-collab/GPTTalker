@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/xrepo-001-review-review.md (review) - Approved
 - qa: .opencode/state/qa/xrepo-001-qa-qa.md (qa) - Passed
 - backlog-verification: .opencode/state/reviews/xrepo-001-review-backlog-verification.md (review) - Backlog verification for XREPO-001: PASS
+- reverification: .opencode/state/artifacts/history/xrepo-001/review/2026-03-31T21-25-54-389Z-reverification.md (review) - Trust restored using XREPO-001.
 
 ## Notes
 
