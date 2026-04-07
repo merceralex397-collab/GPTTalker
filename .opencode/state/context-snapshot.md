@@ -1,64 +1,36 @@
-# Context Snapshot
+# GPTTalker — Context Snapshot
+
+Generated: 2026-04-07 (repair cycle 2026-04-07T22:18:12Z)
 
 ## Project
 
-GPTTalker
+GPTTalker — MCP hub for safe ChatGPT access to a multi-machine dev environment.
+Stack: Python 3.11+ / FastAPI / aiosqlite / Qdrant / httpx / Tailscale / Cloudflare Tunnel
+Model: minimax-coding-plan/MiniMax-M2.7
 
-## Active Ticket
+## Work State
 
-- ID: EXEC-011
-- Title: Reduce repo-wide ruff violations to zero
-- Stage: closeout
-- Status: done
-- Resolution: done
-- Verification: trusted
-- Approved plan: yes
-- Needs reverification: no
-- Open split children: none
+- 65/67 tickets done
+- 2 tickets todo: REMED-001 (hub import fix), REMED-002 (advisory)
+- Active ticket: REMED-001 (fix RelationshipService annotation NameError in src/hub/dependencies.py)
 
-## Bootstrap
+## Repair State
 
-- status: ready
-- last_verified_at: 2026-03-28T16:33:16.170Z
-- proof_artifact: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md
-- blockers: none
+Managed-surface overhaul complete (cycle 2026-04-07T22:18:12Z):
+- All 8 agent drift findings resolved
+- stack-standards/SKILL.md populated (project-specific)
+- Remediation tickets created: REMED-001 (EXEC001), REMED-002 (REF-003 advisory)
+- Completion artifacts: .opencode/state/artifacts/history/repair/*-completion.md
 
-## Process State
+Known issue: run_managed_repair.py always re-writes stack-standards/SKILL.md from template.
+Do not run the repair runner again; both follow-on stages are complete.
 
-- process_version: 7
-- pending_process_verification: true
-- parallel_mode: sequential
-- state_revision: 284
+## Pending
 
-## Repair Follow-On
+- REMED-001: one-line fix in src/hub/dependencies.py to use string annotation
+- REMED-002: advisory only, no action needed
 
-- outcome: managed_blocked
-- required: yes
-- next_required_stage: project-skill-bootstrap
-- verification_passed: false
-- last_updated_at: 2026-04-07T22:18:21Z
+## Risk
 
-## Pivot State
-
-- pivot_in_progress: false
-- pivot_class: none
-- pivot_changed_surfaces: none
-- pending_downstream_stages: none
-- completed_downstream_stages: none
-- pending_ticket_lineage_actions: none
-- completed_ticket_lineage_actions: none
-- post_pivot_verification_passed: false
-- pivot_state_path: .opencode/meta/pivot-state.json
-- pivot_tracking_mode: none
-
-## Lane Leases
-
-- No active lane leases
-
-## Recent Artifacts
-
-- reverification: .opencode/state/artifacts/history/exec-011/review/2026-03-28T12-39-37-363Z-reverification.md (review) - Trust restored using EXEC-014.
-- backlog-verification: .opencode/state/artifacts/history/exec-011/review/2026-03-28T16-28-26-361Z-backlog-verification.md (review) - Backlog verification for EXEC-011: PASS. All acceptance criteria verified via smoke-test artifacts and corroborating evidence from EXEC-013/EXEC-014.
-- smoke-test: .opencode/state/artifacts/history/exec-011/smoke-test/2026-03-28T16-32-27-376Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
-- environment-bootstrap: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md (bootstrap) - Environment bootstrap completed successfully.
-- smoke-test: .opencode/state/artifacts/history/exec-011/smoke-test/2026-03-28T16-39-25-444Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- Hub cannot import until REMED-001 is fixed
+- REF-003 (zod) is a false positive
