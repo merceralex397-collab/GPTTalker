@@ -1,0 +1,38 @@
+{
+  "tracking_mode": "persistent_recorded_state",
+  "assertion_input_mode": "legacy_manual_assertion",
+  "cycle_id": "2026-04-07T22:18:12Z",
+  "created_at": "2026-04-07T22:18:12Z",
+  "last_updated_at": "2026-04-07T22:18:21Z",
+  "process_version": 7,
+  "repair_package_commit": "missing_provenance",
+  "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
+  "pruned_unknown_stages": [],
+  "required_stages": [
+    "project-skill-bootstrap",
+    "ticket-pack-builder"
+  ],
+  "stage_records": {
+    "project-skill-bootstrap": {
+      "stage": "project-skill-bootstrap",
+      "owner": "project-skill-bootstrap",
+      "category": "repo_local_skills",
+      "status": "required_not_run",
+      "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+      "currently_required": true,
+      "last_checked_at": "2026-04-07T22:18:21Z",
+      "last_updated_at": "2026-04-07T22:18:21Z"
+    },
+    "ticket-pack-builder": {
+      "stage": "ticket-pack-builder",
+      "owner": "ticket-pack-builder",
+      "category": "ticket_follow_up",
+      "status": "required_not_run",
+      "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+      "currently_required": true,
+      "last_checked_at": "2026-04-07T22:18:21Z",
+      "last_updated_at": "2026-04-07T22:18:21Z"
+    }
+  },
+  "history": []
+}

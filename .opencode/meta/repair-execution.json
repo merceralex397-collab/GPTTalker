@@ -1,95 +1,637 @@
 {
   "repair_plan": {
     "repo_root": "/home/pc/projects/GPTTalker",
-    "required_follow_on_stages": [],
-    "replaced_surfaces": []
+    "required_follow_on_stages": [
+      {
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content."
+      },
+      {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
+      }
+    ],
+    "replaced_surfaces": [
+      "opencode.jsonc",
+      ".opencode/tools",
+      ".opencode/lib",
+      ".opencode/plugins",
+      ".opencode/commands",
+      "scaffold-managed .opencode/skills",
+      "docs/process/workflow.md",
+      "docs/process/tooling.md",
+      "docs/process/model-matrix.md",
+      "docs/process/git-capability.md",
+      "START-HERE.md managed block",
+      ".opencode/state/context-snapshot.md",
+      ".opencode/state/latest-handoff.md"
+    ],
+    "diff_summary": {
+      "files_added": [],
+      "files_removed": [],
+      "files_modified": [
+        "START-HERE.md"
+      ]
+    },
+    "backup_path": null,
+    "stale_surface_map": {
+      "workflow_tools_and_prompts": {
+        "status": "replace",
+        "surfaces": [
+          ".opencode/commands",
+          ".opencode/lib",
+          ".opencode/plugins",
+          ".opencode/tools",
+          "docs/process/git-capability.md",
+          "docs/process/model-matrix.md",
+          "docs/process/tooling.md",
+          "docs/process/workflow.md",
+          "opencode.jsonc"
+        ],
+        "reason": "Managed workflow tools, prompts, and process docs were refreshed or still show workflow drift."
+      },
+      "repo_local_skills": {
+        "status": "regenerate",
+        "surfaces": [
+          "scaffold-managed .opencode/skills"
+        ],
+        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains.",
+        "finding_codes": [
+          "SKILL001"
+        ]
+      },
+      "agent_team_and_prompts": {
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Agent-team prompts stay stable unless drift remains after managed repair."
+      },
+      "ticket_graph_and_follow_up": {
+        "status": "ticket_follow_up",
+        "surfaces": [],
+        "reason": "Ticket follow-up is required when source findings still need explicit routing through ticket-pack-builder.",
+        "finding_codes": [
+          "EXEC001"
+        ]
+      },
+      "restart_surfaces": {
+        "status": "replace",
+        "surfaces": [
+          ".opencode/state/context-snapshot.md",
+          ".opencode/state/latest-handoff.md",
+          "START-HERE.md managed block"
+        ],
+        "reason": "Restart surfaces are derived and must be regenerated whenever managed repair changes workflow state."
+      },
+      "canonical_project_decisions": {
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Managed repair preserves accepted project-scope decisions. Intent-changing drift must route outside routine public repair."
+      }
+    },
+    "migration_stage": {
+      "stage": "legacy-contract-migration",
+      "state": "current",
+      "policy": "current",
+      "required": false,
+      "migration_history_count": 0,
+      "from_process_version": 7,
+      "workflow_process_version": 7,
+      "repair_follow_on_process_version": 7,
+      "target_process_version": 7,
+      "compatibility_shim_scope": "package-internal",
+      "compatibility_shim_temporary": true,
+      "reasons": [],
+      "summary": "Repo already uses the current process contract.",
+      "migration_id": null
+    },
+    "repair_id": "2026-04-07T22:18:12Z"
   },
   "stage_results": [
     {
-      "stage": "project-skill-bootstrap",
+      "stage": "deterministic-refresh",
       "status": "completed"
+    },
+    {
+      "stage": "project-skill-bootstrap",
+      "status": "required_not_run",
+      "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content."
+    },
+    {
+      "stage": "ticket-pack-builder",
+      "status": "required_not_run",
+      "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
     }
   ],
   "execution_record": {
     "repo_root": "/home/pc/projects/GPTTalker",
-    "repair_package_commit": "unknown",
-    "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260328-161858",
-    "required_follow_on_stages": [],
-    "executed_stages": [
+    "repair_package_commit": "missing_provenance",
+    "repair_id": "2026-04-07T22:18:12Z",
+    "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
+    "required_follow_on_stages": [
+      "project-skill-bootstrap",
+      "ticket-pack-builder"
+    ],
+    "required_follow_on_stage_details": [
       {
         "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content."
+      },
+      {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
+      }
+    ],
+    "executed_stages": [
+      {
+        "stage": "deterministic-refresh",
         "status": "completed"
       }
     ],
+    "recorded_completed_stages": [],
+    "recorded_execution_completed_stages": [],
+    "auto_detected_recorded_stages": [],
+    "pruned_unknown_stages": [],
+    "invalidated_recorded_stages": [],
+    "asserted_completed_stages": [],
+    "legacy_asserted_completed_stages": [],
+    "stage_completion_mode": "legacy_manual_assertion",
+    "follow_on_tracking_mode": "persistent_recorded_state",
+    "follow_on_state_path": ".opencode/meta/repair-follow-on-state.json",
+    "follow_on_tracking_state": {
+      "tracking_mode": "persistent_recorded_state",
+      "assertion_input_mode": "legacy_manual_assertion",
+      "cycle_id": "2026-04-07T22:18:12Z",
+      "created_at": "2026-04-07T22:18:12Z",
+      "last_updated_at": "2026-04-07T22:18:21Z",
+      "process_version": 7,
+      "repair_package_commit": "missing_provenance",
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
+      "pruned_unknown_stages": [],
+      "required_stages": [
+        "project-skill-bootstrap",
+        "ticket-pack-builder"
+      ],
+      "stage_records": {
+        "project-skill-bootstrap": {
+          "stage": "project-skill-bootstrap",
+          "owner": "project-skill-bootstrap",
+          "category": "repo_local_skills",
+          "status": "required_not_run",
+          "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+          "currently_required": true,
+          "last_checked_at": "2026-04-07T22:18:21Z",
+          "last_updated_at": "2026-04-07T22:18:21Z"
+        },
+        "ticket-pack-builder": {
+          "stage": "ticket-pack-builder",
+          "owner": "ticket-pack-builder",
+          "category": "ticket_follow_up",
+          "status": "required_not_run",
+          "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+          "currently_required": true,
+          "last_checked_at": "2026-04-07T22:18:21Z",
+          "last_updated_at": "2026-04-07T22:18:21Z"
+        }
+      },
+      "history": []
+    },
     "deferred_stages": [],
-    "skipped_stages": [],
-    "blocking_reasons": [],
-    "repair_follow_on_outcome": "source_follow_up",
+    "skipped_stages": [
+      {
+        "stage": "project-skill-bootstrap",
+        "status": "required_not_run",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content."
+      },
+      {
+        "stage": "ticket-pack-builder",
+        "status": "required_not_run",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
+      }
+    ],
+    "blocking_reasons": [
+      "project-skill-bootstrap must still run: Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+      "ticket-pack-builder must still run: Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+      "Post-repair verification failed repair-contract consistency checks: placeholder_local_skills_survived_refresh."
+    ],
+    "repair_follow_on_outcome": "managed_blocked",
+    "migration_stage": {
+      "stage": "legacy-contract-migration",
+      "state": "current",
+      "policy": "current",
+      "required": false,
+      "migration_history_count": 0,
+      "from_process_version": 7,
+      "workflow_process_version": 7,
+      "repair_follow_on_process_version": 7,
+      "target_process_version": 7,
+      "compatibility_shim_scope": "package-internal",
+      "compatibility_shim_temporary": true,
+      "reasons": [],
+      "summary": "Repo already uses the current process contract.",
+      "migration_id": null
+    },
     "verification_status": {
       "performed": true,
-      "finding_count": 0,
-      "error_count": 0,
-      "warning_count": 0,
-      "codes": [],
-      "blocking_codes": [],
-      "source_follow_up_codes": [],
+      "finding_count": 3,
+      "error_count": 2,
+      "warning_count": 1,
+      "codes": [
+        "SKILL001",
+        "EXEC001",
+        "REF-003"
+      ],
+      "blocking_codes": [
+        "SKILL001"
+      ],
+      "source_follow_up_codes": [
+        "EXEC001",
+        "REF-003"
+      ],
       "process_state_codes": [],
+      "advisory_codes": [],
       "pending_process_verification": true,
-      "verification_basis": "transcript_backed",
-      "basis_requires_causal_replay": true,
-      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260328-161858",
+      "verification_basis": "current_state_only",
+      "basis_requires_causal_replay": false,
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
       "current_state_clean": false,
-      "causal_regression_verified": true,
-      "verification_passed": true,
-      "supporting_logs": [
-        "/home/pc/projects/GPTTalker/session4.md"
+      "causal_regression_verified": false,
+      "source_regression_summary": {
+        "comparison_available": true,
+        "pre_existing_codes": [
+          "EXEC001",
+          "REF-003"
+        ],
+        "persistent_codes": [
+          "EXEC001",
+          "REF-003"
+        ],
+        "resolved_codes": [],
+        "introduced_codes": [],
+        "introduced_critical_codes": []
+      },
+      "contract_failures": [
+        "placeholder_local_skills_survived_refresh"
+      ],
+      "contract_passed": false,
+      "verification_passed": false,
+      "supporting_logs": [],
+      "disposition_shadow_mode": {
+        "bundle_available": true,
+        "bundle_version": 1,
+        "bundle_finding_count": 3,
+        "delta_count": 1,
+        "deltas": [
+          {
+            "code": "SKILL001",
+            "legacy_disposition_class": "managed_blocker",
+            "disposition_class": "manual_prerequisite_blocker",
+            "route": "scafforge-repair",
+            "reason": "Legacy prefix classification would label SKILL001 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+          }
+        ]
+      }
+    },
+    "disposition_shadow_mode": {
+      "bundle_available": true,
+      "bundle_version": 1,
+      "bundle_finding_count": 3,
+      "delta_count": 1,
+      "deltas": [
+        {
+          "code": "SKILL001",
+          "legacy_disposition_class": "managed_blocker",
+          "disposition_class": "manual_prerequisite_blocker",
+          "route": "scafforge-repair",
+          "reason": "Legacy prefix classification would label SKILL001 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+        }
       ]
     },
-    "handoff_allowed": true
+    "handoff_allowed": false,
+    "diff_summary": {
+      "files_added": [],
+      "files_removed": [],
+      "files_modified": [
+        "START-HERE.md"
+      ]
+    },
+    "backup_path": null,
+    "repair_escalation_path": ".opencode/state/repair-escalation.json",
+    "remediation_ticket_ids": [
+      "REMED-001",
+      "REMED-002"
+    ],
+    "stale_surface_map": {
+      "workflow_tools_and_prompts": {
+        "status": "replace",
+        "surfaces": [
+          ".opencode/commands",
+          ".opencode/lib",
+          ".opencode/plugins",
+          ".opencode/tools",
+          "docs/process/git-capability.md",
+          "docs/process/model-matrix.md",
+          "docs/process/tooling.md",
+          "docs/process/workflow.md",
+          "opencode.jsonc"
+        ],
+        "reason": "Managed workflow tools, prompts, and process docs were refreshed or still show workflow drift."
+      },
+      "repo_local_skills": {
+        "status": "regenerate",
+        "surfaces": [
+          "scaffold-managed .opencode/skills"
+        ],
+        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains.",
+        "finding_codes": [
+          "SKILL001"
+        ]
+      },
+      "agent_team_and_prompts": {
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Agent-team prompts stay stable unless drift remains after managed repair."
+      },
+      "ticket_graph_and_follow_up": {
+        "status": "ticket_follow_up",
+        "surfaces": [],
+        "reason": "Ticket follow-up is required when source findings still need explicit routing through ticket-pack-builder.",
+        "finding_codes": [
+          "EXEC001"
+        ]
+      },
+      "restart_surfaces": {
+        "status": "replace",
+        "surfaces": [
+          ".opencode/state/context-snapshot.md",
+          ".opencode/state/latest-handoff.md",
+          "START-HERE.md managed block"
+        ],
+        "reason": "Restart surfaces are derived and must be regenerated whenever managed repair changes workflow state."
+      },
+      "canonical_project_decisions": {
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Managed repair preserves accepted project-scope decisions. Intent-changing drift must route outside routine public repair."
+      }
+    }
   },
   "repair_follow_on_state": {
-    "outcome": "source_follow_up",
-    "required_stages": [],
-    "completed_stages": [
-      "project-skill-bootstrap"
+    "outcome": "managed_blocked",
+    "required_stage_details": [
+      {
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content."
+      },
+      {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
+      }
     ],
-    "blocking_reasons": [],
-    "verification_passed": true,
-    "handoff_allowed": true,
+    "required_stages": [
+      "project-skill-bootstrap",
+      "ticket-pack-builder"
+    ],
+    "completed_stages": [
+      "deterministic-refresh"
+    ],
+    "asserted_completed_stages": [],
+    "legacy_asserted_completed_stages": [],
+    "stage_completion_mode": "legacy_manual_assertion",
+    "tracking_mode": "persistent_recorded_state",
+    "follow_on_state_path": ".opencode/meta/repair-follow-on-state.json",
+    "recorded_stage_state": {
+      "project-skill-bootstrap": {
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "status": "required_not_run",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+        "currently_required": true,
+        "last_checked_at": "2026-04-07T22:18:21Z",
+        "last_updated_at": "2026-04-07T22:18:21Z"
+      },
+      "ticket-pack-builder": {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "status": "required_not_run",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+        "currently_required": true,
+        "last_checked_at": "2026-04-07T22:18:21Z",
+        "last_updated_at": "2026-04-07T22:18:21Z"
+      }
+    },
+    "pruned_unknown_stages": [],
+    "invalidated_recorded_stages": [],
+    "blocking_reasons": [
+      "project-skill-bootstrap must still run: Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+      "ticket-pack-builder must still run: Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+      "Post-repair verification failed repair-contract consistency checks: placeholder_local_skills_survived_refresh."
+    ],
+    "verification_passed": false,
+    "handoff_allowed": false,
     "current_state_clean": false,
-    "causal_regression_verified": true,
-    "last_updated_at": "2026-03-28T16:20:39Z",
+    "causal_regression_verified": false,
+    "last_updated_at": "2026-04-07T22:18:21Z",
     "process_version": 7
   },
   "diagnosis_pack": {
-    "path": "/home/pc/projects/GPTTalker/diagnosis/20260328-162039",
+    "path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221824",
     "report_count": 4,
     "manifest": {
-      "generated_at": "2026-03-28T16:20:39Z",
+      "generated_at": "2026-04-07T22:18:24Z",
       "repo_root": "/home/pc/projects/GPTTalker",
-      "finding_count": 0,
-      "result_state": "clean",
+      "finding_count": 3,
+      "finding_codes": [
+        "EXEC001",
+        "REF-003",
+        "SKILL001"
+      ],
+      "source_findings": [
+        {
+          "code": "EXEC001",
+          "severity": "error"
+        },
+        {
+          "code": "REF-003",
+          "severity": "error"
+        }
+      ],
+      "result_state": "validated failures found",
       "diagnosis_kind": "post_repair_verification",
-      "evidence_mode": "transcript_backed",
-      "audit_package_commit": "unknown",
+      "evidence_mode": "current_state_only",
+      "audit_package_commit": "missing_provenance",
       "report_files": {
         "report_1": "01-initial-codebase-review.md",
         "report_2": "02-scafforge-process-failures.md",
         "report_3": "03-scafforge-prevention-actions.md",
         "report_4": "04-live-repo-repair-plan.md"
       },
-      "ticket_recommendations": [],
-      "package_work_required_first": false,
-      "recommended_next_step": "done",
-      "supporting_logs": [
-        "session4.md"
+      "disposition_bundle_file": "disposition-bundle.json",
+      "disposition_bundle": {
+        "version": 1,
+        "generated_at": "2026-04-07T22:18:24Z",
+        "repo_root": "/home/pc/projects/GPTTalker",
+        "audit_package_commit": "missing_provenance",
+        "allowed_classes": [
+          "managed_blocker",
+          "manual_prerequisite_blocker",
+          "source_follow_up",
+          "process_state_only",
+          "advisory"
+        ],
+        "finding_count": 3,
+        "findings": [
+          {
+            "code": "SKILL001",
+            "severity": "warning",
+            "disposition_class": "manual_prerequisite_blocker",
+            "legacy_disposition_class": "managed_blocker",
+            "route": "scafforge-repair",
+            "repair_class": "safe Scafforge package change",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              ".opencode/skills/stack-standards/SKILL.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "/tmp/scafforge-repair-candidate-tqjc0vtb/candidate/src"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "REF-003",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              ".opencode/node_modules/zod/src/index.ts"
+            ],
+            "provenance": "script"
+          }
+        ],
+        "counts": {
+          "managed_blocker": 0,
+          "manual_prerequisite_blocker": 1,
+          "source_follow_up": 2,
+          "process_state_only": 0,
+          "advisory": 0
+        },
+        "shadow_mode_deltas": [
+          {
+            "code": "SKILL001",
+            "legacy_disposition_class": "managed_blocker",
+            "disposition_class": "manual_prerequisite_blocker",
+            "route": "scafforge-repair",
+            "reason": "Legacy prefix classification would label SKILL001 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+          }
+        ]
+      },
+      "ticket_recommendations": [
+        {
+          "id": "REMED-001",
+          "title": "One or more Python packages fail to import \u2014 the service cannot start",
+          "description": "Remediate EXEC001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "/tmp/scafforge-repair-candidate-tqjc0vtb/candidate/src"
+          ],
+          "suggested_fix_approach": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC001",
+          "source_finding_codes": [
+            "EXEC001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
+          "source_files": [
+            "/tmp/scafforge-repair-candidate-tqjc0vtb/candidate/src"
+          ]
+        },
+        {
+          "id": "REMED-002",
+          "title": "Source imports reference missing local modules",
+          "description": "Remediate REF-003 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            ".opencode/node_modules/zod/src/index.ts"
+          ],
+          "suggested_fix_approach": "Audit local relative import paths and fail when the referenced module file is missing.",
+          "assignee": "implementer",
+          "source_finding_code": "REF-003",
+          "source_finding_codes": [
+            "REF-003"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "Audit local relative import paths and fail when the referenced module file is missing.",
+          "source_files": [
+            ".opencode/node_modules/zod/src/index.ts"
+          ]
+        },
+        {
+          "id": "REMED-003",
+          "title": "One or more repo-local skills still contain generic placeholder text instead of project-specific guidance",
+          "description": "Remediate SKILL001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            ".opencode/skills/stack-standards/SKILL.md"
+          ],
+          "suggested_fix_approach": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+          "assignee": "implementer",
+          "source_finding_code": "SKILL001",
+          "source_finding_codes": [
+            "SKILL001"
+          ],
+          "severity": "warning",
+          "route": "scafforge-repair",
+          "repair_class": "safe Scafforge package change",
+          "summary": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+          "source_files": [
+            ".opencode/skills/stack-standards/SKILL.md"
+          ]
+        }
       ],
+      "package_work_required_first": false,
+      "recommended_next_step": "subject_repo_repair",
       "verification_kind": "post_repair",
-      "repair_package_commit": "unknown",
-      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260328-161858",
+      "repair_package_commit": "missing_provenance",
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
       "current_state_clean": false,
-      "causal_regression_verified": true,
-      "verification_basis": "transcript_backed"
+      "causal_regression_verified": false,
+      "verification_basis": "current_state_only",
+      "recommended_ticket_payload": "recommended-ticket-payload.json"
     }
+  },
+  "remediation_follow_up": {
+    "created_tickets": [
+      "REMED-001",
+      "REMED-002"
+    ],
+    "diagnosis_manifest": "diagnosis/20260407-221824/manifest.json"
   }
 }

@@ -1,74 +1,83 @@
 ---
 name: stack-standards
-description: Apply GPTTalker's repo-local Python, FastAPI, storage, networking, logging, and validation conventions. Use when planning, implementing, or reviewing code that must match this repo's actual engineering contract.
+description: Hold the project-local standards for languages, frameworks, validation, and runtime assumptions. Use when planning or implementing work that should follow repo-specific engineering conventions.
 ---
 
 # Stack Standards
 
 Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
 
-## Stack Summary
+GPTTalker stack: **Python 3.11+ · FastAPI · aiosqlite · Qdrant · httpx · Tailscale · Cloudflare Tunnel · pytest · ruff**
 
-- Language: Python 3.11+
-- API layer: FastAPI
-- Structured storage: SQLite through `aiosqlite`
-- Semantic context storage: Qdrant via `qdrant-client`
-- Outbound HTTP: async `httpx` with explicit timeouts
-- Validation: `pytest`, `pytest-asyncio`, `ruff`
+## Language and Types
 
-## Python Rules
+- Python 3.11+ minimum. Use modern syntax where it improves clarity.
+- Use type hints everywhere: function signatures, return types, and non-obvious variables.
+- Prefer `str | None` over `Optional[str]`.
+- Use `from __future__ import annotations` only when cyclic imports require it.
 
-- Use type hints on public functions, return values, and non-obvious locals.
-- Prefer modern union syntax such as `str | None`.
-- Keep async paths fully async; do not call synchronous sqlite APIs from FastAPI handlers or other async services.
-- Use small, explicit helpers over hidden side effects.
+## API and Data Models
 
-## FastAPI Rules
+- Use **Pydantic v2 models** for all FastAPI request and response schemas.
+- Use `async/await` for all FastAPI endpoint handlers.
+- Use `fastapi.Depends` for dependency injection; never import service objects at module scope for testing purposes.
+- Validate all external inputs at the API boundary; never pass raw request data into internal service layers unvalidated.
 
-- Endpoints must be `async def`.
-- Use Pydantic models for request and response contracts.
-- Use `fastapi.Depends` for dependency injection rather than ad hoc request wiring.
-- Follow the repo's dependency modules and service wrappers instead of creating duplicate app-state access patterns.
-- FastAPI `Depends(...)` in function defaults is expected in this repo; `ruff` B008 is intentionally ignored for those paths.
+## Database
 
-## Storage And Context Rules
+- Use **aiosqlite** for structured runtime state (nodes, repos, tasks, leases).
+- Never use synchronous sqlite3 APIs in async paths.
+- Always use parameterised queries; never construct SQL strings by concatenation.
+- Migrations must be idempotent `CREATE TABLE IF NOT EXISTS` or `ALTER TABLE` patterns.
 
-- SQLite runtime state belongs in async `aiosqlite` repositories and helpers under `src/shared/` and hub/node-agent services.
-- Qdrant is the semantic memory layer for indexed repo content, issues, context bundles, and cross-repo intelligence.
-- Preserve idempotent indexing and content-hash tracking behavior when changing context flows.
+## Context Storage
 
-## Networking And Security Rules
+- Use **Qdrant** for semantic project context and cross-repo intelligence.
+- Collection names must be scoped per-repo to prevent cross-repo bleed.
 
-- Use async `httpx` for hub-to-node and hub-to-service calls.
-- Set an explicit timeout on every outbound `httpx` request.
-- Treat Tailscale as the internal transport boundary; do not introduce broader trust assumptions.
+## HTTP and Networking
+
+- Use **httpx** (async) for all outbound hub and node-agent HTTP calls.
+- Set explicit `timeout=httpx.Timeout(...)` on every httpx call; never rely on the default.
+- Treat **Tailscale** as the only trusted internal transport boundary; all node-agent communication must traverse Tailscale.
+- Public edge traffic routes through **Cloudflare Tunnel**; do not expose internal ports directly.
+
+## Validation and Testing
+
+- Use **ruff** for linting (`ruff check .`) and formatting (`ruff format .`).
+- Use **pytest** for all tests; use **pytest-asyncio** for async test cases.
+- Every MCP tool handler must have at least one happy-path and one error-path test.
+- Run `uv run pytest tests/ --collect-only -q --tb=no` before the full suite to verify collection.
+- Run `uv run pytest` for the full suite; `uv run pytest tests/<module>` for targeted runs.
+- Import-check command: `uv run python -c "from src.hub.main import app; from src.node_agent.main import app"`.
+- Compile-check command: `python3 -m py_compile $(find src -name '*.py')`.
+
+## Quality Gate Commands
+
+Run in this order for review and QA stages:
+
+```sh
+ruff check .
+ruff format --check .
+python3 -m py_compile $(find src -name '*.py')
+uv run pytest tests/ --collect-only -q --tb=no
+uv run pytest --tb=short -q
+```
+
+## Logging and Security
+
+- Use **structured logging** (stdlib `logging` with a JSON formatter or equivalent); no bare `print()` statements.
+- Log tool calls with: `trace_id`, `tool_name`, `target_node`, `target_repo`, `caller`, `outcome`, `duration_ms`.
+- Redact secrets, tokens, passwords, and raw file contents from all log output.
+- Use environment variables or ignored config files for all secrets; never commit secrets to source.
 - Fail closed on unknown nodes, repos, write targets, and service aliases.
-- Normalize user-influenced paths and reject traversal or escaping behavior.
+- All path inputs must be normalised; reject `..`, symlink escapes, and absolute user-supplied paths.
+- Atomic writes only: write to a temp file, then rename into place.
+- Validation or policy failures must return structured errors, not silent fallthrough.
 
-## Logging And Audit Rules
+## Process
 
-- Use structured logging helpers from `src/shared/logging.py`; do not add bare `print()` calls.
-- Keep log payloads redacted for secrets, tokens, passwords, and raw file contents.
-- Preserve audit-oriented metadata on tool flows, including trace IDs and outcome data, when changing hub or node-agent execution paths.
-
-## Validation Commands
-
-- Lint: `ruff check .`
-- Tests: `pytest`
-- Targeted repo scripts are also available:
-  - `gpttalker-lint`
-  - `gpttalker-test`
-  - `gpttalker-validate`
-
-## Testing Expectations
-
-- Add or update `pytest` coverage for behavior changes.
-- MCP tool handlers need at least one happy-path and one error-path test.
-- Use `pytest-asyncio` patterns for async behavior and FastAPI-adjacent async services.
-- Treat blocked validation as a real blocker; do not claim PASS without executable evidence.
-
-## Review Focus
-
-- Check FastAPI dependency wiring, async boundaries, path validation, and logging redaction first.
-- Check persistence changes for missing commits, transaction drift, or sync/async mixing.
-- Check context and cross-repo flows for Qdrant schema drift, indexing regressions, and policy bypasses.
+- Use ticket tools to track work; do not silently advance stages without updating ticket state.
+- Artifacts produced by each stage must be registered via `artifact_write` / `artifact_register`.
+- Smoke tests run against the real service or module entrypoint, not a mocked surrogate.
+- Coordinator-authored QA or smoke-test artifacts are invalid proof; route those stages through the assigned specialist or tool.

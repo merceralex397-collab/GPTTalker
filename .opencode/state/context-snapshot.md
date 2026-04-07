@@ -21,21 +21,35 @@ GPTTalker
 - status: ready
 - last_verified_at: 2026-03-28T16:33:16.170Z
 - proof_artifact: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md
+- blockers: none
 
 ## Process State
 
 - process_version: 7
-- pending_process_verification: false
+- pending_process_verification: true
 - parallel_mode: sequential
-- state_revision: 272
+- state_revision: 284
 
 ## Repair Follow-On
 
-- outcome: source_follow_up
-- required: no
-- next_required_stage: none
-- verification_passed: true
-- last_updated_at: 2026-03-28T16:20:39Z
+- outcome: managed_blocked
+- required: yes
+- next_required_stage: project-skill-bootstrap
+- verification_passed: false
+- last_updated_at: 2026-04-07T22:18:21Z
+
+## Pivot State
+
+- pivot_in_progress: false
+- pivot_class: none
+- pivot_changed_surfaces: none
+- pending_downstream_stages: none
+- completed_downstream_stages: none
+- pending_ticket_lineage_actions: none
+- completed_ticket_lineage_actions: none
+- post_pivot_verification_passed: false
+- pivot_state_path: .opencode/meta/pivot-state.json
+- pivot_tracking_mode: none
 
 ## Lane Leases
 

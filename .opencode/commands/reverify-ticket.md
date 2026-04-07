@@ -1,7 +1,7 @@
 ---
 description: Restore trust on a completed ticket using linked remediation evidence
 agent: gpttalker-team-leader
-model: minimax-coding-plan/MiniMax-M2.7
+model: minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7
 ---
 
 Resolve the historical ticket, confirm the linked remediation evidence, and use the reverification flow to restore trust only when the evidence closes the original defect.

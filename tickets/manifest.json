@@ -90,7 +90,7 @@
           "kind": "plan",
           "path": ".opencode/state/plans/setup-002-planning-plan.md",
           "stage": "planning",
-          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub\u2194node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
           "created_at": "2026-03-16T12:51:03.084Z",
           "trust_state": "current"
         },
@@ -98,7 +98,7 @@
           "kind": "planning",
           "path": ".opencode/state/plans/setup-002-planning-planning.md",
           "stage": "planning",
-          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub↔node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
+          "summary": "Implementation plan for SETUP-002: Shared schemas, config loading, and structured logging. Defines Pydantic models for hub\u2194node communication, configuration patterns with pydantic-settings validation, full structured logging with trace-ID propagation and secret redaction, and FastAPI exception handling middleware.",
           "created_at": "2026-03-16T12:53:16.115Z",
           "trust_state": "current"
         },
@@ -1287,7 +1287,7 @@
           "kind": "plan",
           "path": ".opencode/state/plans/ctx-002-planning-plan.md",
           "stage": "planning",
-          "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init → Discovery → Hash Check → Embed & Upsert → Cleanup → Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
+          "summary": "Implementation plan for CTX-002: index_repo pipeline with content-hash tracking. Defines 6-stage pipeline (Init \u2192 Discovery \u2192 Hash Check \u2192 Embed & Upsert \u2192 Cleanup \u2192 Finalize), content-hash tracking via SHA256 stored in Qdrant payload, idempotent reindex rules (skip unchanged, update changed, delete removed), integration with QdrantClientWrapper, EmbeddingServiceClient, HubNodeClient, and new files: indexing_pipeline.py, indexing.py tool handler.",
           "created_at": "2026-03-16T22:44:00.693Z",
           "trust_state": "current"
         },
@@ -2860,7 +2860,7 @@
           "kind": "implementation",
           "path": ".opencode/state/implementations/fix-009-implementation-implementation.md",
           "stage": "implementation",
-          "summary": "Implementation of FIX-009: Aligned write_markdown interface with spec contract. Changed parameter names (node_id→node, repo_id→write_target, path→relative_path), added mode parameter (create_or_overwrite/no_overwrite), added created flag in response, added get(target_id) to WriteTargetPolicy.",
+          "summary": "Implementation of FIX-009: Aligned write_markdown interface with spec contract. Changed parameter names (node_id\u2192node, repo_id\u2192write_target, path\u2192relative_path), added mode parameter (create_or_overwrite/no_overwrite), added created flag in response, added get(target_id) to WriteTargetPolicy.",
           "created_at": "2026-03-20T21:00:15.963Z",
           "trust_state": "current"
         },
@@ -3174,7 +3174,7 @@
         "If cloudflared is already running as systemd service, hub detects this and skips subprocess management",
         "Tunnel health is monitored with automatic restart on failure",
         "Graceful shutdown terminates cloudflared subprocess if hub-managed",
-        "Tunnel and API tokens read from environment variables only — never hardcoded",
+        "Tunnel and API tokens read from environment variables only \u2014 never hardcoded",
         "docs/ops/cloudflare-tunnel.md accurately reflects implemented behavior",
         "Structured logs redact tunnel tokens per security rules"
       ],
@@ -3547,7 +3547,7 @@
       "stage": "closeout",
       "status": "done",
       "depends_on": [],
-      "summary": "EXEC-001: Fix node-agent FastAPI dependency injection import failure — FIXED. Import exits 0, pytest collection passes (126 tests). 40 full-suite failures are pre-existing bugs in other components (EXEC-003-006).",
+      "summary": "EXEC-001: Fix node-agent FastAPI dependency injection import failure \u2014 FIXED. Import exits 0, pytest collection passes (126 tests). 40 full-suite failures are pre-existing bugs in other components (EXEC-003-006).",
       "acceptance": [
         "Replace FastAPI app injection in `src/node_agent/dependencies.py` with a FastAPI-safe dependency pattern based on `Request` or equivalent runtime-safe access to app state.",
         "`.venv/bin/python -c \"from src.node_agent.main import app\"` exits 0.",
@@ -3677,7 +3677,7 @@
           "kind": "smoke-test",
           "path": ".opencode/state/artifacts/history/exec-001/smoke-test/2026-03-25T17-02-42-249Z-smoke-test.md",
           "stage": "smoke-test",
-          "summary": "PARTIAL PASS — scoped fix verified correct (import exits 0, collection passes 126). 40 full-suite failures are pre-existing bugs in other components, mapped to EXEC-003 through EXEC-006.",
+          "summary": "PARTIAL PASS \u2014 scoped fix verified correct (import exits 0, collection passes 126). 40 full-suite failures are pre-existing bugs in other components, mapped to EXEC-003 through EXEC-006.",
           "created_at": "2026-03-25T17:02:42.249Z",
           "trust_state": "superseded",
           "superseded_at": "2026-03-25T17:03:47.012Z",
@@ -3726,7 +3726,7 @@
       "depends_on": [
         "EXEC-001"
       ],
-      "summary": "EXEC-002: Restore pytest collection and full test execution — VERIFIED. Collection exits 0 (126 tests). 40 full-suite failures are pre-existing bugs mapped to EXEC-003 (21), EXEC-004 (4), EXEC-005 (6), EXEC-006 (9). No code changes needed. Follow-up tickets already filed.",
+      "summary": "EXEC-002: Restore pytest collection and full test execution \u2014 VERIFIED. Collection exits 0 (126 tests). 40 full-suite failures are pre-existing bugs mapped to EXEC-003 (21), EXEC-004 (4), EXEC-005 (6), EXEC-006 (9). No code changes needed. Follow-up tickets already filed.",
       "acceptance": [
         "`.venv/bin/pytest tests/ --collect-only -q --tb=no` exits 0 with no collection errors.",
         "`.venv/bin/pytest tests/ -q --tb=no` exits 0.",
@@ -3763,7 +3763,7 @@
           "kind": "qa",
           "path": ".opencode/state/artifacts/history/exec-002/qa/2026-03-25T17-13-38-680Z-qa.md",
           "stage": "qa",
-          "summary": "QA verification for EXEC-002: PASS. Collection exits 0 (126 tests). Full suite: 40 failed/86 passed — all mapped to EXEC-003-006. Acceptance criterion 4 (failures split to follow-ups) is the controlling criterion.",
+          "summary": "QA verification for EXEC-002: PASS. Collection exits 0 (126 tests). Full suite: 40 failed/86 passed \u2014 all mapped to EXEC-003-006. Acceptance criterion 4 (failures split to follow-ups) is the controlling criterion.",
           "created_at": "2026-03-25T17:13:38.680Z",
           "trust_state": "current"
         },
@@ -3808,7 +3808,7 @@
         "EXEC-010",
         "EXEC-011"
       ],
-      "source_mode": "split_scope"
+      "source_mode": "post_completion_issue"
     },
     {
       "id": "EXEC-003",
@@ -3884,7 +3884,7 @@
           "kind": "backlog-verification",
           "path": ".opencode/state/artifacts/history/exec-003/review/2026-03-28T12-36-51-935Z-backlog-verification.md",
           "stage": "review",
-          "summary": "Backlog verification for EXEC-003: PASS — implementation matches planned fix, smoke-test evidence holds, no drift detected, no follow-up required.",
+          "summary": "Backlog verification for EXEC-003: PASS \u2014 implementation matches planned fix, smoke-test evidence holds, no drift detected, no follow-up required.",
           "created_at": "2026-03-28T12:36:51.935Z",
           "trust_state": "current"
         },
@@ -4020,7 +4020,7 @@
       "stage": "closeout",
       "status": "done",
       "depends_on": [],
-      "summary": "EXEC-005: Align write_markdown and MCP transport response contracts with tests — CLOSED. 6/6 scoped tests pass.",
+      "summary": "EXEC-005: Align write_markdown and MCP transport response contracts with tests \u2014 CLOSED. 6/6 scoped tests pass.",
       "acceptance": [
         "`write_markdown_handler()` accepts the contract-tested `node_id` argument shape without raising unexpected-keyword errors.",
         "`format_tool_response()` returns the MCP payload shape expected by the transport tests.",
@@ -4105,7 +4105,7 @@
       "stage": "closeout",
       "status": "done",
       "depends_on": [],
-      "summary": "EXEC-006: Fix structured logging redaction behavior for nested payloads — CLOSED. All redaction tests pass.",
+      "summary": "EXEC-006: Fix structured logging redaction behavior for nested payloads \u2014 CLOSED. All redaction tests pass.",
       "acceptance": [
         "Nested structures keep their non-sensitive shape while only sensitive leaf values are redacted.",
         "List redaction, max-depth handling, and long-string truncation match the current test contract, including the `... [TRUNCATED]` suffix.",
@@ -4118,7 +4118,7 @@
           "kind": "planning",
           "path": ".opencode/state/artifacts/history/exec-006/planning/2026-03-25T18-32-13-507Z-planning.md",
           "stage": "planning",
-          "summary": "Plan for EXEC-006: Fix three bugs in src/shared/logging.py — remove \"auth\" from SENSITIVE_PATTERNS, fix truncation format from \"...[TRUNCATED]\" to \"... [TRUNCATED]\", add string content redaction for list items.",
+          "summary": "Plan for EXEC-006: Fix three bugs in src/shared/logging.py \u2014 remove \"auth\" from SENSITIVE_PATTERNS, fix truncation format from \"...[TRUNCATED]\" to \"... [TRUNCATED]\", add string content redaction for list items.",
           "created_at": "2026-03-25T18:32:13.507Z",
           "trust_state": "current"
         },
@@ -4366,9 +4366,7 @@
       "resolution_state": "done",
       "verification_state": "reverified",
       "source_ticket_id": "EXEC-002",
-      "follow_up_ticket_ids": [
-        "EXEC-012"
-      ],
+      "follow_up_ticket_ids": [],
       "source_mode": "post_completion_issue"
     },
     {
@@ -4619,7 +4617,7 @@
           "kind": "backlog-verification",
           "path": ".opencode/state/artifacts/history/exec-009/review/2026-03-27T07-32-24-091Z-backlog-verification.md",
           "stage": "review",
-          "summary": "Backlog verification for EXEC-009: PASS — datetime.UTC alias and recent_commits implementation verified correct",
+          "summary": "Backlog verification for EXEC-009: PASS \u2014 datetime.UTC alias and recent_commits implementation verified correct",
           "created_at": "2026-03-27T07:32:24.091Z",
           "trust_state": "current"
         },
@@ -4663,7 +4661,7 @@
           "kind": "backlog-verification",
           "path": ".opencode/state/artifacts/history/exec-010/review/2026-03-27T07-32-25-991Z-backlog-verification.md",
           "stage": "review",
-          "summary": "Backlog verification for EXEC-010: PASS — nested redaction, max-depth, and truncation semantics verified correct",
+          "summary": "Backlog verification for EXEC-010: PASS \u2014 nested redaction, max-depth, and truncation semantics verified correct",
           "created_at": "2026-03-27T07:32:25.991Z",
           "trust_state": "current"
         },
@@ -4863,7 +4861,7 @@
           "kind": "review",
           "path": ".opencode/state/artifacts/history/exec-013/review/2026-03-27T07-15-28-802Z-review.md",
           "stage": "review",
-          "summary": "Code review for EXEC-013: APPROVED. All UP017/UP035/UP041 violations correctly fixed. Exit code 1 due to pre-existing EXEC-014 scope (I001, F401) — correctly excluded.",
+          "summary": "Code review for EXEC-013: APPROVED. All UP017/UP035/UP041 violations correctly fixed. Exit code 1 due to pre-existing EXEC-014 scope (I001, F401) \u2014 correctly excluded.",
           "created_at": "2026-03-27T07:15:28.802Z",
           "trust_state": "current"
         },
@@ -4940,7 +4938,7 @@
       "verification_state": "reverified",
       "source_ticket_id": "EXEC-011",
       "follow_up_ticket_ids": [],
-      "source_mode": "split_scope"
+      "source_mode": "post_completion_issue"
     },
     {
       "id": "EXEC-014",
@@ -5134,7 +5132,57 @@
       "verification_state": "reverified",
       "source_ticket_id": "EXEC-011",
       "follow_up_ticket_ids": [],
-      "source_mode": "split_scope"
+      "source_mode": "post_completion_issue"
+    },
+    {
+      "id": "REMED-001",
+      "title": "Hub service cannot start \u2014 RelationshipService TYPE_CHECKING runtime annotation",
+      "wave": 12,
+      "lane": "remediation",
+      "parallel_safe": false,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "Remediate REF-003 by correcting the validated issue and rerunning the relevant quality checks. Affected surfaces: .opencode/node_modules/zod/src/index.ts.",
+      "acceptance": [
+        "The validated finding `REF-003` no longer reproduces.",
+        "Current quality checks rerun with evidence tied to the fix approach: Audit local relative import paths and fail when the referenced module file is missing."
+      ],
+      "decision_blockers": [],
+      "artifacts": [],
+      "resolution_state": "open",
+      "verification_state": "suspect",
+      "finding_source": "REF-003",
+      "follow_up_ticket_ids": [],
+      "source_mode": "net_new_scope",
+      "source_finding_code": "EXEC001",
+      "description": "Fix NameError in src/hub/dependencies.py: use string annotation -> \"RelationshipService\" instead of runtime reference to TYPE_CHECKING-only import"
+    },
+    {
+      "id": "REMED-002",
+      "title": "Source imports reference missing local modules (zod node_modules false positive)",
+      "wave": 13,
+      "lane": "remediation",
+      "parallel_safe": false,
+      "overlap_risk": "low",
+      "stage": "planning",
+      "status": "todo",
+      "depends_on": [],
+      "summary": "Remediate REF-003 by correcting the validated issue and rerunning the relevant quality checks. Affected surfaces: .opencode/node_modules/zod/src/index.ts.",
+      "acceptance": [
+        "The validated finding `REF-003` no longer reproduces.",
+        "Current quality checks rerun with evidence tied to the fix approach: Audit local relative import paths and fail when the referenced module file is missing."
+      ],
+      "decision_blockers": [],
+      "artifacts": [],
+      "resolution_state": "open",
+      "verification_state": "suspect",
+      "finding_source": "REF-003",
+      "follow_up_ticket_ids": [],
+      "source_mode": "net_new_scope",
+      "source_finding_code": "REF-003",
+      "description": "REF-003 is a false positive: .opencode/node_modules/zod/src/ is an npm dependency tree. Verify and document as advisory-only."
     }
   ]
 }

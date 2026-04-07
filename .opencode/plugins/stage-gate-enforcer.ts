@@ -20,8 +20,8 @@ import {
   validateSmokeTestArtifactEvidence,
 } from "../lib/workflow"
 
-const SAFE_BASH = /^(pwd|ls|find|rg|grep|cat|head|tail|git status|git diff|git log)\b/i
-const BOOTSTRAP_RECOVERY_BASH = /^(uv|python|python3|pytest|ruff|\.venv\/bin\/python|\.venv\/bin\/pytest|\.venv\/bin\/ruff)\b/i
+const SAFE_BASH = /^(pwd|ls|find|rg|grep|cat|head|tail|git status|git diff|git log|godot(?:4)?\s+--headless(?:\s+--script|\s+--export|\s+--version)?|godot(?:4)?\s+--check-only|\.\/gradlew|gradle|mvn|javac|java\s+-jar|cmake|make(?:\s+(?:test|check|install))?|ninja|gcc|g\+\+|clang|clang\+\+|dotnet\s+(?:build|test|run|publish|restore|--info)|flutter\s+(?:build|test|analyze|pub\s+get)|dart\s+(?:analyze|pub\s+get)|swift\s+(?:build|test|run|--version)|swiftc|xcodebuild|zig\s+(?:build|test|run|version)|ruby|rake|rspec|bundle\s+exec|bundler\s+exec|mix\s+(?:test|compile|run|deps\.get)|php|phpunit|composer|stack|cabal|ghc)\b/i
+const BOOTSTRAP_RECOVERY_BASH = /^(uv|python|python3|pytest|ruff|\.venv\/bin\/python|\.venv\/bin\/pytest|\.venv\/bin\/ruff|npm|pnpm|yarn|bun|cargo|go|godot(?:4)?|gradle|\.\/gradlew|mvn|java|javac|cmake|make|ninja|gcc|g\+\+|clang|clang\+\+|dotnet|flutter|dart|swift|swiftc|xcodebuild|zig|ruby|bundle|bundler|mix|php|composer|stack|cabal|ghc|sdkmanager)\b/i
 const LEASED_ARTIFACT_STAGES = new Set(["implementation", "bootstrap", "handoff"])
 const RESERVED_ARTIFACT_STAGES = new Set(["smoke-test"])
 const HISTORICAL_VERIFICATION_KINDS = new Set(["backlog-verification", "reverification"])
@@ -60,24 +60,25 @@ async function ensureBootstrapReadyForValidation() {
   }
 }
 
-async function ensureWriteLease(pathValue?: string) {
+async function ensureWriteLease(pathValue?: string, ticketId?: string) {
   const workflow = await loadWorkflowState()
-  if (!hasWriteLeaseForTicket(workflow, workflow.active_ticket)) {
+  const checkedTicket = ticketId || workflow.active_ticket
+  if (!hasWriteLeaseForTicket(workflow, checkedTicket)) {
     throwWorkflowBlocker({
       type: "BLOCKER",
       reason_code: "missing_write_lease",
-      explanation: `Active ticket ${workflow.active_ticket} must hold an active write lease before write-capable work can proceed.`,
+      explanation: `Active ticket ${checkedTicket} must hold an active write lease before write-capable work can proceed.`,
       next_action_tool: "ticket_claim",
-      next_action_args: ticketClaimBlockerArgs(workflow.active_ticket),
+      next_action_args: ticketClaimBlockerArgs(checkedTicket),
     })
   }
-  if (pathValue && !hasWriteLeaseForTicketPath(workflow, workflow.active_ticket, pathValue)) {
+  if (pathValue && !hasWriteLeaseForTicketPath(workflow, checkedTicket, pathValue)) {
     throwWorkflowBlocker({
       type: "BLOCKER",
       reason_code: "write_path_not_covered",
-      explanation: `The active write lease for ${workflow.active_ticket} does not cover ${pathValue}.`,
+      explanation: `The active write lease for ${checkedTicket} does not cover ${pathValue}.`,
       next_action_tool: "ticket_claim",
-      next_action_args: ticketClaimBlockerArgs(workflow.active_ticket, [pathValue]),
+      next_action_args: ticketClaimBlockerArgs(checkedTicket, [pathValue]),
     })
   }
 }
@@ -163,11 +164,22 @@ export const StageGateEnforcer: Plugin = async () => {
         const manifest = await loadManifest()
         const sourceMode = typeof output.args.source_mode === "string" ? output.args.source_mode : "net_new_scope"
         const sourceTicketId = typeof output.args.source_ticket_id === "string" ? output.args.source_ticket_id : ""
+        const dependsOn = Array.isArray(output.args.depends_on)
+          ? output.args.depends_on.filter((item): item is string => typeof item === "string").map((item) => item.trim()).filter(Boolean)
+          : []
+        if (sourceTicketId && dependsOn.includes(sourceTicketId)) {
+          throw new Error(`ticket_create cannot name ${sourceTicketId} as both source_ticket_id and depends_on.`)
+        }
         if (sourceMode === "process_verification" && !workflow.pending_process_verification) {
           throw new Error("process_verification follow-up creation is only available while pending_process_verification is true.")
         }
         if (sourceMode === "net_new_scope") {
-          await ensureTargetTicketWriteLease(workflow.active_ticket)
+          const activeTicket = getTicket(manifest, workflow.active_ticket)
+          const allTicketsClosed = (activeTicket.status === "done" || activeTicket.resolution_state === "superseded")
+            && workflow.lane_leases.length === 0
+          if (!allTicketsClosed) {
+            await ensureTargetTicketWriteLease(workflow.active_ticket)
+          }
         } else if (sourceMode === "split_scope") {
           if (!sourceTicketId) throw new Error("split_scope ticket creation requires source_ticket_id.")
           await ensureTargetTicketWriteLease(sourceTicketId)
@@ -285,7 +297,7 @@ export const StageGateEnforcer: Plugin = async () => {
         }
         if (LEASED_ARTIFACT_STAGES.has(stage) && !historicalVerificationMutation) {
           const artifactPath = typeof output.args.path === "string" ? output.args.path : ""
-          await ensureWriteLease(artifactPath || undefined)
+          await ensureWriteLease(artifactPath || undefined, ticketId)
         }
         if (stage === "smoke-test" || stage === "handoff") {
           await ensureBootstrapReadyForValidation()
@@ -310,7 +322,7 @@ export const StageGateEnforcer: Plugin = async () => {
           await ensureTargetTicketWriteLease(ticketId)
         }
         if (artifactPath && !historicalVerificationMutation) {
-          await ensureWriteLease(artifactPath)
+          await ensureWriteLease(artifactPath, ticketId)
         }
       }
 

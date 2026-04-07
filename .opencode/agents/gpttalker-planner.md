@@ -27,6 +27,7 @@ permission:
     "isolation-guidance": allow
   task:
     "*": deny
+    "explore": allow
     "gpttalker-utility-explore": allow
     "gpttalker-utility-summarize": allow
     "gpttalker-utility-github-research": allow

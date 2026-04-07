@@ -19,6 +19,7 @@ permission:
     "*": deny
     "project-context": allow
     "ticket-execution": allow
+    "review-audit-bridge": allow
   task:
     "*": deny
     "gpttalker-utility-summarize": allow
@@ -32,9 +33,17 @@ permission:
     "head *": allow
     "tail *": allow
     "git diff*": allow
+    "python -m py_compile*": allow
+    "python -c *": allow
+    "python3 -m py_compile*": allow
+    "python3 -c *": allow
+    "node -e *": allow
+    "cargo check*": allow
+    "go vet*": allow
+    "tsc --noEmit*": allow
 ---
 
-Review the implementation for correctness, regressions, and test gaps.
+Review the implementation for correctness, regressions, and test gaps. Use `review-audit-bridge` for output ordering and blocker rules.
 
 Return:
 
@@ -47,6 +56,11 @@ Rules:
 
 - when a canonical review artifact path is provided, write the full review body with `artifact_write` and then register it with `artifact_register`
 - do not claim that repo files were updated
+- if artifact creation is blocked because the ticket lease is missing, return that blocker to the team leader instead of trying to claim a lease yourself
+- verify that new or modified source files compile by running the appropriate compile check (for example `python -m py_compile`, `cargo check`, or `tsc --noEmit`)
+- verify that the primary module imports succeed
+- include compile or import-check output in the review artifact
+- do not approve code that fails to compile or import cleanly
 - if the implementation artifact or diff context is missing, return a blocker instead of inferring correctness
 - do not end with a summary-only response when findings or an approval signal are required
 

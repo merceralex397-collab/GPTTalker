@@ -33,6 +33,7 @@ export default tool({
     decision_blockers: tool.schema.array(tool.schema.string()).describe("Unresolved blockers for this ticket.").optional(),
     parallel_safe: tool.schema.boolean().describe("Whether the ticket can be advanced in a parallel lane when dependencies are satisfied.").optional(),
     overlap_risk: tool.schema.enum(["low", "medium", "high"]).describe("Expected overlap risk with other tickets.").optional(),
+    finding_source: tool.schema.string().describe("Optional original finding code when this ticket remediates a validated issue.").optional(),
     source_ticket_id: tool.schema.string().describe("Optional source ticket that this ticket extends or remediates.").optional(),
     source_mode: tool.schema.enum(["process_verification", "post_completion_issue", "net_new_scope", "split_scope"]).describe("Why this ticket is being created.").optional(),
     evidence_artifact_path: tool.schema.string().describe("Optional registered artifact path that justifies creation of this linked ticket.").optional(),
@@ -61,6 +62,7 @@ export default tool({
       decision_blockers: args.decision_blockers,
       parallel_safe: args.parallel_safe,
       overlap_risk: args.overlap_risk,
+      finding_source: normalizeOptional(args.finding_source),
       source_ticket_id: sourceTicketId,
       source_mode: sourceMode,
     })
@@ -75,10 +77,6 @@ export default tool({
         throw new Error(`source_ticket_id is required when source_mode is ${sourceMode}.`)
       }
       sourceTicket = getTicket(manifest, sourceTicketId)
-
-      if (ticket.depends_on.includes(sourceTicket.id)) {
-        throw new Error(`Ticket ${ticket.id} cannot depend on its source ticket ${sourceTicket.id}; reconcile lineage or split scope instead of creating a contradictory dependency.`)
-      }
 
       if (sourceMode === "process_verification") {
         if (!workflow.pending_process_verification) {
@@ -141,9 +139,12 @@ export default tool({
     }
 
     setPlanApprovedForTicket(workflow, ticket.id, false)
+    const allOtherTicketsClosed = manifest.tickets.every(
+      (t) => t.id === ticket.id || t.status === "done" || t.resolution_state === "superseded"
+    )
     const activateNewTicket = typeof args.activate === "boolean"
       ? args.activate
-      : sourceMode === "split_scope" && sourceTicket?.id === manifest.active_ticket
+      : allOtherTicketsClosed || (sourceMode === "split_scope" && sourceTicket?.id === manifest.active_ticket)
     if (activateNewTicket) {
       manifest.active_ticket = ticket.id
     }
@@ -156,6 +157,7 @@ export default tool({
         created_ticket: ticket.id,
         path: ticketFilePath(ticket.id),
         status: ticket.status,
+        finding_source: ticket.finding_source || null,
         source_ticket_id: sourceTicket?.id || null,
         source_mode: sourceMode,
         evidence_artifact_path: evidenceArtifactPath || null,

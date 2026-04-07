@@ -6,17 +6,20 @@ import { join } from "node:path"
 import {
   currentArtifacts,
   defaultArtifactPath,
+  findExistingRepoVenvExecutable,
   getTicket,
   latestArtifact,
   loadArtifactRegistry,
   loadManifest,
   loadWorkflowState,
+  markTicketSmokeVerified,
   normalizeRepoPath,
   registerArtifactSnapshot,
   requireBootstrapReady,
   rootPath,
   saveArtifactRegistry,
   saveManifest,
+  saveWorkflowBundle,
   writeText,
 } from "../lib/workflow"
 
@@ -37,6 +40,9 @@ type CommandResult = CommandSpec & {
   duration_ms: number
   stdout: string
   stderr: string
+  missing_executable?: string
+  failure_classification?: "missing_executable" | "permission_restriction" | "syntax_error" | "test_failure" | "configuration_error" | "command_error"
+  blocked_by_permissions?: boolean
 }
 
 type PythonRunner = {
@@ -63,6 +69,21 @@ const SMOKE_COMMAND_PATTERNS = [
   /\b(?:npm|pnpm)\s+run\s+(?:test|check)\b/i,
   /\byarn\s+(?:test|check)\b/i,
   /\bbun\s+run\s+(?:test|check)\b/i,
+  /\bgodot(?:4)?\s+--headless\b/i,
+  // Gradle smoke detection includes `(?:\./gradlew|gradle)\s+test`.
+  /\b(?:\.\/gradlew|gradle)\s+test\b/i,
+  /\bmvn\s+test\b/i,
+  /\bdotnet\s+test\b/i,
+  /\bflutter\s+test\b/i,
+  /\bswift\s+test\b/i,
+  /\bxcodebuild\s+test\b/i,
+  /\bzig\s+test\b/i,
+  /\bmake\s+(?:test|check)\b/i,
+  /\b(?:ruby|rspec|rake\s+test)\b/i,
+  /\bmix\s+test\b/i,
+  /\b(?:phpunit|php\s+[^\n]*test)\b/i,
+  /\bcmake\s+--build\b/i,
+  /\b(?:gcc|g\+\+|clang|clang\+\+)\b[\s\S]*&&\s*\.\/a\.out\b/i,
 ]
 
 async function exists(path: string): Promise<boolean> {
@@ -183,6 +204,10 @@ function renderCommand(command: Pick<CommandSpec, "argv" | "env_overrides">): st
   return `${envPrefix ? `${envPrefix} ` : ""}${command.argv.join(" ")}`.trim()
 }
 
+function isPermissionRestrictionOutput(output: string): boolean {
+  return /permission denied|operation not permitted|EACCES|EPERM|blocked by permission rules/i.test(output)
+}
+
 function inferAcceptanceSmokeCommands(ticket: { acceptance?: unknown }): CommandSpec[] {
   const commands: CommandSpec[] = []
   const seen = new Set<string>()
@@ -216,8 +241,8 @@ async function detectPythonRunner(root: string, pyprojectText: string): Promise<
     }
   }
 
-  const repoVenvPython = join(root, ".venv", "bin", "python")
-  if (await exists(repoVenvPython)) {
+  const repoVenvPython = await findExistingRepoVenvExecutable(root, "python")
+  if (repoVenvPython) {
     return {
       label: "repo-local python",
       argv: [repoVenvPython],
@@ -343,6 +368,14 @@ function tokenizeCommandString(command: string): string[] {
   let escaped = false
 
   for (const char of command) {
+    if (quote === "'") {
+      if (char === quote) {
+        quote = null
+      } else {
+        current += char
+      }
+      continue
+    }
     if (escaped) {
       current += char
       escaped = false
@@ -408,6 +441,31 @@ function parseOverrideTokens(tokens: string[], label: string): CommandSpec {
     reason: "Explicit smoke-test command override supplied by the caller.",
     env_overrides: Object.keys(env_overrides).length > 0 ? env_overrides : undefined,
   }
+}
+
+function isSyntaxErrorOutput(output: string): boolean {
+  return /syntax error|unexpected token|missing language argument|unterminated|unmatched quote/i.test(output)
+}
+
+function isConfigurationErrorOutput(output: string): boolean {
+  return /configuration error|invalid config|misconfig|unknown option|invalid argument|requires a value/i.test(output)
+}
+
+function classifyCommandFailure(args: {
+  exitCode: number
+  stdout: string
+  stderr: string
+  missingExecutable?: string
+  blockedByPermissions?: boolean
+}): CommandResult["failure_classification"] {
+  if (args.exitCode === 0) return undefined
+  if (args.missingExecutable) return "missing_executable"
+  if (args.blockedByPermissions) return "permission_restriction"
+  const output = `${args.stdout}\n${args.stderr}`
+  if (isSyntaxErrorOutput(output)) return "syntax_error"
+  if (isConfigurationErrorOutput(output)) return "configuration_error"
+  if (output.trim()) return "test_failure"
+  return "command_error"
 }
 
 function parseCommandOverride(rawOverride: string[]): CommandSpec[] {
@@ -478,12 +536,19 @@ async function runCommand(root: string, command: CommandSpec): Promise<CommandRe
         stdio: ["ignore", "pipe", "pipe"],
       })
     } catch (error) {
+      const errorCode = typeof error === "object" && error && "code" in error ? String((error as { code?: string }).code || "") : ""
+      const errorStderr = String(error)
+      const missingExecutable = errorCode === "ENOENT" ? command.argv[0] : undefined
+      const blockedByPermissions = errorCode === "EACCES" || errorCode === "EPERM" || isPermissionRestrictionOutput(errorStderr)
       resolve({
         ...command,
         exit_code: -1,
         duration_ms: Date.now() - startedAt,
         stdout: "",
-        stderr: String(error),
+        stderr: errorStderr,
+        missing_executable: missingExecutable,
+        failure_classification: classifyCommandFailure({ exitCode: -1, stdout: "", stderr: errorStderr, missingExecutable, blockedByPermissions }),
+        blocked_by_permissions: blockedByPermissions || undefined,
       })
       return
     }
@@ -497,23 +562,36 @@ async function runCommand(root: string, command: CommandSpec): Promise<CommandRe
     child.on("error", (error) => {
       if (settled) return
       settled = true
+      const errorCode = typeof error === "object" && error && "code" in error ? String((error as { code?: string }).code || "") : ""
+      const renderedError = `${stderr}\n${String(error)}`.trim()
+      const missingExecutable = errorCode === "ENOENT" ? command.argv[0] : undefined
+      const blockedByPermissions = errorCode === "EACCES" || errorCode === "EPERM" || isPermissionRestrictionOutput(renderedError)
       resolve({
         ...command,
         exit_code: -1,
         duration_ms: Date.now() - startedAt,
         stdout,
-        stderr: `${stderr}\n${String(error)}`.trim(),
+        stderr: renderedError,
+        missing_executable: missingExecutable,
+        failure_classification: classifyCommandFailure({ exitCode: -1, stdout, stderr: renderedError, missingExecutable, blockedByPermissions }),
+        blocked_by_permissions: blockedByPermissions || undefined,
       })
     })
     child.on("close", (code) => {
       if (settled) return
       settled = true
+      const renderedStderr = stderr.trim()
+      const missingExecutable = code === 127 || /command not found|ENOENT/i.test(renderedStderr) ? command.argv[0] : undefined
+      const blockedByPermissions = isPermissionRestrictionOutput(`${stdout}\n${stderr}`)
       resolve({
         ...command,
         exit_code: code ?? -1,
         duration_ms: Date.now() - startedAt,
         stdout,
         stderr,
+        missing_executable: missingExecutable,
+        failure_classification: classifyCommandFailure({ exitCode: code ?? -1, stdout, stderr, missingExecutable, blockedByPermissions }),
+        blocked_by_permissions: blockedByPermissions || undefined,
       })
     })
   })
@@ -528,18 +606,32 @@ function renderArtifact(ticketId: string, commands: CommandResult[], passed: boo
   const commandSections = commands.length
     ? commands
         .map(
-          (command, index) => `### ${index + 1}. ${command.label}\n\n- reason: ${command.reason}\n- command: \`${renderCommand(command)}\`\n- exit_code: ${command.exit_code}\n- duration_ms: ${command.duration_ms}\n\n#### stdout\n\n${fence(command.stdout)}\n\n#### stderr\n\n${fence(command.stderr)}`,
+          (command, index) => `### ${index + 1}. ${command.label}\n\n- reason: ${command.reason}\n- command: \`${renderCommand(command)}\`\n- exit_code: ${command.exit_code}\n- duration_ms: ${command.duration_ms}\n- missing_executable: ${command.missing_executable || "none"}\n- failure_classification: ${command.failure_classification || "none"}\n- blocked_by_permissions: ${command.blocked_by_permissions ? "true" : "false"}\n\n#### stdout\n\n${fence(command.stdout)}\n\n#### stderr\n\n${fence(command.stderr)}`,
         )
         .join("\n\n")
     : "No deterministic smoke-test commands were detected."
 
   return `# Smoke Test\n\n## Ticket\n\n- ${ticketId}\n\n## Overall Result\n\nOverall Result: ${passed ? "PASS" : "FAIL"}\n\n## Notes\n\n${note}\n\n## Commands\n\n${commandSections}\n`
 }
+
+function classifyCommandKind(command: CommandResult): "build_or_quality_gate" | "test_or_runtime" | "other" {
+  const rendered = `${command.label} ${renderCommand(command)}`.toLowerCase()
+  if (/(build|check|lint|clippy|vet|typecheck|tsc|compile|analy[sz]e)/.test(rendered)) {
+    return "build_or_quality_gate"
+  }
+  if (/(test|pytest|rspec|phpunit|godot|xcodebuild)/.test(rendered)) {
+    return "test_or_runtime"
+  }
+  return "other"
+}
 function classifySmokeFailure(results: CommandResult[]): "environment" | "ticket" | "configuration" | null {
   const failed = results.find((command) => command.exit_code !== 0)
   if (!failed) return null
   const output = `${failed.stdout}\n${failed.stderr}`
-  if (failed.exit_code === -1 || /No module named|command not found|ENOENT|not installed|missing/i.test(output)) {
+  if (failed.failure_classification === "syntax_error" || failed.failure_classification === "configuration_error") {
+    return "configuration"
+  }
+  if (failed.exit_code === -1 || failed.failure_classification === "missing_executable" || /No module named|command not found|ENOENT|not installed|missing/i.test(output)) {
     return "environment"
   }
   if (/No deterministic smoke-test command/i.test(output)) {
@@ -548,8 +640,28 @@ function classifySmokeFailure(results: CommandResult[]): "environment" | "ticket
   return "ticket"
 }
 
+function classifyHostSurfaceFailure(results: CommandResult[]): "missing_executable" | "permission_restriction" | "runtime_setup" | null {
+  const failed = results.find((command) => command.exit_code !== 0)
+  if (!failed) return null
+  if (failed.failure_classification === "missing_executable" || failed.missing_executable) {
+    return "missing_executable"
+  }
+  if (failed.failure_classification === "permission_restriction" || failed.blocked_by_permissions) {
+    return "permission_restriction"
+  }
+  if (classifySmokeFailure(results) !== "environment") {
+    return null
+  }
+  const output = `${failed.stdout}\n${failed.stderr}`
+  if (/No module named|not installed|missing/i.test(output)) {
+    return "runtime_setup"
+  }
+  return null
+}
+
 async function persistArtifact(ticketId: string, body: string, passed: boolean): Promise<string> {
   const manifest = await loadManifest()
+  const workflow = await loadWorkflowState()
   const ticket = getTicket(manifest, ticketId)
   const path = normalizeRepoPath(defaultArtifactPath(ticket.id, SMOKE_STAGE, SMOKE_KIND))
   await writeText(path, body)
@@ -564,8 +676,10 @@ async function persistArtifact(ticketId: string, body: string, passed: boolean):
     summary: passed ? "Deterministic smoke test passed." : "Deterministic smoke test failed.",
   })
 
-  await saveManifest(manifest)
-  await saveArtifactRegistry(registry)
+  if (passed) {
+    markTicketSmokeVerified(ticket)
+  }
+  await saveWorkflowBundle({ workflow, manifest, registry })
   return artifact.path
 }
 
@@ -649,13 +763,20 @@ export default tool({
       }
     }
     const failureClassification = classifySmokeFailure(results)
+    const hostSurfaceClassification = classifyHostSurfaceFailure(results)
+    const failedCommand = results.find((result) => result.exit_code !== 0)
+    const failedCommandKind = failedCommand ? classifyCommandKind(failedCommand) : null
 
     const note = passed
       ? "All detected deterministic smoke-test commands passed."
+      : hostSurfaceClassification === "permission_restriction"
+        ? "The smoke-test run failed because the host denied a required command or file access path. Fix the permission/tool policy or run the canonical smoke command in an allowed host context before treating this as a ticket regression."
       : failureClassification === "environment"
         ? "The smoke-test run failed because the environment or required toolchain is not ready. Fix bootstrap/runtime setup before treating this as a ticket regression."
         : failureClassification === "configuration"
           ? "The smoke-test run failed because the smoke-test surface is not configured correctly."
+          : failedCommand && failedCommandKind === "build_or_quality_gate"
+            ? `The smoke-test run failed on the build or quality gate command \`${failedCommand.label}\`. Inspect the recorded command output before closeout and do not treat this as a generic test-only failure.`
           : "The smoke-test run stopped on the first failing command. Inspect the recorded output before closeout."
     const body = renderArtifact(ticket.id, results, passed, note)
     const artifactPath = await persistArtifact(ticket.id, body, passed)
@@ -669,10 +790,16 @@ export default tool({
         scope: args.scope || (args.test_paths && args.test_paths.length > 0 ? "ticket" : "full-suite"),
         test_paths: args.test_paths || [],
         failure_classification: failureClassification,
+        host_surface_classification: hostSurfaceClassification,
+        failed_command_label: failedCommand?.label || null,
+        failed_command_kind: failedCommandKind,
         commands: results.map((result) => ({
           label: result.label,
           command: renderCommand(result),
           exit_code: result.exit_code,
+          missing_executable: result.missing_executable || null,
+          failure_classification: result.failure_classification || null,
+          blocked_by_permissions: result.blocked_by_permissions === true,
           duration_ms: result.duration_ms,
         })),
       },

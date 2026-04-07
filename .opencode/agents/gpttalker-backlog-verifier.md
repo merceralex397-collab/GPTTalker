@@ -41,9 +41,10 @@ Return:
 Rules:
 
 - use this only for post-migration or leadership-requested verification of completed work
-- read the latest planning, implementation, review, and QA artifact bodies from `ticket_lookup` before deciding whether old completion still holds
+- read the latest planning, implementation, review, QA, and smoke-test artifact bodies from `ticket_lookup` before deciding whether old completion still holds
 - if no canonical artifact path is supplied for the backlog-verification result, return `BLOCKED` immediately instead of guessing a path
 - write and register a `review` artifact with kind `backlog-verification` when a canonical artifact path is supplied
 - return your findings to the calling agent; do not create tickets yourself
+- if artifact creation is blocked because the ticket lease is missing, return that blocker to the team leader instead of trying to claim a lease yourself
 - do not mutate source code, ticket state, or existing repo files — artifact creation via `artifact_write` and `artifact_register` is the only permitted write
 - if no material issue is found, say so explicitly

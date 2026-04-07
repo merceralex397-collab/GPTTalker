@@ -13,10 +13,11 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 
 1. README.md
 2. AGENTS.md
-3. docs/spec/CANONICAL-BRIEF.md
-4. docs/process/workflow.md
-5. tickets/manifest.json
-6. tickets/BOARD.md
+3. docs/AGENT-DELEGATION.md
+4. docs/spec/CANONICAL-BRIEF.md
+5. docs/process/workflow.md
+6. tickets/manifest.json
+7. tickets/BOARD.md
 
 ## Current Or Next Ticket
 
@@ -37,32 +38,51 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 
 ## Generation Status
 
-- handoff_status: ready for continued development
+- handoff_status: repair follow-up required
 - process_version: 7
 - parallel_mode: sequential
-- pending_process_verification: false
-- repair_follow_on_outcome: source_follow_up
-- repair_follow_on_required: false
-- repair_follow_on_next_stage: none
-- repair_follow_on_verification_passed: true
-- repair_follow_on_updated_at: 2026-03-28T16:20:39Z
+- pending_process_verification: true
+- repair_follow_on_outcome: managed_blocked
+- repair_follow_on_required: true
+- repair_follow_on_next_stage: project-skill-bootstrap
+- repair_follow_on_verification_passed: false
+- repair_follow_on_updated_at: 2026-04-07T22:18:21Z
+- pivot_in_progress: false
+- pivot_class: none
+- pivot_changed_surfaces: none
+- pivot_pending_stages: none
+- pivot_completed_stages: none
+- pivot_pending_ticket_lineage_actions: none
+- pivot_completed_ticket_lineage_actions: none
+- post_pivot_verification_passed: false
 - bootstrap_status: ready
 - bootstrap_proof: .opencode/state/artifacts/history/exec-011/bootstrap/2026-03-28T16-33-16-169Z-environment-bootstrap.md
+- bootstrap_blockers: none
 
 ## Post-Generation Audit Status
 
 - audit_or_repair_follow_up: follow-up required
 - reopened_tickets: none
-- done_but_not_fully_trusted: SETUP-002, SETUP-003, SETUP-004, SETUP-005, CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, REPO-001, REPO-002, REPO-003, WRITE-001, LLM-001, LLM-002, LLM-003, CTX-001, CTX-002, CTX-003, CTX-004, XREPO-001, XREPO-002, XREPO-003, SCHED-001, SCHED-002, OBS-001, OBS-002, EDGE-001, EDGE-002, POLISH-001, POLISH-002, POLISH-003
+- done_but_not_fully_trusted: none
 - pending_reverification: none
-- repair_follow_on_blockers: none
+- repair_follow_on_blockers: project-skill-bootstrap must still run: Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content. | ticket-pack-builder must still run: Repair left remediation or reverification follow-up that must be routed into the repo ticket system. | Post-repair verification failed repair-contract consistency checks: placeholder_local_skills_survived_refresh.
+- pivot_pending_stages: none
+- pivot_pending_ticket_lineage_actions: none
+
+## Code Quality Status
+
+- last_build_result: pass @ 2026-03-28T16:39:25.444Z
+- last_test_run_result: pass @ 2026-03-28T16:39:25.444Z
+- open_remediation_tickets: 2
+- known_reference_integrity_issues: 2
 
 ## Known Risks
 
-- Managed repair converged, but source-layer follow-up still remains in the ticket graph.
-- Some done tickets are not fully trusted yet: SETUP-002, SETUP-003, SETUP-004, SETUP-005, CORE-001, CORE-002, CORE-003, CORE-004, CORE-005, CORE-006, REPO-001, REPO-002, REPO-003, WRITE-001, LLM-001, LLM-002, LLM-003, CTX-001, CTX-002, CTX-003, CTX-004, XREPO-001, XREPO-002, XREPO-003, SCHED-001, SCHED-002, OBS-001, OBS-002, EDGE-001, EDGE-002, POLISH-001, POLISH-002, POLISH-003.
+- Repair follow-on remains incomplete: project-skill-bootstrap must still run: Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.
+- Historical completion should not be treated as fully trusted until pending process verification or explicit reverification is cleared.
+- The workflow still records pending process verification even though no done tickets remain affected; clear the workflow flag before relying on a clean-state restart narrative.
 
 ## Next Action
 
-Continue the required internal lifecycle from the current ticket stage.
+project-skill-bootstrap must still run: Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.
 <!-- SCAFFORGE:START_HERE_BLOCK END -->
