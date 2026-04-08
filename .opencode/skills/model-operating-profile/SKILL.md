@@ -1,48 +1,42 @@
 ---
 name: model-operating-profile
-description: Apply the `Weak-tier evidence-first profile` operating profile for the selected downstream models. Use when shaping prompts, delegation briefs, review asks, or evidence requests for this repo.
+description: Shape GPTTalker prompts and delegation briefs for the selected MiniMax M2.7 evidence-first operating profile.
 ---
 
 # Model Operating Profile
 
-Before reading anything else, call `skill_ping` with `skill_id: "model-operating-profile"` and `scope: "project"`.
+## Selected Runtime Profile
 
-Selected runtime profile:
+- Provider: `minimax-coding-plan`
+- Team lead / planner / reviewers: `minimax-coding-plan/MiniMax-M2.7`
+- Implementers: `minimax-coding-plan/MiniMax-M2.7`
+- Utilities, docs, and QA helpers: `minimax-coding-plan/MiniMax-M2.7`
+- Operating profile: `Specific-instruction evidence-first profile`
 
-- model tier: `weak`
-- provider: `minimax-coding-plan`
-- team lead / planner / reviewers: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
-- implementer: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
-- utilities, docs, and QA helpers: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
-- operating profile: `Weak-tier evidence-first profile`
-- prompt density: `full checklists, explicit examples, and repeated truth-source reminders`
+## Prompt Shape
 
-Use this profile when drafting:
+Use short, bounded instructions with one clear goal. When the task touches workflow state, spell out the required proof and the legal next step.
 
-- task prompts
-- delegation briefs
-- review requests
-- handoff expectations
-
-Profile guidance:
-
-`Use the most explicit prompt density. Include full stop conditions, concrete examples, truth-source reminders, and named blocker paths so weaker models have one legal next move.`
-
-Required rules:
-
-- include explicit stop conditions and escalation triggers in every coordinating prompt
-- spell out verification checklists instead of implying them
-- name the canonical truth surfaces before acting on mutable or derived views
-- use example-shaped outputs when they remove ambiguity
-- keep each ask focused on one bounded goal at a time
-- stop on blockers instead of guessing or silently filling gaps
-
-When ambiguity is likely, prefer a concrete output shape such as:
+Preferred structure:
 
 ```text
 Goal
 Constraints
+Required evidence
 Expected output
-Evidence required
 Blockers
 ```
+
+## Repo-Specific Guidance
+
+- Prefer direct file paths, exact commands, and concrete artifact names over narrative summaries.
+- When routing stage work, name the owning specialist and the artifact they must produce.
+- When asking for review or QA, require findings first and cite files, commands, or artifact paths.
+- If the same lifecycle contradiction appears twice, stop and return a blocker instead of exploring alternate stage or status values.
+- If a prerequisite is missing, say exactly which executable, config, or host assumption is absent.
+
+## Output Bias
+
+- Short, explicit sections beat broad prose.
+- Example-shaped outputs help on this repo because workflow and artifact names are rigid.
+- Never hide uncertainty behind a PASS or approval signal.

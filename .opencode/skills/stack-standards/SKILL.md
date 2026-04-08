@@ -1,83 +1,75 @@
 ---
 name: stack-standards
-description: Hold the project-local standards for languages, frameworks, validation, and runtime assumptions. Use when planning or implementing work that should follow repo-specific engineering conventions.
+description: Apply GPTTalker's actual Python, FastAPI, SQLite, Qdrant, httpx, logging, and validation conventions when changing code or review expectations.
 ---
 
 # Stack Standards
 
-Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
+## Stack Summary
 
-GPTTalker stack: **Python 3.11+ · FastAPI · aiosqlite · Qdrant · httpx · Tailscale · Cloudflare Tunnel · pytest · ruff**
+- Python `3.11+`
+- FastAPI for hub and node-agent HTTP surfaces
+- Pydantic models for request and response schemas
+- SQLite via `aiosqlite` for structured runtime state
+- Qdrant via `qdrant-client` for semantic project context
+- `httpx.AsyncClient` with explicit timeouts for outbound HTTP
+- ngrok for the public edge, Tailscale for internal transport
+- `pytest`, `pytest-asyncio`, and `ruff` for validation
 
-## Language and Types
+## Python And API Rules
 
-- Python 3.11+ minimum. Use modern syntax where it improves clarity.
-- Use type hints everywhere: function signatures, return types, and non-obvious variables.
+- Use type hints on functions, return values, and non-obvious locals.
 - Prefer `str | None` over `Optional[str]`.
-- Use `from __future__ import annotations` only when cyclic imports require it.
+- Keep async paths fully async. Do not introduce synchronous sqlite access inside FastAPI or service code.
+- Use Pydantic models for tool contracts and service boundaries.
+- FastAPI endpoints must be `async def`.
+- Use `fastapi.Depends` for dependency injection. For app-state access in dependencies, use `request: Request`, not `app: FastAPI`.
+- If a runtime annotation would evaluate a TYPE_CHECKING-only symbol, use a string annotation instead.
 
-## API and Data Models
+## Storage And Context Rules
 
-- Use **Pydantic v2 models** for all FastAPI request and response schemas.
-- Use `async/await` for all FastAPI endpoint handlers.
-- Use `fastapi.Depends` for dependency injection; never import service objects at module scope for testing purposes.
-- Validate all external inputs at the API boundary; never pass raw request data into internal service layers unvalidated.
+- Shared runtime state belongs in `src/shared/` repositories and helpers.
+- Schema and repository changes must preserve the existing async `aiosqlite` pattern.
+- Qdrant changes must preserve provenance metadata, content-hash tracking, and repo access boundaries.
 
-## Database
+## Networking And Security Rules
 
-- Use **aiosqlite** for structured runtime state (nodes, repos, tasks, leases).
-- Never use synchronous sqlite3 APIs in async paths.
-- Always use parameterised queries; never construct SQL strings by concatenation.
-- Migrations must be idempotent `CREATE TABLE IF NOT EXISTS` or `ALTER TABLE` patterns.
-
-## Context Storage
-
-- Use **Qdrant** for semantic project context and cross-repo intelligence.
-- Collection names must be scoped per-repo to prevent cross-repo bleed.
-
-## HTTP and Networking
-
-- Use **httpx** (async) for all outbound hub and node-agent HTTP calls.
-- Set explicit `timeout=httpx.Timeout(...)` on every httpx call; never rely on the default.
-- Treat **Tailscale** as the only trusted internal transport boundary; all node-agent communication must traverse Tailscale.
-- Public edge traffic routes through **Cloudflare Tunnel**; do not expose internal ports directly.
-
-## Validation and Testing
-
-- Use **ruff** for linting (`ruff check .`) and formatting (`ruff format .`).
-- Use **pytest** for all tests; use **pytest-asyncio** for async test cases.
-- Every MCP tool handler must have at least one happy-path and one error-path test.
-- Run `uv run pytest tests/ --collect-only -q --tb=no` before the full suite to verify collection.
-- Run `uv run pytest` for the full suite; `uv run pytest tests/<module>` for targeted runs.
-- Import-check command: `uv run python -c "from src.hub.main import app; from src.node_agent.main import app"`.
-- Compile-check command: `python3 -m py_compile $(find src -name '*.py')`.
-
-## Quality Gate Commands
-
-Run in this order for review and QA stages:
-
-```sh
-ruff check .
-ruff format --check .
-python3 -m py_compile $(find src -name '*.py')
-uv run pytest tests/ --collect-only -q --tb=no
-uv run pytest --tb=short -q
-```
-
-## Logging and Security
-
-- Use **structured logging** (stdlib `logging` with a JSON formatter or equivalent); no bare `print()` statements.
-- Log tool calls with: `trace_id`, `tool_name`, `target_node`, `target_repo`, `caller`, `outcome`, `duration_ms`.
-- Redact secrets, tokens, passwords, and raw file contents from all log output.
-- Use environment variables or ignored config files for all secrets; never commit secrets to source.
+- Every outbound `httpx` call needs an explicit timeout.
+- Treat Tailscale as the only trusted internal transport boundary.
+- Keep ngrok-specific logic isolated to hub config, startup, and service layers instead of spreading provider assumptions across unrelated modules.
 - Fail closed on unknown nodes, repos, write targets, and service aliases.
-- All path inputs must be normalised; reject `..`, symlink escapes, and absolute user-supplied paths.
-- Atomic writes only: write to a temp file, then rename into place.
-- Validation or policy failures must return structured errors, not silent fallthrough.
+- Normalize user-controlled paths and reject traversal, symlink escape, and out-of-root writes.
 
-## Process
+## Logging Rules
 
-- Use ticket tools to track work; do not silently advance stages without updating ticket state.
-- Artifacts produced by each stage must be registered via `artifact_write` / `artifact_register`.
-- Smoke tests run against the real service or module entrypoint, not a mocked surrogate.
-- Coordinator-authored QA or smoke-test artifacts are invalid proof; route those stages through the assigned specialist or tool.
+- Use structured logging helpers from `src/shared/logging.py`.
+- Log tool flows with trace-aware metadata and redaction intact.
+- Never add bare `print()` calls.
+
+## Validation Commands
+
+- Bootstrap: `UV_CACHE_DIR=/tmp/uv-cache uv sync --locked --extra dev`
+- Lint: `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .`
+- Full tests: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=short`
+- Import smoke:
+  - `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.main import app"`
+  - `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.node_agent.main import app"`
+- Targeted scripts:
+  - `gpttalker-lint`
+  - `gpttalker-test`
+  - `gpttalker-validate`
+
+## Testing Expectations
+
+- Every MCP tool handler needs at least one happy-path and one error-path test.
+- Use `pytest-asyncio` patterns for async behavior.
+- Treat missing host prerequisites such as `uv`, `pytest`, `rg`, or git identity as blockers, not as excuses to manufacture PASS evidence.
+- When import or startup behavior changes, include runtime import proof, not just static lint output.
+
+## Review Focus
+
+- FastAPI dependency wiring and runtime-safe annotations
+- Path validation and fail-closed behavior
+- SQLite commit behavior and async boundaries
+- ngrok edge assumptions leaking outside edge-specific modules
+- Logging redaction, trace propagation, and audit metadata

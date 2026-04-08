@@ -1,48 +1,61 @@
 ---
 name: review-audit-bridge
-description: Keep code review, security review, and QA passes evidence-based and stage-aware for this repo. Use when a ticket already has an approved plan and implementation evidence and a review lane needs structured findings.
+description: Run GPTTalker code review, security review, and QA passes with repo-specific commands, artifact paths, and blocker rules.
 ---
 
 # Review Audit Bridge
 
-Before starting a code review, security review, or QA pass, call `skill_ping` with `skill_id: "review-audit-bridge"` and `scope: "project"`.
+Use this after approved planning and implementation evidence already exist.
 
-Use this skill after implementation exists. It bridges the review and QA lanes so they return evidence-backed findings instead of vague commentary.
-This is a generated repo-local skill. It may recommend remediation or reverification follow-up, but it does not become the canonical ticket owner by itself.
+## Required Inputs
 
-Prioritize findings in this order:
+- The ticket entry in `tickets/manifest.json`
+- The current workflow state in `.opencode/state/workflow-state.json`
+- The stage artifacts under `.opencode/state/` or `.opencode/state/artifacts/history/`
 
-1. correctness bugs
-2. behavior regressions
-3. security or trust issues
-4. missing tests or validation gaps
-5. maintainability concerns
+If the approved plan, implementation artifact, or required validation context is missing, return a blocker.
 
-Return:
+## Review Output Shape
 
-- For code review or security review:
-  1. Findings ordered by severity
-  2. Risks
-  3. Validation gaps
-  4. Blockers or approval signal
-- For QA:
-  1. Checks run
-  2. Pass or fail
-  3. Blockers
-  4. Closeout readiness
+- Findings ordered by severity
+- Risks or regression notes
+- Validation gaps
+- Approval signal or blocker
 
-Rules:
+## QA Output Shape
 
-- findings come first; do not open with praise or a summary
-- reference exact files, diffs, commands, or artifact paths
-- if the approved plan, implementation artifact, or required validation context is missing, return a blocker instead of inferring correctness
-- use `ticket-execution` for lifecycle order and `project-context` for canonical repo docs
-- run the repo's build command, lint or type-check command, and reference-integrity checks when those quality gates exist for the active stack; include the raw command output in the review or QA artifact
-- if any required build, lint, type-check, or reference-integrity command fails, the verdict must be FAIL and the artifact must name the failing command plus the concrete error
-- when reviewing or validating a remediation ticket with `finding_source`, rerun the original finding-producing command first, confirm the specific failure is gone, then check that adjacent quality gates still pass
-- write any workflow-failure explanation or review retrospective to the repo-local process-log path described in `references/review-contract.md`
-- recommend follow-up tickets only when current evidence justifies them, and route canonical ticket creation through the repo's guarded ticket workflow
-- do not claim that repo files changed
+- Commands run
+- Result per check
+- Blockers
+- Closeout readiness
+
+## Repo-Specific Commands
+
+- Bootstrap: `UV_CACHE_DIR=/tmp/uv-cache uv sync --locked --extra dev`
+- Lint: `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .`
+- Full tests: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=short`
+- Import smoke:
+  - `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.main import app"`
+  - `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.node_agent.main import app"`
+
+## High-Risk Areas
+
+- `src/hub/policy/` path, repo, and write-target enforcement
+- `src/hub/tools/markdown.py` and node-agent write execution
+- FastAPI dependency wiring in `src/hub/` and `src/node_agent/`
+- `src/shared/logging.py` redaction and trace propagation
+- ngrok edge startup/config paths in `src/hub/config.py`, `src/hub/lifespan.py`, and `src/hub/services/tunnel_manager.py`
+
+## Approval Rules
+
+- Code review blocks on correctness regressions, broken contracts, or missing proof.
+- Security review blocks on trust-boundary drift, path escape, auth regression, or secret leakage.
+- QA blocks when required commands cannot run and no explicit environment blocker is recorded.
+- Recommend remediation or reverification tickets only when current evidence supports them. Do not become the canonical ticket owner.
+
+## Process Logging
+
+- Put workflow-misuse explanations or repo-local review retrospectives under `diagnosis/` when the issue is process evidence rather than product code.
 
 ## References
 

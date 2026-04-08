@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/core-001-review-review.md (review) - Code review for CORE-001: Node registry and node health model. APPROVED with observations. All 3 acceptance criteria met. Medium severity issue: incorrect latency measurement in health check. Low severity: missing trace_id, unused NodeHealthDetail schema. Implementation is production-ready with proper fail-closed behavior.
 - qa: .opencode/state/qa/core-001-qa-qa.md (qa) - QA verification for CORE-001: Node registry and node health model. All 3 acceptance criteria verified - node registry schema defined via migration v2, health metadata model explicit with NodeHealth/NodeHealthStatus/NodeHealthDetail, fail-closed behavior confirmed in NodePolicy.validate_node_access().
 - backlog-verification: .opencode/state/reviews/core-001-review-backlog-verification.md (review) - Backlog verification for CORE-001: PASS
+- reverification: .opencode/state/artifacts/history/core-001/review/2026-03-31T21-25-12-512Z-reverification.md (review) - Trust restored using CORE-001.
 
 ## Notes
 

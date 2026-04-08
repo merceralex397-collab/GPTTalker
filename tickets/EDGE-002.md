@@ -27,10 +27,10 @@ done
 
 ## Trust
 
-- resolution_state: done
-- verification_state: suspect
-- source_ticket_id: None
-- source_mode: None
+- resolution_state: superseded
+- verification_state: reverified
+- source_ticket_id: EDGE-003
+- source_mode: post_completion_issue
 
 ## Depends On
 

@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -56,6 +56,7 @@ None
 - implementation: .opencode/state/implementations/polish-002-implementation-implementation.md (implementation) - Implementation of POLISH-002: Created tests/hub/test_security.py with 23+ security regression tests covering path traversal, target validation, redaction, and fail-closed behavior.
 - qa: .opencode/state/qa/polish-002-qa-qa.md (qa) - QA verification for POLISH-002: Security regression tests and redaction hardening. All 3 acceptance criteria verified.
 - backlog-verification: .opencode/state/reviews/polish-002-review-backlog-verification.md (review) - Backlog verification for POLISH-002: PASS
+- reverification: .opencode/state/artifacts/history/polish-002/review/2026-03-31T21-26-03-810Z-reverification.md (review) - Trust restored using POLISH-002.
 
 ## Notes
 

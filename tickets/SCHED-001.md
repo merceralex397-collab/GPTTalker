@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/sched-001-review-review.md (review) - Approved
 - qa: .opencode/state/qa/sched-001-qa-qa.md (qa) - Passed
 - backlog-verification: .opencode/state/reviews/sched-001-review-backlog-verification.md (review) - Backlog verification for SCHED-001: PASS
+- reverification: .opencode/state/artifacts/history/sched-001/review/2026-03-31T21-25-58-487Z-reverification.md (review) - Trust restored using SCHED-001.
 
 ## Notes
 

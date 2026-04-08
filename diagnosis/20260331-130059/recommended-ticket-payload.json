@@ -1,0 +1,38 @@
+[
+  {
+    "id": "REMED-001",
+    "title": "One or more Python packages fail to import \u2014 the service cannot start",
+    "source_finding_code": "EXEC001",
+    "severity": "error",
+    "route": "ticket-pack-builder",
+    "repair_class": "generated-repo remediation ticket",
+    "summary": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
+    "source_files": [
+      "/home/rowan/GPTTalker/src"
+    ]
+  },
+  {
+    "id": "REMED-002",
+    "title": "Git identity is not configured for this host, but the repo's tests or workflow expect commit-producing validation",
+    "source_finding_code": "ENV003",
+    "severity": "warning",
+    "route": "manual-prerequisite",
+    "repair_class": "host prerequisite or operator follow-up",
+    "summary": "Configure git identity on the host used for audit or repair, or mark the affected verification as blocked by environment rather than as a clean or source-level result.",
+    "source_files": [
+      "tests/node_agent/test_executor.py"
+    ]
+  },
+  {
+    "id": "REMED-003",
+    "title": "One or more repo-local skills still contain generic placeholder text instead of project-specific guidance",
+    "source_finding_code": "SKILL001",
+    "severity": "warning",
+    "route": "scafforge-repair",
+    "repair_class": "safe Scafforge package change",
+    "summary": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+    "source_files": [
+      ".opencode/skills/stack-standards/SKILL.md"
+    ]
+  }
+]

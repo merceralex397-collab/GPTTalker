@@ -97,7 +97,7 @@ async def lifespan(app: FastAPI):
 
     logger.info("hub_ready", db_path=config.database_url)
 
-    # Step 7: Initialize Cloudflare Tunnel manager
+    # Step 7: Initialize ngrok tunnel manager
     # Initialize to None first to ensure attribute exists for shutdown check
     app.state.tunnel_manager: TunnelManager | None = None
 
@@ -108,17 +108,26 @@ async def lifespan(app: FastAPI):
     tunnel_started = await tunnel_manager.start()
     if tunnel_started:
         logger.info(
-            "cloudflare_tunnel_integration_ready",
-            enabled=config.cloudflare_tunnel_enabled,
+            "ngrok_tunnel_integration_ready",
+            enabled=config.ngrok_enabled,
             external=tunnel_manager._is_external
             if hasattr(tunnel_manager, "_is_external")
             else False,
         )
     else:
         logger.info(
-            "cloudflare_tunnel_not_started",
-            reason="disabled" if not config.cloudflare_tunnel_enabled else "no_token",
+            "ngrok_tunnel_not_started",
+            enabled=config.ngrok_enabled,
         )
+
+    # Step 8: Pre-build MCP router using app state (RC-1 fix)
+    # This avoids the FastAPI DI anti-pattern where get_policy_engine()
+    # was called directly in _ensure_router() without a request context,
+    # causing TypeError: missing 'request' argument on every tool call.
+    from src.hub.handlers import mcp_handler
+
+    await mcp_handler.initialize(app)
+    logger.info("mcp_handler_initialized")
 
     # Yield control to the application
     yield

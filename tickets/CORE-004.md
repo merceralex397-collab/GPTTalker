@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/core-004-review-review.md (review) - Fix verification for CORE-004: All 3 claimed fixes confirmed - config attribute corrected, JSON error handling added, datetime deprecation resolved.
 - qa: .opencode/state/qa/core-004-qa-qa.md (qa) - QA verification for CORE-004: All 3 acceptance criteria verified via code inspection. Hub-to-node auth model enforced (Bearer token), explicit HTTP client timeouts, and health polling integration with node registry confirmed.
 - backlog-verification: .opencode/state/reviews/core-004-review-backlog-verification.md (review) - Backlog verification for CORE-004: PASS
+- reverification: .opencode/state/artifacts/history/core-004/review/2026-03-31T21-25-16-019Z-reverification.md (review) - Trust restored using CORE-004.
 
 ## Notes
 

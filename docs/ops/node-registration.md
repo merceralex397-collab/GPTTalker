@@ -396,4 +396,4 @@ curl http://<hub-tailscale-ip>:8000/health
 
 - [Node Agent Setup](node-setup.md)
 - [Hub Configuration](../hub/config.md)
-- [Cloudflare Tunnel Setup](cloudflare-tunnel.md)
+- [ngrok Setup](ngrok.md)

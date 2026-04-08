@@ -1,5 +1,5 @@
 ---
-description: Hub core implementer — FastAPI app, MCP tool handlers, policy engine, SQLite registry, Cloudflare Tunnel
+description: Hub core implementer — FastAPI app, MCP tool handlers, policy engine, SQLite registry, ngrok edge integration
 model: minimax-coding-plan/MiniMax-M2.7
 mode: subagent
 hidden: true
@@ -56,7 +56,7 @@ You are the **Hub Core Implementer** for GPTTalker.
 
 ## Domain
 
-You own the central FastAPI hub — the application that ChatGPT connects to via Cloudflare Tunnel. Everything that runs inside the hub process is your responsibility.
+You own the central FastAPI hub — the application that ChatGPT connects to via ngrok. Everything that runs inside the hub process is your responsibility.
 
 ## Systems You Own
 

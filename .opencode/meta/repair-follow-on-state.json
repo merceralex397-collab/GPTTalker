@@ -1,12 +1,12 @@
 {
   "tracking_mode": "persistent_recorded_state",
   "assertion_input_mode": "legacy_manual_assertion",
-  "cycle_id": "2026-04-07T22:18:12Z",
-  "created_at": "2026-04-07T22:18:12Z",
-  "last_updated_at": "2026-04-07T22:18:21Z",
+  "cycle_id": "2026-03-31T13:00:58Z",
+  "created_at": "2026-03-31T13:00:58Z",
+  "last_updated_at": "2026-03-31T13:26:17Z",
   "process_version": 7,
   "repair_package_commit": "missing_provenance",
-  "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260407-221355",
+  "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
   "pruned_unknown_stages": [],
   "required_stages": [
     "project-skill-bootstrap",
@@ -14,25 +14,40 @@
   ],
   "stage_records": {
     "project-skill-bootstrap": {
-      "stage": "project-skill-bootstrap",
-      "owner": "project-skill-bootstrap",
-      "category": "repo_local_skills",
-      "status": "required_not_run",
-      "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-      "currently_required": true,
-      "last_checked_at": "2026-04-07T22:18:21Z",
-      "last_updated_at": "2026-04-07T22:18:21Z"
+        "stage": "project-skill-bootstrap",
+        "owner": "project-skill-bootstrap",
+        "category": "repo_local_skills",
+        "status": "completed",
+        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+        "currently_required": false,
+        "last_checked_at": "2026-03-31T13:00:59Z",
+        "last_updated_at": "2026-03-31T13:26:17Z"
+      },
+      "ticket-pack-builder": {
+        "stage": "ticket-pack-builder",
+        "owner": "ticket-pack-builder",
+        "category": "ticket_follow_up",
+        "status": "completed",
+        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+        "currently_required": false,
+        "last_checked_at": "2026-03-31T13:00:59Z",
+        "last_updated_at": "2026-03-31T13:26:17Z"
+      }
     },
-    "ticket-pack-builder": {
+  "history": [
+    {
+      "stage": "project-skill-bootstrap",
+      "status": "completed",
+      "completed_at": "2026-03-31T13:26:17Z",
+      "completed_by": "project-skill-bootstrap",
+      "artifact_path": ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+    },
+    {
       "stage": "ticket-pack-builder",
-      "owner": "ticket-pack-builder",
-      "category": "ticket_follow_up",
-      "status": "required_not_run",
-      "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
-      "currently_required": true,
-      "last_checked_at": "2026-04-07T22:18:21Z",
-      "last_updated_at": "2026-04-07T22:18:21Z"
+      "status": "completed",
+      "completed_at": "2026-03-31T13:26:17Z",
+      "completed_by": "ticket-pack-builder",
+      "artifact_path": ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md"
     }
-  },
-  "history": []
+  ]
 }

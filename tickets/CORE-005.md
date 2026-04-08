@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: suspect
+- verification_state: reverified
 - source_ticket_id: None
 - source_mode: None
 
@@ -57,6 +57,7 @@ None
 - review: .opencode/state/reviews/core-005-review-review.md (review) - Code review for CORE-005: Policy engine and normalized path validation. APPROVED - all 3 acceptance criteria met (unknown target rejection, central path normalization, scope separation). Low-severity observations noted for scope naming and path check redundancy.
 - qa: .opencode/state/qa/core-005-qa-qa.md (qa) - QA verification for CORE-005: All 3 acceptance criteria verified via code inspection - unknown targets rejected explicitly, path normalization centralized and reusable, read/write scopes cleanly separated.
 - backlog-verification: .opencode/state/reviews/core-005-review-backlog-verification.md (review) - Backlog verification for CORE-005: PASS
+- reverification: .opencode/state/artifacts/history/core-005/review/2026-03-31T21-25-17-628Z-reverification.md (review) - Trust restored using CORE-005.
 
 ## Notes
 
