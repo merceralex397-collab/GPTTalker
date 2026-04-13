@@ -29,6 +29,7 @@ done
 
 - resolution_state: superseded
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: EDGE-003
 - source_mode: post_completion_issue
 
@@ -58,5 +59,4 @@ None
 - backlog-verification: .opencode/state/reviews/edge-001-review-backlog-verification.md (review) - Backlog verification for EDGE-001: PASS
 
 ## Notes
-
 

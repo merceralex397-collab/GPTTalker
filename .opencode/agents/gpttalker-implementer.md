@@ -1,5 +1,5 @@
 ---
-description: Cross-cutting implementer for shared runtime, workflow tooling, and repo-level GPTTalker changes
+description: Hidden implementer for approved ticket work
 model: minimax-coding-plan/MiniMax-M2.7
 mode: subagent
 hidden: true
@@ -33,18 +33,41 @@ permission:
     "ls *": allow
     "find *": allow
     "rg *": allow
+    "grep *": allow
     "cat *": allow
     "head *": allow
     "tail *": allow
+    "file *": allow
+    "echo *": allow
+    "test -f *": allow
+    "test -d *": allow
+    "[ -f *": allow
+    "[ -d *": allow
+    "mkdir *": allow
+    "cp *": allow
+    "mv *": allow
     "git status*": allow
     "git diff*": allow
+    "npm *": allow
+    "pnpm *": allow
+    "yarn *": allow
+    "bun *": allow
+    "node *": allow
     "python *": allow
+    "python3 *": allow
     "pytest *": allow
     "uv *": allow
-    "pip *": allow
-    "ruff *": allow
-    "node *": allow
-    "npm *": allow
+    "curl *": allow
+    "wget *": allow
+    "unzip *": allow
+    "tar *": allow
+    "zip *": allow
+    "cargo *": allow
+    "go *": allow
+    "make *": allow
+    "/home/pc/.local/bin/godot *": allow
+    "godot *": allow
+    "godot4 *": allow
     "rm *": deny
     "git reset *": deny
     "git clean *": deny
@@ -53,29 +76,51 @@ permission:
 
 Implement only the approved plan for the assigned ticket.
 
-Use this agent for cross-cutting GPTTalker work such as shared runtime primitives, repo-level scaffolding, workflow tooling, testing infrastructure, or tasks that legitimately span hub, node-agent, and context code.
-
 Return:
 
 1. Changes made
 2. Validation run
 3. Remaining blockers or follow-up risks
 
+Build verification:
+
+1. after implementation work, run the project's build command when one exists
+2. if the build fails, fix the failure or return a blocker before claiming implementation is complete
+3. if no build command exists, run the smallest meaningful smoke, syntax, import, or load check for this stack
+4. never claim implementation is complete without at least one successful build, syntax, import, or load check
+
+Scope:
+
+You implement only the work described in the approved ticket and delegation brief.
+You do not:
+
+- advance tickets to review, QA, smoke-test, or closeout
+- modify workflow-state, manifest, or restart-surface files unless the approved ticket explicitly targets those managed surfaces
+- modify ticket files directly outside the artifact flow
+- create new tickets or alter ticket lineage
+- make architectural decisions that the approved plan did not resolve
+
+Stack-specific notes:
+
+`opencode-team-bootstrap` must rewrite this section with project-specific build, verification, pitfalls, and configuration-file guidance before implementation begins.
+
+<!-- SCAFFORGE:STACK_SPECIFIC_IMPLEMENTATION_NOTES START -->
+- Pending project-specific stack notes.
+<!-- SCAFFORGE:STACK_SPECIFIC_IMPLEMENTATION_NOTES END -->
+
 Rules:
 
 - do not re-plan from scratch
 - keep changes scoped to the ticket
 - the team leader already owns lease claim and release; if the required ticket lease is missing, return a blocker instead of claiming it yourself
-- confirm `approved_plan` is already true before implementation begins
+- confirm the assigned ticket's `approved_plan` is already true in workflow-state before implementation begins
 - write the full implementation artifact with `artifact_write` and then register it with `artifact_register` before handing work to review
 - if the assigned ticket is the Wave 0 bootstrap/setup lane, use `environment_bootstrap` instead of improvising installation in later validation stages
 - before creating the implementation artifact, run at minimum:
   - a compile or syntax check on all new or modified source files
   - an import check for the primary module
-  - `pytest tests/ --collect-only -q --tb=no` when a Python test suite exists
-  - the relevant project test suite after collection passes
-- code inspection is not validation
-- include raw command output in the implementation artifact
+  - the project test suite if it exists
+- include the command output in the implementation artifact
 - do not create an implementation artifact for code that fails these checks
 - stop when you hit a blocker instead of improvising around missing requirements
 - if the approved plan still leaves a material choice unresolved, return a blocker instead of deciding it ad hoc

@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: trusted
+- finding_source: None
 - source_ticket_id: None
 - source_mode: None
 
@@ -59,5 +60,4 @@ None
 - backlog-verification: .opencode/state/reviews/setup-001-review-backlog-verification.md (review) - Backlog verification for SETUP-001: PASS
 
 ## Notes
-
 

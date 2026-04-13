@@ -30,9 +30,18 @@ permission:
     "ls *": allow
     "find *": allow
     "rg *": allow
+    "grep *": allow
     "cat *": allow
     "head *": allow
     "tail *": allow
+    "echo *": allow
+    "test -f *": allow
+    "test -d *": allow
+    "[ -f *": allow
+    "[ -d *": allow
+    "/home/pc/.local/bin/godot *": allow
+    "godot *": allow
+    "godot4 *": allow
     "git diff*": allow
 ---
 
@@ -52,4 +61,3 @@ Rules:
 - if artifact creation is blocked because the ticket lease is missing, return that blocker to the team leader instead of trying to claim a lease yourself
 - if the implementation artifact or security-relevant context is missing, return a blocker instead of inferring safety
 - do not end with a summary-only response when findings or an approval signal are required
-

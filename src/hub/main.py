@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from src.hub.config import get_hub_config
 from src.hub.lifespan import lifespan
 from src.hub.routes import router
-from src.hub.tool_router import get_global_registry
 from src.shared.logging import get_logger
 from src.shared.middleware import setup_middleware
 
@@ -52,13 +51,3 @@ setup_middleware(app)
 
 # Include API routes
 app.include_router(router)
-
-
-@app.on_event("startup")
-async def register_tools():
-    """Register MCP tools on application startup."""
-    from src.hub.tools import register_all_tools
-
-    registry = get_global_registry()
-    register_all_tools(registry)
-    logger.info("tools_registered", tool_count=registry.tool_count)

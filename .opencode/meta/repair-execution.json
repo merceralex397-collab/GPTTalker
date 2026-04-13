@@ -1,13 +1,7 @@
 {
   "repair_plan": {
-    "repo_root": "/home/rowan/GPTTalker",
+    "repo_root": "/home/pc/projects/GPTTalker",
     "required_follow_on_stages": [
-      {
-        "stage": "project-skill-bootstrap",
-        "owner": "project-skill-bootstrap",
-        "category": "repo_local_skills",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content."
-      },
       {
         "stage": "ticket-pack-builder",
         "owner": "ticket-pack-builder",
@@ -15,47 +9,19 @@
         "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
       }
     ],
-    "replaced_surfaces": [
-      "opencode.jsonc",
-      ".opencode/tools",
-      ".opencode/lib",
-      ".opencode/plugins",
-      ".opencode/commands",
-      "scaffold-managed .opencode/skills",
-      "docs/process/workflow.md",
-      "docs/process/tooling.md",
-      "docs/process/model-matrix.md",
-      "docs/process/git-capability.md",
-      "START-HERE.md managed block",
-      ".opencode/state/context-snapshot.md",
-      ".opencode/state/latest-handoff.md"
-    ],
+    "replaced_surfaces": [],
+    "diff_summary": {},
+    "backup_path": null,
     "stale_surface_map": {
       "workflow_tools_and_prompts": {
-        "status": "replace",
-        "surfaces": [
-          ".opencode/commands",
-          ".opencode/lib",
-          ".opencode/plugins",
-          ".opencode/tools",
-          "docs/process/git-capability.md",
-          "docs/process/model-matrix.md",
-          "docs/process/tooling.md",
-          "docs/process/workflow.md",
-          "opencode.jsonc"
-        ],
+        "status": "stable",
+        "surfaces": [],
         "reason": "Managed workflow tools, prompts, and process docs were refreshed or still show workflow drift."
       },
       "repo_local_skills": {
-        "status": "regenerate",
-        "surfaces": [
-          ".opencode/skills/stack-standards/SKILL.md",
-          "scaffold-managed .opencode/skills"
-        ],
-        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains.",
-        "finding_codes": [
-          "SKILL001"
-        ]
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains."
       },
       "agent_team_and_prompts": {
         "status": "stable",
@@ -67,16 +33,13 @@
         "surfaces": [],
         "reason": "Ticket follow-up is required when source findings still need explicit routing through ticket-pack-builder.",
         "finding_codes": [
+          "EXEC-REMED-001",
           "EXEC001"
         ]
       },
       "restart_surfaces": {
-        "status": "replace",
-        "surfaces": [
-          ".opencode/state/context-snapshot.md",
-          ".opencode/state/latest-handoff.md",
-          "START-HERE.md managed block"
-        ],
+        "status": "stable",
+        "surfaces": [],
         "reason": "Restart surfaces are derived and must be regenerated whenever managed repair changes workflow state."
       },
       "canonical_project_decisions": {
@@ -84,39 +47,48 @@
         "surfaces": [],
         "reason": "Managed repair preserves accepted project-scope decisions. Intent-changing drift must route outside routine public repair."
       }
-    }
+    },
+    "migration_stage": {
+      "stage": "legacy-contract-migration",
+      "state": "skipped",
+      "policy": "current",
+      "required": false,
+      "migration_history_count": 0,
+      "from_process_version": null,
+      "workflow_process_version": null,
+      "repair_follow_on_process_version": null,
+      "target_process_version": 7,
+      "compatibility_shim_scope": "package-internal",
+      "compatibility_shim_temporary": true,
+      "reasons": [],
+      "summary": "Deterministic refresh was skipped; legacy migration did not run.",
+      "migration_id": null
+    },
+    "repair_id": null
   },
   "stage_results": [
     {
-      "stage": "deterministic-refresh",
-      "status": "completed"
-    },
-    {
       "stage": "project-skill-bootstrap",
-      "status": "required_not_run",
-      "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content."
+      "status": "recorded_completed",
+      "completion_mode": "recorded_execution",
+      "recorded_at": "2026-04-12T02:51:55Z"
     },
     {
       "stage": "ticket-pack-builder",
-      "status": "required_not_run",
-      "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
+      "status": "recorded_completed",
+      "completion_mode": "recorded_execution",
+      "recorded_at": "2026-04-12T02:51:55Z"
     }
   ],
   "execution_record": {
-    "repo_root": "/home/rowan/GPTTalker",
-    "repair_package_commit": "missing_provenance",
-    "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
+    "repo_root": "/home/pc/projects/GPTTalker",
+    "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+    "repair_id": null,
+    "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260412-024837",
     "required_follow_on_stages": [
-      "project-skill-bootstrap",
       "ticket-pack-builder"
     ],
     "required_follow_on_stage_details": [
-      {
-        "stage": "project-skill-bootstrap",
-        "owner": "project-skill-bootstrap",
-        "category": "repo_local_skills",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content."
-      },
       {
         "stage": "ticket-pack-builder",
         "owner": "ticket-pack-builder",
@@ -124,14 +96,15 @@
         "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
       }
     ],
-    "executed_stages": [
-      {
-        "stage": "deterministic-refresh",
-        "status": "completed"
-      }
+    "executed_stages": [],
+    "recorded_completed_stages": [
+      "project-skill-bootstrap",
+      "ticket-pack-builder"
     ],
-    "recorded_completed_stages": [],
-    "recorded_execution_completed_stages": [],
+    "recorded_execution_completed_stages": [
+      "project-skill-bootstrap",
+      "ticket-pack-builder"
+    ],
     "auto_detected_recorded_stages": [],
     "pruned_unknown_stages": [],
     "invalidated_recorded_stages": [],
@@ -143,15 +116,14 @@
     "follow_on_tracking_state": {
       "tracking_mode": "persistent_recorded_state",
       "assertion_input_mode": "legacy_manual_assertion",
-      "cycle_id": "2026-03-31T13:00:58Z",
-      "created_at": "2026-03-31T13:00:58Z",
-      "last_updated_at": "2026-03-31T13:00:59Z",
+      "cycle_id": "2026-04-12T02:50:07Z",
+      "created_at": "2026-04-12T02:50:07Z",
+      "last_updated_at": "2026-04-12T02:52:13Z",
       "process_version": 7,
-      "repair_package_commit": "missing_provenance",
-      "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260412-024837",
       "pruned_unknown_stages": [],
       "required_stages": [
-        "project-skill-bootstrap",
         "ticket-pack-builder"
       ],
       "stage_records": {
@@ -159,102 +131,230 @@
           "stage": "project-skill-bootstrap",
           "owner": "project-skill-bootstrap",
           "category": "repo_local_skills",
-          "status": "required_not_run",
-          "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-          "currently_required": true,
-          "last_checked_at": "2026-03-31T13:00:59Z",
-          "last_updated_at": "2026-03-31T13:00:59Z"
+          "status": "completed",
+          "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+          "currently_required": false,
+          "last_checked_at": "2026-04-12T02:51:55Z",
+          "last_updated_at": "2026-04-12T02:51:55Z",
+          "completion_mode": "recorded_execution",
+          "completed_by": "project-skill-bootstrap",
+          "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
+          "evidence_paths": [
+            ".opencode/skills/stack-standards/SKILL.md",
+            ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+          ],
+          "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+          "first_recorded_at": "2026-04-12T02:51:55Z",
+          "last_recorded_at": "2026-04-12T02:51:55Z"
         },
         "ticket-pack-builder": {
           "stage": "ticket-pack-builder",
           "owner": "ticket-pack-builder",
           "category": "ticket_follow_up",
-          "status": "required_not_run",
+          "status": "completed",
           "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
           "currently_required": true,
-          "last_checked_at": "2026-03-31T13:00:59Z",
-          "last_updated_at": "2026-03-31T13:00:59Z"
+          "last_checked_at": "2026-04-12T02:52:13Z",
+          "last_updated_at": "2026-04-12T02:51:55Z",
+          "completion_mode": "recorded_execution",
+          "completed_by": "ticket-pack-builder",
+          "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
+          "evidence_paths": [
+            ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
+            "diagnosis/20260412-025014/manifest.json",
+            "tickets/REMED-017.md"
+          ],
+          "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+          "first_recorded_at": "2026-04-12T02:51:55Z",
+          "last_recorded_at": "2026-04-12T02:51:55Z"
         }
       },
-      "history": []
+      "history": [
+        {
+          "recorded_at": "2026-04-12T02:51:55Z",
+          "stage": "project-skill-bootstrap",
+          "owner": "project-skill-bootstrap",
+          "category": "repo_local_skills",
+          "status": "completed",
+          "completion_mode": "recorded_execution",
+          "completed_by": "project-skill-bootstrap",
+          "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
+          "evidence_paths": [
+            ".opencode/skills/stack-standards/SKILL.md",
+            ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+          ],
+          "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+          "cycle_id": "2026-04-12T02:50:07Z"
+        },
+        {
+          "recorded_at": "2026-04-12T02:51:55Z",
+          "stage": "ticket-pack-builder",
+          "owner": "ticket-pack-builder",
+          "category": "ticket_follow_up",
+          "status": "completed",
+          "completion_mode": "recorded_execution",
+          "completed_by": "ticket-pack-builder",
+          "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
+          "evidence_paths": [
+            ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
+            "diagnosis/20260412-025014/manifest.json",
+            "tickets/REMED-017.md"
+          ],
+          "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+          "cycle_id": "2026-04-12T02:50:07Z"
+        }
+      ]
     },
     "deferred_stages": [],
-    "skipped_stages": [
-      {
-        "stage": "project-skill-bootstrap",
-        "status": "required_not_run",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content."
-      },
-      {
-        "stage": "ticket-pack-builder",
-        "status": "required_not_run",
-        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
-      }
-    ],
+    "skipped_stages": [],
     "blocking_reasons": [
-      "project-skill-bootstrap must still run: Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-      "ticket-pack-builder must still run: Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
-      "Post-repair verification failed repair-contract consistency checks: placeholder_local_skills_survived_refresh."
+      "Post-repair verification introduced new critical execution or reference findings: EXEC001."
     ],
     "repair_follow_on_outcome": "managed_blocked",
+    "migration_stage": {
+      "stage": "legacy-contract-migration",
+      "state": "skipped",
+      "policy": "current",
+      "required": false,
+      "migration_history_count": 0,
+      "from_process_version": null,
+      "workflow_process_version": null,
+      "repair_follow_on_process_version": null,
+      "target_process_version": 7,
+      "compatibility_shim_scope": "package-internal",
+      "compatibility_shim_temporary": true,
+      "reasons": [],
+      "summary": "Deterministic refresh was skipped; legacy migration did not run.",
+      "migration_id": null
+    },
     "verification_status": {
       "performed": true,
-      "finding_count": 3,
-      "error_count": 1,
-      "warning_count": 2,
+      "finding_count": 9,
+      "error_count": 9,
+      "warning_count": 0,
       "codes": [
-        "SKILL001",
-        "ENV003",
-        "EXEC001"
+        "EXEC001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001"
       ],
-      "blocking_codes": [
-        "SKILL001",
-        "ENV003"
-      ],
+      "blocking_codes": [],
+      "manual_prerequisite_codes": [],
       "source_follow_up_codes": [
-        "EXEC001"
+        "EXEC001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001",
+        "EXEC-REMED-001"
       ],
       "process_state_codes": [],
+      "advisory_codes": [],
       "pending_process_verification": true,
       "verification_basis": "current_state_only",
       "basis_requires_causal_replay": false,
-      "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260412-024837",
       "current_state_clean": false,
       "causal_regression_verified": false,
-      "contract_failures": [
-        "placeholder_local_skills_survived_refresh"
-      ],
-      "contract_passed": false,
+      "source_regression_summary": {
+        "comparison_available": true,
+        "pre_existing_codes": [
+          "EXEC-REMED-001"
+        ],
+        "persistent_codes": [
+          "EXEC-REMED-001"
+        ],
+        "resolved_codes": [],
+        "introduced_codes": [
+          "EXEC001"
+        ],
+        "introduced_critical_codes": [
+          "EXEC001"
+        ]
+      },
+      "contract_failures": [],
+      "contract_passed": true,
       "verification_passed": false,
-      "supporting_logs": []
+      "supporting_logs": [],
+      "disposition_shadow_mode": {
+        "bundle_available": true,
+        "bundle_version": 1,
+        "bundle_finding_count": 8,
+        "delta_count": 0,
+        "deltas": []
+      }
+    },
+    "disposition_shadow_mode": {
+      "bundle_available": true,
+      "bundle_version": 1,
+      "bundle_finding_count": 8,
+      "delta_count": 0,
+      "deltas": []
     },
     "handoff_allowed": false,
+    "diff_summary": {},
+    "backup_path": null,
+    "repair_escalation_path": ".opencode/state/repair-escalation.json",
+    "remediation_ticket_ids": [
+      "REMED-011",
+      "REMED-012",
+      "REMED-013",
+      "REMED-014",
+      "REMED-015",
+      "REMED-016",
+      "REMED-007",
+      "REMED-008"
+    ],
+    "workflow_selection_sync": {
+      "performed": false,
+      "selected_ticket_id": "REMED-007",
+      "stage": "planning",
+      "status": "todo",
+      "approved_plan": false,
+      "before": {
+        "manifest_active_ticket": "REMED-007",
+        "workflow_active_ticket": "REMED-007",
+        "workflow_stage": "planning",
+        "workflow_status": "todo",
+        "workflow_approved_plan": false
+      },
+      "after": {
+        "manifest_active_ticket": "REMED-007",
+        "workflow_active_ticket": "REMED-007",
+        "workflow_stage": "planning",
+        "workflow_status": "todo",
+        "workflow_approved_plan": false
+      }
+    },
+    "ticket_graph_repair_changes": [],
+    "stale_stage_reconciliation": {
+      "stale": false,
+      "manifest_stage": "planning",
+      "evidenced_stage": null
+    },
+    "android_surface_result": {
+      "performed": false,
+      "reason": "not a Godot Android repo",
+      "regenerated": []
+    },
     "stale_surface_map": {
       "workflow_tools_and_prompts": {
-        "status": "replace",
-        "surfaces": [
-          ".opencode/commands",
-          ".opencode/lib",
-          ".opencode/plugins",
-          ".opencode/tools",
-          "docs/process/git-capability.md",
-          "docs/process/model-matrix.md",
-          "docs/process/tooling.md",
-          "docs/process/workflow.md",
-          "opencode.jsonc"
-        ],
+        "status": "stable",
+        "surfaces": [],
         "reason": "Managed workflow tools, prompts, and process docs were refreshed or still show workflow drift."
       },
       "repo_local_skills": {
-        "status": "regenerate",
-        "surfaces": [
-          ".opencode/skills/stack-standards/SKILL.md",
-          "scaffold-managed .opencode/skills"
-        ],
-        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains.",
-        "finding_codes": [
-          "SKILL001"
-        ]
+        "status": "stable",
+        "surfaces": [],
+        "reason": "Repo-local skills need regeneration when scaffold-managed skills were replaced or placeholder/model drift remains."
       },
       "agent_team_and_prompts": {
         "status": "stable",
@@ -266,16 +366,13 @@
         "surfaces": [],
         "reason": "Ticket follow-up is required when source findings still need explicit routing through ticket-pack-builder.",
         "finding_codes": [
+          "EXEC-REMED-001",
           "EXEC001"
         ]
       },
       "restart_surfaces": {
-        "status": "replace",
-        "surfaces": [
-          ".opencode/state/context-snapshot.md",
-          ".opencode/state/latest-handoff.md",
-          "START-HERE.md managed block"
-        ],
+        "status": "stable",
+        "surfaces": [],
         "reason": "Restart surfaces are derived and must be regenerated whenever managed repair changes workflow state."
       },
       "canonical_project_decisions": {
@@ -289,12 +386,6 @@
     "outcome": "managed_blocked",
     "required_stage_details": [
       {
-        "stage": "project-skill-bootstrap",
-        "owner": "project-skill-bootstrap",
-        "category": "repo_local_skills",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content."
-      },
-      {
         "stage": "ticket-pack-builder",
         "owner": "ticket-pack-builder",
         "category": "ticket_follow_up",
@@ -302,11 +393,11 @@
       }
     ],
     "required_stages": [
-      "project-skill-bootstrap",
       "ticket-pack-builder"
     ],
     "completed_stages": [
-      "deterministic-refresh"
+      "project-skill-bootstrap",
+      "ticket-pack-builder"
     ],
     "asserted_completed_stages": [],
     "legacy_asserted_completed_stages": [],
@@ -318,101 +409,521 @@
         "stage": "project-skill-bootstrap",
         "owner": "project-skill-bootstrap",
         "category": "repo_local_skills",
-        "status": "required_not_run",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-        "currently_required": true,
-        "last_checked_at": "2026-03-31T13:00:59Z",
-        "last_updated_at": "2026-03-31T13:00:59Z"
+        "status": "completed",
+        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+        "currently_required": false,
+        "last_checked_at": "2026-04-12T02:51:55Z",
+        "last_updated_at": "2026-04-12T02:51:55Z",
+        "completion_mode": "recorded_execution",
+        "completed_by": "project-skill-bootstrap",
+        "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
+        "evidence_paths": [
+          ".opencode/skills/stack-standards/SKILL.md",
+          ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+        ],
+        "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+        "first_recorded_at": "2026-04-12T02:51:55Z",
+        "last_recorded_at": "2026-04-12T02:51:55Z"
       },
       "ticket-pack-builder": {
         "stage": "ticket-pack-builder",
         "owner": "ticket-pack-builder",
         "category": "ticket_follow_up",
-        "status": "required_not_run",
+        "status": "completed",
         "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
         "currently_required": true,
-        "last_checked_at": "2026-03-31T13:00:59Z",
-        "last_updated_at": "2026-03-31T13:00:59Z"
+        "last_checked_at": "2026-04-12T02:52:13Z",
+        "last_updated_at": "2026-04-12T02:51:55Z",
+        "completion_mode": "recorded_execution",
+        "completed_by": "ticket-pack-builder",
+        "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
+        "evidence_paths": [
+          ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
+          "diagnosis/20260412-025014/manifest.json",
+          "tickets/REMED-017.md"
+        ],
+        "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+        "first_recorded_at": "2026-04-12T02:51:55Z",
+        "last_recorded_at": "2026-04-12T02:51:55Z"
       }
     },
     "pruned_unknown_stages": [],
     "invalidated_recorded_stages": [],
     "blocking_reasons": [
-      "project-skill-bootstrap must still run: Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-      "ticket-pack-builder must still run: Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
-      "Post-repair verification failed repair-contract consistency checks: placeholder_local_skills_survived_refresh."
+      "Post-repair verification introduced new critical execution or reference findings: EXEC001."
     ],
     "verification_passed": false,
     "handoff_allowed": false,
     "current_state_clean": false,
     "causal_regression_verified": false,
-    "last_updated_at": "2026-03-31T13:00:59Z",
-    "process_version": 7
+    "verification_blocking_codes": [],
+    "manual_prerequisite_codes": [],
+    "source_follow_up_codes": [
+      "EXEC001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001",
+      "EXEC-REMED-001"
+    ],
+    "process_state_codes": [],
+    "advisory_codes": [],
+    "contract_failures": [],
+    "last_updated_at": "2026-04-12T02:52:13Z",
+    "process_version": 7,
+    "allowed_follow_on_tickets": []
   },
   "diagnosis_pack": {
-    "path": "/home/rowan/GPTTalker/diagnosis/20260331-130059",
+    "path": "/home/pc/projects/GPTTalker/diagnosis/20260412-025214",
     "report_count": 4,
     "manifest": {
-      "generated_at": "2026-03-31T13:00:59Z",
-      "repo_root": "/home/rowan/GPTTalker",
-      "finding_count": 3,
+      "generated_at": "2026-04-12T02:52:14Z",
+      "repo_root": "/home/pc/projects/GPTTalker",
+      "finding_count": 9,
+      "finding_codes": [
+        "EXEC-REMED-001",
+        "EXEC001"
+      ],
+      "source_findings": [
+        {
+          "code": "EXEC001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        },
+        {
+          "code": "EXEC-REMED-001",
+          "severity": "error"
+        }
+      ],
       "result_state": "validated failures found",
       "diagnosis_kind": "post_repair_verification",
       "evidence_mode": "current_state_only",
-      "audit_package_commit": "missing_provenance",
+      "audit_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
       "report_files": {
         "report_1": "01-initial-codebase-review.md",
         "report_2": "02-scafforge-process-failures.md",
         "report_3": "03-scafforge-prevention-actions.md",
         "report_4": "04-live-repo-repair-plan.md"
       },
+      "disposition_bundle_file": "disposition-bundle.json",
+      "disposition_bundle": {
+        "version": 1,
+        "generated_at": "2026-04-12T02:52:14Z",
+        "repo_root": "/home/pc/projects/GPTTalker",
+        "audit_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+        "allowed_classes": [
+          "managed_blocker",
+          "manual_prerequisite_blocker",
+          "source_follow_up",
+          "process_state_only",
+          "advisory"
+        ],
+        "finding_count": 9,
+        "findings": [
+          {
+            "code": "EXEC001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "/tmp/scafforge-repair-candidate-7i9cpoao/candidate/src"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/remed-001-review-backlog-verification.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/remed-003-review-ticket-reconciliation.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/remed-004-review-ticket-reconciliation.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/fix-025-review-reverification.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/fix-027-review-ticket-reconciliation.md"
+            ],
+            "provenance": "script"
+          },
+          {
+            "code": "EXEC-REMED-001",
+            "severity": "error",
+            "disposition_class": "source_follow_up",
+            "legacy_disposition_class": "source_follow_up",
+            "route": "ticket-pack-builder",
+            "repair_class": "generated-repo remediation ticket",
+            "evidence_grade": "repo-state validation",
+            "source_files": [
+              "tickets/manifest.json",
+              ".opencode/state/reviews/fix-028-review-reverification.md"
+            ],
+            "provenance": "script"
+          }
+        ],
+        "counts": {
+          "managed_blocker": 0,
+          "manual_prerequisite_blocker": 0,
+          "source_follow_up": 9,
+          "process_state_only": 0,
+          "advisory": 0
+        },
+        "shadow_mode_deltas": []
+      },
       "ticket_recommendations": [
         {
-          "id": "REMED-001",
+          "id": "REMED-011",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-001-review-backlog-verification.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-001-review-backlog-verification.md"
+          ]
+        },
+        {
+          "id": "REMED-012",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md"
+          ]
+        },
+        {
+          "id": "REMED-013",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md"
+          ]
+        },
+        {
+          "id": "REMED-014",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-003-review-ticket-reconciliation.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-003-review-ticket-reconciliation.md"
+          ]
+        },
+        {
+          "id": "REMED-015",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-004-review-ticket-reconciliation.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/remed-004-review-ticket-reconciliation.md"
+          ]
+        },
+        {
+          "id": "REMED-016",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-025-review-reverification.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-025-review-reverification.md"
+          ]
+        },
+        {
+          "id": "REMED-007",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-027-review-ticket-reconciliation.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-027-review-ticket-reconciliation.md"
+          ]
+        },
+        {
+          "id": "REMED-008",
+          "title": "Remediation review artifact does not contain runnable command evidence",
+          "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-028-review-reverification.md"
+          ],
+          "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "assignee": "implementer",
+          "source_finding_code": "EXEC-REMED-001",
+          "source_finding_codes": [
+            "EXEC-REMED-001"
+          ],
+          "severity": "error",
+          "route": "ticket-pack-builder",
+          "repair_class": "generated-repo remediation ticket",
+          "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+          "source_files": [
+            "tickets/manifest.json",
+            ".opencode/state/reviews/fix-028-review-reverification.md"
+          ]
+        },
+        {
+          "id": "REMED-018",
           "title": "One or more Python packages fail to import \u2014 the service cannot start",
+          "description": "Remediate EXEC001 by correcting the validated issue and rerunning the relevant quality checks.",
+          "affected_files": [
+            "/tmp/scafforge-repair-candidate-7i9cpoao/candidate/src"
+          ],
+          "suggested_fix_approach": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
+          "assignee": "implementer",
           "source_finding_code": "EXEC001",
+          "source_finding_codes": [
+            "EXEC001"
+          ],
           "severity": "error",
           "route": "ticket-pack-builder",
           "repair_class": "generated-repo remediation ticket",
           "summary": "Verify every import succeeds: `python -c 'from src.<pkg>.main import app'`. Use string annotations (`-> \"TypeName\"`) for TYPE_CHECKING-only imports. Use `request: Request` (not `app: FastAPI`) in FastAPI dependency functions.",
           "source_files": [
-            "/home/rowan/GPTTalker/src"
-          ]
-        },
-        {
-          "id": "REMED-002",
-          "title": "Git identity is not configured for this host, but the repo's tests or workflow expect commit-producing validation",
-          "source_finding_code": "ENV003",
-          "severity": "warning",
-          "route": "manual-prerequisite",
-          "repair_class": "host prerequisite or operator follow-up",
-          "summary": "Configure git identity on the host used for audit or repair, or mark the affected verification as blocked by environment rather than as a clean or source-level result.",
-          "source_files": [
-            "tests/node_agent/test_executor.py"
-          ]
-        },
-        {
-          "id": "REMED-003",
-          "title": "One or more repo-local skills still contain generic placeholder text instead of project-specific guidance",
-          "source_finding_code": "SKILL001",
-          "severity": "warning",
-          "route": "scafforge-repair",
-          "repair_class": "safe Scafforge package change",
-          "summary": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
-          "source_files": [
-            ".opencode/skills/stack-standards/SKILL.md"
+            "/tmp/scafforge-repair-candidate-7i9cpoao/candidate/src"
           ]
         }
       ],
       "package_work_required_first": false,
-      "recommended_next_step": "subject_repo_repair",
+      "recommended_next_step": "subject_repo_source_follow_up",
       "verification_kind": "post_repair",
-      "repair_package_commit": "missing_provenance",
-      "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260412-024837",
       "current_state_clean": false,
       "causal_regression_verified": false,
       "verification_basis": "current_state_only",
       "recommended_ticket_payload": "recommended-ticket-payload.json"
     }
+  },
+  "remediation_follow_up": {
+    "created_tickets": [
+      "REMED-011",
+      "REMED-012",
+      "REMED-013",
+      "REMED-014",
+      "REMED-015",
+      "REMED-016",
+      "REMED-007",
+      "REMED-008"
+    ],
+    "superseded_tickets": [
+      "REMED-017"
+    ],
+    "diagnosis_manifest": "diagnosis/20260412-025214/manifest.json",
+    "skipped_recommendations": [
+      {
+        "id": "REMED-017",
+        "source_finding_code": "EXEC001",
+        "reason": "candidate-only verification surface"
+      }
+    ]
   }
 }

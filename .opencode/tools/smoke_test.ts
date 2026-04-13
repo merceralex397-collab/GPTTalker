@@ -2,7 +2,7 @@ import { tool } from "@opencode-ai/plugin"
 import { spawn } from "node:child_process"
 import { existsSync } from "node:fs"
 import { access, readFile } from "node:fs/promises"
-import { join } from "node:path"
+import { basename, join } from "node:path"
 import {
   currentArtifacts,
   defaultArtifactPath,
@@ -12,12 +12,14 @@ import {
   loadArtifactRegistry,
   loadManifest,
   loadWorkflowState,
+  markTicketSmokeVerified,
   normalizeRepoPath,
   registerArtifactSnapshot,
   requireBootstrapReady,
   rootPath,
   saveArtifactRegistry,
   saveManifest,
+  saveWorkflowBundle,
   writeText,
 } from "../lib/workflow"
 
@@ -39,7 +41,7 @@ type CommandResult = CommandSpec & {
   stdout: string
   stderr: string
   missing_executable?: string
-  failure_classification?: "missing_executable" | "permission_restriction" | "command_error"
+  failure_classification?: "missing_executable" | "permission_restriction" | "syntax_error" | "test_failure" | "configuration_error" | "command_error"
   blocked_by_permissions?: boolean
 }
 
@@ -67,6 +69,21 @@ const SMOKE_COMMAND_PATTERNS = [
   /\b(?:npm|pnpm)\s+run\s+(?:test|check)\b/i,
   /\byarn\s+(?:test|check)\b/i,
   /\bbun\s+run\s+(?:test|check)\b/i,
+  /\bgodot(?:4)?\s+--headless\b/i,
+  // Gradle smoke detection includes `(?:\./gradlew|gradle)\s+test`.
+  /\b(?:\.\/gradlew|gradle)\s+test\b/i,
+  /\bmvn\s+test\b/i,
+  /\bdotnet\s+test\b/i,
+  /\bflutter\s+test\b/i,
+  /\bswift\s+test\b/i,
+  /\bxcodebuild\s+test\b/i,
+  /\bzig\s+test\b/i,
+  /\bmake\s+(?:test|check)\b/i,
+  /\b(?:ruby|rspec|rake\s+test)\b/i,
+  /\bmix\s+test\b/i,
+  /\b(?:phpunit|php\s+[^\n]*test)\b/i,
+  /\bcmake\s+--build\b/i,
+  /\b(?:gcc|g\+\+|clang|clang\+\+)\b[\s\S]*&&\s*\.\/a\.out\b/i,
 ]
 
 async function exists(path: string): Promise<boolean> {
@@ -306,6 +323,42 @@ async function detectAcceptanceCommands(root: string, ticket: { acceptance?: unk
   })
 }
 
+async function augmentGodotReleaseCommands(
+  root: string,
+  ticket: { id?: unknown, lane?: unknown },
+  commands: CommandSpec[],
+): Promise<CommandSpec[]> {
+  if (!(await exists(join(root, "project.godot")))) {
+    return commands
+  }
+  const ticketId = typeof ticket.id === "string" ? ticket.id.trim().toUpperCase() : ""
+  const lane = typeof ticket.lane === "string" ? ticket.lane.trim().toLowerCase() : ""
+  const isReleaseValidationTicket = (
+    ticketId === "RELEASE-001"
+    || ticketId === "FINISH-VALIDATE-001"
+    || lane === "release-readiness"
+    || lane === "finish-validation"
+  )
+  if (!isReleaseValidationTicket) {
+    return commands
+  }
+  const exportCommand = commands.find((command) => isGodotExportCommand(command.argv))
+  if (!exportCommand) {
+    return commands
+  }
+  const loadValidation: CommandSpec = {
+    label: "godot load validation",
+    argv: [exportCommand.argv[0] ?? "godot4", "--headless", "--path", ".", "--quit"],
+    reason: "Godot release/finish proof must also confirm the project loads cleanly, not just that export exits successfully.",
+    env_overrides: exportCommand.env_overrides,
+  }
+  const signature = renderCommand(loadValidation).toLowerCase()
+  if (commands.some((command) => renderCommand(command).toLowerCase() === signature)) {
+    return commands
+  }
+  return [...commands, loadValidation]
+}
+
 async function detectRustCommands(root: string): Promise<CommandSpec[]> {
   if (!(await exists(join(root, "Cargo.toml")))) {
     return []
@@ -351,6 +404,14 @@ function tokenizeCommandString(command: string): string[] {
   let escaped = false
 
   for (const char of command) {
+    if (quote === "'") {
+      if (char === quote) {
+        quote = null
+      } else {
+        current += char
+      }
+      continue
+    }
     if (escaped) {
       current += char
       escaped = false
@@ -418,6 +479,49 @@ function parseOverrideTokens(tokens: string[], label: string): CommandSpec {
   }
 }
 
+function isSyntaxErrorOutput(output: string): boolean {
+  return /syntax error|parse error|failed to load script|not declared in the current scope|not found in base self|unexpected token|missing language argument|unterminated|unmatched quote/i.test(output)
+}
+
+function isConfigurationErrorOutput(output: string): boolean {
+  return /configuration error|invalid config|misconfig|unknown option|invalid argument|requires a value/i.test(output)
+}
+
+function classifyCommandFailure(args: {
+  argv: string[]
+  exitCode: number
+  stdout: string
+  stderr: string
+  missingExecutable?: string
+  blockedByPermissions?: boolean
+}): CommandResult["failure_classification"] {
+  const output = `${args.stdout}\n${args.stderr}`
+  if (args.missingExecutable) return "missing_executable"
+  if (args.blockedByPermissions) return "permission_restriction"
+  if (args.exitCode === 0 && isGodotExportCommand(args.argv) && isSyntaxErrorOutput(output)) return undefined
+  if (isSyntaxErrorOutput(output)) return "syntax_error"
+  if (isConfigurationErrorOutput(output)) return "configuration_error"
+  if (args.exitCode === 0) return undefined
+  if (output.trim()) return "test_failure"
+  return "command_error"
+}
+
+function isGodotExportCommand(argv: string[]): boolean {
+  const executable = basename(argv[0] ?? "").toLowerCase()
+  if (!/^godot(?:[\d.]+)?$/.test(executable)) {
+    return false
+  }
+  return argv.some((arg) => /^--export(?:-debug|-release)?$/.test(arg))
+}
+
+function commandBlocksPass(command: Pick<CommandResult, "exit_code" | "failure_classification">): boolean {
+  return (
+    command.exit_code !== 0
+    || command.failure_classification === "syntax_error"
+    || command.failure_classification === "configuration_error"
+  )
+}
+
 function parseCommandOverride(rawOverride: string[]): CommandSpec[] {
   if (rawOverride.length === 0) {
     return []
@@ -439,11 +543,11 @@ function parseCommandOverride(rawOverride: string[]): CommandSpec[] {
 
 async function detectCommands(root: string, ticket: { acceptance?: unknown }, args: SmokeArgs): Promise<CommandSpec[]> {
   if (Array.isArray(args.command_override) && args.command_override.length > 0) {
-    return parseCommandOverride(args.command_override)
+    return augmentGodotReleaseCommands(root, ticket, parseCommandOverride(args.command_override))
   }
   const acceptanceCommands = await detectAcceptanceCommands(root, ticket)
   if (acceptanceCommands.length > 0) {
-    return acceptanceCommands
+    return augmentGodotReleaseCommands(root, ticket, acceptanceCommands)
   }
   const makeOverride = await detectMakeSmokeTarget(root)
   if (makeOverride.length > 0) {
@@ -497,7 +601,7 @@ async function runCommand(root: string, command: CommandSpec): Promise<CommandRe
         stdout: "",
         stderr: errorStderr,
         missing_executable: missingExecutable,
-        failure_classification: missingExecutable ? "missing_executable" : blockedByPermissions ? "permission_restriction" : "command_error",
+        failure_classification: classifyCommandFailure({ argv: command.argv, exitCode: -1, stdout: "", stderr: errorStderr, missingExecutable, blockedByPermissions }),
         blocked_by_permissions: blockedByPermissions || undefined,
       })
       return
@@ -523,7 +627,7 @@ async function runCommand(root: string, command: CommandSpec): Promise<CommandRe
         stdout,
         stderr: renderedError,
         missing_executable: missingExecutable,
-        failure_classification: missingExecutable ? "missing_executable" : blockedByPermissions ? "permission_restriction" : "command_error",
+        failure_classification: classifyCommandFailure({ argv: command.argv, exitCode: -1, stdout, stderr: renderedError, missingExecutable, blockedByPermissions }),
         blocked_by_permissions: blockedByPermissions || undefined,
       })
     })
@@ -540,7 +644,7 @@ async function runCommand(root: string, command: CommandSpec): Promise<CommandRe
         stdout,
         stderr,
         missing_executable: missingExecutable,
-        failure_classification: code === 0 ? undefined : missingExecutable ? "missing_executable" : blockedByPermissions ? "permission_restriction" : "command_error",
+        failure_classification: classifyCommandFailure({ argv: command.argv, exitCode: code ?? -1, stdout, stderr, missingExecutable, blockedByPermissions }),
         blocked_by_permissions: blockedByPermissions || undefined,
       })
     })
@@ -563,11 +667,25 @@ function renderArtifact(ticketId: string, commands: CommandResult[], passed: boo
 
   return `# Smoke Test\n\n## Ticket\n\n- ${ticketId}\n\n## Overall Result\n\nOverall Result: ${passed ? "PASS" : "FAIL"}\n\n## Notes\n\n${note}\n\n## Commands\n\n${commandSections}\n`
 }
+
+function classifyCommandKind(command: CommandResult): "build_or_quality_gate" | "test_or_runtime" | "other" {
+  const rendered = `${command.label} ${renderCommand(command)}`.toLowerCase()
+  if (/(build|check|lint|clippy|vet|typecheck|tsc|compile|analy[sz]e)/.test(rendered)) {
+    return "build_or_quality_gate"
+  }
+  if (/(test|pytest|rspec|phpunit|godot|xcodebuild)/.test(rendered)) {
+    return "test_or_runtime"
+  }
+  return "other"
+}
 function classifySmokeFailure(results: CommandResult[]): "environment" | "ticket" | "configuration" | null {
-  const failed = results.find((command) => command.exit_code !== 0)
+  const failed = results.find((command) => commandBlocksPass(command))
   if (!failed) return null
   const output = `${failed.stdout}\n${failed.stderr}`
-  if (failed.exit_code === -1 || /No module named|command not found|ENOENT|not installed|missing/i.test(output)) {
+  if (failed.failure_classification === "syntax_error" || failed.failure_classification === "configuration_error") {
+    return "configuration"
+  }
+  if (failed.exit_code === -1 || failed.failure_classification === "missing_executable" || /No module named|command not found|ENOENT|not installed|missing/i.test(output)) {
     return "environment"
   }
   if (/No deterministic smoke-test command/i.test(output)) {
@@ -577,7 +695,7 @@ function classifySmokeFailure(results: CommandResult[]): "environment" | "ticket
 }
 
 function classifyHostSurfaceFailure(results: CommandResult[]): "missing_executable" | "permission_restriction" | "runtime_setup" | null {
-  const failed = results.find((command) => command.exit_code !== 0)
+  const failed = results.find((command) => commandBlocksPass(command))
   if (!failed) return null
   if (failed.failure_classification === "missing_executable" || failed.missing_executable) {
     return "missing_executable"
@@ -597,6 +715,7 @@ function classifyHostSurfaceFailure(results: CommandResult[]): "missing_executab
 
 async function persistArtifact(ticketId: string, body: string, passed: boolean): Promise<string> {
   const manifest = await loadManifest()
+  const workflow = await loadWorkflowState()
   const ticket = getTicket(manifest, ticketId)
   const path = normalizeRepoPath(defaultArtifactPath(ticket.id, SMOKE_STAGE, SMOKE_KIND))
   await writeText(path, body)
@@ -611,8 +730,10 @@ async function persistArtifact(ticketId: string, body: string, passed: boolean):
     summary: passed ? "Deterministic smoke test passed." : "Deterministic smoke test failed.",
   })
 
-  await saveManifest(manifest)
-  await saveArtifactRegistry(registry)
+  if (passed) {
+    markTicketSmokeVerified(ticket)
+  }
+  await saveWorkflowBundle({ workflow, manifest, registry, skipGraphValidation: true })
   return artifact.path
 }
 
@@ -690,13 +811,15 @@ export default tool({
     for (const command of commands) {
       const result = await runCommand(root, command)
       results.push(result)
-      if (result.exit_code !== 0) {
+      if (commandBlocksPass(result)) {
         passed = false
         break
       }
     }
     const failureClassification = classifySmokeFailure(results)
     const hostSurfaceClassification = classifyHostSurfaceFailure(results)
+    const failedCommand = results.find((result) => commandBlocksPass(result))
+    const failedCommandKind = failedCommand ? classifyCommandKind(failedCommand) : null
 
     const note = passed
       ? "All detected deterministic smoke-test commands passed."
@@ -706,6 +829,8 @@ export default tool({
         ? "The smoke-test run failed because the environment or required toolchain is not ready. Fix bootstrap/runtime setup before treating this as a ticket regression."
         : failureClassification === "configuration"
           ? "The smoke-test run failed because the smoke-test surface is not configured correctly."
+          : failedCommand && failedCommandKind === "build_or_quality_gate"
+            ? `The smoke-test run failed on the build or quality gate command \`${failedCommand.label}\`. Inspect the recorded command output before closeout and do not treat this as a generic test-only failure.`
           : "The smoke-test run stopped on the first failing command. Inspect the recorded output before closeout."
     const body = renderArtifact(ticket.id, results, passed, note)
     const artifactPath = await persistArtifact(ticket.id, body, passed)
@@ -720,6 +845,8 @@ export default tool({
         test_paths: args.test_paths || [],
         failure_classification: failureClassification,
         host_surface_classification: hostSurfaceClassification,
+        failed_command_label: failedCommand?.label || null,
+        failed_command_kind: failedCommandKind,
         commands: results.map((result) => ({
           label: result.label,
           command: renderCommand(result),

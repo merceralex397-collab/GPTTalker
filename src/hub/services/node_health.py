@@ -115,6 +115,7 @@ class NodeHealthService:
 
     HEALTH_ENDPOINT = "/health"
     DEFAULT_TIMEOUT = 10  # seconds
+    HEALTHY_LATENCY_THRESHOLD_MS = NodeHealth.HEALTHY_LATENCY_THRESHOLD_MS
 
     def __init__(
         self,

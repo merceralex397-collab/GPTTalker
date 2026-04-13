@@ -1,5 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "model": "minimax-coding-plan/MiniMax-M2.7",
+  "default_agent": "gpttalker-team-leader",
   "instructions": [
     "START-HERE.md",
     "AGENTS.md",
@@ -20,9 +22,22 @@
       "type": "remote",
       "url": "https://developers.openai.com/mcp",
       "enabled": false
+    },
+    "blender_agent": {
+      "type": "local",
+      "command": ["uv", "run", "--project", "/home/pc/projects/blender-agent/mcp-server", "blender-mcp-server"],
+      "enabled": true,
+      "timeout": 30000,
+      "environment": {
+        "BLENDER_MCP_TRANSPORT": "stdio",
+        "BLENDER_MCP_BLENDER_EXECUTABLE": "/home/pc/blender-4.5.0/blender",
+        "BLENDER_MCP_TRUST_PROFILE": "unrestricted",
+        "BLENDER_MCP_ENABLE_AUDIT_LOGGING": "true"
+      }
     }
   },
   "permission": {
+    "external_directory": "allow",
     "read": {
       "*": "allow",
       "*.env": "deny",
@@ -38,6 +53,7 @@
       "ls *": "allow",
       "find *": "allow",
       "rg *": "allow",
+      "grep *": "allow",
       "sed *": "allow",
       "cat *": "allow",
       "head *": "allow",
@@ -53,7 +69,20 @@
       "git diff*": "allow",
       "git log*": "allow",
       "git add *": "allow",
-      "git commit *": "allow"
+      "git commit *": "allow",
+      "mkdir *": "allow",
+      "echo *": "allow",
+      "touch *": "allow",
+      "cp *": "allow",
+      "mv *": "allow",
+      "godot4 *": "allow",
+      "godot *": "allow",
+      "java *": "allow",
+      "javac *": "allow",
+      "cargo *": "allow",
+      "rustc *": "allow",
+      "go *": "allow",
+      "dotnet *": "allow"
     }
   }
 }

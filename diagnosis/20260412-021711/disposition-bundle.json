@@ -1,0 +1,184 @@
+{
+  "version": 1,
+  "generated_at": "2026-04-12T02:17:11Z",
+  "repo_root": "/home/pc/projects/GPTTalker",
+  "audit_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:dbd64ed23b67",
+  "allowed_classes": [
+    "managed_blocker",
+    "manual_prerequisite_blocker",
+    "source_follow_up",
+    "process_state_only",
+    "advisory"
+  ],
+  "finding_count": 11,
+  "findings": [
+    {
+      "code": "EXEC001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "/tmp/scafforge-repair-candidate-ssuh4471/candidate/src"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW019",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/remed-001-review-backlog-verification.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/remed-003-review-ticket-reconciliation.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/remed-004-review-ticket-reconciliation.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/fix-025-review-reverification.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/fix-027-review-ticket-reconciliation.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "EXEC-REMED-001",
+      "severity": "error",
+      "disposition_class": "source_follow_up",
+      "legacy_disposition_class": "source_follow_up",
+      "route": "ticket-pack-builder",
+      "repair_class": "generated-repo remediation ticket",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/reviews/fix-028-review-reverification.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "CYCLE002",
+      "severity": "error",
+      "disposition_class": "manual_prerequisite_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "manual-prerequisite",
+      "repair_class": "Scafforge package work required before the next subject-repo run",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "diagnosis/20260412-021507/manifest.json",
+        ".opencode/meta/bootstrap-provenance.json"
+      ],
+      "provenance": "script"
+    }
+  ],
+  "counts": {
+    "managed_blocker": 1,
+    "manual_prerequisite_blocker": 1,
+    "source_follow_up": 9,
+    "process_state_only": 0,
+    "advisory": 0
+  },
+  "shadow_mode_deltas": [
+    {
+      "code": "CYCLE002",
+      "legacy_disposition_class": "managed_blocker",
+      "disposition_class": "manual_prerequisite_blocker",
+      "route": "manual-prerequisite",
+      "reason": "Legacy prefix classification would label CYCLE002 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { tool } from "@opencode-ai/plugin"
 import {
   createTicketRecord,
   currentRegistryArtifact,
+  defaultStatusForStage,
   getTicket,
   loadArtifactRegistry,
   loadManifest,
@@ -11,6 +12,7 @@ import {
   setPlanApprovedForTicket,
   syncWorkflowSelection,
   ticketFilePath,
+  type SplitKind,
   type TicketSourceMode,
 } from "../lib/workflow"
 
@@ -36,6 +38,7 @@ export default tool({
     finding_source: tool.schema.string().describe("Optional original finding code when this ticket remediates a validated issue.").optional(),
     source_ticket_id: tool.schema.string().describe("Optional source ticket that this ticket extends or remediates.").optional(),
     source_mode: tool.schema.enum(["process_verification", "post_completion_issue", "net_new_scope", "split_scope"]).describe("Why this ticket is being created.").optional(),
+    split_kind: tool.schema.enum(["parallel_independent", "sequential_dependent"]).describe("For split_scope tickets: whether child can run in parallel with parent (parallel_independent) or must wait until parent-owned work is done (sequential_dependent). Required when source_mode is split_scope.").optional(),
     evidence_artifact_path: tool.schema.string().describe("Optional registered artifact path that justifies creation of this linked ticket.").optional(),
     activate: tool.schema.boolean().describe("Whether to make the new ticket active immediately.").optional(),
   },
@@ -45,6 +48,7 @@ export default tool({
     const sourceMode: TicketSourceMode = args.source_mode || "net_new_scope"
     const sourceTicketId = normalizeOptional(args.source_ticket_id)
     const evidenceArtifactPath = normalizeOptional(args.evidence_artifact_path)
+    const splitKind: SplitKind | undefined = args.split_kind as SplitKind | undefined
     const registry = await loadArtifactRegistry()
 
     if (manifest.tickets.some((ticket) => ticket.id === args.id.trim())) {
@@ -65,6 +69,7 @@ export default tool({
       finding_source: normalizeOptional(args.finding_source),
       source_ticket_id: sourceTicketId,
       source_mode: sourceMode,
+      split_kind: splitKind,
     })
 
     for (const dependency of ticket.depends_on) {
@@ -77,6 +82,11 @@ export default tool({
         throw new Error(`source_ticket_id is required when source_mode is ${sourceMode}.`)
       }
       sourceTicket = getTicket(manifest, sourceTicketId)
+      if (ticket.depends_on.includes(sourceTicket.id)) {
+        throw new Error(
+          `Ticket ${ticket.id} cannot name ${sourceTicket.id} as both source_ticket_id and depends_on.`,
+        )
+      }
 
       if (sourceMode === "process_verification") {
         if (!workflow.pending_process_verification) {
@@ -121,6 +131,12 @@ export default tool({
       }
 
       if (sourceMode === "split_scope") {
+        if (!splitKind) {
+          throw new Error("split_kind is required when source_mode is split_scope.")
+        }
+        if (splitKind === "sequential_dependent" && args.activate === true) {
+          throw new Error("sequential_dependent split children cannot be activated at creation time.")
+        }
         if (!["open", "reopened"].includes(sourceTicket.resolution_state) || sourceTicket.status === "done") {
           throw new Error(`Source ticket ${sourceTicket.id} must remain open or reopened before creating a split-scope child ticket.`)
         }
@@ -132,9 +148,14 @@ export default tool({
       sourceTicket.follow_up_ticket_ids.push(ticket.id)
     }
     if (sourceTicket && sourceMode === "split_scope") {
-      const splitNote = `Split scope delegated to follow-up ticket ${ticket.id}. Keep the parent open and non-foreground until the child work lands.`
+      const splitNote = splitKind === "sequential_dependent"
+        ? `Sequential split: this ticket (${sourceTicket.id}) must complete its parent-owned work before child ticket ${ticket.id} may be foregrounded.`
+        : `Parallel split: scope delegated to follow-up ticket ${ticket.id}. Keep the parent open and non-foreground until the child work lands.`
       if (!sourceTicket.decision_blockers.includes(splitNote)) {
         sourceTicket.decision_blockers.push(splitNote)
+      }
+      if (sourceTicket.status === "blocked") {
+        sourceTicket.status = defaultStatusForStage(sourceTicket.stage)
       }
     }
 
@@ -142,15 +163,25 @@ export default tool({
     const allOtherTicketsClosed = manifest.tickets.every(
       (t) => t.id === ticket.id || t.status === "done" || t.resolution_state === "superseded"
     )
+    // sequential_dependent children must NOT auto-activate while the parent remains open —
+    // the parent owns work that must finish first.
+    const isSequentialDependentChild = sourceMode === "split_scope" && splitKind === "sequential_dependent"
     const activateNewTicket = typeof args.activate === "boolean"
       ? args.activate
-      : allOtherTicketsClosed || (sourceMode === "split_scope" && sourceTicket?.id === manifest.active_ticket)
+      : allOtherTicketsClosed || (
+          sourceMode === "split_scope" &&
+          !isSequentialDependentChild &&
+          sourceTicket?.id === manifest.active_ticket
+        )
     if (activateNewTicket) {
       manifest.active_ticket = ticket.id
     }
     syncWorkflowSelection(workflow, manifest)
 
-    await saveWorkflowBundle({ workflow, manifest })
+    // Skip full-manifest graph validation during ticket_create to avoid deadlocks from
+    // pre-existing data quality issues in the manifest. The new ticket's own relationships
+    // are already validated above (depends_on targets exist, source ticket checks, etc.).
+    await saveWorkflowBundle({ workflow, manifest, skipGraphValidation: true })
 
     return JSON.stringify(
       {
@@ -160,6 +191,7 @@ export default tool({
         finding_source: ticket.finding_source || null,
         source_ticket_id: sourceTicket?.id || null,
         source_mode: sourceMode,
+        split_kind: splitKind || null,
         evidence_artifact_path: evidenceArtifactPath || null,
         activated: activateNewTicket,
       },

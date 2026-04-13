@@ -182,20 +182,30 @@ class HubNodeClient:
         self,
         node: NodeInfo,
         path: str,
+        offset: int = 0,
+        limit: int | None = None,
     ) -> dict[str, Any]:
         """Read a file from a node.
 
         Args:
             node: The target node.
             path: Path to the file to read.
+            offset: Byte offset to start reading from.
+            limit: Maximum number of bytes to read.
 
         Returns:
             Dictionary with file content or error.
         """
-        response = await self.get(node, f"/files/read?path={path}", timeout=30.0)
+        response = await self.post(
+            node,
+            "/operations/read-file",
+            json={"path": path, "offset": offset, "limit": limit},
+            timeout=30.0,
+        )
 
         if response.status_code == 200:
-            return response.json()
+            data = response.json()
+            return data  # full OperationResponse: {"success": True, "data": {...}}
 
         return {
             "success": False,
@@ -277,9 +287,7 @@ class HubNodeClient:
 
         if response.status_code == 200:
             data = response.json()
-            if data.get("success"):
-                return data.get("data", {})
-            return {"success": False, "error": data.get("message", "Unknown error")}
+            return data  # full OperationResponse: {"success": True, "data": {...}}
 
         return {"success": False, "error": f"Search failed: HTTP {response.status_code}"}
 
@@ -309,9 +317,7 @@ class HubNodeClient:
 
         if response.status_code == 200:
             data = response.json()
-            if data.get("success"):
-                return data.get("data", {})
-            return {"success": False, "error": data.get("message", "Unknown error")}
+            return data  # full OperationResponse: {"success": True, "data": {...}}
 
         return {"success": False, "error": f"Git status failed: HTTP {response.status_code}"}
 
@@ -340,9 +346,7 @@ class HubNodeClient:
 
         if response.status_code == 200:
             data = response.json()
-            if data.get("success"):
-                return data.get("data", {})
-            return {"success": False, "error": data.get("message", "Unknown error")}
+            return data  # full OperationResponse: {"success": True, "data": {...}}
 
         return {
             "success": False,

@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -38,7 +39,7 @@ EXEC-004
 
 ## Follow-up Tickets
 
-- EXEC-012
+None
 
 ## Decision Blockers
 
@@ -79,4 +80,3 @@ None
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
 - Evidence refreshed on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -v` now leaves `tests/hub/test_security.py::TestPathTraversal::test_path_traversal_dotdot_rejected` as the only remaining EXEC-008-owned failure.
 - Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_security.py -q --tb=no` exits 0.
-

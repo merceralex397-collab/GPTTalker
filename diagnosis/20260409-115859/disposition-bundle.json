@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "generated_at": "2026-04-09T11:58:59Z",
+  "repo_root": "/home/pc/projects/GPTTalker",
+  "audit_package_commit": "906dc002415726367fd1ecb74c5556903f907341",
+  "allowed_classes": [
+    "managed_blocker",
+    "manual_prerequisite_blocker",
+    "source_follow_up",
+    "process_state_only",
+    "advisory"
+  ],
+  "finding_count": 9,
+  "findings": [
+    {
+      "code": "WFLOW024",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "CONFIG001",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "opencode.jsonc"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW016",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        ".opencode/tools/smoke_test.ts"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW010",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/workflow-state.json",
+        ".opencode/meta/pivot-state.json",
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW027",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        ".opencode/tools/handoff_publish.ts"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW012",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "docs/process/workflow.md",
+        "tickets/README.md",
+        ".opencode/commands/kickoff.md",
+        ".opencode/commands/run-lane.md",
+        ".opencode/skills/ticket-execution/SKILL.md",
+        ".opencode/agents/gpttalker-team-leader.md",
+        ".opencode/agents/gpttalker-implementer-context.md",
+        ".opencode/agents/gpttalker-lane-executor.md",
+        ".opencode/agents/gpttalker-docs-handoff.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "SKILL002",
+      "severity": "warning",
+      "disposition_class": "manual_prerequisite_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "WFLOW023",
+      "severity": "error",
+      "disposition_class": "managed_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        ".opencode/tools/ticket_lookup.ts",
+        ".opencode/tools/ticket_update.ts",
+        ".opencode/lib/workflow.ts"
+      ],
+      "provenance": "script"
+    },
+    {
+      "code": "CYCLE002",
+      "severity": "error",
+      "disposition_class": "manual_prerequisite_blocker",
+      "legacy_disposition_class": "managed_blocker",
+      "route": "manual-prerequisite",
+      "repair_class": "Scafforge package work required before the next subject-repo run",
+      "evidence_grade": "repo-state validation",
+      "source_files": [
+        "diagnosis/20260409-115841/manifest.json",
+        ".opencode/meta/bootstrap-provenance.json"
+      ],
+      "provenance": "script"
+    }
+  ],
+  "counts": {
+    "managed_blocker": 7,
+    "manual_prerequisite_blocker": 2,
+    "source_follow_up": 0,
+    "process_state_only": 0,
+    "advisory": 0
+  },
+  "shadow_mode_deltas": [
+    {
+      "code": "SKILL002",
+      "legacy_disposition_class": "managed_blocker",
+      "disposition_class": "manual_prerequisite_blocker",
+      "route": "scafforge-repair",
+      "reason": "Legacy prefix classification would label SKILL002 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+    },
+    {
+      "code": "CYCLE002",
+      "legacy_disposition_class": "managed_blocker",
+      "disposition_class": "manual_prerequisite_blocker",
+      "route": "manual-prerequisite",
+      "reason": "Legacy prefix classification would label CYCLE002 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+    }
+  ]
+}

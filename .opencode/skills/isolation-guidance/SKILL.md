@@ -1,18 +1,21 @@
 ---
 name: isolation-guidance
-description: Decide when GPTTalker work should move into a safer isolated lane such as a worktree or sandbox instead of editing the shared workspace directly.
+description: Decide when risky or long-running work should move into an isolated lane such as a worktree or sandbox. Use when a ticket could destabilize the main workspace or when autonomous work needs a cleaner safety boundary.
 ---
 
 # Isolation Guidance
 
-## Use Isolation When
+Before applying isolation guidance, call `skill_ping` with `skill_id: "isolation-guidance"` and `scope: "project"`.
 
-- a ticket will touch both hub and node-agent runtime paths at once
-- long-running validation or repair work could destabilize the current workspace
-- multiple write-capable lanes would otherwise overlap in the same files
+Use this lane when:
 
-## Rules
+- the ticket is high-risk or long-running
+- multiple autonomous changes could collide
+- the current workspace has become hard to reason about safely
 
-- Prefer the lightest isolation that actually reduces collision risk.
-- Keep canonical ticket, workflow, and artifact state in the main repo surfaces even if code work happens elsewhere.
-- If safe isolation is required but unavailable, return a blocker instead of improvising an unsafe parallel run.
+Rules:
+
+- prefer the lightest isolation mechanism that actually reduces risk
+- document why isolation is needed before switching environments
+- keep canonical ticket, workflow, and artifact state in the main repo surfaces even if code work happens in an isolated lane
+- do not invent an isolation setup the repo has not enabled; return a blocker if safe isolation is required but unavailable

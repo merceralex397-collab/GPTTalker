@@ -4212,6 +4212,1399 @@
       "summary": "Trust restored using POLISH-003.",
       "created_at": "2026-03-31T21:26:04.793Z",
       "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/exec-007/review/2026-04-09T20-57-58-603Z-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled EXEC-012 against EXEC-008.",
+      "created_at": "2026-04-09T20:57:58.603Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EXEC-007",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/exec-007/review/2026-04-09T21-01-31-666Z-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled EXEC-012 against EXEC-007.",
+      "created_at": "2026-04-09T21:01:31.666Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-018/planning/2026-04-09T21-02-03-737Z-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for FIX-018: Split CREATE_INDEXES into migration-specific lists in tables.py and update migrations.py to use correct indexes per migration.",
+      "created_at": "2026-04-09T21:02:03.737Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-018/implementation/2026-04-09T21-06-49-261Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-018: Split CREATE_INDEXES into migration-specific lists (CREATE_INDEXES_MIGRATION_1, CREATE_INDEXES_MIGRATION_3, CREATE_INDEXES_MIGRATION_4) and updated migrations.py to use correct indexes per migration. All validation passed.",
+      "created_at": "2026-04-09T21:06:49.261Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-018/review/2026-04-09T21-09-08-157Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-018: APPROVED. All 8 review criteria satisfied. CREATE_INDEXES correctly split into migration-specific lists, eliminating the OperationalError on fresh database initialization.",
+      "created_at": "2026-04-09T21:09:08.157Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-018/qa/2026-04-09T21-13-33-749Z-qa.md",
+      "stage": "qa",
+      "created_at": "2026-04-09T21:13:33.749Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-018/smoke-test/2026-04-09T21-14-29-927Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-04-09T21:14:29.927Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-018/smoke-test/2026-04-09T21-15-05-286Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-04-09T21:15:05.286Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-018/smoke-test/2026-04-09T21-16-39-821Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-04-09T21:16:39.821Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-018/smoke-test/2026-04-09T21-17-00-262Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-09T21:17:00.262Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-019/planning/2026-04-09T21-40-53-623Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-019: Move tool registration from deprecated @app.on_event('startup') into lifespan context manager. Root cause: when lifespan= is set, the deprecated startup event handler does not fire, so tools are never registered. Fix: add register_all_tools() call in lifespan.py before mcp_handler.initialize(), then remove orphaned handler from main.py.",
+      "created_at": "2026-04-09T21:40:53.623Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-019/planning/2026-04-09T21-41-42-868Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-019: Move tool registration from deprecated @app.on_event('startup') into lifespan context manager. Root cause: lifespan= parameter deprecates @app.on_event('startup'), tools never registered.",
+      "created_at": "2026-04-09T21:41:42.868Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-019/implementation/2026-04-09T21-45-01-101Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-019: Moved tool registration from deprecated @app.on_event('startup') into lifespan context manager (Step 8a). Removed orphaned handler from main.py.",
+      "created_at": "2026-04-09T21:45:01.101Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-019/qa/2026-04-09T21-48-47-100Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-019: All acceptance criteria verified via code inspection. Bash blocked by environment restriction.",
+      "created_at": "2026-04-09T21:48:47.100Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-019/bootstrap/2026-04-09T21-49-17-683Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-04-09T21:49:17.683Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-019/bootstrap/2026-04-09T21-50-51-976Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-04-09T21:50:51.976Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-019/review/2026-04-09T21-53-27-429Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-019: APPROVED. Step 8a (tool registration) correctly placed before Step 8 (mcp_handler.initialize()) in lifespan context manager. Orphaned @app.on_event(\"startup\") handler fully removed from main.py. No trust boundary changes. Syntax verification passed. Registry instance consistency confirmed via get_global_registry() singleton.",
+      "created_at": "2026-04-09T21:53:27.429Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-019/bootstrap/2026-04-09T22-37-20-679Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-04-09T22:37:20.679Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-019/bootstrap/2026-04-09T22-42-49-246Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap failed.",
+      "created_at": "2026-04-09T22:42:49.246Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-019/bootstrap/2026-04-09T23-22-51-391Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-04-09T23:22:51.391Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-019/smoke-test/2026-04-09T23-23-05-557Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-09T23:23:05.557Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-020/planning/2026-04-09T23-36-15-366Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-020: Add require_api_key FastAPI dependency to dependencies.py and apply to all 5 operation routes in operations.py.",
+      "created_at": "2026-04-09T23:36:15.366Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-020/implementation/2026-04-09T23-45-39-554Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-020: Added require_api_key FastAPI dependency to dependencies.py and applied it to all 5 operation routes in operations.py. Auth is skipped when api_key is None, returns 401 when configured but missing/invalid.",
+      "created_at": "2026-04-09T23:45:39.554Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-09T23-50-03-631Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-020: APPROVED. All 5 routes have require_api_key dependency correctly applied before get_executor, auth skips when api_key is None, returns 401 when auth is configured but missing/invalid.",
+      "created_at": "2026-04-09T23:50:03.631Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-020/qa/2026-04-09T23-53-28-047Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-020: 4/5 acceptance criteria verified via code inspection. Runtime validation blocked by environment restriction on Python execution.",
+      "created_at": "2026-04-09T23:53:28.047Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-09T23-55-04-728Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-09T23:55:04.728Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-021/planning/2026-04-09T23-58-53-434Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-021: Add mode field to SearchRequest in routes/operations.py matching models.py definition.",
+      "created_at": "2026-04-09T23:58:53.434Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-021/implementation/2026-04-10T00-04-43-396Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-021: Added mode field to SearchRequest in routes/operations.py.",
+      "created_at": "2026-04-10T00:04:43.396Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-021/bootstrap/2026-04-10T00-14-15-655Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-04-10T00:14:15.655Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-021/implementation/2026-04-10T00-16-47-600Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Added mode field to SearchRequest in routes/operations.py, matching the model definition in models.py and fixing the AttributeError at runtime.",
+      "created_at": "2026-04-10T00:16:47.600Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-021/implementation/2026-04-10T00-17-29-594Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-021: Added mode field to SearchRequest in routes/operations.py with source code verification evidence",
+      "created_at": "2026-04-10T00:17:29.594Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-021/implementation/2026-04-10T00-19-48-756Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-021: Added mode field to SearchRequest in routes/operations.py with import-check command execution evidence (exit code 0, mode field confirmed present)",
+      "created_at": "2026-04-10T00:19:48.756Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-021/review/2026-04-10T00-20-40-616Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-021: APPROVED - mode field correctly added to SearchRequest, matches models.py definition, import test passes with exit code 0",
+      "created_at": "2026-04-10T00:20:40.616Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-021/qa/2026-04-10T00-22-09-303Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-021: PASS - all 3 acceptance criteria verified with import-check command execution evidence (exit code 0)",
+      "created_at": "2026-04-10T00:22:09.303Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-021/smoke-test/2026-04-10T00-22-28-243Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T00:22:28.243Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-021/smoke-test/2026-04-10T00-22-40-845Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T00:22:40.845Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-022/planning/2026-04-10T00-26-01-169Z-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-022: Change HubNodeClient.read_file from GET /files/read to POST /operations/read-file with JSON body, add offset/limit parameters.",
+      "created_at": "2026-04-10T00:26:01.169Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-022/planning/2026-04-10T00-26-58-000Z-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for FIX-022: Change HubNodeClient.read_file from GET /files/read to POST /operations/read-file with JSON body, add offset/limit parameters, update response parsing.",
+      "created_at": "2026-04-10T00:26:58.000Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-022/planning/2026-04-10T00-27-36-166Z-plan.md",
+      "stage": "planning",
+      "summary": "Implementation plan for FIX-022: Change HubNodeClient.read_file from GET /files/read to POST /operations/read-file with JSON body containing path, offset, and limit parameters. Response parsing to use response.json()[\"data\"] following OperationResponse pattern. Only src/hub/services/node_client.py needs modification.",
+      "created_at": "2026-04-10T00:27:36.166Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-022/bootstrap/2026-04-10T00-30-38-969Z-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-04-10T00:30:38.969Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-022/implementation/2026-04-10T00-32-30-779Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-022: Changed HubNodeClient.read_file from GET /files/read to POST /operations/read-file with JSON body containing path, offset, and limit parameters. Updated response parsing to use OperationResponse pattern extracting data from response.json().get(\"data\", {}).",
+      "created_at": "2026-04-10T00:32:30.779Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-022/implementation/2026-04-10T00-32-53-386Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-022: Changed HubNodeClient.read_file from GET /files/read to POST /operations/read-file with JSON body, added offset/limit parameters.",
+      "created_at": "2026-04-10T00:32:53.386Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-022/review/2026-04-10T00-33-57-050Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-022: APPROVED - POST /operations/read-file correctly implemented with offset/limit parameters, consistent with existing patterns.",
+      "created_at": "2026-04-10T00:33:57.050Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-022/qa/2026-04-10T00-35-50-789Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-022: HubNodeClient.read_file now uses POST /operations/read-file with JSON body containing path, offset, and limit parameters.",
+      "created_at": "2026-04-10T00:35:50.789Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-022/smoke-test/2026-04-10T00-36-10-226Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T00:36:10.226Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-022/review/2026-04-10T00-36-25-325Z-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-022: NEEDS_FIXES - Response parsing inconsistent with established OperationResponse pattern",
+      "created_at": "2026-04-10T00:36:25.325Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-022/qa/2026-04-10T00-37-15-679Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification PASSED for FIX-022: All 4 acceptance criteria verified, smoke_test passed with exit code 0 for both commands.",
+      "created_at": "2026-04-10T00:37:15.679Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-003",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/edge-003/review/2026-04-10T00-40-37-275Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for EDGE-003: PASS — all 4 acceptance criteria verified, ngrok migration complete",
+      "created_at": "2026-04-10T00:40:37.275Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "EDGE-004",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/edge-004/review/2026-04-10T00-42-52-120Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for EDGE-004: PASS — all 3 acceptance criteria verified, ticket reconciliation complete, no workflow drift detected",
+      "created_at": "2026-04-10T00:42:52.120Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-001",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-001/review/2026-04-10T00-45-04-218Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-001: PASS. All 5 acceptance criteria verified by smoke test (exit 0) and code inspection. Both fixes (FastAPI DI anti-pattern and forward reference) confirmed in place. No workflow drift, no proof gaps, no follow-up required.",
+      "created_at": "2026-04-10T00:45:04.218Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-018",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-018/review/2026-04-10T00-48-17-972Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-018: PASS. All 4 acceptance criteria verified, no workflow drift, no proof gaps, no follow-up required.",
+      "created_at": "2026-04-10T00:48:17.972Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-022/review/2026-04-10T03-15-49-970Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-022: PASS. All 4 acceptance criteria verified, smoke-test passes, review verdict issue subsequently resolved in current code.",
+      "created_at": "2026-04-10T03:15:49.970Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-022/review/2026-04-10T03-16-21-443Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-022.",
+      "created_at": "2026-04-10T03:16:21.443Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-019/review/2026-04-10T03-20-10-723Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-019: PASS. All acceptance criteria verified, smoke-test passes, no workflow drift.",
+      "created_at": "2026-04-10T03:20:10.723Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-019",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-019/review/2026-04-10T03-21-37-965Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-019.",
+      "created_at": "2026-04-10T03:21:37.965Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T03-24-31-291Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-020: PASS. All acceptance criteria verified, smoke-test passes, no workflow drift.",
+      "created_at": "2026-04-10T03:24:31.291Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T03-26-23-727Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-020.",
+      "created_at": "2026-04-10T03:26:23.727Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-021/review/2026-04-10T03-27-01-698Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-021: PASS. All acceptance criteria verified, smoke-test passes, no workflow drift.",
+      "created_at": "2026-04-10T03:27:01.698Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-021/review/2026-04-10T03-29-05-667Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-021.",
+      "created_at": "2026-04-10T03:29:05.667Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-002/planning/2026-04-10T03-36-35-386Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning for REMED-002: Investigation reveals EXEC001 finding is STALE. All fixes from REMED-001 are confirmed present in current codebase. No code changes required. Recommended action: close with evidence that finding was already resolved.",
+      "created_at": "2026-04-10T03:36:35.386Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-002/qa/2026-04-10T03-40-48-548Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-002: Finding is stale, no code changes required. All fixes from REMED-001 confirmed present. Import verification passes.",
+      "created_at": "2026-04-10T03:40:48.548Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-002/smoke-test/2026-04-10T03-41-09-745Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T03:41:09.745Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "issue-discovery",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T04-39-12-338Z-issue-discovery.md",
+      "stage": "review",
+      "summary": "security intake routed to invalidates_done.",
+      "created_at": "2026-04-10T04:39:12.338Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-020/planning/2026-04-10T04-49-59-892Z-plan.md",
+      "stage": "planning",
+      "summary": "Fix missing authentication enforcement on node agent operational routes. Defects 1-4, 6-7 already fixed in current code. Defect 5 (MCP error double-wrapping) requires one small fix in src/hub/transport/mcp.py: add handler error promotion in format_tool_response to prevent errors being buried inside result.data.",
+      "created_at": "2026-04-10T04:49:59.892Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-020/planning/2026-04-10T04-50-39-091Z-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for FIX-020 covering all 7 production defects. Only Defect 5 (MCP error double-wrapping in transport/mcp.py) requires a code change. All other defects are already correctly implemented in current code.",
+      "created_at": "2026-04-10T04:50:39.091Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "plan_review",
+      "path": ".opencode/state/artifacts/history/fix-020/plan-review/2026-04-10T04-53-31-940Z-plan-review.md",
+      "stage": "plan_review",
+      "summary": "APPROVED — All 6 defects confirmed fixed/correct; only Defect 5 (MCP error double-wrapping) needs fix in mcp.py transport layer",
+      "created_at": "2026-04-10T04:53:31.940Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-020/implementation/2026-04-10T04-56-22-276Z-implementation.md",
+      "stage": "implementation",
+      "summary": "Added error-promotion check in format_tool_response to promote handler error dicts to proper JSON-RPC 2.0 error responses, fixing double-wrapping bug",
+      "created_at": "2026-04-10T04:56:22.276Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T05-00-07-625Z-review.md",
+      "stage": "review",
+      "summary": "APPROVED — Defect 5 fix (MCP error double-wrapping) verified correct with compile check and logic tests",
+      "created_at": "2026-04-10T05:00:07.625Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T05-01-49-276Z-review.md",
+      "stage": "review",
+      "summary": "APPROVED — Defect 5 fix (MCP error double-wrapping) verified correct with compile check (exit 0) and 5 scenario logic tests (ALL PASS). Remediation review artifact includes exact command records, raw output, and explicit PASS/FAIL results.",
+      "created_at": "2026-04-10T05:01:49.276Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-020/qa/2026-04-10T05-08-01-951Z-qa.md",
+      "stage": "qa",
+      "summary": "QA verification PASS — All 5 acceptance criteria verified, Defect 5 fix confirmed correct",
+      "created_at": "2026-04-10T05:08:01.951Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-10T05-38-37-460Z-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T05:38:37.460Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/remed-002/review/2026-04-10T05-39-48-341Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REMED-002.",
+      "created_at": "2026-04-10T05:39:48.341Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-002/review/2026-04-10T05-42-14-913Z-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-002: PASS. Finding EXEC001 confirmed stale; all REMED-001 fixes present in current code; all 3 imports verified passing.",
+      "created_at": "2026-04-10T05:42:14.913Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/remed-002/review/2026-04-10T05-42-46-516Z-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REMED-002.",
+      "created_at": "2026-04-10T05:42:46.516Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "issue-discovery",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T12-29-31-382Z-issue-discovery.md",
+      "stage": "review",
+      "summary": "security intake routed to invalidates_done.",
+      "created_at": "2026-04-10T12:29:31.382Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-020/implementation/2026-04-10T12-59-10-767Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-020-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Verification: all acceptance criteria already satisfied by current code. No new code changes required.",
+      "created_at": "2026-04-10T12:59:10.767Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T13-01-01-222Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-review.md",
+      "stage": "review",
+      "summary": "Remediation review PASS — all acceptance criteria confirmed satisfied by current code",
+      "created_at": "2026-04-10T13:01:01.222Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T13-31-30-219Z-reverification.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-020.",
+      "created_at": "2026-04-10T13:31:30.219Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-020/qa/2026-04-10T13-33-15-718Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-020-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification PASS - all 5 acceptance criteria verified via review artifact evidence and prior session import test",
+      "created_at": "2026-04-10T13:33:15.718Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-10T13-33-46-794Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-020-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T13:33:46.794Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-023",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-023/review/2026-04-10T13-36-43-571Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-023-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled FIX-020 against FIX-023.",
+      "created_at": "2026-04-10T13:36:43.571Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-023",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-023/review/2026-04-10T13-39-35-225Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-023-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled FIX-020 against FIX-020.",
+      "created_at": "2026-04-10T13:39:35.225Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-003",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/remed-003/review/2026-04-10T13-40-26-105Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/remed-003-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled REMED-002 against REMED-002.",
+      "created_at": "2026-04-10T13:40:26.105Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-004",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/remed-004/review/2026-04-10T13-40-54-763Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/remed-004-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled FIX-020 against FIX-020.",
+      "created_at": "2026-04-10T13:40:54.763Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T14-01-47-502Z-reverification.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-020.",
+      "created_at": "2026-04-10T14:01:47.502Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T14-02-22-022Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled FIX-023 against FIX-020.",
+      "created_at": "2026-04-10T14:02:22.022Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/remed-002/review/2026-04-10T14-02-55-410Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled REMED-003 against REMED-002.",
+      "created_at": "2026-04-10T14:02:55.410Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T14-03-24-652Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled REMED-004 against FIX-020.",
+      "created_at": "2026-04-10T14:03:24.652Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-002",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/remed-002/review/2026-04-10T14-06-52-332Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/remed-002-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled REMED-005 against REMED-002.",
+      "created_at": "2026-04-10T14:06:52.332Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-020/review/2026-04-10T14-07-27-079Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-020-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled REMED-006 against FIX-020.",
+      "created_at": "2026-04-10T14:07:27.079Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-10T16-34-40-443Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-020-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:34:40.443Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-021",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-021/smoke-test/2026-04-10T16-34-56-440Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-021-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:34:56.440Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-022/smoke-test/2026-04-10T16-34-56-851Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-022-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:34:56.851Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-022/smoke-test/2026-04-10T16-35-21-929Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-022-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-04-10T16:35:21.929Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-022/smoke-test/2026-04-10T16-35-40-076Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-022-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:35:40.076Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-10T16-35-57-254Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-020-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test failed.",
+      "created_at": "2026-04-10T16:35:57.254Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-020/smoke-test/2026-04-10T16-36-08-985Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-020-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:36:08.985Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-022/smoke-test/2026-04-10T16-36-27-974Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-022-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T16:36:27.974Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-024/planning/2026-04-10T18-19-27-379Z-plan.md",
+      "source_path": ".opencode/state/plans/fix-024-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for FIX-024: Fix HubNodeClient response envelope stripping and path-mode search output parsing. Covers two defects: (1) node_client methods strip OperationResponse envelope causing successful ops to appear as failures, (2) path-mode search uses --files-with-matches but parses as file:line:content.",
+      "created_at": "2026-04-10T18:19:27.379Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-024/implementation/2026-04-10T18-23-27-142Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-024-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-024: Fixed HubNodeClient response envelope stripping (node_client.py, inspection.py, search.py) and path-mode search output parsing (executor.py)",
+      "created_at": "2026-04-10T18:23:27.142Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-024/review/2026-04-10T18-27-12-705Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-024-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-024: APPROVED — both defects (response envelope stripping and path-mode search parsing) correctly fixed with no security regressions",
+      "created_at": "2026-04-10T18:27:12.705Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-024/qa/2026-04-10T18-29-24-482Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-024-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-024: Defects 1 and 2 verified PASS via code inspection. Runtime validation blocked by bash tool access restrictions. Criteria 3 and 4 could not be executed.",
+      "created_at": "2026-04-10T18:29:24.482Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-024/smoke-test/2026-04-10T18-30-07-098Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-024-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T18:30:07.098Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "issue-discovery",
+      "path": ".opencode/state/artifacts/history/fix-024/review/2026-04-10T18-50-25-311Z-issue-discovery.md",
+      "source_path": ".opencode/state/reviews/fix-024-review-issue-discovery.md",
+      "stage": "review",
+      "summary": "post_completion_defect intake routed to invalidates_done.",
+      "created_at": "2026-04-10T18:50:25.311Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/fix-024/planning/2026-04-10T19-08-01-087Z-planning.md",
+      "source_path": ".opencode/state/plans/fix-024-planning-planning.md",
+      "stage": "planning",
+      "summary": "Planning for FIX-024: Fix format_tool_response dict-in-error.message and git_operations.py envelope stripping.",
+      "created_at": "2026-04-10T19:08:01.087Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-024/implementation/2026-04-10T19-13-21-152Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-024-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "FIX-024 implementation: (1) format_tool_response extracts string from dict error, (2) git_status_handler unwraps OperationResponse envelope via payload = result.get(\"data\", {}). Import validation passes exit 0.",
+      "created_at": "2026-04-10T19:13:21.152Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-024/review/2026-04-10T19-16-24-024Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-024-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-024: APPROVED — both fixes (format_tool_response dict-in-error.message and git_status_handler envelope unwrapping) correctly implemented, no security regressions, no trust boundary changes, import compile check exits 0.",
+      "created_at": "2026-04-10T19:16:24.024Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-024/review/2026-04-10T19-16-59-725Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-024-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-024: APPROVED — both fixes (format_tool_response dict-in-error.message and git_status_handler envelope unwrapping) correctly implemented, no security regressions, no trust boundary changes, import compile check exits 0.",
+      "created_at": "2026-04-10T19:16:59.725Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/fix-024/bootstrap/2026-04-10T19-18-12-889Z-environment-bootstrap.md",
+      "source_path": ".opencode/state/bootstrap/fix-024-bootstrap-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-04-10T19:18:12.889Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-024/qa/2026-04-10T19-19-20-944Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-024-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-024: all 4 acceptance criteria verified PASS. Fix 1 (format_tool_response dict-in-error.message) verified correct by code inspection at lines 131-139. Fix 2 (git_status_handler envelope unwrapping) verified correct at lines 105-151. Import compile check exits 0 with OK output. No test changes required.",
+      "created_at": "2026-04-10T19:19:20.944Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-024/qa/2026-04-10T19-19-54-714Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-024-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-024: all 4 acceptance criteria verified PASS. Fix 1 (format_tool_response dict-in-error.message) and Fix 2 (git_status_handler envelope unwrapping) both verified correct by code inspection. Import compile check exits 0. No test changes required.",
+      "created_at": "2026-04-10T19:19:54.714Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-024",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-024/smoke-test/2026-04-10T19-20-20-425Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-024-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T19:20:20.425Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/fix-025/planning/2026-04-10T19-44-12-383Z-planning.md",
+      "source_path": ".opencode/state/plans/fix-025-planning-planning.md",
+      "stage": "planning",
+      "summary": "Planning artifact for FIX-025: Fix NodePolicy None health service wiring in MCP initialize. Identifies root cause (NodeHealthService never constructed, None passed to NodePolicy), provides two-step implementation (construct real NodeHealthService then pass it to NodePolicy), validates with build verification and smoke test, and confirms no blockers, no test changes, and single-file scope.",
+      "created_at": "2026-04-10T19:44:12.383Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/fix-025/planning/2026-04-10T19-45-03-053Z-planning.md",
+      "source_path": ".opencode/state/plans/fix-025-planning-planning.md",
+      "stage": "planning",
+      "summary": "Planning for FIX-025: Fix NodePolicy None health service wiring. Two-step fix in mcp.py: (1) construct NodeHealthService with node_repo/http_client/auth_handler, (2) pass real instance to NodePolicy instead of None.",
+      "created_at": "2026-04-10T19:45:03.053Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "plan_review",
+      "path": ".opencode/state/artifacts/history/fix-025/plan-review/2026-04-10T19-47-31-886Z-plan-review.md",
+      "source_path": ".opencode/state/artifacts/fix-025-plan-review-plan-review.md",
+      "stage": "plan_review",
+      "summary": "Plan review for FIX-025: APPROVED. Root cause accurate, implementation steps correct, no blockers, all acceptance criteria testable, no regression risk to list_nodes.",
+      "created_at": "2026-04-10T19:47:31.886Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-025/implementation/2026-04-10T19-50-32-192Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-025-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Fixed NodePolicy None health service wiring in MCP initialize. Added NodeHealthService construction with node_repo/http_client/auth_handler, then passed the real instance to NodePolicy instead of None. Validation import check exits 0 with OK output.",
+      "created_at": "2026-04-10T19:50:32.192Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-025/implementation/2026-04-10T19-51-06-289Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-025-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Fixed NodePolicy None health service wiring in MCP initialize. Added NodeHealthService construction with node_repo/http_client/auth_handler, then passed the real instance to NodePolicy instead of None. Validation import check exits 0 with OK output.",
+      "created_at": "2026-04-10T19:51:06.289Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-53-18-626Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "created_at": "2026-04-10T19:53:18.626Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-53-45-824Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-025: APPROVED — all 6 checks PASS, two-step fix verified correct, no security regressions, no trust boundary changes, ready for QA.",
+      "created_at": "2026-04-10T19:53:45.824Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-54-56-067Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-025: APPROVED — all 6 checks PASS, two-step fix verified correct, no security regressions, no trust boundary changes, ready for QA. Review verdict: PASS.",
+      "created_at": "2026-04-10T19:54:56.067Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-56-48-545Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-025: APPROVED — all 6 checks PASS, two-step fix verified correct, no security regressions, no trust boundary changes, ready for QA. Review verdict: PASS.",
+      "created_at": "2026-04-10T19:56:48.545Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-57-28-567Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-025: APPROVED — all 6 checks PASS, two-step fix verified correct, no security regressions, no trust boundary changes, ready for QA. Review verdict: PASS. Raw command output included.",
+      "created_at": "2026-04-10T19:57:28.567Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T19-58-00-611Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-025: APPROVED — all 6 checks PASS, two-step fix verified correct, no security regressions, no trust boundary changes, ready for QA. Review verdict: PASS. Raw command output and YAML frontmatter with verdict field included.",
+      "created_at": "2026-04-10T19:58:00.611Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-025/qa/2026-04-10T19-59-17-954Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-025-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-025: All 5 acceptance criteria PASS. NodeHealthService correctly wired, NodePolicy receives real instance, import test exits 0.",
+      "created_at": "2026-04-10T19:59:17.954Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-025/smoke-test/2026-04-10T19-59-54-965Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-025-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T19:59:54.965Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-026/planning/2026-04-10T20-10-33-932Z-plan.md",
+      "source_path": ".opencode/state/plans/fix-026-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning for FIX-026: Two-part fix - store node_health_service in MCPProtocolHandler, then call check_all_nodes() in lifespan.py startup after MCP initialization.",
+      "created_at": "2026-04-10T20:10:33.932Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-026/planning/2026-04-10T20-11-12-145Z-plan.md",
+      "source_path": ".opencode/state/plans/fix-026-planning-plan.md",
+      "stage": "planning",
+      "summary": "Planning artifact for FIX-026: Fix missing node health hydration at startup. Root cause: check_all_nodes() is never called at startup after mcp_handler.initialize(). Fix: add Step 8b in lifespan.py to call node_health_service.check_all_nodes() after MCP init, wrapped in fail-open try/except. Only lifespan.py changes required.",
+      "created_at": "2026-04-10T20:11:12.145Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-026/plan-review/2026-04-10T20-13-41-432Z-review.md",
+      "source_path": ".opencode/state/artifacts/fix-026-plan-review-review.md",
+      "stage": "plan_review",
+      "summary": "FIX-026 plan review: APPROVED. Root cause confirmed, placement correct, fail-open pattern consistent, all 7 acceptance criteria testable, no regression risk, no decision blockers.",
+      "created_at": "2026-04-10T20:13:41.432Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-026/implementation/2026-04-10T20-17-09-653Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-026-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-026: Added Step 8b in lifespan.py to call node_health_service.check_all_nodes() after MCP init, using fail-open try/except pattern. Import validation passes.",
+      "created_at": "2026-04-10T20:17:09.653Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-026/implementation/2026-04-10T20-17-45-672Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-026-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-026: Added Step 8b to hydrate node health at startup via check_all_nodes() with fail-open error handling",
+      "created_at": "2026-04-10T20:17:45.672Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-026/review/2026-04-10T20-19-22-229Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-026-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-026: APPROVED — all checks PASS, fail-open hydration block correctly placed after MCP init, no security regressions",
+      "created_at": "2026-04-10T20:19:22.229Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-026/review/2026-04-10T20-19-28-840Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-026-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-026: APPROVED. Step 8b correctly placed, fail-open pattern verified, import validation passes.",
+      "created_at": "2026-04-10T20:19:28.840Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-026/qa/2026-04-10T20-20-51-980Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-026-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-026: All 5 acceptance criteria PASSED. Import validation exits 0.",
+      "created_at": "2026-04-10T20:20:51.980Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-026/smoke-test/2026-04-10T20-21-18-905Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-026-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T20:21:18.905Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/fix-028/planning/2026-04-10T20-45-06-690Z-plan.md",
+      "source_path": ".opencode/state/plans/fix-028-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for FIX-028: Fix NodeHealthService construction using wrong db_manager reference in lifespan.py. Single-file fix: replace app.state.db_manager._repos.node with NodeRepository(db_manager) + NodeAuthHandler(config.node_client_api_key).",
+      "created_at": "2026-04-10T20:45:06.690Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/fix-028/implementation/2026-04-10T20-50-15-596Z-implementation.md",
+      "source_path": ".opencode/state/implementations/fix-028-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation of FIX-028: Fixed NodeHealthService construction in lifespan.py using NodeRepository(db_manager) + NodeAuthHandler(config.node_client_api_key) pattern. Import validation passes exit 0.",
+      "created_at": "2026-04-10T20:50:15.596Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-028/review/2026-04-10T20-54-03-146Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-028-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-028: APPROVED — fix correctly applies NodeRepository(db_manager) + NodeAuthHandler(config.node_client_api_key) wiring pattern",
+      "created_at": "2026-04-10T20:54:03.146Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/fix-028/qa/2026-04-10T20-57-58-577Z-qa.md",
+      "source_path": ".opencode/state/qa/fix-028-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for FIX-028: All static validation passed. Runtime validation (criteria 2, 3, 5) deferred to deployment verification.",
+      "created_at": "2026-04-10T20:57:58.577Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-028/review/2026-04-10T21-00-29-612Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-028-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-028: PASS — fix correctly applies NodeRepository(db_manager) + NodeAuthHandler wiring pattern, original error signature gone",
+      "created_at": "2026-04-10T21:00:29.612Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/fix-028/review/2026-04-10T21-01-22-570Z-review.md",
+      "source_path": ".opencode/state/reviews/fix-028-review-review.md",
+      "stage": "review",
+      "summary": "Code review for FIX-028: PASS — fix correctly applies NodeRepository(db_manager) + NodeAuthHandler wiring pattern, original error signature gone",
+      "created_at": "2026-04-10T21:01:22.570Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/fix-028/smoke-test/2026-04-10T21-02-06-483Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/fix-028-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-10T21:02:06.483Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-027",
+      "kind": "ticket-reconciliation",
+      "path": ".opencode/state/artifacts/history/fix-027/review/2026-04-10T21-09-40-649Z-ticket-reconciliation.md",
+      "source_path": ".opencode/state/reviews/fix-027-review-ticket-reconciliation.md",
+      "stage": "review",
+      "summary": "Reconciled FIX-027 against FIX-028 — FIX-027 superseded because FIX-028 already delivered the same fix (NodeHealthService wiring correction) and live runtime confirms localnode is healthy.",
+      "created_at": "2026-04-10T21:09:40.649Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T21-11-35-371Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-025: PASS. All acceptance criteria verified via live runtime and source code inspection. NodePolicy receives real NodeHealthService instance. Original error signature gone. No regression.",
+      "created_at": "2026-04-10T21:11:35.371Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/fix-026/review/2026-04-10T21-12-12-108Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/fix-026-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for FIX-026: PASS. All acceptance criteria verified via live runtime and source code inspection. Node health hydrated at startup. No regression. No follow-up required.",
+      "created_at": "2026-04-10T21:12:12.108Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-025",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-025/review/2026-04-10T21-12-41-105Z-reverification.md",
+      "source_path": ".opencode/state/reviews/fix-025-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-025.",
+      "created_at": "2026-04-10T21:12:41.105Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-026",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-026/review/2026-04-10T21-13-02-807Z-reverification.md",
+      "source_path": ".opencode/state/reviews/fix-026-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-026.",
+      "created_at": "2026-04-10T21:13:02.807Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "FIX-028",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/fix-028/review/2026-04-10T21-13-18-710Z-reverification.md",
+      "source_path": ".opencode/state/reviews/fix-028-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using FIX-028.",
+      "created_at": "2026-04-10T21:13:18.710Z",
+      "trust_state": "current"
     }
   ]
 }

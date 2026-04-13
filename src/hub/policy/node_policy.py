@@ -120,17 +120,19 @@ class NodePolicy:
                     health_status=health_status,
                 )
 
-            # Offline → APPROVE with warning
+            # Offline → REJECT (fail closed)
             if health_status == NodeHealthStatus.OFFLINE:
                 logger.warning(
-                    "node_access_allowed_offline",
+                    "node_access_rejected_offline",
                     node_id=node_id,
+                    health_status=health_status.value,
+                    error=health.health_error,
                 )
                 return NodeAccessResult(
-                    approved=True,
+                    approved=False,
                     node_id=node_id,
+                    rejection_reason="node_offline",
                     health_status=health_status,
-                    warning="node_is_offline",
                 )
 
             # Healthy → APPROVE

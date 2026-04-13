@@ -59,14 +59,41 @@
 | 9 | EXEC-004 | Fix hub repo-path normalization for inspection and file-read flows | bugfix | closeout | done | done | reverified | yes | high | - | - |
 | 9 | EXEC-005 | Align write_markdown and MCP transport response contracts with tests | bugfix | closeout | done | done | reverified | yes | medium | - | - |
 | 9 | EXEC-006 | Fix structured logging redaction behavior for nested payloads | bugfix | closeout | done | done | reverified | yes | medium | - | - |
-| 10 | EXEC-007 | Restore discovery and inspection contract behavior in hub tools | bugfix | closeout | done | done | reverified | no | high | EXEC-004, EXEC-005 | EXEC-012 |
-| 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | closeout | done | done | reverified | no | high | EXEC-004 | EXEC-012 |
+| 10 | EXEC-007 | Restore discovery and inspection contract behavior in hub tools | bugfix | closeout | done | done | reverified | no | high | EXEC-004, EXEC-005 | - |
+| 10 | EXEC-008 | Close remaining hub path and write-target security edge cases | security | closeout | done | done | reverified | no | high | EXEC-004 | - |
 | 10 | EXEC-009 | Repair node-agent executor timestamp and recent-commit behavior | node-agent | closeout | done | done | reverified | yes | medium | EXEC-003 | - |
 | 10 | EXEC-010 | Restore nested structured logging redaction semantics | shared-runtime | closeout | done | done | reverified | yes | medium | EXEC-006 | - |
 | 10 | EXEC-011 | Reduce repo-wide ruff violations to zero | hardening | closeout | done | done | trusted | no | high | - | EXEC-013, EXEC-014 |
 | 11 | EXEC-012 | Fix misclassified paths in test_path_traversal_dotdot_rejected and test_invalid_path_rejected | bugfix | closeout | done | superseded | reverified | yes | low | - | - |
 | 11 | EXEC-013 | Fix datetime.UTC, collections.abc, and TimeoutError alias violations | bugfix | closeout | done | done | reverified | yes | low | - | - |
 | 11 | EXEC-014 | Fix remaining mechanical Ruff violations after EXEC-013 | hardening | closeout | done | done | reverified | yes | low | EXEC-013 | - |
-| 12 | EDGE-003 | Replace Cloudflare public edge with ngrok runtime and config | edge | closeout | done | done | trusted | yes | low | - | EDGE-001, EDGE-002 |
+| 12 | EDGE-003 | Replace Cloudflare public edge with ngrok runtime and config | edge | closeout | done | done | trusted | yes | low | - | - |
 | 12 | EDGE-004 | Reconcile Cloudflare-specific ticket lineage after ngrok pivot | edge | closeout | done | done | trusted | yes | low | EDGE-003 | - |
-| 12 | REMED-001 | One or more Python packages fail to import - the service cannot start | runtime | closeout | done | done | trusted | no | high | - | - |
+| 12 | REMED-001 | Remediation review artifact does not contain runnable command evidence | runtime | closeout | done | done | trusted | no | low | - | - |
+| 13 | FIX-018 | Fix migration 1 CREATE INDEXES referencing tables from later migrations | bugfix | closeout | done | done | trusted | no | high | - | - |
+| 13 | FIX-019 | Fix MCP tools endpoint returning empty list | bugfix | closeout | done | done | reverified | no | high | - | - |
+| 14 | FIX-020 | Fix missing authentication enforcement on node agent operational routes | bugfix | closeout | done | done | reverified | no | high | - | FIX-024 |
+| 14 | FIX-021 | Fix SearchRequest missing mode field in node agent routes | bugfix | closeout | done | done | reverified | no | high | - | - |
+| 14 | FIX-022 | Fix HubNodeClient.read_file HTTP method and endpoint mismatch | bugfix | closeout | done | done | trusted | no | high | - | - |
+| 15 | REMED-002 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 16 | FIX-023 | Critical: Enforce bearer/API key authentication on all node agent operational routes | bugfix | closeout | done | superseded | reverified | no | high | - | - |
+| 17 | REMED-003 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 18 | REMED-004 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 19 | REMED-005 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 20 | REMED-006 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 21 | FIX-024 | Fix node-client response envelope stripping and path-mode search output parsing | bugfix | closeout | done | done | reverified | no | high | - | FIX-025 |
+| 22 | FIX-025 | Fix NodePolicy None health service wiring in MCP initialize | bugfix | closeout | done | done | reverified | no | high | - | - |
+| 23 | FIX-026 | Fix missing node health hydration at startup causing policy denials | bugfix | closeout | done | done | reverified | no | high | - | FIX-028 |
+| 24 | FIX-027 | Fix node health startup hydration not persisting health status for registered nodes | bugfix | closeout | done | superseded | reverified | no | high | - | - |
+| 25 | FIX-028 | Fix NodeHealthService construction using wrong db_manager reference in lifespan.py | bugfix | closeout | done | done | reverified | no | high | - | - |
+| 26 | REMED-007 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | REMED-008, REMED-001, REMED-002, REMED-011, REMED-012, REMED-013, REMED-014, REMED-015, REMED-016 |
+| 27 | REMED-008 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 28 | REMED-009 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 29 | REMED-010 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |
+| 30 | REMED-011 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 31 | REMED-012 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 32 | REMED-013 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 33 | REMED-014 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 34 | REMED-015 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 35 | REMED-016 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 36 | REMED-017 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |

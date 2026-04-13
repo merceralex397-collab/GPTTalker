@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: EXEC-002
 - source_mode: net_new_scope
 
@@ -62,5 +63,4 @@ None
 - reverification: .opencode/state/artifacts/history/exec-005/review/2026-03-27T16-33-41-546Z-reverification.md (review) - Trust restored using EXEC-005.
 
 ## Notes
-
 

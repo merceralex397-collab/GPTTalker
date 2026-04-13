@@ -1,5 +1,5 @@
 ---
-description: Hidden lease-bound executor for bounded parallel implementation lanes in GPTTalker
+description: Hidden lease-bound executor for bounded parallel implementation lanes
 model: minimax-coding-plan/MiniMax-M2.7
 mode: subagent
 hidden: true
@@ -35,21 +35,44 @@ permission:
     "cat *": allow
     "head *": allow
     "tail *": allow
+    "file *": allow
+    "echo *": allow
+    "test -f *": allow
+    "test -d *": allow
+    "[ -f *": allow
+    "[ -d *": allow
+    "mkdir *": allow
+    "cp *": allow
+    "mv *": allow
     "git status*": allow
     "git diff*": allow
+    "npm *": allow
+    "pnpm *": allow
+    "yarn *": allow
+    "bun *": allow
+    "node *": allow
     "python *": allow
+    "python3 *": allow
     "pytest *": allow
     "uv *": allow
-    "ruff *": allow
-    "node *": allow
-    "npm *": allow
+    "curl *": allow
+    "wget *": allow
+    "unzip *": allow
+    "tar *": allow
+    "zip *": allow
+    "cargo *": allow
+    "go *": allow
+    "make *": allow
+    "/home/pc/.local/bin/godot *": allow
+    "godot *": allow
+    "godot4 *": allow
     "rm *": deny
     "git reset *": deny
     "git clean *": deny
     "git push *": deny
 ---
 
-Execute one bounded GPTTalker ticket lane after the team leader has already chosen the lane and its allowed paths.
+Execute one bounded ticket lane after the team leader has already chosen the lane and its allowed paths.
 
 Return:
 

@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: None
 - source_mode: None
 
@@ -60,5 +61,4 @@ None
 - reverification: .opencode/state/artifacts/history/repo-001/review/2026-03-31T21-25-30-634Z-reverification.md (review) - Trust restored using REPO-001.
 
 ## Notes
-
 

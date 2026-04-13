@@ -6,9 +6,9 @@ These values should come from an explicit user choice during scaffold generation
 
 - model tier: `weak`
 - provider: `minimax-coding-plan`
-- team lead / planner / reviewers: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
-- implementer: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
-- utilities, docs, and QA helpers: `minimax-coding-plan/minimax-coding-plan/MiniMax-M2.7`
+- team lead / planner / reviewers: `minimax-coding-plan/MiniMax-M2.7`
+- implementer: `minimax-coding-plan/MiniMax-M2.7`
+- utilities, docs, and QA helpers: `minimax-coding-plan/MiniMax-M2.7`
 - operating profile: `Weak-tier evidence-first profile`
 - prompt density: `full checklists, explicit examples, and repeated truth-source reminders`
 - repo-local profile skill: `.opencode/skills/model-operating-profile/SKILL.md`

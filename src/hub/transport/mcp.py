@@ -129,11 +129,23 @@ def format_tool_response(
         response["id"] = message_id
 
     if error:
+        if isinstance(error, dict):
+            error_message = error.get("message", str(error))
+        else:
+            error_message = error
         response["error"] = {
             "code": -32603,
-            "message": error,
+            "message": error_message,
         }
     else:
+        # If handler returned an error dict, promote it to proper JSON-RPC error
+        if isinstance(result, dict) and result.get("success") is False and "error" in result:
+            response["error"] = {
+                "code": -32603,
+                "message": result.get("error", "Unknown error"),
+            }
+            return response
+
         # If result already has a "data" key, use it directly to avoid double-wrapping
         if isinstance(result, dict) and "data" in result:
             response["result"] = {

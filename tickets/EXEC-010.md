@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -60,4 +61,3 @@ None
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
 - Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/shared/test_logging.py -q --tb=no` exits 0 after preserving container shape for sensitive dict/list keys and fixing the max-depth sentinel cutoff.
-

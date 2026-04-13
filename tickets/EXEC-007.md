@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: EXEC-002
 - source_mode: post_completion_issue
 
@@ -38,7 +39,7 @@ EXEC-004, EXEC-005
 
 ## Follow-up Tickets
 
-- EXEC-012
+None
 
 ## Decision Blockers
 
@@ -68,9 +69,10 @@ None
 - smoke-test: .opencode/state/artifacts/history/exec-007/smoke-test/2026-03-26T04-20-53-139Z-smoke-test.md (smoke-test) - Deterministic smoke test failed.
 - backlog-verification: .opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-136Z-backlog-verification.md (review) - Backlog verification recorded during ticket_reverify for EXEC-007.
 - reverification: .opencode/state/artifacts/history/exec-007/review/2026-03-27T07-29-15-141Z-reverification.md (review) - Trust restored using EXEC-007.
+- ticket-reconciliation: .opencode/state/artifacts/history/exec-007/review/2026-04-09T20-57-58-603Z-ticket-reconciliation.md (review) [superseded] - Reconciled EXEC-012 against EXEC-008.
+- ticket-reconciliation: .opencode/state/artifacts/history/exec-007/review/2026-04-09T21-01-31-666Z-ticket-reconciliation.md (review) - Reconciled EXEC-012 against EXEC-007.
 
 ## Notes
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
 - Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_contracts.py -q --tb=no` exits 0.
-

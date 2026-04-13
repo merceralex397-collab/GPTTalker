@@ -5,10 +5,10 @@ These endpoints provide bounded file operations:
 - read_file: Reads file contents with offset/limit support
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 
-from src.node_agent.dependencies import get_executor
+from src.node_agent.dependencies import get_executor, require_api_key
 from src.node_agent.executor import OperationExecutor
 from src.shared.logging import get_logger
 
@@ -42,6 +42,7 @@ class SearchRequest(BaseModel):
     directory: str
     pattern: str
     include_patterns: list[str] | None = None
+    mode: str = "text"  # Search mode: text, path, or symbol
     max_results: int = 1000
     timeout: int = 60
 
@@ -72,6 +73,7 @@ class OperationResponse(BaseModel):
 @router.post("/operations/list-dir", response_model=OperationResponse)
 async def list_dir(
     request: ListDirRequest,
+    _: None = Depends(require_api_key),
     executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """List directory contents with metadata.
@@ -134,6 +136,7 @@ async def list_dir(
 @router.post("/operations/read-file", response_model=OperationResponse)
 async def read_file(
     request: ReadFileRequest,
+    _: None = Depends(require_api_key),
     executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Read file contents with offset and limit support.
@@ -191,6 +194,7 @@ async def read_file(
 @router.post("/operations/search", response_model=OperationResponse)
 async def search(
     request: SearchRequest,
+    _: None = Depends(require_api_key),
     executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Search for pattern in files.
@@ -267,6 +271,7 @@ async def search(
 @router.post("/operations/git-status", response_model=OperationResponse)
 async def git_status(
     request: GitStatusRequest,
+    _: None = Depends(require_api_key),
     executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Get git status for a repository.
@@ -325,6 +330,7 @@ async def git_status(
 @router.post("/operations/write-file", response_model=OperationResponse)
 async def write_file(
     request: WriteFileRequest,
+    _: None = Depends(require_api_key),
     executor: OperationExecutor = Depends(get_executor),
 ) -> OperationResponse:
     """Write content to a file with atomic write and verification.

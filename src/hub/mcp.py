@@ -86,8 +86,20 @@ class MCPProtocolHandler:
         issue_repo = IssueRepository(db_manager) if db_manager else None
         task_repo_instance = TaskRepository(db_manager) if db_manager else None
 
+        # Build node health service
+        auth_handler = NodeAuthHandler(config.node_client_api_key) if config else None
+        node_health_service = (
+            NodeHealthService(
+                node_repo=node_repo,
+                http_client=http_client,
+                auth_handler=auth_handler,
+            )
+            if node_repo and http_client
+            else None
+        )
+
         # Build services
-        node_policy = NodePolicy(node_repo, None) if node_repo else None
+        node_policy = NodePolicy(node_repo, node_health_service) if node_repo else None
         repo_policy = RepoPolicy(repo_repo) if repo_repo else None
         write_target_policy = WriteTargetPolicy(write_target_repo) if write_target_repo else None
         llm_service_policy = LLMServicePolicy(llm_service_repo) if llm_service_repo else None

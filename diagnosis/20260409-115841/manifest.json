@@ -1,0 +1,381 @@
+{
+  "generated_at": "2026-04-09T11:58:41Z",
+  "repo_root": "/home/pc/projects/GPTTalker",
+  "finding_count": 8,
+  "finding_codes": [
+    "CONFIG001",
+    "SKILL002",
+    "WFLOW010",
+    "WFLOW012",
+    "WFLOW016",
+    "WFLOW023",
+    "WFLOW024",
+    "WFLOW027"
+  ],
+  "source_findings": [],
+  "result_state": "validated failures found",
+  "diagnosis_kind": "initial_diagnosis",
+  "evidence_mode": "current_state_only",
+  "audit_package_commit": "906dc002415726367fd1ecb74c5556903f907341",
+  "report_files": {
+    "report_1": "01-initial-codebase-review.md",
+    "report_2": "02-scafforge-process-failures.md",
+    "report_3": "03-scafforge-prevention-actions.md",
+    "report_4": "04-live-repo-repair-plan.md"
+  },
+  "disposition_bundle_file": "disposition-bundle.json",
+  "disposition_bundle": {
+    "version": 1,
+    "generated_at": "2026-04-09T11:58:41Z",
+    "repo_root": "/home/pc/projects/GPTTalker",
+    "audit_package_commit": "906dc002415726367fd1ecb74c5556903f907341",
+    "allowed_classes": [
+      "managed_blocker",
+      "manual_prerequisite_blocker",
+      "source_follow_up",
+      "process_state_only",
+      "advisory"
+    ],
+    "finding_count": 8,
+    "findings": [
+      {
+        "code": "WFLOW024",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          ".opencode/skills/ticket-execution/SKILL.md"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "CONFIG001",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          "opencode.jsonc"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "WFLOW016",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          ".opencode/tools/smoke_test.ts"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "WFLOW010",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          "tickets/manifest.json",
+          ".opencode/state/workflow-state.json",
+          ".opencode/meta/pivot-state.json",
+          "START-HERE.md",
+          ".opencode/state/context-snapshot.md",
+          ".opencode/state/latest-handoff.md"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "WFLOW027",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          ".opencode/tools/handoff_publish.ts"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "WFLOW012",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          "docs/process/workflow.md",
+          "tickets/README.md",
+          ".opencode/commands/kickoff.md",
+          ".opencode/commands/run-lane.md",
+          ".opencode/skills/ticket-execution/SKILL.md",
+          ".opencode/agents/gpttalker-team-leader.md",
+          ".opencode/agents/gpttalker-implementer-context.md",
+          ".opencode/agents/gpttalker-lane-executor.md",
+          ".opencode/agents/gpttalker-docs-handoff.md"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "SKILL002",
+        "severity": "warning",
+        "disposition_class": "manual_prerequisite_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          ".opencode/skills/ticket-execution/SKILL.md"
+        ],
+        "provenance": "script"
+      },
+      {
+        "code": "WFLOW023",
+        "severity": "error",
+        "disposition_class": "managed_blocker",
+        "legacy_disposition_class": "managed_blocker",
+        "route": "scafforge-repair",
+        "repair_class": "safe Scafforge package change",
+        "evidence_grade": "repo-state validation",
+        "source_files": [
+          ".opencode/tools/ticket_lookup.ts",
+          ".opencode/tools/ticket_update.ts",
+          ".opencode/lib/workflow.ts"
+        ],
+        "provenance": "script"
+      }
+    ],
+    "counts": {
+      "managed_blocker": 7,
+      "manual_prerequisite_blocker": 1,
+      "source_follow_up": 0,
+      "process_state_only": 0,
+      "advisory": 0
+    },
+    "shadow_mode_deltas": [
+      {
+        "code": "SKILL002",
+        "legacy_disposition_class": "managed_blocker",
+        "disposition_class": "manual_prerequisite_blocker",
+        "route": "scafforge-repair",
+        "reason": "Legacy prefix classification would label SKILL002 as managed_blocker, but the authoritative bundle assigns manual_prerequisite_blocker."
+      }
+    ]
+  },
+  "ticket_recommendations": [
+    {
+      "id": "REMED-001",
+      "title": "opencode.jsonc is missing or unparseable",
+      "description": "Remediate CONFIG001 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        "opencode.jsonc"
+      ],
+      "suggested_fix_approach": "Run scafforge-repair to regenerate opencode.jsonc from the current template.",
+      "assignee": "implementer",
+      "source_finding_code": "CONFIG001",
+      "source_finding_codes": [
+        "CONFIG001"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Run scafforge-repair to regenerate opencode.jsonc from the current template.",
+      "source_files": [
+        "opencode.jsonc"
+      ]
+    },
+    {
+      "id": "REMED-002",
+      "title": "Derived restart surfaces disagree with canonical workflow state, so resume guidance can route work from stale or contradictory facts",
+      "description": "Remediate WFLOW010 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        "tickets/manifest.json",
+        ".opencode/state/workflow-state.json",
+        ".opencode/meta/pivot-state.json",
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ],
+      "suggested_fix_approach": "Regenerate `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` from canonical manifest, workflow state, and pivot state after every workflow save, compute handoff readiness from bootstrap plus repair-follow-on plus verification state in one shared contract, and fail repair verification if any derived restart surface drifts.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW010",
+      "source_finding_codes": [
+        "WFLOW010"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Regenerate `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` from canonical manifest, workflow state, and pivot state after every workflow save, compute handoff readiness from bootstrap plus repair-follow-on plus verification state in one shared contract, and fail repair verification if any derived restart surface drifts.",
+      "source_files": [
+        "tickets/manifest.json",
+        ".opencode/state/workflow-state.json",
+        ".opencode/meta/pivot-state.json",
+        "START-HERE.md",
+        ".opencode/state/context-snapshot.md",
+        ".opencode/state/latest-handoff.md"
+      ]
+    },
+    {
+      "id": "REMED-003",
+      "title": "The generated lease-ownership contract is split across coordinator and worker surfaces, so agents can disagree about who should claim a ticket and when bootstrap gates apply",
+      "description": "Remediate WFLOW012 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        "docs/process/workflow.md",
+        "tickets/README.md",
+        ".opencode/commands/kickoff.md",
+        ".opencode/commands/run-lane.md",
+        ".opencode/skills/ticket-execution/SKILL.md",
+        ".opencode/agents/gpttalker-team-leader.md",
+        ".opencode/agents/gpttalker-implementer-context.md",
+        ".opencode/agents/gpttalker-lane-executor.md",
+        ".opencode/agents/gpttalker-docs-handoff.md"
+      ],
+      "suggested_fix_approach": "Adopt one lease model everywhere: the team leader owns `ticket_claim` and `ticket_release`, specialists work only inside the already-active ticket lease, and only Wave 0 setup work may claim before bootstrap is ready.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW012",
+      "source_finding_codes": [
+        "WFLOW012"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Adopt one lease model everywhere: the team leader owns `ticket_claim` and `ticket_release`, specialists work only inside the already-active ticket lease, and only Wave 0 setup work may claim before bootstrap is ready.",
+      "source_files": [
+        "docs/process/workflow.md",
+        "tickets/README.md",
+        ".opencode/commands/kickoff.md",
+        ".opencode/commands/run-lane.md",
+        ".opencode/skills/ticket-execution/SKILL.md",
+        ".opencode/agents/gpttalker-team-leader.md",
+        ".opencode/agents/gpttalker-implementer-context.md",
+        ".opencode/agents/gpttalker-lane-executor.md",
+        ".opencode/agents/gpttalker-docs-handoff.md"
+      ]
+    },
+    {
+      "id": "REMED-004",
+      "title": "The managed smoke-test override contract can fail before the requested smoke command even starts",
+      "description": "Remediate WFLOW016 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        ".opencode/tools/smoke_test.ts"
+      ],
+      "suggested_fix_approach": "Parse one-item shell-style overrides into argv, treat leading `KEY=VALUE` tokens as environment overrides, and report malformed overrides as configuration errors instead of misclassifying them as runtime environment failures.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW016",
+      "source_finding_codes": [
+        "WFLOW016"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Parse one-item shell-style overrides into argv, treat leading `KEY=VALUE` tokens as environment overrides, and report malformed overrides as configuration errors instead of misclassifying them as runtime environment failures.",
+      "source_files": [
+        ".opencode/tools/smoke_test.ts"
+      ]
+    },
+    {
+      "id": "REMED-005",
+      "title": "The generated lifecycle contract is not verdict-aware, so FAIL review or QA artifacts can still look advanceable",
+      "description": "Remediate WFLOW023 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        ".opencode/tools/ticket_lookup.ts",
+        ".opencode/tools/ticket_update.ts",
+        ".opencode/lib/workflow.ts"
+      ],
+      "suggested_fix_approach": "Extract verdicts from the latest review and QA artifacts, route FAIL or BLOCKED outcomes back to implementation, and reject lifecycle transitions when the latest artifact verdict is blocking or unclear.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW023",
+      "source_finding_codes": [
+        "WFLOW023"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Extract verdicts from the latest review and QA artifacts, route FAIL or BLOCKED outcomes back to implementation, and reject lifecycle transitions when the latest artifact verdict is blocking or unclear.",
+      "source_files": [
+        ".opencode/tools/ticket_lookup.ts",
+        ".opencode/tools/ticket_update.ts",
+        ".opencode/lib/workflow.ts"
+      ]
+    },
+    {
+      "id": "REMED-006",
+      "title": "Fail-state routing is still under-specified in generated prompts or workflow skills",
+      "description": "Remediate WFLOW024 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ],
+      "suggested_fix_approach": "Document review, QA, smoke-test, and bootstrap failure recovery paths in ticket-execution, and instruct the team leader to follow transition_guidance.recovery_action whenever it is present.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW024",
+      "source_finding_codes": [
+        "WFLOW024"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Document review, QA, smoke-test, and bootstrap failure recovery paths in ticket-execution, and instruct the team leader to follow transition_guidance.recovery_action whenever it is present.",
+      "source_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ]
+    },
+    {
+      "id": "REMED-007",
+      "title": "Restart-surface tools return paths without verifying what they wrote",
+      "description": "Remediate WFLOW027 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        ".opencode/tools/handoff_publish.ts"
+      ],
+      "suggested_fix_approach": "Return verified flags plus current workflow metadata for published restart surfaces and include size or hash metadata for snapshots so callers can confirm what was written.",
+      "assignee": "implementer",
+      "source_finding_code": "WFLOW027",
+      "source_finding_codes": [
+        "WFLOW027"
+      ],
+      "severity": "error",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Return verified flags plus current workflow metadata for published restart surfaces and include size or hash metadata for snapshots so callers can confirm what was written.",
+      "source_files": [
+        ".opencode/tools/handoff_publish.ts"
+      ]
+    },
+    {
+      "id": "REMED-008",
+      "title": "The repo-local `ticket-execution` skill is too thin to explain the actual lifecycle contract to weaker models",
+      "description": "Remediate SKILL002 by correcting the validated issue and rerunning the relevant quality checks.",
+      "affected_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ],
+      "suggested_fix_approach": "Keep `ticket-execution` narrowly procedural: route from `ticket_lookup.transition_guidance`, stop after repeated lifecycle contradictions, reserve `smoke_test` as the only PASS producer, and keep slash commands human-only.",
+      "assignee": "implementer",
+      "source_finding_code": "SKILL002",
+      "source_finding_codes": [
+        "SKILL002"
+      ],
+      "severity": "warning",
+      "route": "scafforge-repair",
+      "repair_class": "safe Scafforge package change",
+      "summary": "Keep `ticket-execution` narrowly procedural: route from `ticket_lookup.transition_guidance`, stop after repeated lifecycle contradictions, reserve `smoke_test` as the only PASS producer, and keep slash commands human-only.",
+      "source_files": [
+        ".opencode/skills/ticket-execution/SKILL.md"
+      ]
+    }
+  ],
+  "package_work_required_first": false,
+  "recommended_next_step": "subject_repo_repair",
+  "recommended_ticket_payload": "recommended-ticket-payload.json"
+}

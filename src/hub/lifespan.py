@@ -120,6 +120,16 @@ async def lifespan(app: FastAPI):
             enabled=config.ngrok_enabled,
         )
 
+    # Step 8a: Register all MCP tools BEFORE initializing MCP handler
+    # Note: @app.on_event("startup") in main.py is deprecated when lifespan= is set.
+    # Tools must be registered before mcp_handler.initialize() builds the router.
+    from src.hub.tool_router import get_global_registry
+    from src.hub.tools import register_all_tools
+
+    registry = get_global_registry()
+    register_all_tools(registry)
+    logger.info("mcp_tools_registered", tool_count=registry.tool_count)
+
     # Step 8: Pre-build MCP router using app state (RC-1 fix)
     # This avoids the FastAPI DI anti-pattern where get_policy_engine()
     # was called directly in _ensure_router() without a request context,
@@ -128,6 +138,30 @@ async def lifespan(app: FastAPI):
 
     await mcp_handler.initialize(app)
     logger.info("mcp_handler_initialized")
+
+    # Step 8b: Hydrate node health for all registered nodes before accepting traffic
+    # (fail-open: log warning but continue if health check fails)
+    try:
+        from src.hub.services.auth import NodeAuthHandler
+        from src.hub.services.node_health import NodeHealthService
+        from src.shared.repositories.nodes import NodeRepository
+
+        node_repo = NodeRepository(db_manager)
+        auth_handler = NodeAuthHandler(config.node_client_api_key)
+
+        node_health_service = NodeHealthService(
+            http_client=app.state.http_client,
+            node_repo=node_repo,
+            auth_handler=auth_handler,
+        )
+        await node_health_service.check_all_nodes()
+        logger.info("node_health_hydrated")
+    except Exception as e:
+        logger.warning(
+            "node_health_hydration_failed_continuing",
+            error=str(e),
+            exc_info=e,
+        )
 
     # Yield control to the application
     yield

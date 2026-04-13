@@ -19,7 +19,7 @@ export default tool({
   args: {
     ticket_id: tool.schema.string().describe("Ticket id to claim."),
     owner_agent: tool.schema.string().describe("Agent name or role that will own the lease."),
-    allowed_paths: tool.schema.array(tool.schema.string()).describe("Repo-relative path prefixes this lease may edit.").optional(),
+    allowed_paths: tool.schema.array(tool.schema.string()).describe("Repo-relative path prefixes or glob patterns this lease may edit.").optional(),
     write_lock: tool.schema.boolean().describe("Whether this lease authorizes file edits. Defaults to true.").optional(),
   },
   async execute(args) {
@@ -54,7 +54,7 @@ export default tool({
     }
 
     const lease = claimLaneLease(workflow, ticket, ownerAgent, args.allowed_paths || [], writeLock)
-    await saveWorkflowState(workflow)
+    await saveWorkflowState(workflow, undefined, undefined, {}, { skipGraphValidation: true })
 
     return JSON.stringify(
       {

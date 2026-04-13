@@ -1,53 +1,92 @@
 {
   "tracking_mode": "persistent_recorded_state",
   "assertion_input_mode": "legacy_manual_assertion",
-  "cycle_id": "2026-03-31T13:00:58Z",
-  "created_at": "2026-03-31T13:00:58Z",
-  "last_updated_at": "2026-03-31T13:26:17Z",
+  "cycle_id": "2026-04-12T02:50:07Z",
+  "created_at": "2026-04-12T02:50:07Z",
+  "last_updated_at": "2026-04-12T02:52:13Z",
   "process_version": 7,
-  "repair_package_commit": "missing_provenance",
-  "repair_basis_path": "/home/rowan/GPTTalker/diagnosis/20260331-125921",
+  "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+  "repair_basis_path": "/home/pc/projects/GPTTalker/diagnosis/20260412-024837",
   "pruned_unknown_stages": [],
   "required_stages": [
-    "project-skill-bootstrap",
     "ticket-pack-builder"
   ],
   "stage_records": {
     "project-skill-bootstrap": {
-        "stage": "project-skill-bootstrap",
-        "owner": "project-skill-bootstrap",
-        "category": "repo_local_skills",
-        "status": "completed",
-        "reason": "Repo-local skills were replaced or still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-        "currently_required": false,
-        "last_checked_at": "2026-03-31T13:00:59Z",
-        "last_updated_at": "2026-03-31T13:26:17Z"
-      },
-      "ticket-pack-builder": {
-        "stage": "ticket-pack-builder",
-        "owner": "ticket-pack-builder",
-        "category": "ticket_follow_up",
-        "status": "completed",
-        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
-        "currently_required": false,
-        "last_checked_at": "2026-03-31T13:00:59Z",
-        "last_updated_at": "2026-03-31T13:26:17Z"
-      }
+      "stage": "project-skill-bootstrap",
+      "owner": "project-skill-bootstrap",
+      "category": "repo_local_skills",
+      "status": "completed",
+      "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
+      "currently_required": false,
+      "last_checked_at": "2026-04-12T02:51:55Z",
+      "last_updated_at": "2026-04-12T02:51:55Z",
+      "completion_mode": "recorded_execution",
+      "completed_by": "project-skill-bootstrap",
+      "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
+      "evidence_paths": [
+        ".opencode/skills/stack-standards/SKILL.md",
+        ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+      ],
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "first_recorded_at": "2026-04-12T02:51:55Z",
+      "last_recorded_at": "2026-04-12T02:51:55Z"
     },
+    "ticket-pack-builder": {
+      "stage": "ticket-pack-builder",
+      "owner": "ticket-pack-builder",
+      "category": "ticket_follow_up",
+      "status": "completed",
+      "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
+      "currently_required": true,
+      "last_checked_at": "2026-04-12T02:52:13Z",
+      "last_updated_at": "2026-04-12T02:51:55Z",
+      "completion_mode": "recorded_execution",
+      "completed_by": "ticket-pack-builder",
+      "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
+      "evidence_paths": [
+        ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
+        "diagnosis/20260412-025014/manifest.json",
+        "tickets/REMED-017.md"
+      ],
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "first_recorded_at": "2026-04-12T02:51:55Z",
+      "last_recorded_at": "2026-04-12T02:51:55Z"
+    }
+  },
   "history": [
     {
+      "recorded_at": "2026-04-12T02:51:55Z",
       "stage": "project-skill-bootstrap",
+      "owner": "project-skill-bootstrap",
+      "category": "repo_local_skills",
       "status": "completed",
-      "completed_at": "2026-03-31T13:26:17Z",
+      "completion_mode": "recorded_execution",
       "completed_by": "project-skill-bootstrap",
-      "artifact_path": ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+      "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
+      "evidence_paths": [
+        ".opencode/skills/stack-standards/SKILL.md",
+        ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
+      ],
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "cycle_id": "2026-04-12T02:50:07Z"
     },
     {
+      "recorded_at": "2026-04-12T02:51:55Z",
       "stage": "ticket-pack-builder",
+      "owner": "ticket-pack-builder",
+      "category": "ticket_follow_up",
       "status": "completed",
-      "completed_at": "2026-03-31T13:26:17Z",
+      "completion_mode": "recorded_execution",
       "completed_by": "ticket-pack-builder",
-      "artifact_path": ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md"
+      "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
+      "evidence_paths": [
+        ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
+        "diagnosis/20260412-025014/manifest.json",
+        "tickets/REMED-017.md"
+      ],
+      "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
+      "cycle_id": "2026-04-12T02:50:07Z"
     }
   ]
 }

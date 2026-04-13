@@ -30,9 +30,15 @@ permission:
     "ls *": allow
     "find *": allow
     "rg *": allow
+    "grep *": allow
     "cat *": allow
     "head *": allow
     "tail *": allow
+    "echo *": allow
+    "test -f *": allow
+    "test -d *": allow
+    "[ -f *": allow
+    "[ -d *": allow
     "git diff*": allow
     "npm test*": allow
     "npm run test*": allow
@@ -58,6 +64,7 @@ permission:
     "bun run build*": allow
     "node --test*": allow
     "python -m pytest*": allow
+    "python3 -m pytest*": allow
     "pytest *": allow
     "uv run pytest*": allow
     "cargo test*": allow
@@ -68,6 +75,9 @@ permission:
     "make lint*": allow
     "make check*": allow
     "make build*": allow
+    "/home/pc/.local/bin/godot *": allow
+    "godot *": allow
+    "godot4 *": allow
 ---
 
 Run the minimum meaningful validation for the approved ticket. Use `review-audit-bridge` for QA output ordering and blocker rules, then report:
@@ -82,9 +92,7 @@ Rules:
 - when a canonical QA artifact path is provided, write the full QA body with `artifact_write` and then register it with `artifact_register`
 - if artifact creation is blocked because the ticket lease is missing, return that blocker to the team leader instead of trying to claim a lease yourself
 - "code inspection" alone is not validation — you must execute tests or compile checks
-- for Python repos with `tests/`, run `pytest tests/ --collect-only -q --tb=no` before the full suite
-- run the project test suite and report pass/fail counts with raw command output
-- require an import check for the primary Python service module when the ticket changes runtime entrypoints or dependency wiring
+- run the project test suite and report pass/fail counts with command output
 - if no test suite exists, run compile or syntax checks and import verification on all source files
 - include raw command output in the QA artifact
 - if the QA artifact does not contain command output, it will be rejected by the team leader

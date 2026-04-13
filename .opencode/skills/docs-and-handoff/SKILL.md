@@ -1,29 +1,15 @@
 ---
 name: docs-and-handoff
-description: Keep GPTTalker's derived restart surfaces aligned with manifest, workflow, pivot, and repair-follow-on truth.
+description: Maintain START-HERE, context snapshots, and closeout artifacts for this repo. Use when a ticket changes state, a session is ending, or autonomous work needs a concise human and agent resume surface.
 ---
 
 # Docs And Handoff
 
-## Primary Derived Surfaces
+Before refreshing handoff artifacts, call `skill_ping` with `skill_id: "docs-and-handoff"` and `scope: "project"`.
+
+Keep these artifacts fresh:
 
 - `START-HERE.md`
 - `.opencode/state/context-snapshot.md`
-- `.opencode/state/latest-handoff.md`
 - `tickets/BOARD.md`
-
-## Canonical Inputs
-
 - `tickets/manifest.json`
-- `.opencode/state/workflow-state.json`
-- `.opencode/meta/pivot-state.json`
-- `.opencode/meta/repair-follow-on-state.json`
-- `docs/spec/CANONICAL-BRIEF.md`
-
-## Repo-Specific Rules
-
-- Restart surfaces are derived views. They must not invent state that is missing from manifest or workflow state.
-- If repair follow-on is complete, restart surfaces must stop saying `managed_blocked`.
-- If pivot follow-up remains open, keep that risk explicit until the edge and lineage tickets actually close.
-- When the active ticket changes, refresh the restart surfaces so weaker models do not resume from a closed ticket.
-- Keep next-action guidance concrete: name the next ticket or blocker, not a generic summary.

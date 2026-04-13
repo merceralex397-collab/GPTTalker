@@ -102,6 +102,8 @@ async def git_status_handler(
             repo_path=repo_path,
             timeout=timeout,
         )
+        # Unwrap OperationResponse envelope
+        payload = result.get("data", {}) if isinstance(result, dict) else {}
     except Exception as e:
         logger.error(
             "git_status_node_call_failed",
@@ -115,16 +117,16 @@ async def git_status_handler(
     duration = int(time.time() * 1000) - start
 
     if result.get("success", False):
-        is_clean = result.get("is_clean", False)
-        staged_count = result.get("staged_count", 0)
-        modified_count = result.get("modified_count", 0)
-        untracked_count = result.get("untracked_count", 0)
+        is_clean = payload.get("is_clean", False)
+        staged_count = payload.get("staged_count", 0)
+        modified_count = payload.get("modified_count", 0)
+        untracked_count = payload.get("untracked_count", 0)
 
         logger.info(
             "git_status_success",
             node_id=node_id,
             repo_id=repo_id,
-            branch=result.get("branch", "unknown"),
+            branch=payload.get("branch", "unknown"),
             is_clean=is_clean,
             duration_ms=duration,
         )
@@ -134,18 +136,18 @@ async def git_status_handler(
             "repo_id": repo_id,
             "node_id": node_id,
             "path": repo_path,
-            "branch": result.get("branch", "unknown"),
+            "branch": payload.get("branch", "unknown"),
             "is_clean": is_clean,
             "is_dirty": not is_clean,
-            "staged": result.get("staged", []),
+            "staged": payload.get("staged", []),
             "staged_count": staged_count,
-            "modified": result.get("modified", []),
+            "modified": payload.get("modified", []),
             "modified_count": modified_count,
-            "untracked": result.get("untracked", []),
+            "untracked": payload.get("untracked", []),
             "untracked_count": untracked_count,
-            "ahead": result.get("ahead", 0),
-            "behind": result.get("behind", 0),
-            "recent_commits": result.get("recent_commits", []),
+            "ahead": payload.get("ahead", 0),
+            "behind": payload.get("behind", 0),
+            "recent_commits": payload.get("recent_commits", []),
         }
     else:
         error_msg = result.get("error", "Unknown error")

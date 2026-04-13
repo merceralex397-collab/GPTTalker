@@ -29,7 +29,8 @@ done
 
 - resolution_state: superseded
 - verification_state: reverified
-- source_ticket_id: EXEC-008
+- finding_source: None
+- source_ticket_id: EXEC-007
 - source_mode: post_completion_issue
 
 ## Depends On
@@ -59,4 +60,3 @@ None
 - Evidence source: EXEC-008 smoke-test closeout and 2026-03-27 Scafforge repair verification.
 - Superseded on 2026-03-27 after current verification showed `tests/hub/test_contracts.py` already passed and the remaining `tests/hub/test_security.py` mismatch no longer matched this ticket's stale failure set.
 - Reconciled on 2026-03-28 using `.opencode/state/artifacts/history/exec-009/review/2026-03-27T07-32-24-091Z-backlog-verification.md` so the historical supersession no longer remains publish-blocking.
-

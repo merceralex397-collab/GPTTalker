@@ -247,33 +247,51 @@ class OperationExecutor:
         matches: list[dict] = []
         files_searched: set[str] = set()
 
-        for line in output.strip().split("\n"):
-            if not line:
-                continue
-
-            # Parse: filename:line_number:line_content
-            # Use split(":", 2) to handle paths that might contain ":"
-            parts = line.split(":", 2)
-            if len(parts) >= 2:
-                file_path = parts[0]
-                try:
-                    line_num = int(parts[1])
-                except ValueError:
-                    line_num = 0
-                line_content = parts[2] if len(parts) > 2 else ""
-
-                files_searched.add(file_path)
-
-                # Add individual matches (up to max_results)
+        # Path-mode uses --files-with-matches which outputs just filenames (no colons)
+        if mode == "path":
+            for line in output.strip().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                files_searched.add(line)
+                # For path mode, each line is just a filename with no line number or content
                 if len(matches) < max_results:
                     matches.append(
                         {
-                            "file": file_path,
-                            "line_number": line_num,
-                            "match_count": 1,
-                            "content": line_content,
+                            "file": line,
+                            "line_number": 0,
+                            "match_count": 0,
+                            "content": "",
                         }
                     )
+        else:
+            for line in output.strip().split("\n"):
+                if not line:
+                    continue
+
+                # Parse: filename:line_number:line_content
+                # Use split(":", 2) to handle paths that might contain ":"
+                parts = line.split(":", 2)
+                if len(parts) >= 2:
+                    file_path = parts[0]
+                    try:
+                        line_num = int(parts[1])
+                    except ValueError:
+                        line_num = 0
+                    line_content = parts[2] if len(parts) > 2 else ""
+
+                    files_searched.add(file_path)
+
+                    # Add individual matches (up to max_results)
+                    if len(matches) < max_results:
+                        matches.append(
+                            {
+                                "file": file_path,
+                                "line_number": line_num,
+                                "match_count": 1,
+                                "content": line_content,
+                            }
+                        )
 
         return {
             "matches": matches,

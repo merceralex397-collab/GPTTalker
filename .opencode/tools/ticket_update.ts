@@ -7,6 +7,7 @@ import {
   hasArtifact,
   hasPendingRepairFollowOn,
   hasReviewArtifact,
+  isAllowedFollowOnTicket,
   isPlanApprovedForTicket,
   isBlockingArtifactVerdict,
   loadManifest,
@@ -24,6 +25,7 @@ import {
   ticketsNeedingProcessVerification,
   validateLifecycleStageStatus,
   validateImplementationArtifactEvidence,
+  validateReviewArtifactEvidence,
   validateQaArtifactEvidence,
   validateSmokeTestArtifactEvidence,
   workflowStatePath,
@@ -47,13 +49,20 @@ export default tool({
     await ensureRequiredFile(workflowStatePath(rootPath()), ".opencode/state/workflow-state.json")
     const manifest = await loadManifest()
     const workflow = await loadWorkflowState()
-    if (hasPendingRepairFollowOn(workflow)) {
+    if (hasPendingRepairFollowOn(workflow) && !isAllowedFollowOnTicket(workflow, args.ticket_id)) {
       const repairBlocker = repairFollowOnBlockingReason(workflow) || (
         nextRepairFollowOnStage(workflow)
           ? `Repair follow-on remains incomplete. Complete \`${nextRepairFollowOnStage(workflow)}\` before resuming normal ticket lifecycle mutations.`
           : "Repair follow-on remains incomplete. Complete the required repair stages before resuming normal ticket lifecycle mutations."
       )
       throw new Error(repairBlocker)
+    }
+    // Even for explicitly allowed follow-on tickets, pending_process_verification
+    // is a global workflow write that must remain blocked until managed_blocked
+    // is fully resolved.  Lifecycle stage/status progression is permitted; global
+    // state mutations are not.
+    if (hasPendingRepairFollowOn(workflow) && typeof args.pending_process_verification === "boolean") {
+      throw new Error("Cannot modify pending_process_verification while repair follow-on is incomplete. Complete the required repair stages before clearing global verification state.")
     }
     const ticket = getTicket(manifest, args.ticket_id)
     const wasDone = ticket.status === "done"
@@ -126,6 +135,10 @@ export default tool({
     }
 
     if (targetStage === "qa") {
+      const reviewBlocker = await validateReviewArtifactEvidence(ticket)
+      if (reviewBlocker) {
+        throw new Error(reviewBlocker)
+      }
       const latestReview = latestArtifact(ticket, { stage: "review", trust_state: "current" })
       const reviewVerdict = extractArtifactVerdict(await readArtifactContent(latestReview))
       if (reviewVerdict.verdict_unclear) {
@@ -158,6 +171,15 @@ export default tool({
       }
     }
 
+    if (args.activate && ticket.source_mode === "split_scope" && ticket.split_kind === "sequential_dependent" && ticket.source_ticket_id) {
+      const sourceTicket = getTicket(manifest, ticket.source_ticket_id)
+      if (sourceTicket.status !== "done") {
+        throw new Error(
+          `Cannot activate sequential split child ${ticket.id} before source ticket ${sourceTicket.id} is done. Complete the parent-owned work first.`,
+        )
+      }
+    }
+
     ticket.stage = targetStage
     if (targetStatus === "done") {
       markTicketDone(ticket, workflow)
@@ -187,7 +209,7 @@ export default tool({
       workflow.pending_process_verification = args.pending_process_verification
     }
 
-    await saveWorkflowBundle({ workflow, manifest })
+    await saveWorkflowBundle({ workflow, manifest, skipGraphValidation: true })
 
     return JSON.stringify(
       {

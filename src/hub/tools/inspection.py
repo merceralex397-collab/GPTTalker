@@ -135,7 +135,9 @@ async def inspect_repo_tree_handler(
     duration = int(time.time() * 1000) - start
 
     if result.get("success", False):
-        entries = result.get("entries", [])
+        # Extract inner payload from OperationResponse envelope
+        payload = result.get("data", {})
+        entries = payload.get("entries", [])
         total_count = result.get("total", len(entries))
 
         logger.info(
@@ -286,10 +288,12 @@ async def read_repo_file_handler(
     duration = int(time.time() * 1000) - start
 
     if result.get("success", False):
-        content = result.get("content", "")
-        size_bytes = result.get("size_bytes", 0)
-        bytes_read = result.get("bytes_read", len(content))
-        truncated = result.get("truncated", False)
+        # Extract inner payload from OperationResponse envelope
+        payload = result.get("data", {})
+        content = payload.get("content", "")
+        size_bytes = payload.get("size_bytes", 0)
+        bytes_read = payload.get("bytes_read", len(content))
+        truncated = payload.get("truncated", False)
 
         logger.info(
             "read_repo_file_success",

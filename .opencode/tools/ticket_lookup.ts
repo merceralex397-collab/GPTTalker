@@ -6,6 +6,7 @@ import {
   defaultArtifactPath,
   dependentContinuationAction,
   describeAllowedStatusesForStage,
+  extractArtifactVerdict,
   getTicket,
   getTicketWorkflowState,
   getProcessVerificationState,
@@ -13,18 +14,26 @@ import {
   hasPendingRepairFollowOn,
   hasReviewArtifact,
   historicalArtifacts,
+  isAllowedFollowOnTicket,
   isPlanApprovedForTicket,
+  isBlockingArtifactVerdict,
   latestArtifact,
   latestReviewArtifact,
   loadManifest,
   loadWorkflowState,
+  nextTicketForProcessVerificationClear,
   nextRepairFollowOnStage,
+  openParallelSplitChildren,
+  openSequentialSplitChildren,
   openSplitScopeChildren,
+  reconcileStaleStageIfNeeded,
   repairFollowOnBlockingReason,
+  readArtifactContent,
   ticketNeedsHistoricalReconciliation,
   ticketNeedsTrustRestoration,
   ticketNeedsProcessVerification,
   validateImplementationArtifactEvidence,
+  validateReviewArtifactEvidence,
   validateLifecycleStageStatus,
   validateQaArtifactEvidence,
   validateSmokeTestArtifactEvidence,
@@ -34,15 +43,22 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
   const manifest = await loadManifest()
   const blocker = validateLifecycleStageStatus(ticket.stage, ticket.status)
   const approvedPlan = isPlanApprovedForTicket(workflow, ticket.id)
-  const needsProcessVerification = ticketNeedsProcessVerification(ticket, workflow)
+  const processVerification = getProcessVerificationState(manifest, workflow, ticket.id)
+  const needsProcessVerification = processVerification.current_ticket_requires_verification
   const ticketNeedsReconciliation = ticketNeedsHistoricalReconciliation(ticket)
   const ticketTrustNeedsRestoration = ticketNeedsTrustRestoration(ticket, workflow)
   const bootstrapStatus = workflow.bootstrap.status
-  const repairFollowOnPending = hasPendingRepairFollowOn(workflow)
+  const repairFollowOnPending = hasPendingRepairFollowOn(workflow) && !isAllowedFollowOnTicket(workflow, ticket.id)
   const repairFollowOnStage = nextRepairFollowOnStage(workflow)
   const repairFollowOnBlocker = repairFollowOnBlockingReason(workflow)
   const splitChildren = openSplitScopeChildren(manifest, ticket.id)
+  const parallelSplitChildren = openParallelSplitChildren(manifest, ticket.id)
+  const sequentialSplitChildren = openSequentialSplitChildren(manifest, ticket.id)
+  const staleStageReconciliation = reconcileStaleStageIfNeeded(ticket)
   const blockedDependents = blockedDependentTickets(manifest, ticket.id)
+  const processVerificationActivationTicket = processVerification.clearable_now
+    ? nextTicketForProcessVerificationClear(manifest, ticket.id)
+    : null
   const base = {
     current_stage: ticket.stage,
     current_status: ticket.status,
@@ -60,6 +76,11 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
     artifact_kind: null as string | null,
     recommended_action: "",
     recommended_ticket_update: null as Record<string, unknown> | null,
+    recovery_action: staleStageReconciliation.recovery_action,
+    warnings: staleStageReconciliation.stale ? [staleStageReconciliation.recovery_action!] : [] as string[],
+    review_verdict: null as string | null,
+    qa_verdict: null as string | null,
+    verdict_unclear: false,
   }
 
   if (bootstrapStatus !== "ready") {
@@ -76,8 +97,11 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
     }
   }
 
-  if (splitChildren.length > 0 && ticket.status !== "done") {
-    const foregroundChild = splitChildren[0]
+  // parallel_independent children run alongside the parent — foreground the child so it
+  // advances first.  sequential_dependent children must wait for the parent's own work to
+  // complete, so the parent stays in the foreground and we emit a warning instead.
+  if (parallelSplitChildren.length > 0 && ticket.status !== "done") {
+    const foregroundChild = parallelSplitChildren[0]
     return {
       ...base,
       next_allowed_stages: [foregroundChild.stage],
@@ -86,8 +110,33 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
       next_action_tool: "ticket_update",
       delegate_to_agent: null,
       required_owner: "team-leader",
-      recommended_action: `Keep ${ticket.id} open as a split parent and foreground child ticket ${foregroundChild.id} instead of advancing the parent lane directly.`,
+        recommended_action: `Keep ${ticket.id} open as a split parent and foreground child ticket ${foregroundChild.id} instead of advancing the parent lane directly.`,
       recommended_ticket_update: { ticket_id: foregroundChild.id, activate: true },
+    }
+  }
+
+  if (sequentialSplitChildren.length > 0 && ticket.status !== "done" && parallelSplitChildren.length === 0) {
+    const sequentialIds = sequentialSplitChildren.map((c) => c.id).join(", ")
+    base.warnings.push(
+      `Sequential split child ticket(s) [${sequentialIds}] exist and will become active after parent-owned work in ${ticket.id} is complete. ` +
+      `Continue advancing ${ticket.id} through its remaining lifecycle stages first.`
+    )
+  }
+
+  // When artifact evidence is ahead of the manifest stage, routing from the stale manifest
+  // state would give the agent wrong guidance.  Return a dedicated recovery path instead so
+  // the team leader can align stage/status before resuming lifecycle routing.
+  if (staleStageReconciliation.stale && staleStageReconciliation.recovery_action) {
+    return {
+      ...base,
+      next_allowed_stages: [staleStageReconciliation.evidenced_stage!],
+      required_artifacts: [],
+      next_action_kind: "ticket_update",
+      next_action_tool: "ticket_update",
+      delegate_to_agent: null,
+      required_owner: "team-leader",
+      recommended_action: staleStageReconciliation.recovery_action,
+      current_state_blocker: staleStageReconciliation.recovery_action,
     }
   }
 
@@ -107,6 +156,31 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
       required_owner: "host",
       recommended_action: repairBlocker,
       current_state_blocker: repairBlocker,
+    }
+  }
+
+  // A blocked ticket must be explicitly re-evaluated and unblocked before lifecycle
+  // routing resumes.  Without this guard, ticket_lookup falls through to the stage
+  // switch and produces misleading "write artifact" guidance for a ticket that has
+  // unresolved decision_blockers — leaving the agent with no legal forward move.
+  if (ticket.status === "blocked") {
+    const unresolvedBlockers: string[] = (ticket as any).decision_blockers ?? []
+    const blockerSummary = unresolvedBlockers.length > 0
+      ? unresolvedBlockers.map((b: string, i: number) => `${i + 1}. ${b}`).join("\n")
+      : "(none recorded — status may have been set manually)"
+    return {
+      ...base,
+      next_allowed_stages: [ticket.stage],
+      required_artifacts: [],
+      next_action_kind: "ticket_update",
+      next_action_tool: "ticket_update",
+      delegate_to_agent: null,
+      required_owner: "team-leader",
+      recommended_action: `Ticket ${ticket.id} is blocked. Re-evaluate each decision_blocker against the current environment. If all blockers are now resolved, call ticket_update with status: "todo" to resume lifecycle execution, then re-run ticket_lookup to get updated stage guidance.\n\nDecision blockers when ticket was created:\n${blockerSummary}`,
+      current_state_blocker: unresolvedBlockers.length > 0
+        ? `Ticket is blocked: ${unresolvedBlockers.join("; ")}`
+        : "Ticket status is blocked with no recorded decision_blockers.",
+      recommended_ticket_update: { ticket_id: ticket.id, status: "todo" },
     }
   }
 
@@ -210,6 +284,62 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
           current_state_blocker: "Review artifact missing.",
         }
       }
+      {
+        const reviewBlocker = await validateReviewArtifactEvidence(ticket)
+        if (reviewBlocker) {
+          return {
+            ...base,
+            next_allowed_stages: ["review"],
+            required_artifacts: ["review"],
+            next_action_kind: "write_artifact",
+            next_action_tool: "artifact_write",
+            delegate_to_agent: "reviewer-code",
+            required_owner: "team-leader",
+            canonical_artifact_path: defaultArtifactPath(ticket.id, "review", "review"),
+            artifact_stage: "review",
+            artifact_kind: "review",
+            recommended_action: "Keep the ticket in review until the remediation review artifact records the rerun command, raw command output, and explicit PASS/FAIL result.",
+            current_state_blocker: reviewBlocker,
+          }
+        }
+      }
+      {
+        const reviewArtifact = latestReviewArtifact(ticket)
+        const reviewVerdictInfo = extractArtifactVerdict(await readArtifactContent(reviewArtifact))
+        if (reviewVerdictInfo.verdict_unclear) {
+          return {
+            ...base,
+            next_allowed_stages: ["review"],
+            required_artifacts: ["review"],
+            next_action_kind: "inspect",
+            next_action_tool: null,
+            delegate_to_agent: null,
+            required_owner: "team-leader",
+            recommended_action: "Review artifact exists but verdict could not be extracted. Inspect the artifact manually before advancing.",
+            warnings: ["Review artifact exists but verdict could not be extracted. Inspect the artifact manually before advancing."],
+            review_verdict: null,
+            verdict_unclear: true,
+            current_state_blocker: "Review verdict is unclear.",
+          }
+        }
+        if (isBlockingArtifactVerdict(reviewVerdictInfo.verdict)) {
+          return {
+            ...base,
+            next_allowed_stages: ["implementation"],
+            required_artifacts: ["review"],
+            next_action_kind: "ticket_update",
+            next_action_tool: "ticket_update",
+            delegate_to_agent: "implementer",
+            required_owner: "team-leader",
+            recommended_action: "Review found blockers. Route back to implementation to address the review findings before advancing.",
+            recommended_ticket_update: { ticket_id: ticket.id, stage: "implementation", activate: true },
+            recovery_action: "Review FAIL: route back to implementation, fix the documented review findings, then return through review before QA.",
+            review_verdict: reviewVerdictInfo.verdict,
+            current_state_blocker: `Latest review verdict is ${reviewVerdictInfo.verdict}.`,
+          }
+        }
+      }
+      const reviewVerdict = extractArtifactVerdict(await readArtifactContent(latestReviewArtifact(ticket))).verdict
       return {
         ...base,
         next_allowed_stages: ["qa"],
@@ -220,6 +350,7 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
         required_owner: "team-leader",
         recommended_action: "Move the ticket into QA after review approval is registered.",
         recommended_ticket_update: { ticket_id: ticket.id, stage: "qa", activate: true },
+        review_verdict: reviewVerdict,
       }
     case "qa": {
       const qaBlocker = await validateQaArtifactEvidence(ticket)
@@ -239,6 +370,40 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
           current_state_blocker: qaBlocker,
         }
       }
+      const latestQaArtifact = latestArtifact(ticket, { stage: "qa", trust_state: "current" }) || currentArtifacts(ticket, { stage: "qa" }).at(-1)
+      const qaVerdictInfo = extractArtifactVerdict(await readArtifactContent(latestQaArtifact))
+      if (qaVerdictInfo.verdict_unclear) {
+        return {
+          ...base,
+          next_allowed_stages: ["qa"],
+          required_artifacts: ["qa"],
+          next_action_kind: "inspect",
+          next_action_tool: null,
+          delegate_to_agent: null,
+          required_owner: "team-leader",
+          recommended_action: "QA artifact exists but verdict could not be extracted. Inspect the artifact manually before advancing.",
+          warnings: ["QA artifact exists but verdict could not be extracted. Inspect the artifact manually before advancing."],
+          qa_verdict: null,
+          verdict_unclear: true,
+          current_state_blocker: "QA verdict is unclear.",
+        }
+      }
+      if (isBlockingArtifactVerdict(qaVerdictInfo.verdict)) {
+        return {
+          ...base,
+          next_allowed_stages: ["implementation"],
+          required_artifacts: ["qa"],
+          next_action_kind: "ticket_update",
+          next_action_tool: "ticket_update",
+          delegate_to_agent: "implementer",
+          required_owner: "team-leader",
+          recommended_action: "QA found issues. Route back to implementation to fix the QA findings.",
+          recommended_ticket_update: { ticket_id: ticket.id, stage: "implementation", activate: true },
+          recovery_action: "QA FAIL: route back to implementation, fix the QA findings, then return through review and QA before smoke-test.",
+          qa_verdict: qaVerdictInfo.verdict,
+          current_state_blocker: `Latest QA verdict is ${qaVerdictInfo.verdict}.`,
+        }
+      }
       return {
         ...base,
         next_allowed_stages: ["smoke-test"],
@@ -249,6 +414,7 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
         required_owner: "team-leader",
         recommended_action: "Advance to smoke-test, return control to the team leader, then use the smoke_test tool. Do not delegate smoke_test to tester-qa or write smoke-test artifacts through artifact_write or artifact_register.",
         recommended_ticket_update: { ticket_id: ticket.id, stage: "smoke-test", activate: true },
+        qa_verdict: qaVerdictInfo.verdict,
       }
     }
     case "smoke-test": {
@@ -314,6 +480,39 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
           recommended_ticket_update: null,
         }
       }
+      if (ticket.status === "done" && processVerification.clearable_now && processVerificationActivationTicket) {
+        return {
+          ...base,
+          next_allowed_stages: [processVerificationActivationTicket.stage],
+          required_artifacts: [],
+          next_action_kind: "ticket_update",
+          next_action_tool: "ticket_update",
+          delegate_to_agent: null,
+          required_owner: "team-leader",
+          recommended_action: `No historical done tickets remain affected by process verification. Foreground open ticket ${processVerificationActivationTicket.id} and clear pending_process_verification there instead of trying to reclaim closed ticket ${ticket.id}.`,
+          recommended_ticket_update: {
+            ticket_id: processVerificationActivationTicket.id,
+            activate: true,
+            pending_process_verification: false,
+          },
+        }
+      }
+      if (ticket.status === "done" && processVerification.clearable_now) {
+        return {
+          ...base,
+          next_allowed_stages: [],
+          required_artifacts: [],
+          next_action_kind: "ticket_update",
+          next_action_tool: "ticket_update",
+          delegate_to_agent: null,
+          required_owner: "team-leader",
+          recommended_action: "No historical done tickets remain affected by process verification. Use ticket_update to clear pending_process_verification now, then rerun ticket_lookup.",
+          recommended_ticket_update: {
+            ticket_id: ticket.id,
+            pending_process_verification: false,
+          },
+        }
+      }
       if (ticket.status === "done" && blockedDependents.length > 0) {
         const nextDependent = blockedDependents[0]
         return {
@@ -361,22 +560,14 @@ export default tool({
     const manifest = await loadManifest()
     const workflow = await loadWorkflowState()
     const ticket = getTicket(manifest, args.ticket_id)
-    const resolvedWorkflow = args.ticket_id
-      ? {
-          ...workflow,
-          active_ticket: ticket.id,
-          stage: ticket.stage,
-          status: ticket.status,
-          approved_plan: isPlanApprovedForTicket(workflow, ticket.id),
-        }
-      : workflow
     const latestPlan = latestArtifact(ticket, { stage: "planning" }) || null
     const latestImplementation = latestArtifact(ticket, { stage: "implementation" }) || null
     const latestReview = latestReviewArtifact(ticket) || null
     const latestBacklogVerification = latestArtifact(ticket, { stage: "review", kind: "backlog-verification" }) || null
     const latestQa = latestArtifact(ticket, { stage: "qa" }) || null
     const latestSmokeTest = latestArtifact(ticket, { stage: "smoke-test" }) || null
-    const transitionGuidance = await buildTransitionGuidance(ticket, resolvedWorkflow)
+    const transitionGuidance = await buildTransitionGuidance(ticket, workflow)
+    const isActive = ticket.id === manifest.active_ticket
 
     const artifactSummary = {
       current_valid_artifacts: currentArtifacts(ticket),
@@ -428,8 +619,10 @@ export default tool({
       {
         project: manifest.project,
         active_ticket: manifest.active_ticket,
-        workflow: resolvedWorkflow,
-        ticket,
+        workflow,
+        is_active: isActive,
+        ticket: { ...ticket, is_active: isActive },
+        requested_ticket: args.ticket_id ? { ...ticket, is_active: isActive } : null,
         artifact_summary: artifactSummary,
         trust: {
           resolution_state: ticket.resolution_state,

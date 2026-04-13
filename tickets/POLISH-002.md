@@ -29,6 +29,7 @@ done
 
 - resolution_state: done
 - verification_state: reverified
+- finding_source: None
 - source_ticket_id: None
 - source_mode: None
 
@@ -59,5 +60,4 @@ None
 - reverification: .opencode/state/artifacts/history/polish-002/review/2026-03-31T21-26-03-810Z-reverification.md (review) - Trust restored using POLISH-002.
 
 ## Notes
-
 

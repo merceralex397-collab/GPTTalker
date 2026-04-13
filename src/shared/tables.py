@@ -165,19 +165,25 @@ CREATE TABLE IF NOT EXISTS audit_log (
 );
 """
 
-# Indexes for performance
-CREATE_INDEXES = [
+# Indexes for tables created in migration 1 (repos, write_targets, tasks, issues)
+CREATE_INDEXES_MIGRATION_1 = [
     "CREATE INDEX IF NOT EXISTS idx_repos_node_id ON repos(node_id);",
     "CREATE INDEX IF NOT EXISTS idx_write_targets_repo_id ON write_targets(repo_id);",
     "CREATE INDEX IF NOT EXISTS idx_tasks_trace_id ON tasks(trace_id);",
     "CREATE INDEX IF NOT EXISTS idx_tasks_created_at ON tasks(created_at);",
     "CREATE INDEX IF NOT EXISTS idx_issues_repo_id ON issues(repo_id);",
     "CREATE INDEX IF NOT EXISTS idx_issues_status ON issues(status);",
-    # Relationship indexes
+]
+
+# Indexes for relationships table (created in migration 3)
+CREATE_INDEXES_MIGRATION_3 = [
     "CREATE INDEX IF NOT EXISTS idx_relationships_source ON relationships(source_repo_id);",
     "CREATE INDEX IF NOT EXISTS idx_relationships_target ON relationships(target_repo_id);",
     "CREATE INDEX IF NOT EXISTS idx_relationships_type ON relationships(relationship_type);",
-    # Audit and generated docs indexes
+]
+
+# Indexes for audit_log and generated_docs tables (created in migration 4)
+CREATE_INDEXES_MIGRATION_4 = [
     "CREATE INDEX IF NOT EXISTS idx_audit_trace_id ON audit_log(trace_id);",
     "CREATE INDEX IF NOT EXISTS idx_audit_event_type ON audit_log(event_type);",
     "CREATE INDEX IF NOT EXISTS idx_audit_actor ON audit_log(actor);",

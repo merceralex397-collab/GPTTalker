@@ -1,0 +1,96 @@
+---
+stage: review
+kind: review
+ticket_id: FIX-025
+verdict: PASS
+---
+
+# Code Review: FIX-025 — Fix NodePolicy None health service wiring in MCP initialize
+
+**Verdict: PASS**
+
+---
+
+## Raw Command Output
+
+**Command:**
+```
+UV_CACHE_DIR=/tmp/uv-cache uv run python -c 'from src.hub.mcp import MCPProtocolHandler; from src.hub.lifespan import lifespan; print("OK")'
+```
+
+**Output:**
+```
+OK
+```
+
+**Exit code:** 0
+
+---
+
+## Review Summary
+All 6 acceptance criteria verified PASS. No blockers. No security regressions. No trust boundary changes. Ready for QA.
+
+---
+
+## Acceptance Criteria Verification
+
+| # | Criterion | Result |
+|---|---|---|
+| 1 | NodeHealthService is constructed with `node_repo`, `http_client`, and `auth_handler` in `initialize()` | **PASS** |
+| 2 | NodePolicy receives the real NodeHealthService instance instead of None | **PASS** |
+| 3 | All node-scoped tools no longer fail with `'NoneType' object has no attribute 'get_node_health'` | **PASS** |
+| 4 | Import check exits 0: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c 'from src.hub.mcp import MCPProtocolHandler; from src.hub.lifespan import lifespan; print("OK")'` | **PASS** |
+| 5 | list_nodes continues to work correctly (does not use NodePolicy directly) | **PASS** |
+| 6 | No trust boundary changes, no widened permissions, no security regressions | **PASS** |
+
+---
+
+## Detailed Findings
+
+### Check 1: NodeHealthService construction
+**File**: `src/hub/mcp.py` lines 89–99  
+**Code added**:
+```python
+# Build node health service
+auth_handler = NodeAuthHandler(config.node_client_api_key) if config else None
+node_health_service = NodeHealthService(
+    node_repo=node_repo,
+    http_client=http_client,
+    auth_handler=auth_handler,
+) if node_repo and http_client else None
+```
+- `node_repo`: from `NodeRepository(db_manager)` (line 82) — correct
+- `http_client`: from `app.state.http_client` (line 57) — correct
+- `auth_handler`: constructed from `config.node_client_api_key` with `if config else None` guard — correct
+- Guard `if node_repo and http_client else None` preserves fail-closed behavior
+
+### Check 2: NodePolicy receives real instance
+**File**: `src/hub/mcp.py` line 102  
+**Before**: `NodePolicy(node_repo, None)` — health service always None  
+**After**: `NodePolicy(node_repo, node_health_service)` — real instance passed
+
+### Check 3: Node-scoped tools fixed
+**File**: `src/hub/policy/node_policy.py` lines 87–88  
+`validate_node_access` calls `self._health.get_node_health(node_id)` — with the fix, `self._health` is a real `NodeHealthService` instance.
+
+### Check 4: Import validation
+**Command**: `uv run python -c "from src.hub.mcp import MCPProtocolHandler; from src.hub.lifespan import lifespan; print('OK')"`  
+**Output**: `OK`  
+**Exit code**: 0
+
+### Check 5: list_nodes unaffected
+`list_nodes_impl()` in `discovery.py` calls `node_repo` directly — it bypasses `NodePolicy`. No regression.
+
+### Check 6: Security
+- Guard pattern preserves fail-closed behavior
+- `NodeAuthHandler` created only when `config` is present
+- No new public methods, no relaxed access checks
+- No imports added (both classes already imported)
+
+---
+
+## Blockers
+None.
+
+## Regression Risks
+None identified.

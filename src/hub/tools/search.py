@@ -156,9 +156,11 @@ async def search_repo_handler(
     duration = int(time.time() * 1000) - start
 
     if result.get("success", False):
-        matches = result.get("matches", [])
-        match_count = result.get("match_count", 0)
-        files_searched = result.get("files_searched", 0)
+        # Extract inner payload from OperationResponse envelope
+        payload = result.get("data", {})
+        matches = payload.get("matches", [])
+        match_count = payload.get("match_count", 0)
+        files_searched = payload.get("files_searched", 0)
 
         logger.info(
             "search_repo_success",

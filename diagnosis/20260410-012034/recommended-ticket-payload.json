@@ -1,0 +1,69 @@
+[
+  {
+    "id": "REMED-001",
+    "title": "Repeated diagnosis packs are re-reporting the same repair-routed findings without any intervening package or process-version change",
+    "description": "Remediate CYCLE002 by correcting the validated issue and rerunning the relevant quality checks.",
+    "affected_files": [
+      "diagnosis/20260410-005026/manifest.json",
+      ".opencode/meta/bootstrap-provenance.json"
+    ],
+    "suggested_fix_approach": "Stop rerunning subject-repo audit until Scafforge package work changes the managed workflow contract or process version, then rerun one fresh audit against the updated package.",
+    "assignee": "implementer",
+    "source_finding_code": "CYCLE002",
+    "source_finding_codes": [
+      "CYCLE002"
+    ],
+    "severity": "error",
+    "route": "manual-prerequisite",
+    "repair_class": "Scafforge package work required before the next subject-repo run",
+    "summary": "Stop rerunning subject-repo audit until Scafforge package work changes the managed workflow contract or process version, then rerun one fresh audit against the updated package.",
+    "source_files": [
+      "diagnosis/20260410-005026/manifest.json",
+      ".opencode/meta/bootstrap-provenance.json"
+    ]
+  },
+  {
+    "id": "REMED-002",
+    "title": "Remediation review artifact does not contain runnable command evidence",
+    "description": "Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks.",
+    "affected_files": [
+      "tickets/manifest.json",
+      ".opencode/state/artifacts/history/fix-020/review/2026-04-09T23-50-03-631Z-review.md"
+    ],
+    "suggested_fix_approach": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+    "assignee": "implementer",
+    "source_finding_code": "EXEC-REMED-001",
+    "source_finding_codes": [
+      "EXEC-REMED-001"
+    ],
+    "severity": "error",
+    "route": "ticket-pack-builder",
+    "repair_class": "generated-repo remediation ticket",
+    "summary": "For remediation tickets with `finding_source`, require the review artifact to record the exact command run, include raw command output, and state the explicit PASS/FAIL result before the review counts as trustworthy closure.",
+    "source_files": [
+      "tickets/manifest.json",
+      ".opencode/state/artifacts/history/fix-020/review/2026-04-09T23-50-03-631Z-review.md"
+    ]
+  },
+  {
+    "id": "REMED-003",
+    "title": "One or more repo-local skills still contain generic placeholder text instead of project-specific guidance",
+    "description": "Remediate SKILL001 by correcting the validated issue and rerunning the relevant quality checks.",
+    "affected_files": [
+      ".opencode/skills/stack-standards/SKILL.md"
+    ],
+    "suggested_fix_approach": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+    "assignee": "implementer",
+    "source_finding_code": "SKILL001",
+    "source_finding_codes": [
+      "SKILL001"
+    ],
+    "severity": "warning",
+    "route": "scafforge-repair",
+    "repair_class": "safe Scafforge package change",
+    "summary": "Populate every baseline local skill with concrete repo-specific rules and validation commands; generated `.opencode/skills/` files must not retain template filler.",
+    "source_files": [
+      ".opencode/skills/stack-standards/SKILL.md"
+    ]
+  }
+]
