@@ -70,3 +70,4 @@ None
 
 - Evidence source: post-repair lint verification on 2026-03-25 reported 51 Ruff findings.
 - Current canonical child tickets are EXEC-013 and EXEC-014. Use the child tickets for active implementation; do not resume this parent directly while the split remains open.
+

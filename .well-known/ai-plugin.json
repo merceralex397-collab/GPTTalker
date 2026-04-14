@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_model": "GPTTalker",
+  "name_for_human": "GPTTalker MCP Hub",
+  "description_for_model": "A lightweight MCP hub that enables safe multi-machine development environment access. You can inspect repositories, search code, read files, check git status, write markdown files, chat with LLMs, and manage project context across distributed development machines.",
+  "description_for_human": "Connect to your distributed development environment. Browse repos, search code, read files, and manage projects across multiple machines.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://unsculptural-sinistrorsely-sparkle.ngrok-free.dev/.well-known/openapi.yaml"
+  },
+  "logo_url": "https://unsculptural-sinistrorsely-sparkle.ngrok-free.dev/logo.png",
+  "contact_email": "support@gpttalker.local",
+  "legal_info_url": "https://unsculptural-sinistrorsely-sparkle.ngrok-free.dev/legal"
+}

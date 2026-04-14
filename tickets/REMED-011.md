@@ -19,16 +19,16 @@ remediation
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: trusted
 - finding_source: EXEC-REMED-001
 - source_ticket_id: REMED-007
 - source_mode: split_scope
@@ -52,7 +52,13 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/artifacts/history/remed-011/planning/2026-04-13T22-01-03-175Z-plan.md (planning) - Plan for REMED-011: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required
+- plan_review: .opencode/state/artifacts/history/remed-011/plan-review/2026-04-13T22-03-57-022Z-plan-review.md (plan_review)
+- implementation: .opencode/state/artifacts/history/remed-011/implementation/2026-04-13T22-04-46-330Z-implementation.md (implementation)
+- review: .opencode/state/artifacts/history/remed-011/review/2026-04-13T22-06-12-412Z-review.md (review)
+- qa: .opencode/state/artifacts/history/remed-011/qa/2026-04-13T22-06-50-096Z-qa.md (qa)
+- smoke-test: .opencode/state/artifacts/history/remed-011/smoke-test/2026-04-13T22-07-19-358Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
 
 ## Notes
+
 

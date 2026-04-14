@@ -19,16 +19,16 @@ remediation
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: trusted
 - finding_source: EXEC-REMED-001
 - source_ticket_id: REMED-007
 - source_mode: split_scope
@@ -52,7 +52,19 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/artifacts/history/remed-012/planning/2026-04-13T22-10-14-162Z-plan.md (planning) - Plan for REMED-012: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required
+- plan_review: .opencode/state/artifacts/history/remed-012/plan-review/2026-04-13T22-10-58-524Z-plan-review.md (plan_review) - Plan review for REMED-012: APPROVED — finding is stale, no code changes required
+- implementation: .opencode/state/artifacts/history/remed-012/implementation/2026-04-13T22-13-05-373Z-implementation.md (implementation) - REMED-012 implementation: finding EXEC-REMED-001 is STALE, all fixes confirmed present, no code changes required. QA section with import verification commands included.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T22-14-31-576Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present. QA section with 3 import verification commands and explicit PASS results included.
+- qa: .opencode/state/artifacts/history/remed-012/qa/2026-04-13T22-16-12-057Z-qa.md (qa) - QA verification for REMED-012: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE. All acceptance criteria verified.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T22-26-09-064Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present. QA section with 5 verification commands and explicit PASS results included.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T22-28-50-059Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present. QA section with 5 verification commands and explicit PASS results included.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T22-29-43-770Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All fixes confirmed present. QA section with 5 import verification commands (uv run python -c style) and explicit PASS results included.
+- smoke-test: .opencode/state/artifacts/history/remed-012/smoke-test/2026-04-13T22-30-22-405Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-19-27-899Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All fixes confirmed present. QA section with 3 inline smoke-test commands, actual raw output embedded, and explicit PASS results.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-20-16-263Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. QA section uses **Command Record N** format with exact commands, raw output embedded inline, and explicit PASS results.
+- review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-21-13-616Z-review.md (review) - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. QA section uses structured stdout/stderr sections per command, raw output embedded inline, explicit PASS results.
 
 ## Notes
+
 

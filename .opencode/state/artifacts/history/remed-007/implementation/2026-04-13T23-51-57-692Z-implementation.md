@@ -1,0 +1,37 @@
+# Implementation Artifact — REMED-007
+
+## Ticket
+- **ID**: REMED-007
+- **Title**: Remediation review artifact does not contain runnable command evidence
+- **Lane**: remediation
+- **Wave**: 26
+
+## Implementation Summary
+No code changes required. REMED-007 is a parent remediation tracking ticket. All 9 child follow-up tickets have been closed through the remediation chain:
+
+- REMED-008 — closed (stale finding)
+- REMED-001 — closed (stale finding)
+- REMED-002 — closed (stale finding)
+- REMED-011 — closed (stale finding)
+- REMED-012 — closed (stale finding)
+- REMED-013 — closed (stale finding)
+- REMED-014 — closed (stale finding)
+- REMED-015 — closed (stale finding)
+- REMED-016 — closed (stale finding)
+
+The finding `EXEC-REMED-001` no longer reproduces. All fixes from the remediation chain (FIX-020, FIX-024, FIX-025, FIX-026, FIX-028) are confirmed present in the current codebase.
+
+## Finding Status
+EXEC-REMED-001 is stale. All remediation work has been completed and verified through the child ticket chain.
+
+## Verification Evidence
+
+**Command 1**: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.main import app; print('OK')"`
+- **Result**: PASS
+- **Exit code**: 0
+- **Raw output**: OK
+
+**Command 2**: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.node_agent.main import app; print('OK')"`
+- **Result**: PASS
+- **Exit code**: 0
+- **Raw output**: OK

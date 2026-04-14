@@ -75,3 +75,4 @@ None
 ## Notes
 
 - Split from EXEC-011 during manual state reconciliation after the 2026-03-27 live Ruff rerun reduced the remaining repo-wide cleanup to the non-EXEC-013 mechanical findings.
+

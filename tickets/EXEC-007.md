@@ -76,3 +76,4 @@ None
 
 - Evidence source: full-suite repair verification after deterministic Scafforge refresh on 2026-03-25.
 - Validated on 2026-03-27: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/hub/test_contracts.py -q --tb=no` exits 0.
+

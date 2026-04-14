@@ -2,7 +2,7 @@
 
 ## Summary
 
-Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks. Affected surfaces: tickets/manifest.json, .opencode/state/reviews/remed-003-review-ticket-reconciliation.md.
+Remediate EXEC-REMED-001 — CLOSED. Finding is STALE. All remediation chain fixes confirmed present. No code changes required.
 
 ## Wave
 
@@ -19,16 +19,16 @@ remediation
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: trusted
 - finding_source: EXEC-REMED-001
 - source_ticket_id: REMED-007
 - source_mode: split_scope
@@ -52,7 +52,13 @@ None
 
 ## Artifacts
 
-- None yet
+- planning: .opencode/state/artifacts/history/remed-014/planning/2026-04-13T23-31-56-095Z-planning.md (planning) - Planning artifact for REMED-014: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required
+- review: .opencode/state/artifacts/history/remed-014/plan-review/2026-04-13T23-32-35-341Z-review.md (plan_review) - Plan review for REMED-014: APPROVED — finding is stale, no code changes required
+- implementation: .opencode/state/artifacts/history/remed-014/implementation/2026-04-13T23-34-05-665Z-implementation.md (implementation) - REMED-014 implementation: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required. QA section with 3 import verification commands.
+- review: .opencode/state/artifacts/history/remed-014/review/2026-04-13T23-34-54-092Z-review.md (review) - Code review for REMED-014: Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present. QA section with 3 import verification commands and explicit PASS results.
+- qa: .opencode/state/artifacts/history/remed-014/qa/2026-04-13T23-35-33-049Z-qa.md (qa) - QA verification for REMED-014: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE.
+- smoke-test: .opencode/state/artifacts/history/remed-014/smoke-test/2026-04-13T23-36-07-691Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
 
 ## Notes
+
 

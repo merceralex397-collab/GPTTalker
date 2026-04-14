@@ -91,6 +91,8 @@ class HubConfig(BaseSettings):
         env_prefix="GPTTALKER_",
         extra="ignore",
         case_sensitive=False,
+        env_file=".env",
+        env_file_encoding="utf-8",
     )
 
     @field_validator("database_url")

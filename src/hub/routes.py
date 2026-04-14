@@ -1,15 +1,45 @@
 """Hub API routes."""
 
 import time
+from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, Depends, Request
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from src.hub.dependencies import check_database_health
 from src.hub.handlers import mcp_handler
+from src.hub.mcp_sse import router as mcp_sse_router
 
 router = APIRouter()
+
+# Include MCP SSE routes for ChatGPT Apps support
+router.include_router(mcp_sse_router)
+
+# Base path for plugin files
+PLUGIN_DIR = Path(".well-known")
+
+
+# --- Plugin Endpoints ---
+
+
+@router.get("/.well-known/ai-plugin.json")
+async def ai_plugin_manifest():
+    """Serve the ChatGPT plugin manifest."""
+    manifest_path = PLUGIN_DIR / "ai-plugin.json"
+    if manifest_path.exists():
+        return FileResponse(manifest_path, media_type="application/json")
+    return JSONResponse(status_code=404, content={"error": "Plugin manifest not found"})
+
+
+@router.get("/.well-known/openapi.yaml")
+async def openapi_spec():
+    """Serve the OpenAPI specification for the plugin."""
+    spec_path = PLUGIN_DIR / "openapi.yaml"
+    if spec_path.exists():
+        return FileResponse(spec_path, media_type="text/yaml")
+    return JSONResponse(status_code=404, content={"error": "OpenAPI spec not found"})
 
 
 # --- MCP Request/Response Models ---

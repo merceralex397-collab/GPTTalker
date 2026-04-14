@@ -70,3 +70,4 @@ None
 
 - Evidence source: `diagnosis/20260331-125921/01-initial-codebase-review.md` finding `EXEC001`
 - Repair routing source: `diagnosis/20260331-125921/recommended-ticket-payload.json`
+

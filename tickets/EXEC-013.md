@@ -69,3 +69,4 @@ None
 ## Notes
 
 - Split from EXEC-011 during manual state reconciliation after the 2026-03-27 live Ruff rerun confirmed a 5-violation alias-modernization subset (UP017 x3, UP035 x1, UP041 x1).
+

@@ -8,13 +8,13 @@ GPTTalker
 
 - ID: REMED-007
 - Title: Remediation review artifact does not contain runnable command evidence
-- Stage: planning
-- Status: todo
-- Resolution: open
-- Verification: suspect
-- Approved plan: no
+- Stage: closeout
+- Status: done
+- Resolution: done
+- Verification: trusted
+- Approved plan: yes
 - Needs reverification: no
-- Open split children: REMED-008, REMED-011, REMED-012, REMED-013, REMED-014, REMED-015, REMED-016
+- Open split children: none
 
 ## Bootstrap
 
@@ -26,9 +26,9 @@ GPTTalker
 ## Process State
 
 - process_version: 7
-- pending_process_verification: true
+- pending_process_verification: false
 - parallel_mode: sequential
-- state_revision: 648
+- state_revision: 728
 
 ## Repair Follow-On
 
@@ -57,4 +57,8 @@ GPTTalker
 
 ## Recent Artifacts
 
-- No artifacts recorded yet
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-13T23-53-06-862Z-review.md (review) [superseded]
+- qa: .opencode/state/artifacts/history/remed-007/qa/2026-04-13T23-55-26-504Z-qa.md (qa) - QA verification PASS - finding STALE, all 9 children closed, import verification passes
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-13T23-59-03-330Z-review.md (review) [superseded] - Code review for REMED-007: Finding EXEC-REMED-001 is STALE. All 9 child tickets closed. Import verification evidence included.
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-14T00-00-22-466Z-review.md (review) - Code review for REMED-007: Finding EXEC-REMED-001 is STALE. All 9 child tickets closed. QA section with 2 command records, raw output, and explicit PASS results.
+- smoke-test: .opencode/state/artifacts/history/remed-007/smoke-test/2026-04-14T00-01-44-775Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.

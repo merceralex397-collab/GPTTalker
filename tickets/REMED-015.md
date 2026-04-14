@@ -2,7 +2,7 @@
 
 ## Summary
 
-Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks. Affected surfaces: tickets/manifest.json, .opencode/state/reviews/remed-004-review-ticket-reconciliation.md.
+REMED-015 closed: finding EXEC-REMED-001 is stale — all fixes confirmed present, all import checks pass.
 
 ## Wave
 
@@ -19,16 +19,16 @@ remediation
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: trusted
 - finding_source: EXEC-REMED-001
 - source_ticket_id: REMED-007
 - source_mode: split_scope
@@ -52,7 +52,14 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/artifacts/history/remed-015/planning/2026-04-13T23-37-46-692Z-plan.md (planning) - Planning for REMED-015: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required
+- review: .opencode/state/artifacts/history/remed-015/plan-review/2026-04-13T23-38-22-165Z-review.md (plan_review) - Plan review for REMED-015: APPROVED — finding is stale, no code changes required, plan is decision-complete
+- implementation: .opencode/state/artifacts/history/remed-015/implementation/2026-04-13T23-39-18-582Z-implementation.md (implementation) - Implementation of REMED-015: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required. QA section with 3 import verification commands.
+- review: .opencode/state/artifacts/history/remed-015/review/2026-04-13T23-40-34-567Z-review.md (review)
+- qa: .opencode/state/artifacts/history/remed-015/qa/2026-04-13T23-41-20-035Z-qa.md (qa) - QA verification for REMED-015: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE.
+- smoke-test: .opencode/state/artifacts/history/remed-015/smoke-test/2026-04-13T23-41-55-499Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
+- smoke-test: .opencode/state/artifacts/history/remed-015/smoke-test/2026-04-13T23-42-22-458Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
 
 ## Notes
+
 

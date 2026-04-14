@@ -86,14 +86,14 @@
 | 23 | FIX-026 | Fix missing node health hydration at startup causing policy denials | bugfix | closeout | done | done | reverified | no | high | - | FIX-028 |
 | 24 | FIX-027 | Fix node health startup hydration not persisting health status for registered nodes | bugfix | closeout | done | superseded | reverified | no | high | - | - |
 | 25 | FIX-028 | Fix NodeHealthService construction using wrong db_manager reference in lifespan.py | bugfix | closeout | done | done | reverified | no | high | - | - |
-| 26 | REMED-007 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | REMED-008, REMED-001, REMED-002, REMED-011, REMED-012, REMED-013, REMED-014, REMED-015, REMED-016 |
-| 27 | REMED-008 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 26 | REMED-007 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | REMED-008, REMED-001, REMED-002, REMED-011, REMED-012, REMED-013, REMED-014, REMED-015, REMED-016 |
+| 27 | REMED-008 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
 | 28 | REMED-009 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |
 | 29 | REMED-010 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |
-| 30 | REMED-011 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
-| 31 | REMED-012 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
-| 32 | REMED-013 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
-| 33 | REMED-014 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
-| 34 | REMED-015 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
-| 35 | REMED-016 | Remediation review artifact does not contain runnable command evidence | remediation | planning | todo | open | suspect | no | low | - | - |
+| 30 | REMED-011 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 31 | REMED-012 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 32 | REMED-013 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 33 | REMED-014 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 34 | REMED-015 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
+| 35 | REMED-016 | Remediation review artifact does not contain runnable command evidence | remediation | closeout | done | done | trusted | no | low | - | - |
 | 36 | REMED-017 | One or more Python packages fail to import — the service cannot start | remediation | closeout | done | superseded | reverified | no | low | - | - |

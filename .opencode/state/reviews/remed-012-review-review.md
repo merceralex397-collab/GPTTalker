@@ -1,0 +1,131 @@
+---
+kind: review
+stage: review
+ticket_id: REMED-012
+verdict: APPROVED
+created_at: 2026-04-14T00:45:00Z
+---
+
+# Code Review — REMED-012
+
+## Verdict
+
+**APPROVED** — Finding EXEC-REMED-001 is STALE. All fixes from the remediation chain (FIX-020, FIX-024, FIX-025, FIX-026, FIX-028) are confirmed present in the current codebase. No code changes required. Finding no longer reproduces.
+
+## Summary
+
+This remediation ticket addresses finding EXEC-REMED-001 which alleged that "Remediation review artifact does not contain runnable command evidence." Investigation confirms the finding is stale — all fixes from the remediation chain are present in current code, and import verification commands pass via live smoke test execution.
+
+## Findings
+
+The original finding EXEC-REMED-001 reported that "Remediation review artifact does not contain runnable command evidence." This finding was traced through the remediation chain:
+
+- **REMED-001**: Fixed the FastAPI DI anti-pattern (`app: FastAPI` → `request: Request`) in `src/hub/mcp.py` and added `from __future__ import annotations` in `dependencies.py`
+- **REMED-002–006**: Chain of reconciliation tickets that propagated the finding classification
+- **FIX-020**: Fixed missing authentication enforcement on node agent routes
+- **FIX-024**: Fixed response envelope stripping and path-mode search output parsing
+- **FIX-025**: Fixed NodePolicy None health service wiring in MCP initialize
+- **FIX-026**: Added node health startup hydration in lifespan.py
+- **FIX-028**: Fixed NodeHealthService construction using wrong db_manager reference
+
+All fixes from the remediation chain are confirmed present in the current codebase.
+
+## Evidence Check
+
+| Check | Result |
+|-------|--------|
+| Finding EXEC-REMED-001 is STALE | YES |
+| All fixes from FIX-020/FIX-024/FIX-025/FIX-026/FIX-028 confirmed present | YES |
+| Live smoke test PASS (3/3 commands, all exit 0) | YES |
+| No code changes required | YES |
+
+## Code Inspection Confirmation
+
+1. **MCPProtocolHandler.initialize()** — correctly constructs `NodeHealthService` with `NodeRepository(db_manager)` + `NodeAuthHandler(config.node_client_api_key)` (FIX-025, FIX-028)
+2. **lifespan.py startup** — calls `node_health_service.check_all_nodes()` with fail-open error handling (FIX-026)
+3. **NodeHealthService wiring** — uses correct `NodeRepository(db_manager)` reference instead of broken `app.state.db_manager._repos.node` (FIX-028)
+4. **format_tool_response** — correctly extracts string from dict error messages (FIX-024)
+5. **git_status_handler** — correctly unwraps OperationResponse envelope via `payload = result.get("data", {})` (FIX-024)
+
+## QA Section — Remediation Verification Evidence
+
+Since REMED-012 is a remediation ticket (has `finding_source: EXEC-REMED-001`), the QA section documents all verification evidence for the two acceptance criteria.
+
+### Acceptance Criterion 1: Finding no longer reproduces
+
+The validated finding `EXEC-REMED-001` alleged that "Remediation review artifact does not contain runnable command evidence." This finding is **STALE** — all fixes from the original remediation are confirmed present in current code (see Findings above).
+
+### Acceptance Criterion 2: Quality checks rerun with evidence
+
+The following import verification commands were executed via live smoke test and recorded inline:
+
+**Command 1**:
+```
+UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.node_agent.main import app; print('OK')"
+```
+- **Result**: PASS
+- **Exit code**: 0
+- **Raw output**: OK
+- **Evidence**: `.opencode/state/smoke-tests/remed-012-smoke-test-smoke-test.md`
+
+#### stdout
+```
+OK
+```
+
+#### stderr
+```
+<no output>
+```
+
+**Command 2**:
+```
+UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.mcp import MCPProtocolHandler; print('OK')"
+```
+- **Result**: PASS
+- **Exit code**: 0
+- **Raw output**: OK
+- **Evidence**: `.opencode/state/smoke-tests/remed-012-smoke-test-smoke-test.md`
+
+#### stdout
+```
+OK
+```
+
+#### stderr
+```
+<no output>
+```
+
+**Command 3**:
+```
+UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.lifespan import lifespan; print('OK')"
+```
+- **Result**: PASS
+- **Exit code**: 0
+- **Raw output**: OK
+- **Evidence**: `.opencode/state/smoke-tests/remed-012-smoke-test-smoke-test.md`
+
+#### stdout
+```
+OK
+```
+
+#### stderr
+```
+<no output>
+```
+
+### QA Summary Table
+
+| Ticket | Command | Result | Exit Code | Output |
+|--------|---------|--------|-----------|--------|
+| REMED-012 | `from src.node_agent.main import app` | PASS | 0 | OK |
+| REMED-012 | `from src.hub.mcp import MCPProtocolHandler` | PASS | 0 | OK |
+| REMED-012 | `from src.hub.lifespan import lifespan` | PASS | 0 | OK |
+
+**QA Verdict: PASS** — All acceptance criteria verified. Finding is stale. No code changes required.
+
+## Recommendation
+
+**Advance to closeout** — All evidence confirms the finding is stale. The implementation artifact correctly documents the stale status and prior evidence. The QA section above provides the required exact command records, raw output, and explicit PASS/FAIL results. No corrective code changes were needed. The ticket should close as `done` with `resolution_state: resolved`, `verification_state: trusted`.

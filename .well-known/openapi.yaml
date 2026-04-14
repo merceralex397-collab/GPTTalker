@@ -1,0 +1,108 @@
+openapi: 3.0.1
+info:
+  title: GPTTalker MCP Hub
+  description: A lightweight MCP hub for safe multi-machine development environment access
+  version: 'v1'
+servers:
+  - url: https://unsculptural-sinistrorsely-sparkle.ngrok-free.dev
+paths:
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Check if the hub is healthy
+      responses:
+        "200":
+          description: Healthy response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  service:
+                    type: string
+                  database:
+                    type: object
+
+  /mcp/v1/tools:
+    get:
+      operationId: listTools
+      summary: List all available MCP tools
+      responses:
+        "200":
+          description: List of tools
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jsonrpc:
+                    type: string
+                  result:
+                    type: object
+                    properties:
+                      tools:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            description:
+                              type: string
+                            inputSchema:
+                              type: object
+
+  /mcp/v1/tools/call:
+    post:
+      operationId: callTool
+      summary: Execute an MCP tool
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - jsonrpc
+                - id
+                - method
+                - params
+              properties:
+                jsonrpc:
+                  type: string
+                  enum: ["2.0"]
+                id:
+                  type: integer
+                method:
+                  type: string
+                  enum: ["tools/call"]
+                params:
+                  type: object
+                  required:
+                    - name
+                    - arguments
+                  properties:
+                    name:
+                      type: string
+                      description: The tool name to execute
+                    arguments:
+                      type: object
+                      description: Tool-specific arguments
+      responses:
+        "200":
+          description: Tool execution result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jsonrpc:
+                    type: string
+                  id:
+                    type: integer
+                  result:
+                    type: object
+                  error:
+                    type: object

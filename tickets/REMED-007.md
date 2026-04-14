@@ -2,7 +2,7 @@
 
 ## Summary
 
-Remediate EXEC-REMED-001 by correcting the validated issue and rerunning the relevant quality checks. Affected surfaces: tickets/manifest.json, .opencode/state/reviews/fix-027-review-ticket-reconciliation.md.
+Close REMED-007 parent remediation ticket. Finding EXEC-REMED-001 is STALE — all 9 child follow-ups (REMED-008, REMED-001, REMED-002, REMED-011, REMED-012, REMED-013, REMED-014, REMED-015, REMED-016) are closed. Smoke test passed. No code changes required.
 
 ## Wave
 
@@ -19,16 +19,16 @@ remediation
 
 ## Stage
 
-planning
+closeout
 
 ## Status
 
-todo
+done
 
 ## Trust
 
-- resolution_state: open
-- verification_state: suspect
+- resolution_state: done
+- verification_state: trusted
 - finding_source: EXEC-REMED-001
 - source_ticket_id: None
 - source_mode: net_new_scope
@@ -60,7 +60,15 @@ None
 
 ## Artifacts
 
-- None yet
+- plan: .opencode/state/artifacts/history/remed-007/planning/2026-04-13T23-50-34-319Z-plan.md (planning) - Parent remediation planning for EXEC-REMED-001. All 9 child follow-ups are closed.
+- implementation: .opencode/state/artifacts/history/remed-007/implementation/2026-04-13T23-51-27-922Z-implementation.md (implementation) [superseded] - Parent remediation tracking - all 9 child tickets closed, finding is stale.
+- implementation: .opencode/state/artifacts/history/remed-007/implementation/2026-04-13T23-51-57-692Z-implementation.md (implementation) - Parent remediation tracking - all 9 child tickets closed, finding is stale. Includes import verification evidence.
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-13T23-53-06-862Z-review.md (review) [superseded]
+- qa: .opencode/state/artifacts/history/remed-007/qa/2026-04-13T23-55-26-504Z-qa.md (qa) - QA verification PASS - finding STALE, all 9 children closed, import verification passes
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-13T23-59-03-330Z-review.md (review) [superseded] - Code review for REMED-007: Finding EXEC-REMED-001 is STALE. All 9 child tickets closed. Import verification evidence included.
+- review: .opencode/state/artifacts/history/remed-007/review/2026-04-14T00-00-22-466Z-review.md (review) - Code review for REMED-007: Finding EXEC-REMED-001 is STALE. All 9 child tickets closed. QA section with 2 command records, raw output, and explicit PASS results.
+- smoke-test: .opencode/state/artifacts/history/remed-007/smoke-test/2026-04-14T00-01-44-775Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
 
 ## Notes
+
 

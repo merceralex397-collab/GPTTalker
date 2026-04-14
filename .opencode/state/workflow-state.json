@@ -1,8 +1,8 @@
 {
   "active_ticket": "REMED-007",
-  "stage": "planning",
-  "status": "todo",
-  "approved_plan": false,
+  "stage": "closeout",
+  "status": "done",
+  "approved_plan": true,
   "bootstrap_blockers": [],
   "ticket_state": {
     "SETUP-001": {
@@ -426,12 +426,12 @@
       "needs_reverification": false
     },
     "REMED-007": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-008": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
@@ -446,32 +446,32 @@
       "needs_reverification": false
     },
     "REMED-011": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-012": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-013": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-014": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-015": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
     "REMED-016": {
-      "approved_plan": false,
+      "approved_plan": true,
       "reopen_count": 0,
       "needs_reverification": false
     },
@@ -484,18 +484,10 @@
   "process_version": 7,
   "process_last_changed_at": "2026-04-12T02:50:07.895Z",
   "process_last_change_summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
-  "pending_process_verification": true,
+  "pending_process_verification": false,
   "parallel_mode": "sequential",
   "repair_follow_on": {
     "outcome": "source_follow_up",
-    "required_stage_details": [
-      {
-        "stage": "ticket-pack-builder",
-        "owner": "ticket-pack-builder",
-        "category": "ticket_follow_up",
-        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system."
-      }
-    ],
     "required_stages": [
       "ticket-pack-builder"
     ],
@@ -503,81 +495,11 @@
       "project-skill-bootstrap",
       "ticket-pack-builder"
     ],
-    "asserted_completed_stages": [],
-    "legacy_asserted_completed_stages": [],
-    "stage_completion_mode": "legacy_manual_assertion",
-    "tracking_mode": "persistent_recorded_state",
-    "follow_on_state_path": ".opencode/meta/repair-follow-on-state.json",
-    "recorded_stage_state": {
-      "project-skill-bootstrap": {
-        "stage": "project-skill-bootstrap",
-        "owner": "project-skill-bootstrap",
-        "category": "repo_local_skills",
-        "status": "completed",
-        "reason": "Repo-local skills still contain generic placeholder/model drift that must be regenerated with project-specific content.",
-        "currently_required": false,
-        "last_checked_at": "2026-04-12T02:51:55Z",
-        "last_updated_at": "2026-04-12T02:51:55Z",
-        "completion_mode": "recorded_execution",
-        "completed_by": "project-skill-bootstrap",
-        "summary": "Regenerated GPTTalker repo-local stack standards skill for the current repair cycle.",
-        "evidence_paths": [
-          ".opencode/skills/stack-standards/SKILL.md",
-          ".opencode/state/artifacts/history/repair/project-skill-bootstrap-completion.md"
-        ],
-        "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
-        "first_recorded_at": "2026-04-12T02:51:55Z",
-        "last_recorded_at": "2026-04-12T02:51:55Z"
-      },
-      "ticket-pack-builder": {
-        "stage": "ticket-pack-builder",
-        "owner": "ticket-pack-builder",
-        "category": "ticket_follow_up",
-        "status": "completed",
-        "reason": "Repair left remediation or reverification follow-up that must be routed into the repo ticket system.",
-        "currently_required": true,
-        "last_checked_at": "2026-04-12T02:52:13Z",
-        "last_updated_at": "2026-04-12T02:51:55Z",
-        "completion_mode": "recorded_execution",
-        "completed_by": "ticket-pack-builder",
-        "summary": "Ran remediation follow-up from the post-repair diagnosis and normalized source follow-up tickets for the current repair cycle.",
-        "evidence_paths": [
-          ".opencode/state/artifacts/history/repair/ticket-pack-builder-completion.md",
-          "diagnosis/20260412-025014/manifest.json",
-          "tickets/REMED-017.md"
-        ],
-        "repair_package_commit": "72acfbad2d953b04f73d10fc873102b70b9e8907+dirty:3c7b1cf8497e",
-        "first_recorded_at": "2026-04-12T02:51:55Z",
-        "last_recorded_at": "2026-04-12T02:51:55Z"
-      }
-    },
-    "pruned_unknown_stages": [],
-    "invalidated_recorded_stages": [],
     "blocking_reasons": [],
     "verification_passed": false,
     "handoff_allowed": true,
-    "current_state_clean": false,
-    "causal_regression_verified": false,
-    "verification_blocking_codes": [],
-    "manual_prerequisite_codes": [],
-    "source_follow_up_codes": [
-      "EXEC001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001",
-      "EXEC-REMED-001"
-    ],
-    "process_state_codes": [],
-    "advisory_codes": [],
-    "contract_failures": [],
     "last_updated_at": "2026-04-12T02:52:13Z",
-    "process_version": 7,
-    "allowed_follow_on_tickets": [],
-    "reconciled_by": "reconcile_repair_follow_on"
+    "process_version": 7
   },
   "bootstrap": {
     "status": "ready",
@@ -586,5 +508,5 @@
     "proof_artifact": ".opencode/state/artifacts/history/fix-024/bootstrap/2026-04-10T19-18-12-889Z-environment-bootstrap.md"
   },
   "lane_leases": [],
-  "state_revision": 648
+  "state_revision": 728
 }
