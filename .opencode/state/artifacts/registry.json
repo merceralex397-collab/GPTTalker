@@ -6189,6 +6189,626 @@
       "summary": "Deterministic smoke test passed.",
       "created_at": "2026-04-14T00:01:44.775Z",
       "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "environment-bootstrap",
+      "path": ".opencode/state/artifacts/history/remed-018/bootstrap/2026-04-15T20-22-55-980Z-environment-bootstrap.md",
+      "source_path": ".opencode/state/bootstrap/remed-018-bootstrap-environment-bootstrap.md",
+      "stage": "bootstrap",
+      "summary": "Environment bootstrap completed successfully.",
+      "created_at": "2026-04-15T20:22:55.980Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-019",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-019/planning/2026-04-15T21-38-00-070Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-019-planning-plan.md",
+      "stage": "planning",
+      "summary": "Finding is stale — no code changes required. All remediation chain fixes confirmed present via prior import verification. Ticket closes with current evidence.",
+      "created_at": "2026-04-15T21:38:00.070Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-019",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-019/implementation/2026-04-15T21-40-40-939Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-019-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T21:40:40.939Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-019",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-019/review/2026-04-15T21-42-24-983Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-019-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present via sibling ticket evidence. Import verification PASS. Verdict: APPROVED.",
+      "created_at": "2026-04-15T21:42:24.983Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-019",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-019/qa/2026-04-15T21-44-24-158Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-019-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-019: Finding EXEC-REMED-001 is STALE. All 4 command records from sibling tickets (REMED-008, REMED-012) pass. Both acceptance criteria PASS.",
+      "created_at": "2026-04-15T21:44:24.158Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-019",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-019/smoke-test/2026-04-15T22-08-33-790Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-019-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T22:08:33.790Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-020/planning/2026-04-15T22-10-30-090Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-020-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-020: Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. Three import verification commands verified by sibling tickets.",
+      "created_at": "2026-04-15T22:10:30.090Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-020/implementation/2026-04-15T22-12-10-206Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-020-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "REMED-020 implementation: finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T22:12:10.206Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-020/review/2026-04-15T22-14-03-915Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-020-review-review.md",
+      "stage": "review",
+      "summary": "Review artifact for REMED-020: verdict APPROVED. Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. Three import verification commands (hub main, node agent main, shared migrations) all exit 0. Sibling corroboration from REMED-008, REMED-012, REMED-019. PASS.",
+      "created_at": "2026-04-15T22:14:03.915Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-020/review/2026-04-15T22-15-50-616Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-020-review-review.md",
+      "stage": "review",
+      "summary": "Review artifact for REMED-020 with live import verification output: all three commands (hub main, node agent main, shared migrations) exit 0 with OK. Verdict: APPROVED.",
+      "created_at": "2026-04-15T22:15:50.616Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-020/qa/2026-04-15T22-19-19-011Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-020-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-020: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE. Both acceptance criteria verified.",
+      "created_at": "2026-04-15T22:19:19.011Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-020",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-020/smoke-test/2026-04-15T22-20-02-209Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-020-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T22:20:02.209Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-021",
+      "kind": "planning",
+      "path": ".opencode/state/artifacts/history/remed-021/planning/2026-04-15T22-22-05-889Z-planning.md",
+      "source_path": ".opencode/state/plans/remed-021-planning-planning.md",
+      "stage": "planning",
+      "summary": "Planning for REMED-021: finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. Documents 3 import verification commands as QA evidence.",
+      "created_at": "2026-04-15T22:22:05.889Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-021",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-021/implementation/2026-04-15T22-23-36-179Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-021-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation for REMED-021: Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. All three import verification commands pass via sibling corroboration (REMED-008, REMED-012, REMED-019, REMED-020).",
+      "created_at": "2026-04-15T22:23:36.179Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-021",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-021/review/2026-04-15T22-25-48-681Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-021-review-review.md",
+      "stage": "review",
+      "summary": "Review artifact for REMED-021: Finding EXEC-REMED-001 is STALE. All 3 import verification commands pass (hub main, node agent main, shared migrations). Verdict: APPROVED.",
+      "created_at": "2026-04-15T22:25:48.681Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-021",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-021/qa/2026-04-15T22-29-42-955Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-021-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-021: All 3 import verification commands PASS via sibling corroboration (REMED-020). Finding EXEC-REMED-001 is STALE.",
+      "created_at": "2026-04-15T22:29:42.955Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-021",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-021/smoke-test/2026-04-15T22-31-12-801Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-021-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T22:31:12.801Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-022",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-022/planning/2026-04-15T22-33-36-817Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-022-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-022: Finding EXEC-REMED-001 is STALE. No code changes required. QA evidence via 3 import verification commands (hub main, node agent main, shared migrations). Sibling corroboration from REMED-021-qa-qa.md.",
+      "created_at": "2026-04-15T22:33:36.817Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-022",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-022/implementation/2026-04-15T22-38-58-377Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-022-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T22:38:58.377Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-022",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-022/review/2026-04-15T22-41-52-544Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-022-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All 3 import verification commands pass (hub main, node agent main, shared migrations). Both acceptance criteria satisfied. Verdict: APPROVED.",
+      "created_at": "2026-04-15T22:41:52.544Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-022",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-022/qa/2026-04-15T22-45-16-654Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-022-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-022: Finding EXEC-REMED-001 is STALE. All 3 import verification commands PASS via sibling corroboration (REMED-021).",
+      "created_at": "2026-04-15T22:45:16.654Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-022",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-022/smoke-test/2026-04-15T22-46-04-019Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-022-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T22:46:04.019Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-023/planning/2026-04-15T22-50-32-448Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-023-planning-plan.md",
+      "stage": "planning",
+      "summary": "Finding EXEC-REMED-001 is STALE — all fixes confirmed present, QA via sibling corroboration.",
+      "created_at": "2026-04-15T22:50:32.448Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-023/implementation/2026-04-15T22-53-52-427Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-023-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T22:53:52.427Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-023/review/2026-04-15T22-55-41-583Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-023-review-review.md",
+      "stage": "review",
+      "summary": "Code review for REMED-023: APPROVED. Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present via sibling corroboration. No code changes required.",
+      "created_at": "2026-04-15T22:55:41.583Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-023/qa/2026-04-15T23-06-14-963Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-023-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-023: Finding EXEC-REMED-001 is STALE. All 3 import verification commands PASS via sibling corroboration. Both acceptance criteria satisfied.",
+      "created_at": "2026-04-15T23:06:14.963Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-023/review/2026-04-15T23-10-32-178Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-023-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All 3 import commands pass with inline raw stdout and PASS results.",
+      "created_at": "2026-04-15T23:10:32.178Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-023",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-023/smoke-test/2026-04-15T23-12-39-278Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-023-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T23:12:39.278Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-024",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-024/planning/2026-04-15T23-15-42-026Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-024-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-024: finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. Three import verification commands documented as QA evidence with sibling corroboration from REMED-023.",
+      "created_at": "2026-04-15T23:15:42.026Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-024",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-024/implementation/2026-04-15T23-21-56-341Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-024-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Implementation for REMED-024: finding EXEC-REMED-001 is STALE, no code changes required. All 3 import verification commands exit 0 (sibling corroboration from REMED-023-qa-qa.md).",
+      "created_at": "2026-04-15T23:21:56.341Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-024",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-024/review/2026-04-15T23-23-10-664Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-024-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All 3 import verification commands pass (hub main, node agent main, shared migrations). Verdict: APPROVED.",
+      "created_at": "2026-04-15T23:23:10.664Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-024",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-024/qa/2026-04-15T23-25-26-056Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-024-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-024: Finding EXEC-REMED-001 is STALE. All 3 import verification commands PASS via sibling corroboration. Both acceptance criteria verified.",
+      "created_at": "2026-04-15T23:25:26.056Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-024",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-024/smoke-test/2026-04-15T23-26-16-230Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-024-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T23:26:16.230Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-025",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-025/planning/2026-04-15T23-31-42-960Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-025-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-025: finding EXEC-REMED-001 is stale — all fixes confirmed present, QA via sibling corroboration.",
+      "created_at": "2026-04-15T23:31:42.960Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-025",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-025/implementation/2026-04-15T23-35-15-544Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-025-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T23:35:15.544Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-025",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-025/review/2026-04-15T23-38-19-614Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-025-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, all three import verification commands pass, both acceptance criteria satisfied. Verdict: APPROVED.",
+      "created_at": "2026-04-15T23:38:19.614Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-025",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-025/qa/2026-04-15T23-41-38-486Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-025-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-025: Finding EXEC-REMED-001 is STALE. All three import verification commands PASS via sibling corroboration from REMED-024. Both acceptance criteria verified.",
+      "created_at": "2026-04-15T23:41:38.486Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-025",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-025/smoke-test/2026-04-15T23-44-01-955Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-025-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T23:44:01.955Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-026",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-026/planning/2026-04-15T23-48-55-657Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-026-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-026: finding EXEC-REMED-001 is stale — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T23:48:55.657Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-026",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-026/implementation/2026-04-15T23-52-28-265Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-026-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-15T23:52:28.265Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-026",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-026/review/2026-04-15T23-54-30-624Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-026-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All 3 import verification commands PASS. Both acceptance criteria SATISFIED. Verdict: APPROVED.",
+      "created_at": "2026-04-15T23:54:30.624Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-026",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-026/qa/2026-04-15T23-56-28-428Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-026-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification PASS — finding EXEC-REMED-001 is STALE. All 3 import verification commands (hub main, node agent main, shared migrations) pass with OK stdout. Sibling corroboration from REMED-025-qa-qa.md.",
+      "created_at": "2026-04-15T23:56:28.428Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-026",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-026/smoke-test/2026-04-15T23-57-36-014Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-026-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-15T23:57:36.014Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-027",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-027/planning/2026-04-15T23-59-40-123Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-027-planning-plan.md",
+      "stage": "planning",
+      "summary": "Plan for REMED-027: finding EXEC-REMED-001 is stale — all fixes confirmed present, no code changes required. QA evidence via 3 import verification commands with sibling corroboration from REMED-026-qa-qa.md.",
+      "created_at": "2026-04-15T23:59:40.123Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-027",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-027/implementation/2026-04-16T00-02-10-091Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-027-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required.",
+      "created_at": "2026-04-16T00:02:10.091Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-027",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-027/review/2026-04-16T00-04-54-582Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-027-review-review.md",
+      "stage": "review",
+      "summary": "Finding EXEC-REMED-001 is STALE. All 3 import commands pass. Verdict: APPROVED.",
+      "created_at": "2026-04-16T00:04:54.582Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-027",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-027/qa/2026-04-16T00-12-35-912Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-027-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-027: Finding EXEC-REMED-001 is STALE. All 3 import verification commands (hub main, node agent main, shared migrations) PASS via sibling corroboration from REMED-026-qa-qa.md. Both acceptance criteria verified PASS.",
+      "created_at": "2026-04-16T00:12:35.912Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-027",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-027/smoke-test/2026-04-16T00-13-56-807Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-027-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-16T00:13:56.807Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "plan",
+      "path": ".opencode/state/artifacts/history/remed-018/planning/2026-04-16T00-40-49-541Z-plan.md",
+      "source_path": ".opencode/state/plans/remed-018-planning-plan.md",
+      "stage": "planning",
+      "summary": "Finding EXEC-REMED-001 is STALE — all 9 sibling follow-ups already verified pass. No code changes required. Recommend direct closeout after planning.",
+      "created_at": "2026-04-16T00:40:49.541Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "implementation",
+      "path": ".opencode/state/artifacts/history/remed-018/implementation/2026-04-16T01-23-20-920Z-implementation.md",
+      "source_path": ".opencode/state/implementations/remed-018-implementation-implementation.md",
+      "stage": "implementation",
+      "summary": "REMED-018 implementation — finding EXEC-REMED-001 is STALE, all 9 sibling tickets corroborate, no code changes required",
+      "created_at": "2026-04-16T01:23:20.920Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "review",
+      "path": ".opencode/state/artifacts/history/remed-018/review/2026-04-16T01-26-18-933Z-review.md",
+      "source_path": ".opencode/state/reviews/remed-018-review-review.md",
+      "stage": "review",
+      "summary": "Code review for REMED-018: Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, no code changes required. QA section with 3 import verification commands and explicit PASS results.",
+      "created_at": "2026-04-16T01:26:18.933Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "qa",
+      "path": ".opencode/state/artifacts/history/remed-018/qa/2026-04-16T01-31-32-929Z-qa.md",
+      "source_path": ".opencode/state/qa/remed-018-qa-qa.md",
+      "stage": "qa",
+      "summary": "QA verification for REMED-018: Both acceptance criteria PASS. Finding EXEC-REMED-001 is STALE, corroborated by 9 sibling tickets. No code changes required.",
+      "created_at": "2026-04-16T01:31:32.929Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-018",
+      "kind": "smoke-test",
+      "path": ".opencode/state/artifacts/history/remed-018/smoke-test/2026-04-16T01-32-26-359Z-smoke-test.md",
+      "source_path": ".opencode/state/smoke-tests/remed-018-smoke-test-smoke-test.md",
+      "stage": "smoke-test",
+      "summary": "Deterministic smoke test passed.",
+      "created_at": "2026-04-16T01:32:26.359Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-007",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-007/review/2026-04-16T10-04-10-727Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-007-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-007: PASS — finding EXEC-REMED-001 is STALE, all 9 children independently trusted, smoke-test passes (131/131), QA has 2 command records with raw output and PASS verdict, no workflow drift, no proof gaps.",
+      "created_at": "2026-04-16T10:04:10.727Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-008",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-008/review/2026-04-16T11-02-20-936Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-008-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-008: PASS. Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, all 5 import checks pass, smoke-test passes (131/131), no code changes required.",
+      "created_at": "2026-04-16T11:02:20.936Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-008",
+      "kind": "reverification",
+      "path": ".opencode/state/artifacts/history/remed-008/review/2026-04-16T11-02-45-630Z-reverification.md",
+      "source_path": ".opencode/state/reviews/remed-008-review-reverification.md",
+      "stage": "review",
+      "summary": "Trust restored using REMED-008.",
+      "created_at": "2026-04-16T11:02:45.630Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-011",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-011/review/2026-04-16T11-07-16-391Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-011-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-011: PASS. Finding EXEC-REMED-001 is STALE, smoke-test 131/131 PASS, 5 import verification commands PASS, all remediation chain fixes confirmed present.",
+      "created_at": "2026-04-16T11:07:16.391Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-014",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-014/review/2026-04-16T11-37-13-419Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-014-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-014: PASS — finding STALE, smoke-test PASS (3/3 commands), import verification PASS (3/3 commands), sibling corroboration from REMED-012, REMED-013, REMED-015, REMED-016.",
+      "created_at": "2026-04-16T11:37:13.419Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-016",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-016/review/2026-04-16T11-37-16-134Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-016-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-016: PASS — finding STALE, smoke-test PASS, import verification PASS",
+      "created_at": "2026-04-16T11:37:16.134Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-013",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-013/review/2026-04-16T11-37-18-836Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-013-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-013: PASS — finding EXEC-REMED-001 is STALE, all remediation chain fixes confirmed present, smoke-test PASS (131/131), 3 import verification commands PASS.",
+      "created_at": "2026-04-16T11:37:18.836Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-012",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-012/review/2026-04-16T11-37-27-640Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-012-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-012: PASS. Finding EXEC-REMED-001 is STALE, smoke-test 131/131 PASS, 5 import verification commands PASS, all remediation chain fixes confirmed present.",
+      "created_at": "2026-04-16T11:37:27.640Z",
+      "trust_state": "current"
+    },
+    {
+      "ticket_id": "REMED-015",
+      "kind": "backlog-verification",
+      "path": ".opencode/state/artifacts/history/remed-015/review/2026-04-16T11-37-29-081Z-backlog-verification.md",
+      "source_path": ".opencode/state/reviews/remed-015-review-backlog-verification.md",
+      "stage": "review",
+      "summary": "Backlog verification for REMED-015: PASS — finding STALE, smoke-test PASS (2/2 commands), import verification PASS (3/3 commands), sibling corroboration from REMED-012, REMED-013, REMED-014, REMED-016.",
+      "created_at": "2026-04-16T11:37:29.081Z",
+      "trust_state": "current"
     }
   ]
 }

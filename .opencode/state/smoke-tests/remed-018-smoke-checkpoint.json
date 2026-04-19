@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "ticket_id": "REMED-018",
+  "qa_artifact": ".opencode/state/artifacts/history/remed-018/qa/2026-04-16T01-31-32-929Z-qa.md",
+  "scope": "remediation-stale-finding",
+  "test_paths": [],
+  "command_signatures": [
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.hub.main import app; print(\"hub OK\")",
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.node_agent.main import app; print(\"node OK\")",
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.shared.migrations import run_migrations; print(\"migrations OK\")"
+  ],
+  "commands_total": 3,
+  "commands_completed": 3,
+  "completed": true,
+  "passed": true,
+  "updated_at": "2026-04-16T01:32:26.382Z",
+  "commands": [
+    {
+      "label": "command override 1",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.hub.main import app; print(\"hub OK\")"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 1884,
+      "stdout": "hub OK\n",
+      "stderr": ""
+    },
+    {
+      "label": "command override 2",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.node_agent.main import app; print(\"node OK\")"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 563,
+      "stdout": "node OK\n",
+      "stderr": ""
+    },
+    {
+      "label": "command override 3",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.shared.migrations import run_migrations; print(\"migrations OK\")"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 300,
+      "stdout": "migrations OK\n",
+      "stderr": ""
+    }
+  ]
+}

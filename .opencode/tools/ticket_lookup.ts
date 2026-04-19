@@ -97,6 +97,24 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
     }
   }
 
+  if (processVerification.clearable_now && ticket.status !== "done") {
+    return {
+      ...base,
+      next_allowed_stages: [],
+      required_artifacts: [],
+      next_action_kind: "ticket_update",
+      next_action_tool: "ticket_update",
+      delegate_to_agent: null,
+      required_owner: "team-leader",
+      recommended_action: "No historical done tickets remain affected by process verification. Clear pending_process_verification on the current writable ticket now, then rerun ticket_lookup before continuing normal lifecycle routing.",
+      recommended_ticket_update: {
+        ticket_id: ticket.id,
+        activate: true,
+        pending_process_verification: false,
+      },
+    }
+  }
+
   // parallel_independent children run alongside the parent — foreground the child so it
   // advances first.  sequential_dependent children must wait for the parent's own work to
   // complete, so the parent stays in the foreground and we emit a warning instead.
@@ -164,7 +182,7 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
   // switch and produces misleading "write artifact" guidance for a ticket that has
   // unresolved decision_blockers — leaving the agent with no legal forward move.
   if (ticket.status === "blocked") {
-    const unresolvedBlockers: string[] = (ticket as any).decision_blockers ?? []
+    const unresolvedBlockers: string[] = ticket.decision_blockers ?? []
     const blockerSummary = unresolvedBlockers.length > 0
       ? unresolvedBlockers.map((b: string, i: number) => `${i + 1}. ${b}`).join("\n")
       : "(none recorded — status may have been set manually)"
@@ -443,8 +461,8 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
         next_action_tool: "ticket_update",
         delegate_to_agent: null,
         required_owner: "team-leader",
-        recommended_action: "Move the ticket into closeout/done now that a passing smoke-test artifact exists.",
-        recommended_ticket_update: { ticket_id: ticket.id, stage: "closeout", activate: true },
+        recommended_action: "Move the ticket into closeout now with status `done` now that a passing smoke-test artifact exists.",
+        recommended_ticket_update: { ticket_id: ticket.id, stage: "closeout", status: "done", activate: true },
       }
     }
     case "closeout":
@@ -535,8 +553,8 @@ async function buildTransitionGuidance(ticket: ReturnType<typeof getTicket>, wor
         next_action_tool: ticket.status === "done" ? null : "ticket_update",
         delegate_to_agent: null,
         required_owner: "team-leader",
-        recommended_action: ticket.status === "done" ? "Ticket is already closed." : "Finish closeout and mark the ticket done.",
-        recommended_ticket_update: ticket.status === "done" ? null : { ticket_id: ticket.id, stage: "closeout", activate: true },
+        recommended_action: ticket.status === "done" ? "Ticket is already closed." : "Finish closeout with status `done`.",
+        recommended_ticket_update: ticket.status === "done" ? null : { ticket_id: ticket.id, stage: "closeout", status: "done", activate: true },
       }
     default:
       return {

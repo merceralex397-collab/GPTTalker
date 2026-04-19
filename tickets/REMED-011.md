@@ -58,6 +58,7 @@ None
 - review: .opencode/state/artifacts/history/remed-011/review/2026-04-13T22-06-12-412Z-review.md (review)
 - qa: .opencode/state/artifacts/history/remed-011/qa/2026-04-13T22-06-50-096Z-qa.md (qa)
 - smoke-test: .opencode/state/artifacts/history/remed-011/smoke-test/2026-04-13T22-07-19-358Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- backlog-verification: .opencode/state/artifacts/history/remed-011/review/2026-04-16T11-07-16-391Z-backlog-verification.md (review) - Backlog verification for REMED-011: PASS. Finding EXEC-REMED-001 is STALE, smoke-test 131/131 PASS, 5 import verification commands PASS, all remediation chain fixes confirmed present.
 
 ## Notes
 

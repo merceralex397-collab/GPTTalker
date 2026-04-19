@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "ticket_id": "REMED-026",
+  "qa_artifact": ".opencode/state/artifacts/history/remed-026/qa/2026-04-15T23-56-28-428Z-qa.md",
+  "scope": "remed-026",
+  "test_paths": [],
+  "command_signatures": [
+    "uv run python -m compileall -q -x (^|/)(\\.git|\\.opencode|node_modules|dist|build|out|venv|\\.venv|__pycache__)(/|$) .",
+    "uv run python -m pytest"
+  ],
+  "commands_total": 2,
+  "commands_completed": 2,
+  "completed": true,
+  "passed": true,
+  "updated_at": "2026-04-15T23:57:36.061Z",
+  "commands": [
+    {
+      "label": "python compileall",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-m",
+        "compileall",
+        "-q",
+        "-x",
+        "(^|/)(\\.git|\\.opencode|node_modules|dist|build|out|venv|\\.venv|__pycache__)(/|$)",
+        "."
+      ],
+      "reason": "Detected uv.lock; using repo-managed uv runtime; generic Python syntax smoke check",
+      "exit_code": 0,
+      "duration_ms": 453,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "label": "pytest",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-m",
+        "pytest"
+      ],
+      "reason": "Detected uv.lock; using repo-managed uv runtime; detected Python test surface",
+      "exit_code": 0,
+      "duration_ms": 2953,
+      "stdout": "============================= test session starts ==============================\nplatform linux -- Python 3.12.3, pytest-9.0.2, pluggy-1.6.0\nrootdir: /home/rowan/GPTTalker\nconfigfile: pytest.ini (WARNING: ignoring pytest config in pyproject.toml!)\ntestpaths: tests\nplugins: anyio-4.12.1, asyncio-1.3.0\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 131 items\n\ntests/hub/test_contracts.py ................................             [ 24%]\ntests/hub/test_routing.py ..............                                 [ 35%]\ntests/hub/test_security.py ...........................                   [ 55%]\ntests/hub/test_transport.py .............                                [ 65%]\ntests/hub/test_tunnel_manager.py ....                                    [ 68%]\ntests/node_agent/test_executor.py ......................                 [ 85%]\ntests/shared/test_logging.py ...................                         [100%]\n\n============================= 131 passed in 1.54s ==============================\n",
+      "stderr": ""
+    }
+  ]
+}

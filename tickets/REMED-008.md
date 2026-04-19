@@ -28,7 +28,7 @@ done
 ## Trust
 
 - resolution_state: done
-- verification_state: trusted
+- verification_state: reverified
 - finding_source: EXEC-REMED-001
 - source_ticket_id: REMED-007
 - source_mode: split_scope
@@ -60,6 +60,8 @@ None
 - qa: .opencode/state/artifacts/history/remed-008/qa/2026-04-13T21-53-39-940Z-qa.md (qa) - QA verification for REMED-008: All 5 import verification commands PASS. Finding EXEC-REMED-001 is STALE. All acceptance criteria verified.
 - review: .opencode/state/artifacts/history/remed-008/review/2026-04-13T21-54-19-013Z-review.md (review) - Code review for REMED-008: APPROVED. Finding EXEC-REMED-001 is STALE. QA section with 5 commands and PASS results included.
 - smoke-test: .opencode/state/artifacts/history/remed-008/smoke-test/2026-04-13T21-56-44-804Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- backlog-verification: .opencode/state/artifacts/history/remed-008/review/2026-04-16T11-02-20-936Z-backlog-verification.md (review) - Backlog verification for REMED-008: PASS. Finding EXEC-REMED-001 is STALE — all remediation chain fixes confirmed present, all 5 import checks pass, smoke-test passes (131/131), no code changes required.
+- reverification: .opencode/state/artifacts/history/remed-008/review/2026-04-16T11-02-45-630Z-reverification.md (review) - Trust restored using REMED-008.
 
 ## Notes
 

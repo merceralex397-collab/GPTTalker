@@ -59,6 +59,7 @@ None
 - qa: .opencode/state/artifacts/history/remed-015/qa/2026-04-13T23-41-20-035Z-qa.md (qa) - QA verification for REMED-015: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE.
 - smoke-test: .opencode/state/artifacts/history/remed-015/smoke-test/2026-04-13T23-41-55-499Z-smoke-test.md (smoke-test) [superseded] - Deterministic smoke test failed.
 - smoke-test: .opencode/state/artifacts/history/remed-015/smoke-test/2026-04-13T23-42-22-458Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- backlog-verification: .opencode/state/artifacts/history/remed-015/review/2026-04-16T11-37-29-081Z-backlog-verification.md (review) - Backlog verification for REMED-015: PASS — finding STALE, smoke-test PASS (2/2 commands), import verification PASS (3/3 commands), sibling corroboration from REMED-012, REMED-013, REMED-014, REMED-016.
 
 ## Notes
 

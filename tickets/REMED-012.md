@@ -64,6 +64,7 @@ None
 - review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-19-27-899Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. All fixes confirmed present. QA section with 3 inline smoke-test commands, actual raw output embedded, and explicit PASS results.
 - review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-20-16-263Z-review.md (review) [superseded] - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. QA section uses **Command Record N** format with exact commands, raw output embedded inline, and explicit PASS results.
 - review: .opencode/state/artifacts/history/remed-012/review/2026-04-13T23-21-13-616Z-review.md (review) - Review artifact for REMED-012: Finding EXEC-REMED-001 is STALE. QA section uses structured stdout/stderr sections per command, raw output embedded inline, explicit PASS results.
+- backlog-verification: .opencode/state/artifacts/history/remed-012/review/2026-04-16T11-37-27-640Z-backlog-verification.md (review) - Backlog verification for REMED-012: PASS. Finding EXEC-REMED-001 is STALE, smoke-test 131/131 PASS, 5 import verification commands PASS, all remediation chain fixes confirmed present.
 
 ## Notes
 

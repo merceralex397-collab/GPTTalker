@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "ticket_id": "REMED-027",
+  "qa_artifact": ".opencode/state/artifacts/history/remed-027/qa/2026-04-16T00-12-35-912Z-qa.md",
+  "scope": "full-suite",
+  "test_paths": [],
+  "command_signatures": [
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.hub.main import app; print('OK')",
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.node_agent.main import app; print('OK')",
+    "UV_CACHE_DIR=/tmp/uv-cache uv run python -c from src.shared.migrations import run_migrations; print('OK')"
+  ],
+  "commands_total": 3,
+  "commands_completed": 3,
+  "completed": true,
+  "passed": true,
+  "updated_at": "2026-04-16T00:13:56.847Z",
+  "commands": [
+    {
+      "label": "command override 1",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.hub.main import app; print('OK')"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 2422,
+      "stdout": "OK\n",
+      "stderr": ""
+    },
+    {
+      "label": "command override 2",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.node_agent.main import app; print('OK')"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 622,
+      "stdout": "OK\n",
+      "stderr": ""
+    },
+    {
+      "label": "command override 3",
+      "argv": [
+        "uv",
+        "run",
+        "python",
+        "-c",
+        "from src.shared.migrations import run_migrations; print('OK')"
+      ],
+      "reason": "Explicit smoke-test command override supplied by the caller.",
+      "env_overrides": {
+        "UV_CACHE_DIR": "/tmp/uv-cache"
+      },
+      "exit_code": 0,
+      "duration_ms": 338,
+      "stdout": "OK\n",
+      "stderr": ""
+    }
+  ]
+}

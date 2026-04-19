@@ -58,6 +58,7 @@ None
 - review: .opencode/state/artifacts/history/remed-016/review/2026-04-13T23-47-26-644Z-review.md (review) - Finding EXEC-REMED-001 is STALE — all fixes confirmed present, no code changes required. 3 import verification commands pass.
 - qa: .opencode/state/artifacts/history/remed-016/qa/2026-04-13T23-48-05-143Z-qa.md (qa) - QA verification PASS — all 3 import verification commands pass. Finding EXEC-REMED-001 is STALE.
 - smoke-test: .opencode/state/artifacts/history/remed-016/smoke-test/2026-04-13T23-48-32-691Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- backlog-verification: .opencode/state/artifacts/history/remed-016/review/2026-04-16T11-37-16-134Z-backlog-verification.md (review) - Backlog verification for REMED-016: PASS — finding STALE, smoke-test PASS, import verification PASS
 
 ## Notes
 

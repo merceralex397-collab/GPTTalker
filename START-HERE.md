@@ -21,9 +21,9 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 
 ## Current Or Next Ticket
 
-- ID: REMED-007
+- ID: REMED-018
 - Title: Remediation review artifact does not contain runnable command evidence
-- Wave: 26
+- Wave: 37
 - Lane: remediation
 - Stage: closeout
 - Status: done
@@ -46,7 +46,7 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 - repair_follow_on_required: false
 - repair_follow_on_next_stage: none
 - repair_follow_on_verification_passed: false
-- repair_follow_on_updated_at: 2026-04-12T02:52:13Z
+- repair_follow_on_updated_at: 2026-04-14T20:31:31Z
 - pivot_in_progress: false
 - pivot_class: architecture-change
 - pivot_changed_surfaces: agent_team_and_prompts, canonical_brief_and_truth_docs, managed_workflow_tools_and_prompts, repo_local_skills, restart_surfaces, ticket_graph_and_lineage
@@ -56,7 +56,7 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 - pivot_completed_ticket_lineage_actions: supersede:EDGE-001, supersede:FIX-013, create_follow_up:Replace Cloudflare-specific runtime/config/docs/tests with ngrok-backed equivalents and verify startup and health behavior., create_follow_up:Reconcile or supersede historical Cloudflare-specific tickets so the backlog matches the post-pivot architecture.
 - post_pivot_verification_passed: true
 - bootstrap_status: ready
-- bootstrap_proof: .opencode/state/artifacts/history/fix-024/bootstrap/2026-04-10T19-18-12-889Z-environment-bootstrap.md
+- bootstrap_proof: .opencode/state/artifacts/history/remed-018/bootstrap/2026-04-15T20-22-55-980Z-environment-bootstrap.md
 - bootstrap_blockers: none
 
 ## Post-Generation Audit Status
@@ -71,8 +71,8 @@ The repo is operating under the managed OpenCode workflow. Use the canonical sta
 
 ## Code Quality Status
 
-- last_build_result: pass @ 2026-04-14T00:01:44.775Z
-- last_test_run_result: pass @ 2026-04-14T00:01:44.775Z
+- last_build_result: unknown @ 2026-04-16T11:37:29.081Z
+- last_test_run_result: pass @ 2026-04-16T01:32:26.359Z
 - open_remediation_tickets: 0
 - known_reference_integrity_issues: 0
 

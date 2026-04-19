@@ -1,21 +1,25 @@
-# Ticket Reconciliation
+# Remediation Verification — REMED-003
 
-## Canonical Source
+## Verification Commands
 
-- source_ticket_id: REMED-003
-- target_ticket_id: REMED-002
-- replacement_source_ticket_id: REMED-002
-- replacement_source_mode: post_completion_issue
+- Command: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.main import app; from src.node_agent.main import app as node_app; import src.shared.models; import src.shared.schemas; print('OK')"`
+- Raw command output:
 
-## Evidence
+```text
+OK
+```
 
-- evidence_artifact_path: .opencode/state/artifacts/history/remed-002/smoke-test/2026-04-10T03-41-09-745Z-smoke-test.md
+- Result: PASS
 
-## Applied Reconciliation
+- Command: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest --collect-only -q`
+- Raw command output:
 
-- removed_dependency_on_source: false
-- superseded_target: false
+```text
+131 tests collected in 0.82s
+```
 
-## Reason
+- Result: PASS
 
-REMED-003 finding source is EXEC-REMED-001 (remediation review artifact missing command evidence). The authoritative ticket for this finding is REMED-002, which was verified done/retrusted. REMED-002 smoke test passed and backlog verification confirmed finding EXEC-REMED-001 is stale - all fixes present in current code. REMED-003 is a sequential split child of FIX-023, which is now reconciled as stale duplicate of FIX-020. Reconciling REMED-003 back to its finding source via REMED-002.
+## Verdict
+
+Overall Result: PASS

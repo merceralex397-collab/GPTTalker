@@ -1,5 +1,5 @@
 {
-  "active_ticket": "REMED-007",
+  "active_ticket": "REMED-018",
   "stage": "closeout",
   "status": "done",
   "approved_plan": true,
@@ -479,10 +479,65 @@
       "approved_plan": false,
       "reopen_count": 0,
       "needs_reverification": false
+    },
+    "REMED-018": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-019": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-020": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-021": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-022": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-023": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-024": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-025": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-026": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-027": {
+      "approved_plan": true,
+      "reopen_count": 0,
+      "needs_reverification": false
+    },
+    "REMED-028": {
+      "approved_plan": false,
+      "reopen_count": 0,
+      "needs_reverification": false
     }
   },
   "process_version": 7,
-  "process_last_changed_at": "2026-04-12T02:50:07.895Z",
+  "process_last_changed_at": "2026-04-14T20:28:05.688Z",
   "process_last_change_summary": "Managed Scafforge repair runner refreshed deterministic workflow surfaces and evaluated downstream repair obligations.",
   "pending_process_verification": false,
   "parallel_mode": "sequential",
@@ -498,15 +553,15 @@
     "blocking_reasons": [],
     "verification_passed": false,
     "handoff_allowed": true,
-    "last_updated_at": "2026-04-12T02:52:13Z",
+    "last_updated_at": "2026-04-14T20:31:31Z",
     "process_version": 7
   },
   "bootstrap": {
     "status": "ready",
-    "last_verified_at": "2026-04-10T19:18:12.890Z",
-    "environment_fingerprint": "fc5f4df429c83f6c0d1731c6438994e10cbb8dcfd008a53776689fe69358c4df",
-    "proof_artifact": ".opencode/state/artifacts/history/fix-024/bootstrap/2026-04-10T19-18-12-889Z-environment-bootstrap.md"
+    "last_verified_at": "2026-04-15T20:22:55.981Z",
+    "environment_fingerprint": "79412232a007094f4e291be6f351c09a2cdc5c87a7c72db3806d90f5da6cb471",
+    "proof_artifact": ".opencode/state/artifacts/history/remed-018/bootstrap/2026-04-15T20-22-55-980Z-environment-bootstrap.md"
   },
   "lane_leases": [],
-  "state_revision": 728
+  "state_revision": 841
 }

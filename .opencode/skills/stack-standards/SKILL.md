@@ -1,86 +1,77 @@
 ---
 name: stack-standards
-description: Apply GPTTalker-specific Python, FastAPI, MCP, policy, validation, and runtime conventions when planning, implementing, reviewing, or testing repository work.
+description: Hold the project-local standards for languages, frameworks, validation, and runtime assumptions. Use when planning or implementing work that should follow repo-specific engineering conventions.
 ---
 
 # Stack Standards
 
 Before applying these rules, call `skill_ping` with `skill_id: "stack-standards"` and `scope: "project"`.
 
-GPTTalker is a Python 3.11+ FastAPI MCP hub with a lightweight Python node-agent service. It uses SQLite for structured state, Qdrant for semantic context, Tailscale for private hub-to-node transport, and ngrok for the public HTTPS MCP edge. The repo is security-sensitive: unknown nodes, repos, services, paths, and write targets must fail closed.
+GPTTalker stack: `Python 3.11+`, `FastAPI`, `Pydantic v2`, `aiosqlite`, `httpx`, `Qdrant`, `uv`, `pytest`, `ruff`.
 
-## Core Stack
+## Runtime And Structure
 
-- Runtime: Python 3.11+, FastAPI, uvicorn.
-- Package metadata: `pyproject.toml`.
-- Package manager: prefer `uv`; use `UV_CACHE_DIR=/tmp/uv-cache` for repeatable host runs.
-- Hub package: `src/hub/`.
-- Node-agent package: `src/node_agent/`.
-- Shared schemas, config, repositories, and migrations: `src/shared/`.
-- Tests: `tests/`.
-- Linting and formatting: ruff.
-- Test runner: pytest with `asyncio_mode = "auto"`.
+- The hub entrypoint is `src/hub/main.py`; the node-agent entrypoint is `src/node_agent/main.py`.
+- Shared runtime contracts, schemas, repositories, and logging live under `src/shared/`.
+- Treat Tailscale as the only internal transport boundary and ngrok as the only canonical public-edge provider after the 2026-03-31 pivot.
+- SQLite owns structured runtime records; Qdrant owns semantic project context. Do not replace either with ad hoc local files.
+
+## Python And FastAPI Rules
+
+- Use Python 3.11 syntax and explicit type hints throughout implementation and tests.
+- Keep FastAPI endpoints `async` and keep outbound network calls on `httpx` async clients with explicit timeouts.
+- Use Pydantic models for request and response schemas instead of ad hoc dictionaries.
+- Fail closed on unknown nodes, repos, write targets, and LLM aliases. Policy checks belong at the boundary before execution.
+- Do not log secrets, raw tokens, or unbounded file contents.
+
+## Dependency Injection And Import Safety
+
+- Prefer `fastapi.Depends` for dependency wiring and keep dependency providers in the relevant `dependencies.py` module.
+- When a dependency function only imports a type under `TYPE_CHECKING`, use a string annotation such as `-> "SessionStore"` so runtime imports still succeed.
+- In FastAPI dependency functions, type the injected request object as `Request`, not `FastAPI`.
+- Before closeout on hub or node-agent tickets, prove imports still resolve with:
+  - `PYTHONPATH=src python3 -c 'from src.hub.main import app'`
+  - `PYTHONPATH=src python3 -c 'from src.node_agent.main import app'`
+- Treat import failures as blocking evidence. Do not replace them with narrative PASS claims.
 
 ## Validation Commands
 
-Use the narrowest command that proves the touched surface. For review, QA, and remediation closeout, record the exact command, raw output, and explicit PASS/FAIL result.
+Use the repo-owned commands first:
 
-- Install/update dev environment: `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`.
-- Lint: `UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .`.
-- Format check: `UV_CACHE_DIR=/tmp/uv-cache uv run ruff format --check .`.
-- Test collection: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest --collect-only tests/ -q`.
-- Fast failure test run: `UV_CACHE_DIR=/tmp/uv-cache uv run pytest tests/ -q --tb=short`.
-- Hub import check: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.hub.main import app; print(app.title)"`.
-- Node-agent import check: `UV_CACHE_DIR=/tmp/uv-cache uv run python -c "from src.node_agent.main import app; print(app.title)"`.
-- Make targets are available as convenience wrappers: `make lint`, `make test`, and `make validate`.
+- Bootstrap dependencies: `UV_CACHE_DIR=/tmp/uv-cache uv sync --extra dev`
+- Lint: `python3 -m scripts.run_lint`
+- Tests: `python3 -m scripts.run_tests --tb=short`
+- Full validation: `python3 -m scripts.validate`
 
-If `uv` is unavailable, report a host-prerequisite blocker instead of silently switching to an unrecorded environment. Use `python3` where a direct interpreter is needed.
+Equivalent make targets exist and are acceptable when the environment is already prepared:
 
-## FastAPI Rules
+- `make lint`
+- `make test`
+- `make validate`
 
-- Keep route handlers thin. Put policy, routing, persistence, and service logic in `src/hub/services/`, `src/hub/policy/`, `src/hub/tools/`, or `src/node_agent/` as appropriate.
-- Use FastAPI dependency injection deliberately. Dependency functions that need application state should accept `request: Request` and read `request.app.state`; do not type a dependency parameter as `FastAPI`.
-- When a type is imported only under `TYPE_CHECKING`, use a string annotation such as `-> "TypeName"` so runtime imports remain valid.
-- Validate external payloads at the boundary with Pydantic models or explicit checks before policy or filesystem operations run.
-- Return structured errors for policy denials and unsupported targets; do not expose secret values, raw environment, or unrestricted filesystem paths in error text.
+For review, QA, and remediation closeout, prefer the smallest command set that proves the changed surface is still valid:
 
-## Security And Policy
+- Import checks:
+  - `PYTHONPATH=src python3 -c 'from src.hub.main import app'`
+  - `PYTHONPATH=src python3 -c 'from src.node_agent.main import app'`
+- Ruff gates:
+  - `python3 -m ruff check src/ tests/ scripts/`
+  - `python3 -m ruff format --check src/ tests/ scripts/`
+- Pytest:
+  - `PYTHONPATH=src TEST_DB_URL=sqlite+aiosqlite:///:memory: LOG_LEVEL=WARNING python3 -m pytest tests/ -v --tb=short`
 
-- Default deny is the project rule. Unknown repo aliases, node aliases, service aliases, write targets, path roots, and scopes must be rejected.
-- Normalize and validate paths before reading or writing. Preserve traversal prevention and approved write-root checks.
-- Markdown delivery must stay scoped to approved write targets, allowed extensions, and atomic writes.
-- Keep Tailscale internal traffic and ngrok public edge concerns separate. Do not reintroduce Cloudflare Tunnel assumptions after the ngrok pivot.
-- Do not log API keys, Tailscale identifiers beyond approved aliases, ngrok tokens, model credentials, or generated secret-bearing docs.
-- Direct git commit and push actions remain out of scope; inspection and status operations are allowed only through approved tool contracts.
-
-## MCP And Tool Contracts
-
-- MCP-facing tools should return predictable structured data, not console-oriented prose.
-- Tool handlers must enforce policy before performing filesystem, network, model, or registry actions.
-- Repo inspection tools should prefer `rg` for text search and git CLI for status/history.
-- LLM routing must go through approved aliases, model registry, scheduler policy, and health checks.
-- Node-agent operations must be scoped and auditable; no unrestricted shell execution.
-- Observability paths should preserve task IDs, trace IDs, timestamps, target aliases, outcome, and failure reason.
-
-## Persistence
-
-- SQLite owns registry, task, generated-doc, issue, and relationship history.
-- Qdrant owns semantic project-context vectors.
-- Migrations must be explicit and idempotent; do not hide schema mutation in request handlers.
-- Runtime state must persist across restarts unless a ticket explicitly owns a temporary or cache-only surface.
+If a remediation ticket carries `finding_source`, rerun the original finding-producing command first and include the raw output in the review or QA artifact before claiming the issue is fixed.
 
 ## Testing Expectations
 
-- Policy-denial tests are as important as happy-path tests.
-- Add focused tests for new tool contracts, path validation, alias routing, migration behavior, and serialization boundaries.
-- For bug fixes, include a regression check that would have failed before the fix.
-- Treat import failures as critical execution findings. Before approving dependency, route, or typing changes, run the hub and node-agent import checks above.
+- Every MCP tool or policy branch needs at least one happy-path and one failure-path test.
+- Add hub tests under `tests/hub/`, node-agent tests under `tests/node_agent/`, and shared-library tests under `tests/shared/`.
+- Use `TEST_DB_URL=sqlite+aiosqlite:///:memory:` for test runs unless the ticket explicitly requires a different database surface.
+- Keep smoke scope aligned to the active ticket. Do not broaden process-remediation smoke into full product boot checks when prerequisite feature tickets remain open.
 
-## Ticket And Remediation Rules
+## Process Rules
 
-- Use the ticket tools and lifecycle state. Do not hand-advance stage or status fields.
-- Stage order is `planning -> plan_review -> implementation -> review -> qa -> smoke-test -> closeout`.
-- Read `ticket_lookup.transition_guidance` before calling `ticket_update`.
+- Use ticket tools and registered artifacts for stage movement; do not advance lifecycle state by raw file edits.
 - `smoke_test` is the only legal producer of smoke-test artifacts.
-- If a remediation ticket carries `finding_source`, its review artifact must rerun the original finding-producing command or the canonical acceptance command, include raw command output, and state PASS or FAIL before closeout can be trusted.
-- Missing tools, blocked services, or invalid host prerequisites are blockers to record, not reasons to manufacture PASS evidence.
+- Review and QA artifacts must include the exact commands run and the raw output, especially for remediation tickets that exist to clear prior findings.
+- `START-HERE.md`, `.opencode/state/context-snapshot.md`, and `.opencode/state/latest-handoff.md` are derived surfaces. Durable truth remains in `docs/spec/CANONICAL-BRIEF.md`, `tickets/manifest.json`, and `.opencode/state/workflow-state.json`.

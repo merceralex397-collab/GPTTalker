@@ -58,6 +58,7 @@ None
 - review: .opencode/state/artifacts/history/remed-014/review/2026-04-13T23-34-54-092Z-review.md (review) - Code review for REMED-014: Finding EXEC-REMED-001 is STALE. All remediation chain fixes confirmed present. QA section with 3 import verification commands and explicit PASS results.
 - qa: .opencode/state/artifacts/history/remed-014/qa/2026-04-13T23-35-33-049Z-qa.md (qa) - QA verification for REMED-014: All 3 import verification commands PASS. Finding EXEC-REMED-001 is STALE.
 - smoke-test: .opencode/state/artifacts/history/remed-014/smoke-test/2026-04-13T23-36-07-691Z-smoke-test.md (smoke-test) - Deterministic smoke test passed.
+- backlog-verification: .opencode/state/artifacts/history/remed-014/review/2026-04-16T11-37-13-419Z-backlog-verification.md (review) - Backlog verification for REMED-014: PASS — finding STALE, smoke-test PASS (3/3 commands), import verification PASS (3/3 commands), sibling corroboration from REMED-012, REMED-013, REMED-015, REMED-016.
 
 ## Notes
 
